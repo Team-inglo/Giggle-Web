@@ -38,11 +38,7 @@ export const InfoContentBox = styled.div`
   gap: 0.5rem;
 `;
 
-export const HiddenIcon = styled.img`
-  color: ${(props) => props.theme.colors.black};
-`;
-
-export const InfoIcon = styled.img`
+export const InfoIcon = styled.div`
   padding-top: 0.3rem;
   color: ${(props) => props.theme.colors.black};
 `;

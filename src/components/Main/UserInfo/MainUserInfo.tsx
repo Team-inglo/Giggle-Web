@@ -1,6 +1,5 @@
 import {
   Container,
-  HiddenIcon,
   InfoBox,
   InfoContent,
   InfoContentBox,
@@ -11,9 +10,9 @@ import {
   UserName,
   UserNameBox,
 } from "./styled";
-import userIcon from "../../../assets/icons/user_icon.svg";
-import mapPinIcon from "../../../assets/icons/map_pin_icon.svg";
-import hiddenIcon from "../../../assets/icons/hidden_icon.svg";
+import UserIcon from "../../../assets/icons/user_icon.svg?react";
+import MapPinIcon from "../../../assets/icons/map_pin_icon.svg?react";
+import HiddenIcon from "../../../assets/icons/hidden_icon.svg?react";
 
 const MainUserInfo = () => {
   return (
@@ -24,17 +23,21 @@ const MainUserInfo = () => {
       </UserNameBox>
       <InfoBox>
         <InfoContentBox>
-          <InfoIcon src={userIcon} />
+          <InfoIcon>
+            <UserIcon />
+          </InfoIcon>
           <InfoTextBox>
             <InfoTitle>외국인 등록번호</InfoTitle>
             <InfoContent>*******-*******</InfoContent>
           </InfoTextBox>
         </InfoContentBox>
-        <HiddenIcon src={hiddenIcon} />
+        <HiddenIcon />
       </InfoBox>
       <InfoBox>
         <InfoContentBox>
-          <InfoIcon src={mapPinIcon} />
+          <InfoIcon>
+            <MapPinIcon />
+          </InfoIcon>
           <InfoTextBox>
             <InfoTitle>거주지</InfoTitle>
             <InfoContent>서울특별시 강북구 수유동 222-55</InfoContent>
