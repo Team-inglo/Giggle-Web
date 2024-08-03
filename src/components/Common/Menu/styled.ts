@@ -15,6 +15,8 @@ export const MenuBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  gap: 0.1rem;
 `;
 
 export const MenuText = styled.div`
