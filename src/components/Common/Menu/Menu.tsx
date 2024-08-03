@@ -1,10 +1,10 @@
-import { Container, MenuBox, MenuIcon, MenuText } from "./styled";
+import { Container, MenuBox, MenuText } from "./styled";
 
-import documentIcon from "../../../assets/icons/document_icon.svg";
-import noticeIcon from "../../../assets/icons/notice_icon.svg";
-import homeIcon from "../../../assets/icons/home_icon.svg";
-import calendarIcon from "../../../assets/icons/calendar_icon.svg";
-import chatIcon from "../../../assets/icons/chat_icon.svg";
+import DocumentIcon from "../../../assets/icons/document_icon.svg?react";
+import NoticeIcon from "../../../assets/icons/notice_icon.svg?react";
+import HomeIcon from "../../../assets/icons/home_icon.svg?react";
+import CalendarIcon from "../../../assets/icons/calendar_icon.svg?react";
+import ChatIcon from "../../../assets/icons/chat_icon.svg?react";
 
 const Menu = () => {
   // 나중에 페이지 연결하기
@@ -13,23 +13,23 @@ const Menu = () => {
   return (
     <Container>
       <MenuBox>
-        <MenuIcon src={documentIcon} />
+        <DocumentIcon />
         <MenuText>서류</MenuText>
       </MenuBox>
       <MenuBox>
-        <MenuIcon src={noticeIcon} />
+        <NoticeIcon />
         <MenuText>공고</MenuText>
       </MenuBox>
       <MenuBox>
-        <MenuIcon src={homeIcon} />
+        <HomeIcon />
         <MenuText>홈</MenuText>
       </MenuBox>
       <MenuBox>
-        <MenuIcon src={calendarIcon} />
+        <CalendarIcon />
         <MenuText>캘린더</MenuText>
       </MenuBox>
       <MenuBox>
-        <MenuIcon src={chatIcon} />
+        <ChatIcon />
         <MenuText>챗봇</MenuText>
       </MenuBox>
     </Container>

@@ -1,11 +1,11 @@
-import { Container, Logo, SettingIcon } from "./style";
-import settingIcon from "../../../assets/icons/setting_icon.svg";
+import { Container, Logo } from "./style";
+import SettingIcon from "../../../assets/icons/setting_icon.svg?react";
 
 const MainHeader = () => {
   return (
     <Container>
       <Logo>Giggle</Logo>
-      <SettingIcon src={settingIcon} />
+      <SettingIcon />
     </Container>
   );
 };

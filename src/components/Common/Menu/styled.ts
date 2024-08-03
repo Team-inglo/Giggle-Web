@@ -17,8 +17,6 @@ export const MenuBox = styled.div`
   justify-content: center;
 `;
 
-export const MenuIcon = styled.img``;
-
 export const MenuText = styled.div`
   font-size: 0.68rem;
   color: ${(props) => props.theme.colors.gray};

@@ -13,5 +13,3 @@ export const Logo = styled.div`
   font-size: 1.5rem;
   color: ${(props) => props.theme.colors.mainColor};
 `;
-
-export const SettingIcon = styled.img``;

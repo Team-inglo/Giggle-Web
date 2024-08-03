@@ -1,4 +1,5 @@
 import Menu from "../../components/Common/Menu/Menu";
+import MainFloatBtn from "../../components/Main/FloatBtn/MainFloatBtn";
 import MainHeader from "../../components/Main/Header/MainHeader";
 import MainScoreList from "../../components/Main/ScoreList/MainScoreList";
 import MainUserInfo from "../../components/Main/UserInfo/MainUserInfo";
@@ -16,6 +17,7 @@ const MainPage = () => {
         <MainScoreList />
         <MainVisaInfo />
       </Container>
+      <MainFloatBtn />
       <Menu />
     </>
   );
