@@ -7,5 +7,9 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "types": ["vite-plugin-svgr/client"]
+  },
+  "include": ["svg.d.ts"]
 }
