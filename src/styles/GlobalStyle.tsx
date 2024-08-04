@@ -24,6 +24,12 @@ const GlobalStye = createGlobalStyle`
     padding: 0;
     background-color: white;
   }
+
+  button {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+  }
 `;
 
 export default GlobalStye;
