@@ -7,11 +7,11 @@ export const Container = styled.div`
   gap: 0.5rem;
 `;
 
-export const ColorIcon = styled.div`
+export const ColorIcon = styled.div<{ color: string }>`
   width: 1.4rem;
   height: 1.3rem;
   border-radius: 50%;
-  background-color: #ffb65a;
+  background-color: ${(props) => props.color};
 `;
 
 export const ContentBox = styled.div`

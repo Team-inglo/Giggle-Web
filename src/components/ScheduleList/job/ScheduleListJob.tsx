@@ -1,3 +1,4 @@
+import { JobSchedule } from "../../../interfaces/Schedule/JobSchedule";
 import {
   ColorIcon,
   Container,
@@ -7,16 +8,16 @@ import {
   TotalSalaryBox,
 } from "./style";
 
-const ScheduleListJob = () => {
+const ScheduleListJob = ({ data }: { data: JobSchedule }) => {
   return (
     <Container>
-      <ColorIcon></ColorIcon>
+      <ColorIcon color={data.color}></ColorIcon>
       <ContentBox>
-        <Title>파리바게트</Title>
+        <Title>{data.name}</Title>
         <TotalSalaryBox>
-          <Text>전체 20시간</Text>
+          <Text>전체</Text>
           <Text>
-            20시간 <br /> 시급 10,000원
+            {data.time}시간 <br /> 시급 {data.money}원
           </Text>
         </TotalSalaryBox>
       </ContentBox>

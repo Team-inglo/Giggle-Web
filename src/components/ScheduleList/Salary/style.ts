@@ -21,7 +21,7 @@ export const TotalSalaryText = styled.div`
 `;
 
 export const EditButton = styled.button`
-  margin: 1.68rem 0;
+  margin: 1.5rem 0;
   padding: 1rem;
   width: 100%;
   border: 1px solid ${(props) => props.theme.colors.lightGray};

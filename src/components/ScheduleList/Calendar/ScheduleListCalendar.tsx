@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { CalendarStyled, Container, DotContainer, DotStyled } from "./style";
 import moment from "moment";
+import { JobSchedule } from "../../../interfaces/Schedule/JobSchedule";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-interface jobSchedule {
-  name: string;
-  color: string;
-  days: string[];
-}
 
-const ScheduleListCalendar = () => {
+const ScheduleListCalendar = ({
+  jobScheduleData,
+}: {
+  jobScheduleData: JobSchedule[];
+}) => {
   const today = new Date();
 
   const [date, setDate] = useState<Value>(today);
@@ -19,48 +19,9 @@ const ScheduleListCalendar = () => {
     setDate(newDate);
   };
 
-  // 알바 날짜 예시
-  const attendDay: jobSchedule[] = [
-    {
-      name: "파리바게트",
-      color: "#FFB65A",
-      days: [
-        "2023-01-01",
-        "2024-08-01",
-        "2024-08-08",
-        "2024-08-05",
-        "2024-08-12",
-        "2024-08-19",
-        "2024-08-26",
-      ],
-    },
-    {
-      name: "베스킨라빈스",
-      color: "#7DD0B6",
-      days: [
-        "2024-08-01",
-        "2024-08-08",
-        "2024-08-15",
-        "2024-08-22",
-        "2024-08-29",
-      ],
-    },
-    {
-      name: "알바3",
-      color: "#FF7B5A",
-      days: [
-        "2024-08-01",
-        "2024-08-08",
-        "2024-08-15",
-        "2024-08-22",
-        "2024-08-29",
-      ],
-    },
-  ];
-
   const findAttendDay = (date: string): string[] => {
     const set: Set<string> = new Set();
-    for (const data of attendDay) {
+    for (const data of jobScheduleData) {
       if (data.days.includes(date)) set.add(data.color);
     }
     return [...set];
@@ -81,13 +42,14 @@ const ScheduleListCalendar = () => {
         prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
         minDetail="year" // 10년단위 년도 숨기기
         // 오늘 날짜에 '오늘' 텍스트 삽입하고 출석한 날짜에 점 표시를 위한 설정
-        tileContent={({ date }) => {
+        tileContent={({ date, view }) => {
+          if (view !== "month") return;
           const html = [];
           const colors = findAttendDay(moment(date).format("YYYY-MM-DD"));
           html.push(
-            colors.map((color) => (
+            colors.map((color, index) => (
               <DotStyled
-                key={moment(date).format("YYYY-MM-DD")}
+                key={moment(date).format("YYYY-MM-DD") + index}
                 color={color}
               ></DotStyled>
             ))
