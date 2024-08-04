@@ -5,3 +5,6 @@ export interface JobSchedule {
   money: number;
   days: string[];
 }
+
+export type DateValuePiece = Date | null;
+export type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];

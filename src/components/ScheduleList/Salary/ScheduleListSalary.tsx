@@ -1,4 +1,9 @@
-import { JobSchedule } from "../../../interfaces/Schedule/JobSchedule";
+import { useState } from "react";
+import {
+  DateValue,
+  JobSchedule,
+} from "../../../interfaces/Schedule/JobSchedule";
+import ScheduleListBottomSheet from "../BottomSheet/ScheduleListBottomSheet";
 import ScheduleListCalendar from "../Calendar/ScheduleListCalendar";
 import ScheduleListJob from "../job/ScheduleListJob";
 import {
@@ -7,8 +12,15 @@ import {
   TotalSalaryBox,
   TotalSalaryText,
 } from "./style";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleListSalary = () => {
+  const navigate = useNavigate();
+
+  const today = new Date();
+
+  const [date, setDate] = useState<DateValue>(today);
+
   // 알바 날짜 예시
   const jobScheduleData: JobSchedule[] = [
     {
@@ -48,18 +60,29 @@ const ScheduleListSalary = () => {
     },
   ];
 
+  const goToAddPage = () => {
+    navigate("/calendar/add");
+  };
+
   return (
-    <Container>
-      <TotalSalaryBox>
-        <TotalSalaryText>월급</TotalSalaryText>
-        <TotalSalaryText>520,000원</TotalSalaryText>
-      </TotalSalaryBox>
-      <EditButton>스케쥴 편집하기 +</EditButton>
-      <ScheduleListCalendar jobScheduleData={jobScheduleData} />
-      {jobScheduleData.map((data) => (
-        <ScheduleListJob key={data.name} data={data} />
-      ))}
-    </Container>
+    <>
+      <Container>
+        <TotalSalaryBox>
+          <TotalSalaryText>월급</TotalSalaryText>
+          <TotalSalaryText>520,000원</TotalSalaryText>
+        </TotalSalaryBox>
+        <EditButton onClick={goToAddPage}>스케쥴 편집하기 +</EditButton>
+        <ScheduleListCalendar
+          jobScheduleData={jobScheduleData}
+          date={date}
+          setDate={setDate}
+        />
+        {jobScheduleData.map((data) => (
+          <ScheduleListJob key={data.name} data={data} />
+        ))}
+      </Container>
+      <ScheduleListBottomSheet date={date} />
+    </>
   );
 };
 

@@ -1,21 +1,20 @@
-import { useState } from "react";
 import { CalendarStyled, Container, DotContainer, DotStyled } from "./style";
 import moment from "moment";
-import { JobSchedule } from "../../../interfaces/Schedule/JobSchedule";
-
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import {
+  DateValue,
+  JobSchedule,
+} from "../../../interfaces/Schedule/JobSchedule";
 
 const ScheduleListCalendar = ({
   jobScheduleData,
+  date,
+  setDate,
 }: {
   jobScheduleData: JobSchedule[];
+  date: DateValue;
+  setDate: (data: DateValue) => void;
 }) => {
-  const today = new Date();
-
-  const [date, setDate] = useState<Value>(today);
-
-  const handleDateChange = (newDate: Value) => {
+  const handleDateChange = (newDate: DateValue) => {
     setDate(newDate);
   };
 
