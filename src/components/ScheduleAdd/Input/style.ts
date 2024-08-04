@@ -70,3 +70,13 @@ export const CalenderTitle = styled.div`
     margin: 0 1rem;
   }
 `;
+
+export const SubmitButton = styled.div`
+  width: 100%;
+  padding: 1rem 1rem;
+  border-radius: 0.5rem;
+  background-color: ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.white};
+  font-size: 1rem;
+  text-align: center;
+`;

@@ -8,9 +8,11 @@ import {
   InputText,
   InputTitle,
   PaletteButton,
+  SubmitButton,
 } from "./style";
 import PaletteIcon from "../../../assets/icons/palette_icon.svg?react";
 import "react-color-palette/css";
+import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
 
 const ScheduleAddInput = () => {
   const [color, setColor] = useColor("#561ecb");
@@ -39,6 +41,8 @@ const ScheduleAddInput = () => {
         />
       </ColorPickerWrapper> */}
       <CalenderTitle>날짜 선택하기</CalenderTitle>
+      <ScheduleAddCalendar />
+      <SubmitButton>근로 기록하기</SubmitButton>
     </>
   );
 };
