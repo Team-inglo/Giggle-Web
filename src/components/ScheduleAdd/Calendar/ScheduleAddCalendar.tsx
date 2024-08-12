@@ -1,14 +1,6 @@
 import { useState } from "react";
 import { DateValue } from "../../../interfaces/Schedule/JobSchedule";
-import {
-  CalendarStyled,
-  CalendarWrapper,
-  Container,
-  DotStyled,
-  OptionBox,
-  OptionText,
-  SubmitButton,
-} from "./style";
+import { CalendarStyled, CalendarWrapper, Container, DotStyled, OptionBox, OptionText, SelectRepeat, SubmitButton, TimeInput } from "./style";
 import moment from "moment";
 
 const ScheduleAddCalendar = () => {
@@ -44,24 +36,28 @@ const ScheduleAddCalendar = () => {
             if (view !== "month") return;
             const html = [];
             if (dates.includes(moment(date).format("YYYY-MM-DD"))) {
-              html.push(
-                <DotStyled key={moment(date).format("YYYY-MM-DD")}></DotStyled>
-              );
+              html.push(<DotStyled key={moment(date).format("YYYY-MM-DD")}></DotStyled>);
             }
             return <>{html}</>;
           }}
         />
         <OptionBox>
           <OptionText>시작시간</OptionText>
-          <OptionText>9:00</OptionText>
+          <TimeInput type="time" />
         </OptionBox>
         <OptionBox>
-          <OptionText>시작시간</OptionText>
-          <OptionText>9:00</OptionText>
+          <OptionText>종료시간</OptionText>
+          <TimeInput type="time" />
         </OptionBox>
         <OptionBox>
-          <OptionText>시작시간</OptionText>
-          <OptionText>9:00</OptionText>
+          <OptionText>반복</OptionText>
+          <SelectRepeat>
+            <option value="없음">없음</option>
+            <option value="매일">매일</option>
+            <option value="매주">매주</option>
+            <option value="매달">매달</option>
+            <option value="매년">매년</option>
+          </SelectRepeat>
         </OptionBox>
       </CalendarWrapper>
     </Container>

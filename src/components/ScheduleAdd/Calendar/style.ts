@@ -148,3 +148,16 @@ export const OptionText = styled.div`
   font-size: 0.75rem;
   color: ${(props) => props.theme.colors.black};
 `;
+
+export const TimeInput = styled.input`
+  width: 6.5rem;
+  font-size: 0.75rem;
+  color: ${(props) => props.theme.colors.black};
+`;
+
+export const SelectRepeat = styled.select`
+  padding: 0.2rem 0;
+  width: 5rem;
+  font-size: 0.75rem;
+  color: ${(props) => props.theme.colors.black};
+`;

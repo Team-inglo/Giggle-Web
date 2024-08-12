@@ -3,6 +3,9 @@ import {
   CalenderTitle,
   ColorInput,
   ColorPickerWrapper,
+  CycleBox,
+  CycleTitle,
+  EditButton,
   Input,
   InputBox,
   InputText,
@@ -11,6 +14,7 @@ import {
   SubmitButton,
 } from "./style";
 import PaletteIcon from "../../../assets/icons/palette_icon.svg?react";
+import EditIcon from "../../../assets/icons/circle_pencil_icon.svg?react";
 import "react-color-palette/css";
 import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
 
@@ -41,6 +45,12 @@ const ScheduleAddInput = () => {
         />
       </ColorPickerWrapper> */}
       <CalenderTitle>날짜 선택하기</CalenderTitle>
+      <CycleBox>
+        <CycleTitle>주기1</CycleTitle>
+        <EditButton>
+          <EditIcon />
+        </EditButton>
+      </CycleBox>
       <ScheduleAddCalendar />
       <SubmitButton>근로 기록하기</SubmitButton>
     </>
