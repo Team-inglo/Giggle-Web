@@ -1,29 +1,20 @@
 import { ColorPicker, useColor } from "react-color-palette";
-import {
-  CalenderTitle,
-  ColorInput,
-  ColorPickerWrapper,
-  CycleBox,
-  CycleTitle,
-  EditButton,
-  Input,
-  InputBox,
-  InputText,
-  InputTitle,
-  PaletteButton,
-  SubmitButton,
-} from "./style";
+import { CalenderTitle, ColorInput, CycleBox, CycleTitle, EditButton, Input, InputBox, InputText, InputTitle, PaletteButton, SubmitButton } from "./style";
 import PaletteIcon from "../../../assets/icons/palette_icon.svg?react";
 import EditIcon from "../../../assets/icons/circle_pencil_icon.svg?react";
 import "react-color-palette/css";
 import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
+import ScheduleAddDropDown from "../DropDown/ScheduleAddDropDown";
 
 const ScheduleAddInput = () => {
   const [color, setColor] = useColor("#561ecb");
+
   return (
     <>
-      <InputTitle>알바 선택</InputTitle>
-      <Input placeholder="알바 선택 또는 생성" />
+      <InputBox>
+        <InputTitle>알바 선택</InputTitle>
+        <ScheduleAddDropDown />
+      </InputBox>
       <InputBox>
         <InputTitle>시급</InputTitle>
         <Input placeholder="시급 입력" />
