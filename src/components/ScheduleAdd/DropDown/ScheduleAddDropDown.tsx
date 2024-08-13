@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MenuIcon from "../../../assets/icons/menu_icon.svg?react";
 import { AddOption, DropDown, DropDownButton, Option, OptionButton, OptionText } from "./style";
+import ScheduleAddJobModal from "../JobModal/ScheduleAddJobModal";
 
 const jobData = [
   {
@@ -32,8 +33,11 @@ const jobData = [
 const ScheduleAddDropDown = () => {
   const [isDropDown, setIsDropDown] = useState<boolean>(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [isModal, setIsModal] = useState<boolean>(false);
 
-  const addOption = () => {};
+  const addOption = () => {
+    setIsModal(true);
+  };
 
   const editOption = (event: React.MouseEvent<HTMLButtonElement>, id: number) => {
     event.stopPropagation();
@@ -65,6 +69,7 @@ const ScheduleAddDropDown = () => {
           ))}
         </DropDown>
       )}
+      <ScheduleAddJobModal isModal={isModal} setIsModal={setIsModal} />
     </>
   );
 };
