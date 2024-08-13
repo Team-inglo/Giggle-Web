@@ -54,3 +54,30 @@ export const SubmitButton = styled.div`
   font-size: 1rem;
   text-align: center;
 `;
+
+export const ColorInput = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  width: 100%;
+`;
+
+export const PaletteButton = styled.button`
+  padding-right: 0.3rem;
+`;
+
+export const PaletteImg = styled.img``;
+
+export const PaletteColor = styled.div<{ color: string }>`
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+`;
+
+export const ColorPickerWrapper = styled.div`
+  padding: 1rem 0;
+  width: 100%;
+`;

@@ -1,14 +1,10 @@
-import { ColorPicker, useColor } from "react-color-palette";
 import { CalenderTitle, ColorInput, CycleBox, CycleTitle, EditButton, Input, InputBox, InputText, InputTitle, PaletteButton, SubmitButton } from "./style";
-import PaletteIcon from "../../../assets/icons/palette_icon.svg?react";
 import EditIcon from "../../../assets/icons/circle_pencil_icon.svg?react";
 import "react-color-palette/css";
 import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
 import ScheduleAddDropDown from "../DropDown/ScheduleAddDropDown";
 
 const ScheduleAddInput = () => {
-  const [color, setColor] = useColor("#561ecb");
-
   return (
     <>
       <InputBox>
@@ -17,24 +13,13 @@ const ScheduleAddInput = () => {
       </InputBox>
       <InputBox>
         <InputTitle>시급</InputTitle>
-        <Input placeholder="시급 입력" />
+        <Input placeholder="시급 입력" readOnly />
         <InputText>원</InputText>
       </InputBox>
       <ColorInput>
         <InputTitle>대표 색상</InputTitle>
-        <PaletteButton>
-          <PaletteIcon />
-        </PaletteButton>
+        <PaletteButton>{/* {isChooseColor ? <PaletteColor color={color.hex}></PaletteColor> : <PaletteImg src={paletteImg} />} */}</PaletteButton>
       </ColorInput>
-      {/* <ColorPickerWrapper>
-        <ColorPicker
-          height={150}
-          color={color}
-          onChange={setColor}
-          hideAlpha={true} // 투명도 조절바 숨김 (디폴트: 안숨김)
-          hideInput={["rgb", "hsv", "rgb"]} // 컬러 코드 숨김 (디폴트: 안숨김)
-        />
-      </ColorPickerWrapper> */}
       <CalenderTitle>날짜 선택하기</CalenderTitle>
       <CycleBox>
         <CycleTitle>주기1</CycleTitle>

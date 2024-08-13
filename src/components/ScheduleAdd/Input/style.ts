@@ -29,28 +29,6 @@ export const InputText = styled.div`
   color: ${(props) => props.theme.colors.lightBlack};
 `;
 
-export const ColorInput = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 1rem;
-  width: 100%;
-`;
-
-export const PaletteButton = styled.button``;
-
-export const ColorPickerWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100dvw;
-  height: 100dvh;
-  /* background-color: aliceblue; */
-`;
-
 export const CalenderTitle = styled.div`
   display: flex;
   flex-basis: 100%;
@@ -98,3 +76,25 @@ export const CycleTitle = styled.div`
 `;
 
 export const EditButton = styled.div``;
+
+export const ColorInput = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  width: 100%;
+`;
+
+export const PaletteButton = styled.button`
+  padding-right: 0.3rem;
+`;
+
+export const PaletteImg = styled.img``;
+
+export const PaletteColor = styled.div<{ color: string }>`
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+`;
