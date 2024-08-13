@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { DateValue } from "../../../interfaces/Schedule/JobSchedule";
 import { CalendarStyled, CalendarWrapper, Container, DotStyled, OptionBox, OptionText, SelectRepeat, SubmitButton, TimeInput } from "./style";
 import moment from "moment";
 
 const ScheduleAddCalendar = () => {
   const [dates, setDates] = useState<string[]>([]);
 
-  const handleDateChange = (newDate: DateValue) => {
+  const handleDateChange = (newDate: Date) => {
     const newDateStr = moment(newDate).format("YYYY-MM-DD");
     // 없으면 추가, 있으면 삭제
     if (dates.includes(newDateStr)) {
@@ -21,11 +20,11 @@ const ScheduleAddCalendar = () => {
       <SubmitButton>주기 저장</SubmitButton>
       <CalendarWrapper>
         <CalendarStyled
-          onChange={handleDateChange}
+          onClickDay={handleDateChange}
           locale="en"
-          formatDay={(locale, date) => moment(date).format("D")} // 일 제거 숫자만 보이게
-          formatYear={(locale, date) => moment(date).format("YYYY")} // 네비게이션 눌렀을때 숫자 년도만 보이게
-          formatMonthYear={(locale, date) => moment(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
+          formatDay={(_locale, date) => moment(date).format("D")} // 일 제거 숫자만 보이게
+          formatYear={(_locale, date) => moment(date).format("YYYY")} // 네비게이션 눌렀을때 숫자 년도만 보이게
+          formatMonthYear={(_locale, date) => moment(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
           calendarType="gregory" // 일요일 부터 시작
           showNeighboringMonth={false} // 전달, 다음달 날짜 숨기기
           next2Label={null} // +1년 & +10년 이동 버튼 숨기기

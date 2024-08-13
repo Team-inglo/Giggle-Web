@@ -1,19 +1,11 @@
 import { BOTTOM_SHEET_HEIGHT } from "../../../constants/bottomSheet";
 import useBottomSheet from "../../../hooks/useBottomSheet";
-import {
-  ContentWrapper,
-  HandleBar,
-  HeaderWrapper,
-  Title,
-  TitleBox,
-  Wrapper,
-} from "./style";
+import { ContentWrapper, HandleBar, HeaderWrapper, Title, TitleBox, Wrapper } from "./style";
 import CalendarIcon from "../../../assets/icons/black_calendar_icon.svg?react";
 import ScheduleListDetail from "../Detail/ScheduleListDetail";
-import { DateValue } from "../../../interfaces/Schedule/JobSchedule";
 import moment from "moment";
 
-const ScheduleListBottomSheet = ({ date }: { date: DateValue }) => {
+const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
   const { controls } = useBottomSheet();
 
   const handleDate = () => {
