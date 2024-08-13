@@ -1,4 +1,17 @@
-import { CalenderTitle, ColorInput, CycleBox, CycleTitle, EditButton, Input, InputBox, InputText, InputTitle, PaletteButton, SubmitButton } from "./style";
+import {
+  CalenderTitle,
+  ColorInput,
+  CycleBox,
+  CycleButton,
+  CycleTitle,
+  EditButton,
+  Input,
+  InputBox,
+  InputText,
+  InputTitle,
+  PaletteButton,
+  SubmitButton,
+} from "./style";
 import EditIcon from "../../../assets/icons/circle_pencil_icon.svg?react";
 import "react-color-palette/css";
 import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
@@ -21,6 +34,8 @@ const ScheduleAddInput = () => {
         <PaletteButton>{/* {isChooseColor ? <PaletteColor color={color.hex}></PaletteColor> : <PaletteImg src={paletteImg} />} */}</PaletteButton>
       </ColorInput>
       <CalenderTitle>날짜 선택하기</CalenderTitle>
+      <CycleButton>+ 추가하기</CycleButton>
+      {/* 주기 목록도 컴포넌트로 분리하면 좋을듯?*/}
       <CycleBox>
         <CycleTitle>주기1</CycleTitle>
         <EditButton>

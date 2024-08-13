@@ -130,7 +130,7 @@ export const SubmitButton = styled.button`
 `;
 
 export const CalendarWrapper = styled.div`
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   padding: 1rem;
   width: 100%;
   border-radius: 0.5rem;
