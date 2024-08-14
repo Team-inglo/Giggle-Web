@@ -11,16 +11,21 @@ export const Container = styled.div`
   background-color: ${(props) => props.theme.colors.white};
 `;
 
-export const MenuBox = styled.div`
+export const MenuBox = styled.div<{ $currentmenu: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.1rem;
+  color: ${(props) => (props.$currentmenu ? props.theme.colors.mainColor : props.theme.colors.gray)};
+  // svg 색상 변경하기
+  path,
+  circle {
+    stroke: ${(props) => (props.$currentmenu ? props.theme.colors.mainColor : props.theme.colors.gray)};
+  }
 `;
 
 export const MenuText = styled.div`
   font-size: 0.68rem;
-  color: ${(props) => props.theme.colors.gray};
   text-align: center;
 `;
