@@ -9,6 +9,8 @@ export const Container = styled.div`
   align-items: center;
 `;
 
+export const SettingButton = styled.button``;
+
 export const Logo = styled.div`
   font-size: 1.5rem;
   color: ${(props) => props.theme.colors.mainColor};

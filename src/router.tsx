@@ -4,12 +4,14 @@ import MapPage from "./pages/Map/MapPage";
 import ScheduleListPage from "./pages/ScheduleList/ScheduleListPage";
 import ScheduleEditPage from "./pages/ScheduleEdit/ScheduleEditPage";
 import ScheduleAddPage from "./pages/ScheduleAdd/ScheduleAddPage";
+import SettingPage from "./pages/Setting/SettingPage";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/setting" element={<SettingPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/calendar" element={<ScheduleListPage />} />
         <Route path="/calendar/edit" element={<ScheduleEditPage />} />

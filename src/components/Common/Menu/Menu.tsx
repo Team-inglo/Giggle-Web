@@ -5,33 +5,59 @@ import NoticeIcon from "../../../assets/icons/notice_icon.svg?react";
 import HomeIcon from "../../../assets/icons/home_icon.svg?react";
 import CalendarIcon from "../../../assets/icons/calendar_icon.svg?react";
 import ChatIcon from "../../../assets/icons/chat_icon.svg?react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ReactElement, useMemo } from "react";
+
+type menuItem = {
+  name: string;
+  src: string;
+  icon: ReactElement;
+};
 
 const Menu = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // 나중에 페이지 연결하기
-  // const menuData = { 서류: "/", 공고: "/", 홈: "/", 캘린더: "/", 챗봇: "/" };
+  const mainMenu = useMemo<menuItem[]>(
+    () => [
+      {
+        name: "서류",
+        src: "/document",
+        icon: <DocumentIcon />,
+      },
+      {
+        name: "공고",
+        src: "/notice",
+        icon: <NoticeIcon />,
+      },
+      {
+        name: "홈",
+        src: "/",
+        icon: <HomeIcon />,
+      },
+      {
+        name: "캘린더",
+        src: "/calendar",
+        icon: <CalendarIcon />,
+      },
+      {
+        name: "챗봇",
+        src: "/chatbot",
+        icon: <ChatIcon />,
+      },
+    ],
+    []
+  );
 
   return (
     <Container>
-      <MenuBox>
-        <DocumentIcon />
-        <MenuText>서류</MenuText>
-      </MenuBox>
-      <MenuBox>
-        <NoticeIcon />
-        <MenuText>공고</MenuText>
-      </MenuBox>
-      <MenuBox>
-        <HomeIcon />
-        <MenuText>홈</MenuText>
-      </MenuBox>
-      <MenuBox>
-        <CalendarIcon />
-        <MenuText>캘린더</MenuText>
-      </MenuBox>
-      <MenuBox>
-        <ChatIcon />
-        <MenuText>챗봇</MenuText>
-      </MenuBox>
+      {mainMenu.map((item, idx) => (
+        <MenuBox key={`${item.name}_${idx}`} $currentmenu={location.pathname === item.src ? true : false} onClick={() => navigate(item.src)}>
+          {item.icon}
+          <MenuText>{item.name}</MenuText>
+        </MenuBox>
+      ))}
     </Container>
   );
 };

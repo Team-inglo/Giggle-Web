@@ -1,11 +1,20 @@
-import { Container, Logo } from "./style";
+import { Container, Logo, SettingButton } from "./style";
 import SettingIcon from "../../../assets/icons/setting_icon.svg?react";
+import { useNavigate } from "react-router-dom";
 
 const MainHeader = () => {
+  const navigate = useNavigate();
+
+  const goToSettingPage = () => {
+    navigate("/setting");
+  };
+
   return (
     <Container>
       <Logo>Giggle</Logo>
-      <SettingIcon />
+      <SettingButton onClick={goToSettingPage}>
+        <SettingIcon />
+      </SettingButton>
     </Container>
   );
 };
