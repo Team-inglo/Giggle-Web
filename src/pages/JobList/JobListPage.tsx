@@ -5,6 +5,7 @@ import DropDownIcon from "../../assets/icons/dropdown_icon.svg?react";
 import { Container, FilterButton, JobListContainer } from "./style";
 import JobListFilter from "../../components/JobList/Filter/JobLIstFilter";
 import JobListNotice from "../../components/JobList/Notice/JobListNotice";
+import JobListBottomSheet from "../../components/JobList/BottomSheet/JobListBottomSheet";
 
 const JobListPage = () => {
   return (
@@ -24,6 +25,7 @@ const JobListPage = () => {
           <JobListNotice />
         </JobListContainer>
       </Container>
+      <JobListBottomSheet />
       <Menu />
     </>
   );
