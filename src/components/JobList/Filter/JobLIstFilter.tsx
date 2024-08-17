@@ -1,14 +1,11 @@
 import { Container, FilterBox } from "./style";
 
-const JobListFilter = () => {
+const JobListFilter = ({ jobFilter }: { jobFilter: string[] }) => {
   return (
     <Container>
-      <FilterBox>#필터1</FilterBox>
-      <FilterBox>#필터2</FilterBox>
-      <FilterBox>#필터3</FilterBox>
-      <FilterBox>#필터4</FilterBox>
-      <FilterBox>#필터5</FilterBox>
-      <FilterBox>#필터6</FilterBox>
+      {jobFilter.map((value, idx) => (
+        <FilterBox key={`${value}_${idx}`}>#{value}</FilterBox>
+      ))}
     </Container>
   );
 };

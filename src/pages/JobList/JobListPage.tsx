@@ -6,18 +6,23 @@ import { Container, FilterButton, JobListContainer } from "./style";
 import JobListFilter from "../../components/JobList/Filter/JobLIstFilter";
 import JobListNotice from "../../components/JobList/Notice/JobListNotice";
 import JobListBottomSheet from "../../components/JobList/BottomSheet/JobListBottomSheet";
+import useBottomSheet from "../../hooks/useBottomSheet";
+import { useState } from "react";
 
 const JobListPage = () => {
+  const { onDragEnd, controls, setIsOpen } = useBottomSheet();
+  const [jobFilter, setJobFilter] = useState<string[]>([]); // 정렬 조건
+
   return (
     <>
       <Container>
         <MainHeader />
         <JobListCategory />
-        <FilterButton>
+        <FilterButton onClick={() => setIsOpen(true)}>
           정렬 조건 선택
           <DropDownIcon />
         </FilterButton>
-        <JobListFilter />
+        <JobListFilter jobFilter={jobFilter} />
         <JobListContainer>
           <JobListNotice />
           <JobListNotice />
@@ -25,7 +30,7 @@ const JobListPage = () => {
           <JobListNotice />
         </JobListContainer>
       </Container>
-      <JobListBottomSheet />
+      <JobListBottomSheet onDragEnd={onDragEnd} controls={controls} setIsOpen={setIsOpen} setJobFilter={setJobFilter} />
       <Menu />
     </>
   );

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import useBottomSheet from "../../../hooks/useBottomSheet";
 import {
   Button,
   ContentWrapper,
@@ -19,16 +18,20 @@ import {
   SlideRegionWrapper,
 } from "./style";
 import { JOB_SEARCH_FILTER } from "../../../constants/jobSearchFilter";
-import { useCycle } from "framer-motion";
+import { AnimationControls, PanInfo, useCycle } from "framer-motion";
 import JobListRegion from "../Region/JobListRegion";
 
-const JobListBottomSheet = () => {
+type JobListBottomSheetProps = {
+  onDragEnd: (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => void;
+  controls: AnimationControls;
+  setIsOpen: (isOpen: boolean) => void;
+  setJobFilter: (jobFilter: string[]) => void;
+};
+
+const JobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilter }: JobListBottomSheetProps) => {
   // 지역 선택 메뉴창
   const [isRegionOpen, toggleRegionOpen] = useCycle(false, true);
 
-  // bottomSheet가 isOpen이면 뒤쪽 스크롤 막기!
-  const { onDragEnd, controls } = useBottomSheet();
-  // 이 데이터는 Page 컴포넌트에서 관리해야할 듯!
   const [recommend, setRecommend] = useState<string>(JOB_SEARCH_FILTER[0].filters[0]);
   const [arrange, setArrange] = useState<string>(JOB_SEARCH_FILTER[1].filters[0]);
   const [region, setRegion] = useState<string[]>([]);
@@ -53,6 +56,11 @@ const JobListBottomSheet = () => {
   // 선택한 지역 삭제하기
   const deleteRegion = (selectedRegion: string) => {
     setRegion(region.filter((value) => value !== selectedRegion));
+  };
+
+  const onClickSubmit = () => {
+    setJobFilter([recommend, arrange, ...region, ...period, interest]);
+    setIsOpen(false);
   };
 
   return (
@@ -138,7 +146,7 @@ const JobListBottomSheet = () => {
               </Button>
             ))}
           </FilterBox>
-          <SubmitButton>완료하기</SubmitButton>
+          <SubmitButton onClick={onClickSubmit}>완료하기</SubmitButton>
         </ContentWrapper>
       </Wrapper>
       <JobListRegion toggle={toggleRegionOpen} addRegion={addRegion} />
