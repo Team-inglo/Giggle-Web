@@ -88,13 +88,41 @@ export const Button = styled.button<{ $isSelected: boolean }>`
   text-align: start;
 `;
 
-export const RegionButton = styled.button`
+export const SlideRegionWrapper = styled(motion.nav)`
+  width: 100%;
+`;
+
+export const RegionSelectButton = styled.button`
   padding: 0.7rem 0;
   width: 100%;
   color: ${(props) => props.theme.colors.black};
   background-color: ${(props) => props.theme.colors.white};
   border-radius: 0.5rem;
   font-size: 1rem;
+`;
+
+export const RegionContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+`;
+
+export const RegionButton = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.mainColor};
+  border-radius: 0.5rem;
+  font-size: 1rem;
+`;
+
+export const RegionDeleteButton = styled.button`
+  color: ${(props) => props.theme.colors.white};
+  font-size: 0.8rem;
 `;
 
 export const SubmitButton = styled.button`

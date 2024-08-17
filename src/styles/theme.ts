@@ -2,6 +2,7 @@ import { DefaultTheme } from "styled-components";
 
 const colors = {
   mainColor: "#FFB65A",
+  lightOrange: "#FFD8A8",
   white: "#fff",
   black: "#151515",
   lightBlack: "#383838",
