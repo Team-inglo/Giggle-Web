@@ -11,7 +11,8 @@ import { useState } from "react";
 
 const JobListPage = () => {
   const { onDragEnd, controls, setIsOpen } = useBottomSheet();
-  const [jobFilter, setJobFilter] = useState<string[]>([]); // 정렬 조건
+
+  const [jobFilter, setJobFilter] = useState<string[]>([]); // 정렬 조건 -> 남아있도록 하려면 상태 관리 필요할듯? + bottomSheet에도 기존 선택값 반영 필요
 
   return (
     <>

@@ -1,16 +1,23 @@
 import { BottomContainer, Container, DayTag, LikeButton, Location, MoneyTag, RecruitingNum, TagContainer, Title } from "./style";
 import LikeIcon from "../../../assets/icons/like_icon.svg?react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const JobListNotice = () => {
+  const navigate = useNavigate();
+
   const [like, setLike] = useState<boolean>(false);
 
   const onClickLike = () => {
     setLike(!like);
   };
 
+  const goToDetailPage = () => {
+    navigate("/notice/detail");
+  };
+
   return (
-    <Container>
+    <Container onClick={goToDetailPage}>
       <TagContainer>
         <DayTag>마감 D-25</DayTag>
         <MoneyTag>시급 10,000원</MoneyTag>
