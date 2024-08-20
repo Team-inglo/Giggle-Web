@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useAnimation } from "framer-motion";
+import { PanInfo, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import usePreviousValue from "./usePreviousValue";
 
 const useBottomSheet = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const controls = useAnimation();
   const prevIsOpen = usePreviousValue(isOpen);
 
-  const onDragEnd = (info: any) => {
-    const shouldClose = info?.y > 20 || (info?.y >= 0 && info.point.y > 45);
+  const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const shouldClose = info?.point?.y > 10 || (info?.point?.y >= 0 && info?.point?.y > 45);
 
     if (shouldClose) {
       controls.start("hidden");

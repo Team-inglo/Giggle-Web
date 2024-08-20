@@ -12,6 +12,7 @@ export const ContentContainer = styled.div`
 
 export const Title = styled.div`
   margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
   color: ${(props) => props.theme.colors.black};
   font-size: 1rem;
   font-weight: 600;
