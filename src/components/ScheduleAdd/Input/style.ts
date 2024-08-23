@@ -68,10 +68,6 @@ export const ColorInput = styled.div`
   width: 100%;
 `;
 
-export const PaletteButton = styled.button`
-  padding-right: 0.3rem;
-`;
-
 export const PaletteImg = styled.img``;
 
 export const PaletteColor = styled.div<{ color: string }>`

@@ -1,9 +1,10 @@
-import { CalenderTitle, ColorInput, Input, InputBox, InputText, InputTitle, PaletteButton, SubmitButton } from "./style";
+import { CalenderTitle, ColorInput, Input, InputBox, InputText, InputTitle, PaletteImg, SubmitButton } from "./style";
 import "react-color-palette/css";
 import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
 import ScheduleAddDropDown from "../DropDown/ScheduleAddDropDown";
 import { useState } from "react";
 import ScheduleAddCalendarDays from "../Calendar/ScheduleAddCalendarDays";
+import paletteImg from "../../../assets/images/palette_image.png";
 
 const ScheduleAddInput = () => {
   const [showCalendarDays, setShowCalendarDays] = useState<boolean>(false);
@@ -29,7 +30,8 @@ const ScheduleAddInput = () => {
       </InputBox>
       <ColorInput>
         <InputTitle>대표 색상</InputTitle>
-        <PaletteButton>{/* {isChooseColor ? <PaletteColor color={color.hex}></PaletteColor> : <PaletteImg src={paletteImg} />} */}</PaletteButton>
+        <PaletteImg src={paletteImg} />
+        {/* <PaletteColor color={color.hex}></PaletteColor> */}
       </ColorInput>
       <CalenderTitle>날짜 선택하기</CalenderTitle>
       {showCalendarDays ? <ScheduleAddCalendarDays closeCalendarDays={closeCalendarDays} /> : <ScheduleAddCalendar openCalendarDays={openCalendarDays} />}
