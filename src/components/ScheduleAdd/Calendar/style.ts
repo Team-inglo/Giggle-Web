@@ -157,12 +157,3 @@ export const TimeInput = styled.input`
   border: 1px solid ${(props) => props.theme.colors.lightGray};
   border-radius: 0.5rem;
 `;
-
-export const SelectRepeat = styled.select`
-  padding: 0.3rem 0;
-  width: 5rem;
-  font-size: 0.75rem;
-  color: ${(props) => props.theme.colors.black};
-  border: 1px solid ${(props) => props.theme.colors.lightGray};
-  border-radius: 0.5rem;
-`;

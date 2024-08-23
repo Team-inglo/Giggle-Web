@@ -59,35 +59,6 @@ export const SubmitButton = styled.div`
   text-align: center;
 `;
 
-export const CycleBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  padding: 0.75rem 1rem;
-  width: 100%;
-  border: 1px solid ${(props) => props.theme.colors.lightGray};
-  border-radius: 0.5rem;
-`;
-
-export const CycleTitle = styled.div`
-  color: ${(props) => props.theme.colors.mainColor};
-  font-size: 1rem;
-`;
-
-export const EditButton = styled.div``;
-
-export const CycleButton = styled.button`
-  margin-bottom: 0.5rem;
-  padding: 0.75rem 1rem;
-  width: 100%;
-  border: 1px solid ${(props) => props.theme.colors.lightGray};
-  border-radius: 0.5rem;
-  color: ${(props) => props.theme.colors.gray};
-  font-size: 1rem;
-  text-align: start;
-`;
-
 export const ColorInput = styled.div`
   display: flex;
   justify-content: space-between;

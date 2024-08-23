@@ -1,12 +1,12 @@
 import { BOTTOM_SHEET_HEIGHT } from "../../../constants/bottomSheet";
-import useBottomSheet from "../../../hooks/useBottomSheet";
 import { ContentWrapper, HandleBar, HeaderWrapper, Title, TitleBox, Wrapper } from "./style";
 import CalendarIcon from "../../../assets/icons/black_calendar_icon.svg?react";
 import ScheduleListDetail from "../Detail/ScheduleListDetail";
 import moment from "moment";
+import { useAnimation } from "framer-motion";
 
 const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
-  const { controls } = useBottomSheet();
+  const controls = useAnimation();
 
   const handleDate = () => {
     // 요일 계산하기
@@ -18,7 +18,7 @@ const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
   return (
     <Wrapper
       drag="y"
-      initial="hidden"
+      // initial="hidden"
       animate={controls}
       transition={{
         type: "spring",

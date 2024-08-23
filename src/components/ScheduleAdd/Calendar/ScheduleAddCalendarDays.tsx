@@ -2,47 +2,24 @@ import { useState } from "react";
 import { CalendarStyled, CalendarWrapper, Container, DotStyled, OptionBox, OptionText, SubmitButton, TimeInput } from "./style";
 import moment from "moment";
 
-interface ScheduleType {
-  date: string;
-  startTime: string;
-  endTime: string;
-}
-
-// 더미데이터
-const calendarData = [
-  {
-    date: "2024-08-08",
-    startTime: "10:00",
-    endTime: "12:00",
-  },
-  {
-    date: "2024-08-09",
-    startTime: "10:00",
-    endTime: "12:00",
-  },
-  {
-    date: "2024-08-10",
-    startTime: "10:00",
-    endTime: "12:00",
-  },
-];
-
-const ScheduleAddCalendar = ({ openCalendarDays }: { openCalendarDays: () => void }) => {
-  const [selectedDate, setSelectedDate] = useState<ScheduleType | null>(null);
+const ScheduleAddCalendarDays = ({ closeCalendarDays }: { closeCalendarDays: () => void }) => {
+  const [dates, setDates] = useState<string[]>([]);
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
 
   const handleDateChange = (newDate: Date) => {
     const newDateStr = moment(newDate).format("YYYY-MM-DD");
-    const findData = calendarData.find((value) => value.date === newDateStr);
-    setSelectedDate(findData || null);
-    setStartTime(findData?.startTime);
-    setEndTime(findData?.endTime);
+    // 없으면 추가, 있으면 삭제
+    if (dates.includes(newDateStr)) {
+      setDates([...dates.filter((value) => value !== newDateStr)]);
+    } else {
+      setDates([...dates, newDateStr]);
+    }
   };
 
   return (
     <Container>
-      <SubmitButton onClick={openCalendarDays}>일정 추가하기</SubmitButton>
+      <SubmitButton onClick={closeCalendarDays}>저장하기</SubmitButton>
       <CalendarWrapper>
         <CalendarStyled
           onClickDay={handleDateChange}
@@ -59,27 +36,23 @@ const ScheduleAddCalendar = ({ openCalendarDays }: { openCalendarDays: () => voi
           tileContent={({ date, view }) => {
             if (view !== "month") return;
             const html = [];
-            if (calendarData.some((value) => value.date === moment(date).format("YYYY-MM-DD"))) {
+            if (dates.includes(moment(date).format("YYYY-MM-DD"))) {
               html.push(<DotStyled key={moment(date).format("YYYY-MM-DD")}></DotStyled>);
             }
             return <>{html}</>;
           }}
         />
-        {selectedDate && (
-          <>
-            <OptionBox>
-              <OptionText>시작시간</OptionText>
-              <TimeInput type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-            </OptionBox>
-            <OptionBox>
-              <OptionText>종료시간</OptionText>
-              <TimeInput type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-            </OptionBox>
-          </>
-        )}
+        <OptionBox>
+          <OptionText>시작시간</OptionText>
+          <TimeInput type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+        </OptionBox>
+        <OptionBox>
+          <OptionText>종료시간</OptionText>
+          <TimeInput type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+        </OptionBox>
       </CalendarWrapper>
     </Container>
   );
 };
 
-export default ScheduleAddCalendar;
+export default ScheduleAddCalendarDays;
