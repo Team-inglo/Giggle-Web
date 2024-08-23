@@ -7,6 +7,7 @@ import ScheduleAddPage from "./pages/ScheduleAdd/ScheduleAddPage";
 import SettingPage from "./pages/Setting/SettingPage";
 import JobListPage from "./pages/JobList/JobListPage";
 import JobDetailPage from "./pages/JobDetail/JobDetailPage";
+import ChatBotPage from "./pages/ChatBot/ChatBotPage";
 
 const Router = () => {
   return (
@@ -20,6 +21,7 @@ const Router = () => {
         <Route path="/calendar/add" element={<ScheduleAddPage />} />
         <Route path="/notice" element={<JobListPage />} />
         <Route path="/notice/detail" element={<JobDetailPage />} />
+        <Route path="/chatbot" element={<ChatBotPage />} />
       </Routes>
     </BrowserRouter>
   );
