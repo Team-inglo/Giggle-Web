@@ -20,7 +20,7 @@ type ModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ScheduleAddJobModal = ({ setIsModal }: ModalProps) => {
+const ScheduleAddJobCreateModal = ({ setIsModal }: ModalProps) => {
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
   const [name, setName] = useState<string>();
@@ -94,4 +94,4 @@ const ScheduleAddJobModal = ({ setIsModal }: ModalProps) => {
   );
 };
 
-export default ScheduleAddJobModal;
+export default ScheduleAddJobCreateModal;

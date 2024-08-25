@@ -2,7 +2,7 @@ import { CalenderTitle, ColorInput, Input, InputBox, InputText, InputTitle, Pale
 import "react-color-palette/css";
 import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
 import ScheduleAddDropDown from "../DropDown/ScheduleAddDropDown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ScheduleAddCalendarDays from "../Calendar/ScheduleAddCalendarDays";
 import paletteImg from "../../../assets/images/palette_image.png";
 import { PartTimeDetail } from "../../../interfaces/calendar/partTime";
@@ -25,6 +25,33 @@ const schedules: Schedule[] = [
   },
 ];
 
+const partTimes: PartTimeDetail[] = [
+  {
+    id: 1,
+    name: "알바1",
+    hourlyRate: 10000,
+    color: "#FFB65A",
+  },
+  {
+    id: 2,
+    name: "알바2",
+    hourlyRate: 11000,
+    color: "#7DD0B6",
+  },
+  {
+    id: 3,
+    name: "알바3",
+    hourlyRate: 12000,
+    color: "#c17dd0",
+  },
+  {
+    id: 4,
+    name: "알바4",
+    hourlyRate: 13000,
+    color: "#b6d07d",
+  },
+];
+
 const ScheduleAddInput = () => {
   const [partTimeId, setPartTimeId] = useState<number | null>(null); // 선택된 알바 id
   const [partTimeData, setPartTimeData] = useState<PartTimeDetail | null>(null); // 선택된 알바 상세 정보
@@ -39,6 +66,10 @@ const ScheduleAddInput = () => {
   const openCalendarDays = () => {
     setShowCalendarDays(true);
   };
+
+  useEffect(() => {
+    if (partTimeId) setPartTimeData(partTimes.find((value) => value.id === partTimeId) ?? null);
+  }, [partTimeId]);
 
   return (
     <>
