@@ -1,16 +1,15 @@
-import { BottomContainer, Container, DayTag, LikeButton, Location, MoneyTag, RecruitingNum, TagContainer, Title } from "./style";
-import LikeIcon from "../../../assets/icons/like_icon.svg?react";
-import { useState } from "react";
+import { BottomContainer, Container, DayTag, Location, MoneyTag, RecruitingNum, TagContainer, Title } from "./style";
+// import LikeIcon from "../../../assets/icons/like_icon.svg?react";
 import { useNavigate } from "react-router-dom";
 
 const JobListNotice = () => {
   const navigate = useNavigate();
 
-  const [like, setLike] = useState<boolean>(false);
+  // const [like, setLike] = useState<boolean>(false);
 
-  const onClickLike = () => {
-    setLike(!like);
-  };
+  // const onClickLike = () => {
+  //   setLike(!like);
+  // };
 
   const goToDetailPage = () => {
     navigate("/notice/detail");
@@ -26,9 +25,9 @@ const JobListNotice = () => {
       <Location>서울시 강북수 수유동</Location>
       <BottomContainer>
         <RecruitingNum>모집인원 1명</RecruitingNum>
-        <LikeButton onClick={onClickLike} $like={like}>
+        {/* <LikeButton onClick={onClickLike} $like={like}>
           <LikeIcon />
-        </LikeButton>
+        </LikeButton> */}
       </BottomContainer>
     </Container>
   );
