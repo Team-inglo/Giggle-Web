@@ -9,6 +9,7 @@ import { PartTimeDetail } from "../../../interfaces/calendar/partTime";
 import { Calendar, Schedule } from "../../../interfaces/calendar/totalSchedule";
 import moment from "moment";
 import { parseArrToDate, parseArrToTime } from "../../../utils/dateTimeUtil";
+import { useNavigate } from "react-router-dom";
 
 const schedules: Schedule[] = [
   {
@@ -69,6 +70,8 @@ const partTimes: PartTimeDetail[] = [
 ];
 
 const ScheduleAddInput = () => {
+  const navigate = useNavigate();
+
   const today = new Date();
 
   const [, setYear] = useState<number>(today.getFullYear());
@@ -98,6 +101,10 @@ const ScheduleAddInput = () => {
 
   const openCalendarDays = () => {
     setShowCalendarDays(true);
+  };
+
+  const onClickSubmit = () => {
+    navigate(`/calendar`);
   };
 
   useEffect(() => {
@@ -142,7 +149,7 @@ const ScheduleAddInput = () => {
           setChangedSchedules={setChangedSchedules}
         />
       )}
-      <SubmitButton>근로 기록하기</SubmitButton>
+      <SubmitButton onClick={onClickSubmit}>근로 기록하기</SubmitButton>
     </>
   );
 };

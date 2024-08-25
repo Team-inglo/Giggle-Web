@@ -23,7 +23,7 @@ type ModalProps = {
 const ScheduleAddJobCreateModal = ({ setIsModal }: ModalProps) => {
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
-  const [name, setName] = useState<string>();
+  const [name, setName] = useState<string>("");
   const [hourlyRate, setHourlyRate] = useState<string>(""); // 나중에 숫자로 변환하기
   const [color, setColor] = useColor("#fff");
 
