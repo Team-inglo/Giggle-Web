@@ -88,7 +88,7 @@ const ScheduleListSalary = () => {
       <Container>
         <TotalSalaryBox>
           <TotalSalaryText>월급</TotalSalaryText>
-          <TotalSalaryText>520,000원</TotalSalaryText>
+          <TotalSalaryText>{jobScheduleData.totalSalary}원</TotalSalaryText>
         </TotalSalaryBox>
         <EditButton onClick={goToAddPage}>스케쥴 편집하기 +</EditButton>
         <ScheduleListCalendar jobScheduleData={jobScheduleData} date={date} setDate={setDate} onChangeCalendarView={onChangeCalendarView} />

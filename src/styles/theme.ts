@@ -9,6 +9,7 @@ const colors = {
   deepGray: "#757575",
   gray: "#AAA",
   lightGray: "#F2F2F2",
+  deepRed: "#B3261E",
   red: "#FF7B5A",
   lightGreen: "#7DD0B6",
 };

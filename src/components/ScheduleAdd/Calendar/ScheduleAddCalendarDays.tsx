@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { CalendarStyled, CalendarWrapper, Container, DotStyled, OptionBox, OptionText, SubmitButton, TimeInput } from "./style";
+import {
+  ButtonContainer,
+  CalendarStyled,
+  CalendarWrapper,
+  CancleButton,
+  Container,
+  DotStyled,
+  OptionBox,
+  OptionText,
+  SubmitButton,
+  TimeInput,
+} from "./style";
 import moment from "moment";
 
 const ScheduleAddCalendarDays = ({ closeCalendarDays }: { closeCalendarDays: () => void }) => {
@@ -19,7 +30,10 @@ const ScheduleAddCalendarDays = ({ closeCalendarDays }: { closeCalendarDays: () 
 
   return (
     <Container>
-      <SubmitButton onClick={closeCalendarDays}>저장하기</SubmitButton>
+      <ButtonContainer>
+        <CancleButton onClick={closeCalendarDays}>취소하기</CancleButton>
+        <SubmitButton onClick={closeCalendarDays}>저장하기</SubmitButton>
+      </ButtonContainer>
       <CalendarWrapper>
         <CalendarStyled
           onClickDay={handleDateChange}

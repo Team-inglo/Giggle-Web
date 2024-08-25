@@ -6,6 +6,12 @@ export interface Schedule {
   endAt: [number, number, number, number, number]; // [year, month, day, hour, minute]
 }
 
+export interface Calendar {
+  date: "string"; // "YYYY-MM-DD";
+  startAt: "string"; // "HH:MM";
+  endAt: "string"; // "HH:MM";
+}
+
 export interface Summary {
   name: string;
   totalHour: number;
@@ -18,3 +24,10 @@ export interface TotalSchedule {
   totalSalary: number;
   schedules: Schedule[];
 }
+
+interface TimeSchedule {
+  start_at: string;
+  end_at: string;
+}
+
+export type TimeScheduleList = TimeSchedule[];

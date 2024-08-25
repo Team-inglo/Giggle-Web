@@ -120,10 +120,26 @@ export const DotStyled = styled.div`
   border-radius: 50%;
 `;
 
+export const ButtonContainer = styled.div`
+  align-self: flex-end;
+  display: flex;
+  gap: 0.5rem;
+`;
+
+export const CancleButton = styled.button`
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  width: max-content;
+  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.deepGray};
+  font-size: 1rem;
+`;
+
 export const SubmitButton = styled.button`
   align-self: flex-end;
   padding: 0.8rem 1rem;
   border-radius: 0.5rem;
+  width: max-content;
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.black};
   font-size: 1rem;
@@ -147,6 +163,7 @@ export const OptionBox = styled.div`
 export const OptionText = styled.div`
   font-size: 0.75rem;
   color: ${(props) => props.theme.colors.black};
+  line-height: 1.5;
 `;
 
 export const TimeInput = styled.input`
@@ -156,4 +173,24 @@ export const TimeInput = styled.input`
   color: ${(props) => props.theme.colors.black};
   border: 1px solid ${(props) => props.theme.colors.lightGray};
   border-radius: 0.5rem;
+`;
+
+export const DeleteBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 0;
+`;
+
+export const DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+`;
+
+export const DeleteText = styled.p`
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: ${(props) => props.theme.colors.deepRed};
+  line-height: 1.5;
 `;

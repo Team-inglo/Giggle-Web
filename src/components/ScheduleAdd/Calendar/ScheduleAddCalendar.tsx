@@ -1,6 +1,19 @@
 import { useState } from "react";
-import { CalendarStyled, CalendarWrapper, Container, DotStyled, OptionBox, OptionText, SubmitButton, TimeInput } from "./style";
+import {
+  CalendarStyled,
+  CalendarWrapper,
+  Container,
+  DeleteBox,
+  DeleteButton,
+  DeleteText,
+  DotStyled,
+  OptionBox,
+  OptionText,
+  SubmitButton,
+  TimeInput,
+} from "./style";
 import moment from "moment";
+import DeleteIcon from "../../../assets/icons/delete_icon.svg?react";
 
 interface ScheduleType {
   date: string;
@@ -75,6 +88,12 @@ const ScheduleAddCalendar = ({ openCalendarDays }: { openCalendarDays: () => voi
               <OptionText>종료시간</OptionText>
               <TimeInput type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
             </OptionBox>
+            <DeleteBox>
+              <DeleteButton>
+                <DeleteIcon width={15} height={15} />
+                <DeleteText>일정 삭제</DeleteText>
+              </DeleteButton>
+            </DeleteBox>
           </>
         )}
       </CalendarWrapper>
