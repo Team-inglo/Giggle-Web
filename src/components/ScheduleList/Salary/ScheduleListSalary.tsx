@@ -92,11 +92,11 @@ const ScheduleListSalary = () => {
         </TotalSalaryBox>
         <EditButton onClick={goToAddPage}>스케쥴 편집하기 +</EditButton>
         <ScheduleListCalendar jobScheduleData={jobScheduleData} date={date} setDate={setDate} onChangeCalendarView={onChangeCalendarView} />
-        {jobScheduleData?.summary.map((data) => (
-          <ScheduleListJob key={data.name} data={data} />
+        {jobScheduleData?.summary.map((data, idx) => (
+          <ScheduleListJob key={`${data.name}_${idx}`} data={data} />
         ))}
       </Container>
-      <ScheduleListBottomSheet date={date} />
+      <ScheduleListBottomSheet date={date} schedules={jobScheduleData.schedules} />
     </>
   );
 };

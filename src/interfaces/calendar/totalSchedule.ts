@@ -1,4 +1,4 @@
-interface Schedule {
+export interface Schedule {
   id: number;
   partTimeName: string;
   hourlyRate: number;

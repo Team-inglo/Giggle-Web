@@ -1,24 +1,27 @@
-import { Container, ContentBox, EditButton, Text, Title } from "./style";
-import EditIcon from "../../../assets/icons/circle_pencil_icon.svg?react";
-import { useNavigate } from "react-router-dom";
+import { Container, ContentBox, Text, Title } from "./style";
+import { Schedule } from "../../../interfaces/calendar/totalSchedule";
 
-const ScheduleListDetail = () => {
-  const navigate = useNavigate();
+const ScheduleListDetail = ({ schedule }: { schedule: Schedule }) => {
+  const parseArrToTime = (dateArr: number[]) => {
+    const formattedHour = String(dateArr[3]).padStart(2, "0"); // 두 자릿수로 맞춤
+    const formattedMinute = String(dateArr[4]).padStart(2, "0"); // 두 자릿수로 맞춤
+    return `${formattedHour}:${formattedMinute}`;
+  };
 
-  const goToEditPage = () => {
-    navigate("/calendar/edit");
+  const calculateSalary = (startDateArr: number[], endDateArr: number[], hourlyRate: number) => {
+    const workHours = endDateArr[3] - startDateArr[3];
+    return hourlyRate * workHours;
   };
 
   return (
     <Container>
       <ContentBox>
-        <Title>10000원</Title>
-        <Text>파리바게트</Text>
-        <Text>9:00 ~ 11:00</Text>
+        <Title>{calculateSalary(schedule.startAt, schedule.endAt, schedule.hourlyRate)}원</Title>
+        <Text>{schedule.partTimeName}</Text>
+        <Text>
+          {parseArrToTime(schedule.startAt)} ~ {parseArrToTime(schedule.endAt)}
+        </Text>
       </ContentBox>
-      <EditButton onClick={goToEditPage}>
-        <EditIcon />
-      </EditButton>
     </Container>
   );
 };

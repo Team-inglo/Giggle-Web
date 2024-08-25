@@ -1,6 +1,7 @@
 import { CalendarStyled, Container, DotContainer, DotStyled } from "./style";
 import moment from "moment";
 import { TotalSchedule } from "../../../interfaces/calendar/totalSchedule";
+import { parseArrToDate } from "../../../utils/parseArrToDate";
 
 const ScheduleListCalendar = ({
   jobScheduleData,
@@ -15,13 +16,6 @@ const ScheduleListCalendar = ({
 }) => {
   const handleDateChange = (newDate: Date) => {
     setDate(newDate);
-  };
-
-  const parseArrToDate = (dateArr: number[]) => {
-    const [year, month, day] = dateArr;
-    const formattedMonth = String(month).padStart(2, "0"); // 두 자릿수로 맞춤
-    const formattedDay = String(day).padStart(2, "0"); // 두 자릿수로 맞춤
-    return `${year}-${formattedMonth}-${formattedDay}`;
   };
 
   const findAttendDay = (date: string): string[] => {

@@ -4,9 +4,19 @@ import CalendarIcon from "../../../assets/icons/black_calendar_icon.svg?react";
 import ScheduleListDetail from "../Detail/ScheduleListDetail";
 import moment from "moment";
 import { useAnimation } from "framer-motion";
+import { Schedule } from "../../../interfaces/calendar/totalSchedule";
+import { useEffect, useState } from "react";
+import { parseArrToDate } from "../../../utils/parseArrToDate";
 
-const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
+type ScheduleListBottomSheetProps = {
+  date: Date;
+  schedules: Schedule[];
+};
+
+const ScheduleListBottomSheet = ({ date, schedules }: ScheduleListBottomSheetProps) => {
   const controls = useAnimation();
+
+  const [daySchedule, setDaySchedule] = useState<Schedule[]>([]);
 
   const handleDate = () => {
     // 요일 계산하기
@@ -14,6 +24,12 @@ const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
     const week = ["일", "월", "화", "수", "목", "금", "토", "일"];
     return week[dayOfWeek];
   };
+
+  useEffect(() => {
+    // 해당 날짜의 데이터 찾기
+    const currentDate = moment(date).format("YYYY-MM-DD");
+    setDaySchedule(schedules.filter((schedule) => parseArrToDate(schedule.startAt) === currentDate));
+  }, [date, schedules]);
 
   return (
     <Wrapper
@@ -42,8 +58,9 @@ const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
             {moment(date).format("MM월 DD일")} {handleDate()}요일
           </Title>
         </TitleBox>
-        <ScheduleListDetail />
-        <ScheduleListDetail />
+        {daySchedule.map((schedule) => (
+          <ScheduleListDetail schedule={schedule} key={schedule.id} />
+        ))}
       </ContentWrapper>
     </Wrapper>
   );
