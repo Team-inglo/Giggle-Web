@@ -1,16 +1,30 @@
 import { CalendarStyled, Container, DotContainer, DotStyled } from "./style";
 import moment from "moment";
-import { JobSchedule } from "../../../interfaces/Schedule/JobSchedule";
+import { TotalSchedule } from "../../../interfaces/calendar/totalSchedule";
+import { parseArrToDate } from "../../../utils/dateTimeUtil";
 
-const ScheduleListCalendar = ({ jobScheduleData, date, setDate }: { jobScheduleData: JobSchedule[]; date: Date; setDate: (data: Date) => void }) => {
+const ScheduleListCalendar = ({
+  jobScheduleData,
+  date,
+  setDate,
+  onChangeCalendarView,
+}: {
+  jobScheduleData: TotalSchedule;
+  date: Date;
+  setDate: (data: Date) => void;
+  onChangeCalendarView: (newDate: Date) => void;
+}) => {
   const handleDateChange = (newDate: Date) => {
     setDate(newDate);
   };
 
   const findAttendDay = (date: string): string[] => {
     const set: Set<string> = new Set();
-    for (const data of jobScheduleData) {
-      if (data.days.includes(date)) set.add(data.color);
+    for (const data of jobScheduleData.schedules) {
+      if (parseArrToDate(data.startAt) === date) {
+        const findJobSummary = jobScheduleData.summary.find((value) => value.name === data.partTimeName);
+        findJobSummary && set.add(findJobSummary.color);
+      }
     }
     return [...set];
   };
@@ -19,6 +33,7 @@ const ScheduleListCalendar = ({ jobScheduleData, date, setDate }: { jobScheduleD
     <Container>
       <CalendarStyled
         value={date}
+        onActiveStartDateChange={({ activeStartDate }) => activeStartDate && onChangeCalendarView(activeStartDate)}
         onClickDay={(date) => handleDateChange(date)}
         locale="en"
         formatDay={(_locale, date) => moment(date).format("D")} // 일 제거 숫자만 보이게

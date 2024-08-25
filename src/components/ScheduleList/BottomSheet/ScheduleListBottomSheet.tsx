@@ -1,12 +1,22 @@
 import { BOTTOM_SHEET_HEIGHT } from "../../../constants/bottomSheet";
-import useBottomSheet from "../../../hooks/useBottomSheet";
 import { ContentWrapper, HandleBar, HeaderWrapper, Title, TitleBox, Wrapper } from "./style";
 import CalendarIcon from "../../../assets/icons/black_calendar_icon.svg?react";
 import ScheduleListDetail from "../Detail/ScheduleListDetail";
 import moment from "moment";
+import { useAnimation } from "framer-motion";
+import { Schedule } from "../../../interfaces/calendar/totalSchedule";
+import { useEffect, useState } from "react";
+import { parseArrToDate } from "../../../utils/dateTimeUtil";
 
-const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
-  const { controls } = useBottomSheet();
+type ScheduleListBottomSheetProps = {
+  date: Date;
+  schedules: Schedule[];
+};
+
+const ScheduleListBottomSheet = ({ date, schedules }: ScheduleListBottomSheetProps) => {
+  const controls = useAnimation();
+
+  const [daySchedule, setDaySchedule] = useState<Schedule[]>([]);
 
   const handleDate = () => {
     // 요일 계산하기
@@ -15,10 +25,16 @@ const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
     return week[dayOfWeek];
   };
 
+  useEffect(() => {
+    // 해당 날짜의 데이터 찾기
+    const currentDate = moment(date).format("YYYY-MM-DD");
+    setDaySchedule(schedules.filter((schedule) => parseArrToDate(schedule.startAt) === currentDate));
+  }, [date, schedules]);
+
   return (
     <Wrapper
       drag="y"
-      initial="hidden"
+      // initial="hidden"
       animate={controls}
       transition={{
         type: "spring",
@@ -42,8 +58,9 @@ const ScheduleListBottomSheet = ({ date }: { date: Date }) => {
             {moment(date).format("MM월 DD일")} {handleDate()}요일
           </Title>
         </TitleBox>
-        <ScheduleListDetail />
-        <ScheduleListDetail />
+        {daySchedule.map((schedule) => (
+          <ScheduleListDetail schedule={schedule} key={schedule.id} />
+        ))}
       </ContentWrapper>
     </Wrapper>
   );
