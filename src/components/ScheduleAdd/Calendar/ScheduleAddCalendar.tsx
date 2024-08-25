@@ -14,43 +14,46 @@ import {
 } from "./style";
 import moment from "moment";
 import DeleteIcon from "../../../assets/icons/delete_icon.svg?react";
+import { Calendar } from "../../../interfaces/calendar/totalSchedule";
 
-interface ScheduleType {
-  date: string;
-  startTime: string;
-  endTime: string;
-}
+type ScheduleAddCalendarProp = {
+  openCalendarDays: () => void;
+  onChangeCalendarView: (newDate: Date) => void;
+  changedSchedules: Calendar[];
+  setChangedSchedules: (value: Calendar[]) => void;
+};
 
-// 더미데이터
-const calendarData = [
-  {
-    date: "2024-08-08",
-    startTime: "10:00",
-    endTime: "12:00",
-  },
-  {
-    date: "2024-08-09",
-    startTime: "10:00",
-    endTime: "12:00",
-  },
-  {
-    date: "2024-08-10",
-    startTime: "10:00",
-    endTime: "12:00",
-  },
-];
-
-const ScheduleAddCalendar = ({ openCalendarDays }: { openCalendarDays: () => void }) => {
-  const [selectedDate, setSelectedDate] = useState<ScheduleType | null>(null);
+const ScheduleAddCalendar = ({
+  openCalendarDays,
+  onChangeCalendarView,
+  changedSchedules,
+  setChangedSchedules,
+}: ScheduleAddCalendarProp) => {
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
 
   const handleDateChange = (newDate: Date) => {
     const newDateStr = moment(newDate).format("YYYY-MM-DD");
-    const findData = calendarData.find((value) => value.date === newDateStr);
-    setSelectedDate(findData || null);
-    setStartTime(findData?.startTime);
-    setEndTime(findData?.endTime);
+    const findData = changedSchedules.find((value) => value.date === newDateStr);
+    setSelectedDate(findData?.date || "");
+    setStartTime(findData?.startAt || "");
+    setEndTime(findData?.endAt || "");
+  };
+
+  const handleEditStartTime = (newStartTime: string) => {
+    setStartTime(newStartTime);
+    setChangedSchedules(changedSchedules.map((value) => (value.date === selectedDate ? { ...value, startAt: newStartTime } : value)));
+  };
+
+  const handleEditEndTime = (newEndTime: string) => {
+    setEndTime(newEndTime);
+    setChangedSchedules(changedSchedules.map((value) => (value.date === selectedDate ? { ...value, endAt: newEndTime } : value)));
+  };
+
+  const handleDeleteDate = () => {
+    setChangedSchedules(changedSchedules.filter((value) => value.date !== selectedDate));
+    setSelectedDate(null);
   };
 
   return (
@@ -60,6 +63,7 @@ const ScheduleAddCalendar = ({ openCalendarDays }: { openCalendarDays: () => voi
         <CalendarStyled
           onClickDay={handleDateChange}
           locale="en"
+          onActiveStartDateChange={({ activeStartDate }) => activeStartDate && onChangeCalendarView(activeStartDate)}
           formatDay={(_locale, date) => moment(date).format("D")} // 일 제거 숫자만 보이게
           formatYear={(_locale, date) => moment(date).format("YYYY")} // 네비게이션 눌렀을때 숫자 년도만 보이게
           formatMonthYear={(_locale, date) => moment(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
@@ -72,7 +76,7 @@ const ScheduleAddCalendar = ({ openCalendarDays }: { openCalendarDays: () => voi
           tileContent={({ date, view }) => {
             if (view !== "month") return;
             const html = [];
-            if (calendarData.some((value) => value.date === moment(date).format("YYYY-MM-DD"))) {
+            if (changedSchedules.some((value) => value.date === moment(date).format("YYYY-MM-DD"))) {
               html.push(<DotStyled key={moment(date).format("YYYY-MM-DD")}></DotStyled>);
             }
             return <>{html}</>;
@@ -82,14 +86,14 @@ const ScheduleAddCalendar = ({ openCalendarDays }: { openCalendarDays: () => voi
           <>
             <OptionBox>
               <OptionText>시작시간</OptionText>
-              <TimeInput type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+              <TimeInput type="time" value={startTime} onChange={(e) => handleEditStartTime(e.target.value)} />
             </OptionBox>
             <OptionBox>
               <OptionText>종료시간</OptionText>
-              <TimeInput type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+              <TimeInput type="time" value={endTime} onChange={(e) => handleEditEndTime(e.target.value)} />
             </OptionBox>
             <DeleteBox>
-              <DeleteButton>
+              <DeleteButton onClick={handleDeleteDate}>
                 <DeleteIcon width={15} height={15} />
                 <DeleteText>일정 삭제</DeleteText>
               </DeleteButton>

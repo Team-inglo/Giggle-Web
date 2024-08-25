@@ -7,9 +7,11 @@ export interface Schedule {
 }
 
 export interface Calendar {
-  date: "string"; // "YYYY-MM-DD";
-  startAt: "string"; // "HH:MM";
-  endAt: "string"; // "HH:MM";
+  date: string; // "YYYY-MM-DD";
+  startAt: string; // "HH:MM";
+  endAt: string; // "HH:MM";
+  // startAt: [number, number, number, number, number]; // [year, month, day, hour, minute]
+  // endAt: [number, number, number, number, number]; // [year, month, day, hour, minute]
 }
 
 export interface Summary {

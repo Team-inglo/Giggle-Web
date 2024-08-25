@@ -1,7 +1,7 @@
 import { CalendarStyled, Container, DotContainer, DotStyled } from "./style";
 import moment from "moment";
 import { TotalSchedule } from "../../../interfaces/calendar/totalSchedule";
-import { parseArrToDate } from "../../../utils/parseArrToDate";
+import { parseArrToDate } from "../../../utils/dateTimeUtil";
 
 const ScheduleListCalendar = ({
   jobScheduleData,

@@ -6,7 +6,7 @@ import moment from "moment";
 import { useAnimation } from "framer-motion";
 import { Schedule } from "../../../interfaces/calendar/totalSchedule";
 import { useEffect, useState } from "react";
-import { parseArrToDate } from "../../../utils/parseArrToDate";
+import { parseArrToDate } from "../../../utils/dateTimeUtil";
 
 type ScheduleListBottomSheetProps = {
   date: Date;

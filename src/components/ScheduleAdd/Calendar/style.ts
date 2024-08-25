@@ -120,6 +120,16 @@ export const DotStyled = styled.div`
   border-radius: 50%;
 `;
 
+export const ForbiddenStyled = styled.div`
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 1px;
+  background-color: ${(props) => props.theme.colors.lightBlack};
+`;
+
 export const ButtonContainer = styled.div`
   align-self: flex-end;
   display: flex;
