@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CalenderTitle, ColorInput, Input, InputBox, InputText, InputTitle, PaletteColor, PaletteImg, SubmitButton } from "./style";
 import "react-color-palette/css";
 import ScheduleAddCalendar from "../Calendar/ScheduleAddCalendar";
@@ -72,8 +71,8 @@ const partTimes: PartTimeDetail[] = [
 const ScheduleAddInput = () => {
   const today = new Date();
 
-  const [year, setYear] = useState<number>(today.getFullYear());
-  const [month, setMonth] = useState<number>(today.getMonth());
+  const [, setYear] = useState<number>(today.getFullYear());
+  const [, setMonth] = useState<number>(today.getMonth());
 
   const [partTimeId, setPartTimeId] = useState<number | null>(null); // 선택된 알바 id
   const [partTimeData, setPartTimeData] = useState<PartTimeDetail | null>(null); // 선택된 알바 상세 정보
@@ -89,8 +88,8 @@ const ScheduleAddInput = () => {
     // if (!changedSchedules.some((value) => value.startAt[0] === newYear && value.startAt[1] === newMonth)) {
     //   // 새로 조회하기...
     // }
-    setYear(Number(moment(newDate).format("YYYY")));
-    setMonth(Number(moment(newDate).format("MM")));
+    setYear(newYear);
+    setMonth(newMonth);
   };
 
   const closeCalendarDays = () => {
