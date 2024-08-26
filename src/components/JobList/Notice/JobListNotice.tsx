@@ -1,12 +1,13 @@
 import { JobNotice } from "../../../interfaces/notice/jobNotice";
 import { BottomContainer, Container, DayTag, Location, MoneyTag, RecruitingNum, TagContainer, Title } from "./style";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const JobListNotice = ({ jobNotice }: { jobNotice: JobNotice }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const goToDetailPage = () => {
-    navigate(`/notice/detail/${jobNotice.id}`);
+    navigate(`${location.pathname}/detail/${jobNotice.id}`);
   };
 
   return (

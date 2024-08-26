@@ -63,6 +63,7 @@ export const ExtraInfoContent = styled.div`
 
 export const ContentContainer = styled.div`
   margin: 1rem 0;
+  padding-bottom: 1rem;
 `;
 export const ContentTitle = styled.div`
   padding-bottom: 0.5rem;
