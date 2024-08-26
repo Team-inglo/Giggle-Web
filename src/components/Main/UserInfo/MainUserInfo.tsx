@@ -12,9 +12,23 @@ import {
 } from "./styled";
 import UserIcon from "../../../assets/icons/user_icon.svg?react";
 import MapPinIcon from "../../../assets/icons/map_pin_icon.svg?react";
-import HiddenIcon from "../../../assets/icons/hidden_icon.svg?react";
+import EyeOffIcon from "../../../assets/icons/eye_off_icon.svg?react";
+import EyeOnIcon from "../../../assets/icons/eye_on_icon.svg?react";
+import { useState } from "react";
+
+const foreignNumber = "123456-1234567";
 
 const MainUserInfo = () => {
+  const [showNumber, setShowNumber] = useState<boolean>(false);
+
+  const onClickShowNumber = () => {
+    setShowNumber(true);
+  };
+
+  const onClickHiddenNumber = () => {
+    setShowNumber(false);
+  };
+
   return (
     <Container>
       <UserNameBox>
@@ -28,10 +42,10 @@ const MainUserInfo = () => {
           </InfoIcon>
           <InfoTextBox>
             <InfoTitle>외국인 등록번호</InfoTitle>
-            <InfoContent>*******-*******</InfoContent>
+            <InfoContent>{showNumber ? foreignNumber : "******-*******"}</InfoContent>
           </InfoTextBox>
         </InfoContentBox>
-        <HiddenIcon />
+        {showNumber ? <EyeOnIcon onClick={onClickHiddenNumber} /> : <EyeOffIcon onClick={onClickShowNumber} />}
       </InfoBox>
       <InfoBox>
         <InfoContentBox>
