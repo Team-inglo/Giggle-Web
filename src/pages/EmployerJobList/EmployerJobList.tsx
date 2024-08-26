@@ -1,5 +1,4 @@
 import MainHeader from "../../components/Common/Header/MainHeader";
-import Menu from "../../components/Common/Menu/Menu";
 import JobListCategory from "../../components/JobList/Category/JobListCategory";
 import DropDownIcon from "../../assets/icons/dropdown_icon.svg?react";
 import { Container, FilterButton, JobListContainer } from "./style";
@@ -9,6 +8,7 @@ import JobListBottomSheet from "../../components/JobList/BottomSheet/JobListBott
 import useBottomSheet from "../../hooks/useBottomSheet";
 import { useState } from "react";
 import { JobNotice } from "../../interfaces/notice/jobNotice";
+import EmployerMenu from "../../components/Common/EmployerMenu/EmployerMenu";
 
 const jobNoticeList: JobNotice[] = [
   {
@@ -53,7 +53,7 @@ const jobNoticeList: JobNotice[] = [
   },
 ];
 
-const JobListPage = () => {
+const EmployerJobListPage = () => {
   const { onDragEnd, controls, setIsOpen } = useBottomSheet();
 
   const [jobFilter, setJobFilter] = useState<string[]>([]); // 정렬 조건 -> 남아있도록 하려면 상태 관리 필요할듯? + bottomSheet에도 기존 선택값 반영 필요
@@ -75,9 +75,9 @@ const JobListPage = () => {
         </JobListContainer>
       </Container>
       <JobListBottomSheet onDragEnd={onDragEnd} controls={controls} setIsOpen={setIsOpen} setJobFilter={setJobFilter} />
-      <Menu />
+      <EmployerMenu />
     </>
   );
 };
 
-export default JobListPage;
+export default EmployerJobListPage;

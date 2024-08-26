@@ -55,6 +55,7 @@ export const InfoTitle = styled.div`
 `;
 
 export const InfoContent = styled.div`
+  letter-spacing: 0.05rem;
   font-size: 0.875rem;
   color: ${(props) => props.theme.colors.black};
 `;

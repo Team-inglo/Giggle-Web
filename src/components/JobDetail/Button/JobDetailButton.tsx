@@ -9,7 +9,7 @@ const JobDetailButton = () => {
       </ButtonBox>
       <ButtonBox>
         <Explain>고용주와 이미 얘기했어요</Explain>
-        <SubmitButton>공고 보러가기</SubmitButton>
+        <SubmitButton>알바 신청하기</SubmitButton>
       </ButtonBox>
     </Container>
   );

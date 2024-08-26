@@ -39,12 +39,13 @@ export const RegionContainer = styled.div`
   align-items: center;
   margin: 1rem 0;
   padding: 0.7rem 1rem;
-  min-width: 2.5rem;
+  //min-width: 2.5rem;
   border-radius: 1rem;
   background-color: ${(props) => props.theme.colors.lightOrange};
 `;
 
 export const RegionTypeButton = styled.button`
+  flex: 1;
   font-size: 1rem;
   color: ${(props) => props.theme.colors.black};
   background-color: transparent;

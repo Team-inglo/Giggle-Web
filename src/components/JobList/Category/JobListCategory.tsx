@@ -12,7 +12,7 @@ const JobListCategory = () => {
   return (
     <Container>
       {JOB_CATEGORY.map((value) => (
-        <FilterBox key={value.id} onClick={() => onClickCategory(value.name)} $isSelected={value.name === category}>
+        <FilterBox key={value.key} onClick={() => onClickCategory(value.name)} $isSelected={value.name === category}>
           {value.name}
         </FilterBox>
       ))}

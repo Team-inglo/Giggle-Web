@@ -1,33 +1,25 @@
+import { JobNotice } from "../../../interfaces/notice/jobNotice";
 import { BottomContainer, Container, DayTag, Location, MoneyTag, RecruitingNum, TagContainer, Title } from "./style";
-// import LikeIcon from "../../../assets/icons/like_icon.svg?react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const JobListNotice = () => {
+const JobListNotice = ({ jobNotice }: { jobNotice: JobNotice }) => {
   const navigate = useNavigate();
-
-  // const [like, setLike] = useState<boolean>(false);
-
-  // const onClickLike = () => {
-  //   setLike(!like);
-  // };
+  const location = useLocation();
 
   const goToDetailPage = () => {
-    navigate("/notice/detail");
+    navigate(`${location.pathname}/detail/${jobNotice.id}`);
   };
 
   return (
     <Container onClick={goToDetailPage}>
       <TagContainer>
-        <DayTag>마감 D-25</DayTag>
-        <MoneyTag>시급 10,000원</MoneyTag>
+        <DayTag>마감 D-{jobNotice.restOfDay}</DayTag>
+        <MoneyTag>시급 {jobNotice.hourlyWage}원</MoneyTag>
       </TagContainer>
-      <Title>파리바게트 파트타이머 모집</Title>
-      <Location>서울시 강북수 수유동</Location>
+      <Title>{jobNotice.title}</Title>
+      <Location>{jobNotice.addressName}</Location>
       <BottomContainer>
-        <RecruitingNum>모집인원 1명</RecruitingNum>
-        {/* <LikeButton onClick={onClickLike} $like={like}>
-          <LikeIcon />
-        </LikeButton> */}
+        <RecruitingNum>모집인원 {jobNotice.numberRecruited}명</RecruitingNum>
       </BottomContainer>
     </Container>
   );

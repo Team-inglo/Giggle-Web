@@ -1,51 +1,35 @@
 // 업직종
 export const JOB_CATEGORY = [
   {
-    id: 0,
+    key: "ANY",
     name: "전체",
   },
   {
-    id: 1,
-    name: "외식/음료",
+    key: "FOOD_INDUSTRY",
+    name: "음식업보조",
   },
   {
-    id: 2,
-    name: "매장관리/판매",
+    key: "OFFICE",
+    name: "사무",
   },
   {
-    id: 3,
-    name: "서비스",
+    key: "ENGLISH",
+    name: "영어",
   },
   {
-    id: 4,
-    name: "사무직",
+    key: "TOURIST_INFORMATION",
+    name: "관광안내",
   },
   {
-    id: 5,
-    name: "고객상담/리서치/영업",
+    key: "MANUDACTURING_INDUSTRY",
+    name: "제조업",
   },
   {
-    id: 6,
-    name: "생산/건설/노무",
+    key: "DAY_WORK",
+    name: "일용근로",
   },
   {
-    id: 7,
-    name: "IT 기술",
-  },
-  {
-    id: 8,
-    name: "디자인",
-  },
-  {
-    id: 9,
-    name: "미디어",
-  },
-  {
-    id: 10,
-    name: "병원/간호/연구",
-  },
-  {
-    id: 11,
-    name: "교육/강사",
+    key: "INTERNSHIP",
+    name: "인턴",
   },
 ];

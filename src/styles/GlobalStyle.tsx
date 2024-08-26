@@ -16,6 +16,10 @@ const GlobalStye = createGlobalStyle`
   @media (max-width: 480px) {
 
   }
+
+  html {
+    font-size: 16px;
+  }
   
   body {
     /* 글씨체 넣기! */
