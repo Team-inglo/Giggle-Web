@@ -39,13 +39,16 @@ const JobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilter }: Jo
   const [interest, setInterest] = useState<string>(JOB_SEARCH_FILTER[4].filters[0]);
 
   const onClickPeriod = (newPeriod: string) => {
+    const totalKeyword = JOB_SEARCH_FILTER[3].filters[0];
     if (period.includes(newPeriod)) {
       // 만약 기간 선택이 없으면 기본값이 전체로 선택하기!
       const result = period.filter((value) => value !== newPeriod);
-      result.length ? setPeriod(result) : setPeriod([JOB_SEARCH_FILTER[3].filters[0]]);
-    } else {
-      setPeriod([...period, newPeriod]);
+      result.length ? setPeriod(result) : setPeriod([totalKeyword]);
+      return;
     }
+
+    if (newPeriod === totalKeyword) setPeriod([totalKeyword]);
+    else setPeriod([...period.filter((value) => value !== totalKeyword), newPeriod]);
   };
 
   // 지역 추가하기

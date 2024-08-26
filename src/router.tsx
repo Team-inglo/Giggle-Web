@@ -18,7 +18,7 @@ const Router = () => {
         <Route path="/calendar" element={<ScheduleListPage />} />
         <Route path="/calendar/add" element={<ScheduleAddPage />} />
         <Route path="/notice" element={<JobListPage />} />
-        <Route path="/notice/detail" element={<JobDetailPage />} />
+        <Route path="/notice/detail/:id" element={<JobDetailPage />} />
         <Route path="/chatbot" element={<ChatBotPage />} />
       </Routes>
     </BrowserRouter>
