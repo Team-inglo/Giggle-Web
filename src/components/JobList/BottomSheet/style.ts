@@ -26,7 +26,7 @@ export const HeaderWrapper = styled(motion.div)`
   border-top-right-radius: 8px;
   position: relative;
   padding-top: 15px;
-  padding-bottom: 4px;
+  padding-bottom: 1rem;
 `;
 
 export const HandleBar = styled(motion.div)`
