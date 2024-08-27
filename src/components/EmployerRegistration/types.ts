@@ -23,9 +23,9 @@ export type workDay = {
   workEndTime: TimeString | undefined;
 };
 
-type gender = "MALE" | "FEMALE" | "ANY";
+export type gender = "MALE" | "FEMALE" | "ANY";
 
-type education =
+export type education =
   | "HIGH_SCHOLL_GRADUATION"
   | "TWO_YEAR_COLLEGE_GRADUATION"
   | "FOUR_YEAR_COLLEGE_GRADUATION"

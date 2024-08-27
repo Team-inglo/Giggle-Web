@@ -10,7 +10,7 @@ import {
 import PageConnector from "../../components/EmployerRegistration/PageConnector";
 
 const EmployerRegistrationPage = () => {
-  const [pageNum, setPageNum] = useState(2);
+  const [pageNum, setPageNum] = useState(3);
   return (
     <>
       <Container>

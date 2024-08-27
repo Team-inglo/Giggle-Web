@@ -102,10 +102,14 @@ export const SearchResultModal = styled.div`
   lineHeight: 19.60;
   wordWrap: 'break-word';
   gap: 8px;
+  box-shadow: 0 1px 4px rgba(12, 12, 13, 0.1);
+
 `;
 
 export const PlaceContainer = styled.div`
   color: #1e1e1e;
+  width: 100%;
+  padding: 8px;
   fontsize: 14;
   fontfamily: "Inter";
   fontweight: "400";
@@ -147,7 +151,9 @@ export const WorkTime = styled.div`
 `;
 
 export const SubmitButton = styled.div`
+  position: absolute;
   width: 100%;
+  bottom: 30px;
   padding: 1rem;
   border-radius: 0.5rem;
   font-size: 1rem;
