@@ -1,6 +1,6 @@
 export const KOREA_REGIONS = [
   {
-    region: "서울",
+    region: "서울시",
     subregions: [
       "전체",
       "종로구",

@@ -12,7 +12,7 @@ const getNoticeList = (userId: number, jobType: string, noticeListFilter: Notice
     Authorization: `Bearer ${import.meta.env.VITE_APP_ACCESSTOKEN}`,
   };
 
-  const params = { ...noticeListFilter, userId: userId, jobType: jobType };
+  const params = { ...noticeListFilter, region: noticeListFilter.region?.join(","), userId: userId, jobType: jobType };
 
   return axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/v1/users/announcements`, {
     params: params,

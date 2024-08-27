@@ -34,8 +34,8 @@ export const EMPLOYER_JOB_SEARCH_FILTER = [
   {
     title: "맞춤형 추천",
     filters: [
-      { key: "FALSE", name: "전체" },
-      { key: "TRUE", name: "내가 올린 공고만" },
+      { key: "false", name: "전체" },
+      { key: "true", name: "내가 올린 공고만" },
     ],
   },
   {
