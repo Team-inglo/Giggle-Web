@@ -45,6 +45,7 @@ export const StatusText = styled.p`
   font-weight: 500;
   line-height: 1.5;
   color: ${(props) => props.theme.colors.deepRed};
+  word-break: keep-all;
 `;
 
 export const CheckButton = styled.button`

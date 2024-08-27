@@ -54,7 +54,7 @@ const ongoingNoticeList: EmployerNotice[] = [
 
 const completeNoticeList: EmployerNotice[] = [
   {
-    announcementId: 1,
+    announcementId: 6,
     title: "파리바게트 파트타이머 모집",
     addressName: "서울시 강북구 수유동",
     completor: 3,
@@ -63,7 +63,7 @@ const completeNoticeList: EmployerNotice[] = [
     deadLine: "2024-10-10",
   },
   {
-    announcementId: 2,
+    announcementId: 7,
     title: "베스킨라빈스 파트타이머 모집",
     addressName: "서울시 강북구 솔샘로",
     completor: 4,
@@ -72,7 +72,7 @@ const completeNoticeList: EmployerNotice[] = [
     deadLine: "2024-09-20",
   },
   {
-    announcementId: 3,
+    announcementId: 8,
     title: "이마트 판촉 파트타이머 모집",
     addressName: "서울시 강북구 한천로",
     completor: 2,
