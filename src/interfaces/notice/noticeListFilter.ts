@@ -1,6 +1,6 @@
 export interface NoticeListFilter {
   sortBy?: string;
-  isOwner?: boolean;
+  isOwner?: string;
   sortOrder?: string;
   region?: string[];
   period?: string;

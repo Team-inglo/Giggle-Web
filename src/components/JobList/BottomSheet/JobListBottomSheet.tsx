@@ -118,10 +118,7 @@ const JobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilter, setS
             ))}
           </RegionContainer>
           <TitleBox>
-            <Title>
-              {JOB_SEARCH_FILTER[3].title}
-              <SubTitle>* 중복 선택 가능</SubTitle>
-            </Title>
+            <Title>{JOB_SEARCH_FILTER[3].title}</Title>
           </TitleBox>
           <FilterBox>
             {JOB_SEARCH_FILTER[3].filters.map((value) => (

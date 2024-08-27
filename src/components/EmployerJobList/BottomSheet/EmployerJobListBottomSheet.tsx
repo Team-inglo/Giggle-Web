@@ -19,6 +19,7 @@ import {
 } from "./style";
 import { EMPLOYER_JOB_SEARCH_FILTER } from "../../../constants/jobSearchFilter";
 import { AnimationControls, PanInfo, useCycle } from "framer-motion";
+import { NoticeListFilter } from "../../../interfaces/notice/noticeListFilter";
 import JobListRegion from "../../JobList/Region/JobListRegion";
 
 type JobListBottomSheetProps = {
@@ -26,29 +27,19 @@ type JobListBottomSheetProps = {
   controls: AnimationControls;
   setIsOpen: (isOpen: boolean) => void;
   setJobFilter: (jobFilter: string[]) => void;
+  setSearchFilter: (searchFilter: NoticeListFilter) => void;
 };
 
-const EmployerJobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilter }: JobListBottomSheetProps) => {
+type searchFilterType = { key: string; name: string };
+
+const EmployerJobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilter, setSearchFilter }: JobListBottomSheetProps) => {
   // 지역 선택 메뉴창
   const [isRegionOpen, toggleRegionOpen] = useCycle(false, true);
 
-  const [recommend, setRecommend] = useState<string>(EMPLOYER_JOB_SEARCH_FILTER[0].filters[0]);
-  const [arrange, setArrange] = useState<string>(EMPLOYER_JOB_SEARCH_FILTER[1].filters[0]);
+  const [recommend, setRecommend] = useState<searchFilterType>(EMPLOYER_JOB_SEARCH_FILTER[0].filters[0]);
+  const [arrange, setArrange] = useState<searchFilterType>(EMPLOYER_JOB_SEARCH_FILTER[1].filters[0]);
   const [region, setRegion] = useState<string[]>([]);
-  const [period, setPeriod] = useState<string[]>([EMPLOYER_JOB_SEARCH_FILTER[3].filters[0]]);
-
-  const onClickPeriod = (newPeriod: string) => {
-    const totalKeyword = EMPLOYER_JOB_SEARCH_FILTER[3].filters[0];
-    if (period.includes(newPeriod)) {
-      // 만약 기간 선택이 없으면 기본값이 전체로 선택하기!
-      const result = period.filter((value) => value !== newPeriod);
-      result.length ? setPeriod(result) : setPeriod([totalKeyword]);
-      return;
-    }
-
-    if (newPeriod === totalKeyword) setPeriod([totalKeyword]);
-    else setPeriod([...period.filter((value) => value !== totalKeyword), newPeriod]);
-  };
+  const [period, setPeriod] = useState<searchFilterType>(EMPLOYER_JOB_SEARCH_FILTER[3].filters[0]);
 
   // 지역 추가하기
   const addRegion = (newRegion: string) => {
@@ -61,7 +52,8 @@ const EmployerJobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilt
   };
 
   const onClickSubmit = () => {
-    setJobFilter([recommend, arrange, ...region, ...period]);
+    setJobFilter([recommend.name, arrange.name, ...region, period.name]);
+    setSearchFilter({ isOwner: recommend.key, sortOrder: arrange.key, region: region, period: period.key });
     setIsOpen(false);
   };
 
@@ -94,8 +86,8 @@ const EmployerJobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilt
           </TitleBox>
           <FilterBox>
             {EMPLOYER_JOB_SEARCH_FILTER[0].filters.map((value) => (
-              <Button key={value} $isSelected={recommend === value} onClick={() => setRecommend(value)}>
-                {value}
+              <Button key={value.key} $isSelected={recommend.key === value.key} onClick={() => setRecommend(value)}>
+                {value.name}
               </Button>
             ))}
           </FilterBox>
@@ -104,8 +96,8 @@ const EmployerJobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilt
           </TitleBox>
           <FilterBox>
             {EMPLOYER_JOB_SEARCH_FILTER[1].filters.map((value) => (
-              <Button key={value} $isSelected={arrange === value} onClick={() => setArrange(value)}>
-                {value}
+              <Button key={value.key} $isSelected={arrange.key === value.key} onClick={() => setArrange(value)}>
+                {value.name}
               </Button>
             ))}
           </FilterBox>
@@ -116,7 +108,7 @@ const EmployerJobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilt
             </Title>
           </TitleBox>
 
-          <RegionSelectButton onClick={() => toggleRegionOpen()}>{EMPLOYER_JOB_SEARCH_FILTER[2].filters[0]}</RegionSelectButton>
+          <RegionSelectButton onClick={() => toggleRegionOpen()}>{EMPLOYER_JOB_SEARCH_FILTER[2].filters[0].name}</RegionSelectButton>
           <RegionContainer>
             {region.map((value, idx) => (
               <RegionButton key={`${value}_${idx}`}>
@@ -126,15 +118,12 @@ const EmployerJobListBottomSheet = ({ onDragEnd, controls, setIsOpen, setJobFilt
             ))}
           </RegionContainer>
           <TitleBox>
-            <Title>
-              {EMPLOYER_JOB_SEARCH_FILTER[3].title}
-              <SubTitle>* 중복 선택 가능</SubTitle>
-            </Title>
+            <Title>{EMPLOYER_JOB_SEARCH_FILTER[3].title}</Title>
           </TitleBox>
           <FilterBox>
             {EMPLOYER_JOB_SEARCH_FILTER[3].filters.map((value) => (
-              <Button key={value} $isSelected={period.includes(value)} onClick={() => onClickPeriod(value)}>
-                {value}
+              <Button key={value.key} $isSelected={period.key === value.key} onClick={() => setPeriod(value)}>
+                {value.name}
               </Button>
             ))}
           </FilterBox>
