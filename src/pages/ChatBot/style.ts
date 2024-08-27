@@ -31,8 +31,9 @@ export const ChatBotName = styled.div`
 
 export const ContentContainer = styled.div`
   padding-top: 3.5rem;
+  padding-bottom: 5rem;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-color: ${(props) => props.theme.colors.lightOrange};
 `;
 
@@ -41,6 +42,11 @@ export const ChatBotBox = styled.div`
   gap: 0.5rem;
   padding: 1rem;
   width: 100%;
+`;
+
+export const GiGiIconWrapper = styled.div`
+  width: 3rem;
+  height: 3rem;
 `;
 
 export const ChatBotContent = styled.div`

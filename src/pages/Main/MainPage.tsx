@@ -12,22 +12,21 @@ const MainPage = () => {
 
   if (isLoading) return <div></div>;
   if (error) return <div>에러남: {error.message}</div>;
-  if (data) console.log(data);
-
-  return (
-    <>
-      <Container>
-        <MainHeader />
-        <UserInfoContainer>
-          <MainUserInfo homeInfo={data?.data?.data} />
-        </UserInfoContainer>
-        <MainScoreList homeInfo={data?.data?.data} />
-        <MainVisaInfo homeInfo={data?.data?.data} />
-      </Container>
-      <MainFloatBtn />
-      <Menu />
-    </>
-  );
+  if (data)
+    return (
+      <>
+        <Container>
+          <MainHeader />
+          <UserInfoContainer>
+            <MainUserInfo homeInfo={data?.data?.data} />
+          </UserInfoContainer>
+          <MainScoreList homeInfo={data?.data?.data} />
+          <MainVisaInfo homeInfo={data?.data?.data} />
+        </Container>
+        <MainFloatBtn />
+        <Menu />
+      </>
+    );
 };
 
 export default MainPage;
