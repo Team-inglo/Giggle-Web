@@ -20,15 +20,17 @@ import { placeType } from "../../pages/Map/MapPage";
 
 interface Props {
   setPageNum: () => void;
+  recruitInfo: partTimeRecruitPostRequest,
+  setRecruitInfo: () => void;
 }
 
 const EmployerRegistrationInput = ({setPageNum}: Props) => {
   const [recruitInfo, setRecruitInfo] = useState<partTimeRecruitPostRequest>({
     title: "",
     jobType: "ANY",
-    deadline: null,
+    deadline: undefined,
     hourlyWage: 0,
-    workStartDate: null,
+    workStartDate: undefined,
     workingPeriod: 0,
     workDays: [],
     age: 0,
@@ -59,9 +61,9 @@ const EmployerRegistrationInput = ({setPageNum}: Props) => {
   const [isSearched, setIsSearched] = useState(false);
   const canGoNext =
     recruitInfo.title !== "" &&
-    recruitInfo.jobType !== null &&
+    recruitInfo.jobType !== undefined &&
     recruitInfo.hourlyWage !== 0 &&
-    recruitInfo.deadline !== null;
+    recruitInfo.deadline !== undefined;
 
   const handleClick = () => {
     canGoNext && setPageNum()

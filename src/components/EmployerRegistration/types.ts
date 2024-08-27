@@ -1,9 +1,9 @@
 export type partTimeRecruitPostRequest = {
   title: string; // 제목
   jobType: workType;
-  deadline: DateString | null; // 공고 마감기한
+  deadline: DateString | undefined; // 공고 마감기한
   hourlyWage: number; // 시급
-  workStartDate: DateString | null; // 근무 시작일
+  workStartDate: DateString | undefined; // 근무 시작일
   workingPeriod: number; // 근무 기간
   workDays: workDay[] | [];
   age: number; // 나이
@@ -15,12 +15,12 @@ export type partTimeRecruitPostRequest = {
 
 export type DateString =
   `${number}${number}${number}${number}-${number}${number}-${number}${number}`;
-type TimeString = `${number}${number}:${number}${number}`;
+export type TimeString = `${number}${number}:${number}${number}`;
 
-type workDay = {
+export type workDay = {
   day: weekDay; // MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
-  workStartTime: TimeString | null;
-  workEndTime: TimeString | null;
+  workStartTime: TimeString | undefined;
+  workEndTime: TimeString | undefined;
 };
 
 type gender = "MALE" | "FEMALE" | "ANY";
@@ -31,7 +31,7 @@ type education =
   | "FOUR_YEAR_COLLEGE_GRADUATION"
   | "ANY";
 
-type weekDay =
+export type weekDay =
   | "MONDAY"
   | "TUESDAY"
   | "WEDNESDAY"

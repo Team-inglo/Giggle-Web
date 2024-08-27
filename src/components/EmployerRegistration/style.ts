@@ -1,6 +1,13 @@
 import styled from "styled-components";
 
+export const InputBoxContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 16px;
+`;
 export const InputBox = styled.div`
+  width: 100%;
   position: relative;
   ::-webkit-scrollbar {
     display: none;
@@ -68,6 +75,19 @@ export const JobSelect = styled.div`
   color: ${(props) => props.theme.colors.gray};
 `;
 
+export const DayList = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .selected {
+    background-color: ${(props) => props.theme.colors.mainColor};
+    color: white;
+  }
+  #current {
+    border: 1px solid ${(props) => props.theme.colors.mainColor};
+  }
+`;
+
 export const SearchResultModal = styled.div`
   display: flex;
   flex-direction: column;
@@ -91,6 +111,39 @@ export const PlaceContainer = styled.div`
   fontweight: "400";
   lineheight: 19.6;
   wordwrap: "break-word";
+`;
+
+export const WorkDayRow = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const WorkDayBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 17px;
+`;
+
+export const WorkTimeBox = styled(WorkDayBox)`
+  flex-direction: column;
+  height: 90px;
+  width: 48px;
+`;
+
+export const DayTitle = styled.div`
+  font-size: 16px;
+  line-height: 16px;
+  color: ${(props) => props.theme.colors.gray};
+`;
+
+export const WorkTime = styled.div`
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
 `;
 
 export const SubmitButton = styled.div`
