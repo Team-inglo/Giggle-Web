@@ -111,14 +111,12 @@ const EmployerRegistrationInput = ({ setPageNum }: Props) => {
           }
         />
       </InputBox>
-      <InputBox>
         <SubmitButton
           className={canGoNext ? "activated" : "disabled"}
           onClick={handleClick}
         >
           다음
         </SubmitButton>
-      </InputBox>
     </>
   );
 };

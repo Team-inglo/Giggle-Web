@@ -42,7 +42,7 @@ const EmployerRegistrationFourth = ({ recruitInfo, setRecruitInfo }: Props) => {
         visible={isModalOpen}
         onClose={() => navigate("/")}
         title="등록 완료되었습니다."
-      ></CompleteModal>
+      />
     </>
   );
 };
