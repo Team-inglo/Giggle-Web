@@ -2,7 +2,7 @@ import { AddJobButton, AddJobIcon, Container } from "./style";
 import EmployerMenu from "../../components/Common/EmployerMenu/EmployerMenu";
 import EmployerHeader from "../../components/Common/EmployerHeader/EmployerHeader";
 import EmployerDocumentTab from "../../components/EmployerDocument/Tab/EmployerDocumentTab";
-import { EmployerNotice } from "../../interfaces/notice/employerNotice";
+import { EmployerNotice } from "../../interfaces/document/employerNotice";
 
 const ongoingNoticeList: EmployerNotice[] = [
   {

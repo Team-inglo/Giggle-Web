@@ -11,6 +11,7 @@ import EmployerJobListPage from "./pages/EmployerJobList/EmployerJobList";
 import EmployerJobDetailPage from "./pages/EmployerJobDetail/EmployerJobDetailPage";
 import ScrollToTop from "./components/Common/ScrollToTop/ScrollToTop";
 import EmployerDocumentPage from "./pages/EmployerDocument/EmployerDocumentPage";
+import EmployerDocumentDetailPage from "./pages/EmployerDocumentDetail/EmployerDocumentDetail";
 
 const Router = () => {
   return (
@@ -28,6 +29,7 @@ const Router = () => {
         <Route path="/notice-employer" element={<EmployerJobListPage />} />
         <Route path="/notice-employer/detail/:id" element={<EmployerJobDetailPage />} />
         <Route path="/document-employer" element={<EmployerDocumentPage />} />
+        <Route path="/document-employer/:id" element={<EmployerDocumentDetailPage />} />
       </Routes>
     </BrowserRouter>
   );

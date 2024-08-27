@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NoticeContainer, Tab, TabContainer } from "./style";
 import EmployerDocumentNotice from "../Notice/EmployerDocumentNotice";
-import { EmployerNotice } from "../../../interfaces/notice/employerNotice";
+import { EmployerNotice } from "../../../interfaces/document/employerNotice";
 
 type EmployerDocumentTabProp = {
   completeNoticeList: EmployerNotice[];

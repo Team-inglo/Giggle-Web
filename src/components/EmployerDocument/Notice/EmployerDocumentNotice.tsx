@@ -1,4 +1,5 @@
-import { EmployerNotice } from "../../../interfaces/notice/employerNotice";
+import { useNavigate } from "react-router-dom";
+import { EmployerNotice } from "../../../interfaces/document/employerNotice";
 import {
   ApplicantButton,
   ButtonContainer,
@@ -15,6 +16,16 @@ import {
 } from "./style";
 
 const EmployerDocumentNotice = ({ noticeData }: { noticeData: EmployerNotice }) => {
+  const navigate = useNavigate();
+
+  const goToJobDetailPage = () => {
+    navigate(`/notice-employer/detail/${noticeData.announcementId}`);
+  };
+
+  const goToApplicantPage = () => {
+    navigate(`/document-employer/${noticeData.announcementId}`);
+  };
+
   return (
     <Container>
       <TitleContainer>
@@ -35,8 +46,8 @@ const EmployerDocumentNotice = ({ noticeData }: { noticeData: EmployerNotice }) 
       </InfoContainer>
       <LeftDate>마감까지 {noticeData.numberRecruited}일 남았어요.</LeftDate>
       <ButtonContainer>
-        <NoticeDetailButton>공고 상세보기</NoticeDetailButton>
-        <ApplicantButton>지원자 보기</ApplicantButton>
+        <NoticeDetailButton onClick={goToJobDetailPage}>공고 상세보기</NoticeDetailButton>
+        <ApplicantButton onClick={goToApplicantPage}>지원자 보기</ApplicantButton>
       </ButtonContainer>
     </Container>
   );
