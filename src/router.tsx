@@ -9,10 +9,12 @@ import JobDetailPage from "./pages/JobDetail/JobDetailPage";
 import ChatBotPage from "./pages/ChatBot/ChatBotPage";
 import EmployerJobListPage from "./pages/EmployerJobList/EmployerJobList";
 import EmployerJobDetailPage from "./pages/EmployerJobDetail/EmployerJobDetailPage";
+import ScrollToTop from "./components/Common/ScrollToTop/ScrollToTop";
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/setting" element={<SettingPage />} />
