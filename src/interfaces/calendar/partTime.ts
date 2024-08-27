@@ -14,6 +14,6 @@ export interface PartTimeDetail {
 
 export interface ParTimeInput {
   name: string;
-  hourlyRate: number;
+  hourly_rate: number;
   color: string;
 }

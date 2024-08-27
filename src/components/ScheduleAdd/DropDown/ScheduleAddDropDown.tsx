@@ -41,8 +41,8 @@ const ScheduleAddDropDown = ({ setPartTimeId }: { setPartTimeId: (parTimeId: num
 
   const onClickShowEditModal = (event: React.MouseEvent<HTMLButtonElement>, id: number) => {
     event.stopPropagation();
-    setShowEditModal(true);
     setEditPartTimeId(id);
+    setShowEditModal(true);
   };
 
   const onClickShowAddModal = () => {
@@ -74,7 +74,7 @@ const ScheduleAddDropDown = ({ setPartTimeId }: { setPartTimeId: (parTimeId: num
             </Option>
           ))}
           <ModalLayout isModal={showEditModal} setIsModal={setShowEditModal}>
-            <ScheduleAddJobEditModal setIsModal={setShowEditModal} partTimeId={editPartTimeId} />
+            {editPartTimeId && <ScheduleAddJobEditModal setIsModal={setShowEditModal} partTimeId={editPartTimeId} />}
           </ModalLayout>
         </DropDown>
       )}

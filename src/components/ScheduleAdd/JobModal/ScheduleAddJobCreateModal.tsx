@@ -15,6 +15,7 @@ import {
 import paletteImg from "../../../assets/images/palette_image.png";
 import { ColorPicker, useColor } from "react-color-palette";
 import { useEffect, useRef, useState } from "react";
+import { usePostPartTime } from "../../../hooks/services/calendar/mutations";
 
 type ModalProps = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +23,8 @@ type ModalProps = {
 
 const ScheduleAddJobCreateModal = ({ setIsModal }: ModalProps) => {
   const colorPickerRef = useRef<HTMLDivElement>(null);
+
+  const mutation = usePostPartTime();
 
   const [name, setName] = useState<string>("");
   const [hourlyRate, setHourlyRate] = useState<string>(""); // 나중에 숫자로 변환하기
@@ -32,12 +35,21 @@ const ScheduleAddJobCreateModal = ({ setIsModal }: ModalProps) => {
 
   const onClickSubmit = () => {
     // 알바 생성하기 로직 추가
-    // const body = {
-    //   name: name,
-    //   hourly_rate: Number(hourlyRate),
-    //   color: color,
-    // };
-    setIsModal(false);
+    const body = {
+      name: name,
+      hourly_rate: Number(hourlyRate),
+      color: color?.hex,
+    };
+    mutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log("success: ", data);
+        setIsModal(false);
+      },
+      onError: (error) => {
+        // I will fire second!
+        console.error("error: ", error.message);
+      },
+    });
   };
 
   const openColorPicker = () => {
