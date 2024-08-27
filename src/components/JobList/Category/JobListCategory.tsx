@@ -1,18 +1,20 @@
-import { useState } from "react";
 import { JOB_CATEGORY } from "../../../constants/jobCategory";
 import { Container, FilterBox } from "./style";
 
-const JobListCategory = () => {
-  const [category, setCategory] = useState<string>("전체");
+type JobListCategoryProp = {
+  jobType: string;
+  setJobType: (value: string) => void;
+};
 
-  const onClickCategory = (name: string) => {
-    setCategory(name);
+const JobListCategory = ({ jobType, setJobType }: JobListCategoryProp) => {
+  const onClickCategory = (key: string) => {
+    setJobType(key);
   };
 
   return (
     <Container>
       {JOB_CATEGORY.map((value) => (
-        <FilterBox key={value.key} onClick={() => onClickCategory(value.name)} $isSelected={value.name === category}>
+        <FilterBox key={value.key} onClick={() => onClickCategory(value.key)} $isSelected={value.key === jobType}>
           {value.name}
         </FilterBox>
       ))}
