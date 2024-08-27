@@ -1,4 +1,4 @@
-import MainHeader from "../../components/Common/Header/MainHeader";
+import MainHeader from "../../components/Common/MainHeader/MainHeader";
 import Menu from "../../components/Common/Menu/Menu";
 import JobListCategory from "../../components/JobList/Category/JobListCategory";
 import DropDownIcon from "../../assets/icons/dropdown_icon.svg?react";

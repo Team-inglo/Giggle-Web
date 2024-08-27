@@ -1,4 +1,3 @@
-import MainHeader from "../../components/Common/Header/MainHeader";
 import JobListCategory from "../../components/JobList/Category/JobListCategory";
 import DropDownIcon from "../../assets/icons/dropdown_icon.svg?react";
 import { Container, FilterButton, JobListContainer } from "./style";
@@ -9,6 +8,7 @@ import useBottomSheet from "../../hooks/useBottomSheet";
 import { useState } from "react";
 import { JobNotice } from "../../interfaces/notice/jobNotice";
 import EmployerMenu from "../../components/Common/EmployerMenu/EmployerMenu";
+import EmployerHeader from "../../components/Common/EmployerHeader/EmployerHeader";
 
 const jobNoticeList: JobNotice[] = [
   {
@@ -61,7 +61,7 @@ const EmployerJobListPage = () => {
   return (
     <>
       <Container>
-        <MainHeader />
+        <EmployerHeader />
         <JobListCategory />
         <FilterButton onClick={() => setIsOpen(true)}>
           정렬 조건 선택

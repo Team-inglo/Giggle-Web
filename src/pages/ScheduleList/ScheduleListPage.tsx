@@ -1,5 +1,5 @@
 import ScheduleListSalary from "../../components/ScheduleList/Salary/ScheduleListSalary";
-import MainHeader from "../../components/Common/Header/MainHeader";
+import MainHeader from "../../components/Common/MainHeader/MainHeader";
 import Menu from "../../components/Common/Menu/Menu";
 import { Container } from "./style";
 
