@@ -3,6 +3,7 @@ import EmployerRegistrationInput from "./EmployerRegistrationInput";
 import { partTimeRecruitPostRequest } from "./types";
 import EmployerRegistrationInputSecond from "./EmployerRegistrationSecond";
 import EmployerRegistrationInputThird from "./EmployerRegistrationThird";
+import EmployerRegistrationFourth from "./EmployerRegistrationFourth";
 
 interface Props {
   pageNum: number;
@@ -45,6 +46,14 @@ const PageConnector = ({ pageNum, setPageNum, ...otherProps }: Props) => {
     case 3:
       return (
         <EmployerRegistrationInputThird
+          recruitInfo={recruitInfo}
+          setRecruitInfo={setRecruitInfo}
+          setPageNum={setPageNum}
+        />
+      );
+    case 4:
+      return (
+        <EmployerRegistrationFourth
           recruitInfo={recruitInfo}
           setRecruitInfo={setRecruitInfo}
           setPageNum={setPageNum}

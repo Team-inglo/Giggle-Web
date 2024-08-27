@@ -152,10 +152,23 @@ export const WorkTime = styled.div`
 
 export const SubmitButton = styled.div`
   position: absolute;
-  width: 100%;
+  width: calc(100% - 48px);
   bottom: 30px;
-  padding: 1rem;
+  padding: 1rem 0;
   border-radius: 0.5rem;
   font-size: 1rem;
   text-align: center;
+`;
+
+export const TextArea = styled.textarea`
+  resize: none;
+  width: 100%;
+  margin-bottom: 10px;
+  height: 70vh;
+  padding: 0.75rem 1rem;
+  border: 1px solid ${(props) => props.theme.colors.lightGray};
+  border-radius: 0.3rem;
+  color: ${(props) => props.theme.colors.lightBlack};
+  font-size: 1rem;
+  outline: none;
 `;
