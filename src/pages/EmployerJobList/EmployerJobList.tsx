@@ -66,7 +66,7 @@ const EmployerJobListPage = () => {
 
   const { isLoading, error, data } = useGetNoticeList(2, jobType, searchFilter);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div></div>;
   if (error) return <div>에러남: {error.message}</div>;
 
   return (

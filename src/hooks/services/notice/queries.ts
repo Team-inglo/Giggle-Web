@@ -25,3 +25,27 @@ export const useGetNoticeList = (userId: number, jobType: string, noticeListFilt
     queryKey: [QueryKeys.NOTICE, userId, jobType, noticeListFilter],
     queryFn: () => getNoticeList(userId, jobType, noticeListFilter),
   });
+
+/*
+아르바이트 공고 상세 조회하기
+*/
+
+const getNoticeDetail = (userId: number, id: number) => {
+  const headers = {
+    Authorization: `Bearer ${import.meta.env.VITE_APP_ACCESSTOKEN}`,
+  };
+
+  const params = {
+    userId: userId,
+  };
+  return axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/v1/users/announcements/${id}`, {
+    params: params,
+    headers: headers,
+  });
+};
+
+export const useGetNoticeDetail = (userId: number, id: number) =>
+  useQuery({
+    queryKey: [QueryKeys.NOTICE, userId, id],
+    queryFn: () => getNoticeDetail(userId, id),
+  });
