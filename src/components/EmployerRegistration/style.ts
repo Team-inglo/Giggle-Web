@@ -1,0 +1,102 @@
+import styled from "styled-components";
+
+export const InputBox = styled.div`
+  position: relative;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const InputTitle = styled.div`
+  padding-bottom: 0.3rem;
+  color: ${(props) => props.theme.colors.deepGray};
+  font-size: 1rem;
+  line-height: 1.5;
+`;
+
+export const Input = styled.input`
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid ${(props) => props.theme.colors.lightGray};
+  border-radius: 0.3rem;
+  color: ${(props) => props.theme.colors.lightBlack};
+  font-size: 1rem;
+  outline: none;
+`;
+
+export const InputText = styled.div`
+  position: absolute;
+  bottom: 1.8rem;
+  right: 1rem;
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.lightBlack};
+`;
+
+export const InputIcon = styled.div`
+  position: absolute;
+  bottom: 1.8rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const JobList = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 9px;
+  overflow-y: scroll;
+  .selected {
+    background-color: ${(props) => props.theme.colors.mainColor};
+    color: white;
+  }
+`;
+
+export const JobSelect = styled.div`
+  display: flex;
+  height: 50px;
+  padding: 16px 17px;
+  margin-bottom: 1rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.colors.lightGray};
+  font-size: 13px;
+  color: ${(props) => props.theme.colors.gray};
+`;
+
+export const SearchResultModal = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  border: 1px solid #D9D9D9;
+  padding: 8px;
+  color: #1E1E1E
+  fontSize: 14;
+  fontFamily: 'Inter';
+  fontWeight: '400';
+  lineHeight: 19.60;
+  wordWrap: 'break-word';
+  gap: 8px;
+`;
+
+export const PlaceContainer = styled.div`
+  color: #1e1e1e;
+  fontsize: 14;
+  fontfamily: "Inter";
+  fontweight: "400";
+  lineheight: 19.6;
+  wordwrap: "break-word";
+`;
+
+export const SubmitButton = styled.div`
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  text-align: center;
+`;

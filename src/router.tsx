@@ -9,6 +9,7 @@ import JobDetailPage from "./pages/JobDetail/JobDetailPage";
 import ChatBotPage from "./pages/ChatBot/ChatBotPage";
 import EmployerJobListPage from "./pages/EmployerJobList/EmployerJobList";
 import EmployerJobDetailPage from "./pages/EmployerJobDetail/EmployerJobDetailPage";
+import EmployerRegistrationPage from './pages/EmployerRegistration/EmployerRegistrationPage';
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
         <Route path="/chatbot" element={<ChatBotPage />} />
         <Route path="/notice-employer" element={<EmployerJobListPage />} />
         <Route path="/notice-employer/detail/:id" element={<EmployerJobDetailPage />} />
+        <Route path="/employer-registration" element={<EmployerRegistrationPage />} />
       </Routes>
     </BrowserRouter>
   );

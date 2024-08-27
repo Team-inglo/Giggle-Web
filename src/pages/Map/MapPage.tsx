@@ -6,7 +6,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import axios from "axios";
 import MainLayout from "../../components/Common/Menu/MainLayout";
 
-interface placeType {
+export interface placeType {
   place_name: string;
   distance: string;
   place_url: string;
