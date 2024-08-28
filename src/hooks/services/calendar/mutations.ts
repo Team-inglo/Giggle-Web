@@ -68,16 +68,22 @@ export const useDeletePartTime = (id: number) => {
 /*
 아르바이트 스케쥴 편집
 */
-const postSchedules = (partTimeId: number, schedules: TimeScheduleList) =>
-  axios.post(`${import.meta.env.VITE_APP_BASE_URL}/api/v1/applicants/schedules/${partTimeId}`, schedules, {
+
+type postSchedulesProp = {
+  partTimeId: number;
+  schedules: TimeScheduleList;
+};
+
+const postSchedules = (schedule: postSchedulesProp) =>
+  axios.post(`${import.meta.env.VITE_APP_BASE_URL}/api/v1/applicants/schedules/${schedule.partTimeId}`, schedule.schedules, {
     headers: headers,
   });
 
-export const usePostSchedules = (partTimeId: number, schedules: TimeScheduleList) => {
+export const usePostSchedules = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => postSchedules(partTimeId, schedules),
+    mutationFn: (schedule: postSchedulesProp) => postSchedules(schedule),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryKeys.CALENDAR] });
     },

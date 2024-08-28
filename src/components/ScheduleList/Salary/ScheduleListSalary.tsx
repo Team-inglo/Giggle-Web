@@ -16,7 +16,7 @@ const ScheduleListSalary = () => {
 
   const [date, setDate] = useState<Date>(today);
   const [year, setYear] = useState<number>(today.getFullYear());
-  const [month, setMonth] = useState<number>(today.getMonth());
+  const [month, setMonth] = useState<number>(today.getMonth() + 1);
 
   // 캘린더 년,월 변경 시 새로 조회하기
   const onChangeCalendarView = (newDate: Date) => {
