@@ -20,6 +20,7 @@ type ScheduleAddCalendarDaysProp = {
   onChangeCalendarView: (newDate: Date) => void;
   changedSchedules: Calendar[];
   setChangedSchedules: (value: Calendar[]) => void;
+  color: string | null;
 };
 
 const ScheduleAddCalendarDays = ({
@@ -27,6 +28,7 @@ const ScheduleAddCalendarDays = ({
   onChangeCalendarView,
   changedSchedules,
   setChangedSchedules,
+  color,
 }: ScheduleAddCalendarDaysProp) => {
   const [dates, setDates] = useState<string[]>([]);
   const [startTime, setStartTime] = useState<string>("");
@@ -78,7 +80,7 @@ const ScheduleAddCalendarDays = ({
             const selectedDate = moment(date).format("YYYY-MM-DD");
             // 선택한 부분 표시
             if (dates.includes(selectedDate)) {
-              html.push(<DotStyled key={moment(date).format("YYYY-MM-DD")}></DotStyled>);
+              html.push(<DotStyled key={moment(date).format("YYYY-MM-DD")} $color={color}></DotStyled>);
             } else if (changedSchedules.find((value) => value.date === selectedDate)) {
               // 선택 불가능한 부분 취소선
               html.push(<ForbiddenStyled key={moment(date).format("YYYY-MM-DD")}></ForbiddenStyled>);

@@ -160,6 +160,7 @@ const ScheduleAddInput = () => {
           onChangeCalendarView={onChangeCalendarView}
           changedSchedules={changedSchedules}
           setChangedSchedules={setChangedSchedules}
+          color={partTimeData?.color || null}
         />
       ) : (
         <ScheduleAddCalendar
@@ -167,6 +168,7 @@ const ScheduleAddInput = () => {
           onChangeCalendarView={onChangeCalendarView}
           changedSchedules={changedSchedules}
           setChangedSchedules={setChangedSchedules}
+          color={partTimeData?.color || null}
         />
       )}
       <SubmitButton onClick={onClickSubmit}>근로 기록하기</SubmitButton>

@@ -109,14 +109,14 @@ export const Container = styled.div`
 
 export const CalendarStyled = styled(Calendar)``;
 
-export const DotStyled = styled.div`
+export const DotStyled = styled.div<{ $color: string | null }>`
   position: absolute;
   top: 60%;
   left: 50%;
   transform: translateX(-50%);
   width: 10px;
   height: 10px;
-  background-color: ${(props) => props.theme.colors.mainColor};
+  background-color: ${(props) => (props.$color ? props.$color : props.theme.colors.mainColor)};
   border-radius: 50%;
 `;
 
