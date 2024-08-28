@@ -11,18 +11,19 @@ interface Props {
 }
 
 const PageConnector = ({ pageNum, setPageNum, ...otherProps }: Props) => {
+
   const [recruitInfo, setRecruitInfo] = useState<partTimeRecruitPostRequest>({
     title: "",
-    jobType: "ANY",
-    deadline: undefined,
-    hourlyWage: 0,
-    workStartDate: undefined,
-    workingPeriod: 0,
-    workDays: [],
+    job_type: "ANY",
+    dead_line: '2024-08-24',
+    hourly_wage: 0,
+    work_start_date: '2024-08-24',
+    working_period: 0,
+    work_days: [],
     age: 0,
     gender: "ANY",
     education: "ANY",
-    numberRecruited: 0,
+    number_recruited: 0,
     content: "",
   });
   switch (pageNum) {
