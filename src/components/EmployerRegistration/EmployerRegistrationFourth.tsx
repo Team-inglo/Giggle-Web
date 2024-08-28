@@ -3,6 +3,7 @@ import { partTimeRecruitPostRequest } from "./types";
 import { InputBox, InputTitle, SubmitButton, TextArea } from "./style";
 import CompleteModal from "./CompleteModal";
 import { useNavigate } from "react-router-dom";
+import { usePostRecruitPartTime } from "../../hooks/services/employer/mutations";
 
 interface Props {
   setPageNum: () => void;
@@ -14,8 +15,26 @@ const EmployerRegistrationFourth = ({ recruitInfo, setRecruitInfo }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const canGoNext = recruitInfo.content !== "";
   const navigate = useNavigate();
+
+  // service api 정의
+  const mutation = usePostRecruitPartTime();
+
   const handleClick = () => {
     canGoNext && setIsModalOpen(true);
+
+    // console.log(recruitInfo);
+
+    // 아르바이트 공고 생성 api 실행?
+    const body = recruitInfo;
+    mutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log("success: ", data);
+      },
+      onError: (error) => {
+        // I will fire second!
+        console.error("error: ", error.message);
+      },
+    });
   };
   return (
     <>
@@ -38,11 +57,13 @@ const EmployerRegistrationFourth = ({ recruitInfo, setRecruitInfo }: Props) => {
       >
         완료
       </SubmitButton>
+      {
       <CompleteModal
         visible={isModalOpen}
         onClose={() => navigate("/")}
         title="등록 완료되었습니다."
       />
+}
     </>
   );
 };
