@@ -26,7 +26,7 @@ const EmployerRegistrationInputThird = ({
     recruitInfo.age !== 0 &&
     recruitInfo.gender !== undefined &&
     recruitInfo.education !== undefined &&
-    recruitInfo.numberRecruited !== 0;
+    recruitInfo.number_recruited !== 0;
   const genderList = [
     { genderCode: "ANY", name: "전체" },
     { genderCode: "MALE", name: "남자" },
@@ -124,11 +124,11 @@ const EmployerRegistrationInputThird = ({
         <InputTitle>모집 인원</InputTitle>
         <Input
           placeholder="모집 인원"
-          value={recruitInfo.numberRecruited}
+          value={recruitInfo.number_recruited}
           onChange={(e) =>
             setRecruitInfo({
               ...recruitInfo,
-              numberRecruited: Number(e.target.value),
+              number_recruited: Number(e.target.value),
             })
           }
         />

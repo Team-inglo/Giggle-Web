@@ -80,8 +80,8 @@ const EmployerRegistrationInputSecond = ({
   ]);
   const [current, setCurrent] = useState<number>(0);
   const canGoNext =
-    recruitInfo.workStartDate !== undefined &&
-    recruitInfo.workingPeriod !== undefined &&
+    recruitInfo.work_start_date !== undefined &&
+    recruitInfo.working_period !== undefined &&
     !newWorkDays.every(
       (day) => day.workStartTime == undefined || day.workEndTime == undefined
     );
@@ -98,7 +98,7 @@ const EmployerRegistrationInputSecond = ({
           onChange={(e) =>
             setRecruitInfo({
               ...recruitInfo,
-              workStartDate: e.target.value as DateString,
+              work_start_date: e.target.value as DateString,
             })
           }
         />
@@ -107,12 +107,12 @@ const EmployerRegistrationInputSecond = ({
         <InputTitle>근무 기간</InputTitle>
         <Input
           placeholder="근무 기간 선택"
-          value={recruitInfo.workingPeriod}
+          value={recruitInfo.working_period}
           onChange={(e) =>
             handleInput(e.currentTarget.value, () =>
               setRecruitInfo({
                 ...recruitInfo,
-                workingPeriod: Number(e.currentTarget.value),
+                working_period: Number(e.currentTarget.value),
               })
             )
           }

@@ -19,16 +19,16 @@ interface Props {
 const EmployerRegistrationInput = ({ setPageNum }: Props) => {
   const [recruitInfo, setRecruitInfo] = useState<partTimeRecruitPostRequest>({
     title: "",
-    jobType: "ANY",
-    deadline: undefined,
-    hourlyWage: 0,
-    workStartDate: undefined,
-    workingPeriod: 0,
-    workDays: [],
+    job_type: "ANY",
+    dead_line: '2024-08-24',
+    hourly_wage: 0,
+    work_start_date: '2024-08-24',
+    working_period: 0,
+    work_days: [],
     age: 0,
     gender: "ANY",
     education: "ANY",
-    numberRecruited: 0,
+    number_recruited: 0,
     content: "",
   });
   const jobList = [
@@ -43,13 +43,14 @@ const EmployerRegistrationInput = ({ setPageNum }: Props) => {
   ];
   const canGoNext =
     recruitInfo.title !== "" &&
-    recruitInfo.jobType !== undefined &&
-    recruitInfo.hourlyWage !== 0 &&
-    recruitInfo.deadline !== undefined;
+    recruitInfo.job_type !== undefined &&
+    recruitInfo.hourly_wage !== 0 &&
+    recruitInfo.dead_line !== undefined;
 
   const handleClick = () => {
     canGoNext && setPageNum();
   };
+  
   return (
     <>
       <InputBox>
@@ -73,10 +74,10 @@ const EmployerRegistrationInput = ({ setPageNum }: Props) => {
               onClick={() =>
                 setRecruitInfo({
                   ...recruitInfo,
-                  jobType: job.jobCode as workType,
+                  job_type: job.jobCode as workType,
                 })
               }
-              className={recruitInfo.jobType === job.jobCode ? "selected" : ""}
+              className={recruitInfo.job_type === job.jobCode ? "selected" : ""}
             >
               {job.name}
             </JobSelect>
@@ -87,12 +88,12 @@ const EmployerRegistrationInput = ({ setPageNum }: Props) => {
         <InputTitle>시급</InputTitle>
         <Input
           placeholder="시급 입력"
-          value={recruitInfo.hourlyWage}
+          value={recruitInfo.hourly_wage}
           onChange={(e) =>
             handleInput(e.currentTarget.value, () =>
               setRecruitInfo({
                 ...recruitInfo,
-                hourlyWage: Number(e.currentTarget.value),
+                hourly_wage: Number(e.currentTarget.value),
               })
             )
           }
@@ -106,7 +107,7 @@ const EmployerRegistrationInput = ({ setPageNum }: Props) => {
           onChange={(e) =>
             setRecruitInfo({
               ...recruitInfo,
-              deadline: e.target.value as DateString,
+              dead_line: e.target.value as DateString,
             })
           }
         />
