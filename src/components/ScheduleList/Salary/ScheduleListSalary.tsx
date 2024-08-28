@@ -89,6 +89,7 @@ const ScheduleListSalary = () => {
   if (isLoading) return <div></div>;
   if (error) return <div>에러남: {error.message}</div>;
   const jobScheduleData: TotalSchedule = data?.data?.data;
+
   return (
     <>
       <Container>
@@ -99,7 +100,7 @@ const ScheduleListSalary = () => {
         <EditButton onClick={goToAddPage}>스케쥴 편집하기 +</EditButton>
         <ScheduleListCalendar jobScheduleData={jobScheduleData} date={date} setDate={setDate} onChangeCalendarView={onChangeCalendarView} />
         {jobScheduleData?.summary.map((data, idx) => (
-          <ScheduleListJob key={`${data.name}_${idx}`} data={data} />
+          <ScheduleListJob key={`${data.name}_${idx}`} data={data} schedules={jobScheduleData.schedules} />
         ))}
       </Container>
       <ScheduleListBottomSheet date={date} schedules={jobScheduleData?.schedules} />

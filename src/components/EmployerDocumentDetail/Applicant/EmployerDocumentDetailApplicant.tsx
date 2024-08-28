@@ -1,16 +1,26 @@
 import { ButtonContainer, CheckButton, Container, InfoBox, InfoContainer, InfoContent, InfoTitle, StatusText } from "./style";
 
-const EmployerDocumentDetailApplicant = () => {
+interface Applicant {
+  id: number;
+  name: string;
+  date: string;
+}
+
+type EmployerDocumentDetailApplicantProp = {
+  applicant: Applicant;
+};
+
+const EmployerDocumentDetailApplicant = ({ applicant }: EmployerDocumentDetailApplicantProp) => {
   return (
     <Container>
       <InfoContainer>
         <InfoBox>
           <InfoTitle>지원자</InfoTitle>
-          <InfoContent>이름</InfoContent>
+          <InfoContent>{applicant?.name}</InfoContent>
         </InfoBox>
         <InfoBox>
           <InfoTitle>지원날짜</InfoTitle>
-          <InfoContent>2024-08-20</InfoContent>
+          <InfoContent>{applicant?.date}</InfoContent>
         </InfoBox>
       </InfoContainer>
       <ButtonContainer>

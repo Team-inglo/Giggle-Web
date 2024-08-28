@@ -78,6 +78,24 @@ const noticeList: EmployerNotice[] = [
   },
 ];
 
+const applicants = [
+  {
+    id: 1,
+    name: "홍길동",
+    date: "2024-08-20",
+  },
+  {
+    id: 2,
+    name: "김사라",
+    date: "2024-08-25",
+  },
+  {
+    id: 3,
+    name: "권미라",
+    date: "2024-08-22",
+  },
+];
+
 const EmployerDocumentDetailJobInfo = () => {
   const params = useParams();
   const noticeDetail = noticeList.find((value) => value.announcementId === Number(params.id));
@@ -98,9 +116,9 @@ const EmployerDocumentDetailJobInfo = () => {
         </InfoWrapper>
       </InfoContainer>
       <ApplicantContainer>
-        <EmployerDocumentDetailApplicant />
-        <EmployerDocumentDetailApplicant />
-        <EmployerDocumentDetailApplicant />
+        {applicants.map((value) => (
+          <EmployerDocumentDetailApplicant key={value.id} applicant={value} />
+        ))}
       </ApplicantContainer>
     </>
   );

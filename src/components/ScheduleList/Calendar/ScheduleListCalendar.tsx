@@ -22,8 +22,7 @@ const ScheduleListCalendar = ({
     const set: Set<string> = new Set();
     for (const data of jobScheduleData.schedules) {
       if (parseArrToDate(data.startAt) === date) {
-        const findJobSummary = jobScheduleData.summary.find((value) => value.name === data.partTimeName);
-        findJobSummary && set.add(findJobSummary.color);
+        set.add(data?.partTimeColor ?? "#fff");
       }
     }
     return [...set];

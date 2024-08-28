@@ -1,10 +1,10 @@
-import { Summary } from "../../../interfaces/calendar/totalSchedule";
+import { Schedule, Summary } from "../../../interfaces/calendar/totalSchedule";
 import { ColorIcon, Container, ContentBox, Text, Title, TotalSalaryBox } from "./style";
 
-const ScheduleListJob = ({ data }: { data: Summary }) => {
+const ScheduleListJob = ({ data, schedules }: { data: Summary; schedules: Schedule[] }) => {
   return (
     <Container>
-      <ColorIcon color={data.color}></ColorIcon>
+      <ColorIcon color={schedules.find((value) => value?.partTimeColor === data.color)?.partTimeColor ?? "#fff"}></ColorIcon>
       <ContentBox>
         <Title>{data.name}</Title>
         <TotalSalaryBox>
