@@ -3,6 +3,7 @@ import EmployerMenu from "../../components/Common/EmployerMenu/EmployerMenu";
 import EmployerHeader from "../../components/Common/EmployerHeader/EmployerHeader";
 import EmployerDocumentTab from "../../components/EmployerDocument/Tab/EmployerDocumentTab";
 import { EmployerNotice } from "../../interfaces/document/employerNotice";
+import { useNavigate } from "react-router-dom";
 
 const ongoingNoticeList: EmployerNotice[] = [
   {
@@ -83,11 +84,17 @@ const completeNoticeList: EmployerNotice[] = [
 ];
 
 const EmployerDocumentPage = () => {
+  const navigate = useNavigate();
+
+  const goToRegistrationPage = () => {
+    navigate(`/employer-registration`);
+  };
+
   return (
     <>
       <Container>
         <EmployerHeader />
-        <AddJobButton>
+        <AddJobButton onClick={goToRegistrationPage}>
           공고 등록하기<AddJobIcon>+</AddJobIcon>
         </AddJobButton>
         <EmployerDocumentTab ongoingNoticeList={ongoingNoticeList} completeNoticeList={completeNoticeList} />
