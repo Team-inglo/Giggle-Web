@@ -10,6 +10,7 @@ import { Calendar, Schedule } from "../../../interfaces/calendar/totalSchedule";
 import moment from "moment";
 import { parseArrToDate, parseArrToTime } from "../../../utils/dateTimeUtil";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const schedules: Schedule[] = [
   {
@@ -42,32 +43,32 @@ const schedules: Schedule[] = [
   },
 ];
 
-const partTimes: PartTimeDetail[] = [
-  {
-    id: 1,
-    name: "알바1",
-    hourlyRate: 10000,
-    color: "#FFB65A",
-  },
-  {
-    id: 2,
-    name: "알바2",
-    hourlyRate: 11000,
-    color: "#7DD0B6",
-  },
-  {
-    id: 3,
-    name: "알바3",
-    hourlyRate: 12000,
-    color: "#c17dd0",
-  },
-  {
-    id: 4,
-    name: "알바4",
-    hourlyRate: 13000,
-    color: "#b6d07d",
-  },
-];
+// const partTimes: PartTimeDetail[] = [
+//   {
+//     id: 1,
+//     name: "알바1",
+//     hourlyRate: 10000,
+//     color: "#FFB65A",
+//   },
+//   {
+//     id: 2,
+//     name: "알바2",
+//     hourlyRate: 11000,
+//     color: "#7DD0B6",
+//   },
+//   {
+//     id: 3,
+//     name: "알바3",
+//     hourlyRate: 12000,
+//     color: "#c17dd0",
+//   },
+//   {
+//     id: 4,
+//     name: "알바4",
+//     hourlyRate: 13000,
+//     color: "#b6d07d",
+//   },
+// ];
 
 const ScheduleAddInput = () => {
   const navigate = useNavigate();
@@ -107,9 +108,28 @@ const ScheduleAddInput = () => {
     navigate(`/calendar`);
   };
 
-  useEffect(() => {
-    if (partTimeId) setPartTimeData(partTimes.find((value) => value.id === partTimeId) ?? null);
-  }, [partTimeId]);
+  // 특정 상황에서 UseQuery 쓰는 법 추후에 찾아보기!
+  const getPartTimeDetail = async (id: number | null) => {
+    if (!id) return;
+
+    const headers = {
+      Authorization: `Bearer ${import.meta.env.VITE_APP_ACCESSTOKEN}`,
+    };
+    axios
+      .get(`${import.meta.env.VITE_APP_BASE_URL}/api/v1/applicants/part-times/${id}`, {
+        headers: headers,
+      })
+      .then((res) => {
+        console.log("success: ", res);
+        setPartTimeData(res?.data?.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const onClickPartTime = (id: number) => {
+    setPartTimeId(id);
+    getPartTimeDetail(id);
+  };
 
   useEffect(() => {
     const calendarData = schedules.map((value) => {
@@ -122,7 +142,7 @@ const ScheduleAddInput = () => {
     <>
       <InputBox>
         <InputTitle>알바 선택</InputTitle>
-        <ScheduleAddDropDown setPartTimeId={setPartTimeId} />
+        <ScheduleAddDropDown onClickPartTime={onClickPartTime} />
       </InputBox>
       <InputBox>
         <InputTitle>시급</InputTitle>

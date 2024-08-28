@@ -26,7 +26,7 @@ import { useGetPartTimeList } from "../../../hooks/services/calendar/queries";
 //   },
 // ];
 
-const ScheduleAddDropDown = ({ setPartTimeId }: { setPartTimeId: (parTimeId: number) => void }) => {
+const ScheduleAddDropDown = ({ onClickPartTime }: { onClickPartTime: (parTimeId: number) => void }) => {
   const [isDropDown, setIsDropDown] = useState<boolean>(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
@@ -54,7 +54,7 @@ const ScheduleAddDropDown = ({ setPartTimeId }: { setPartTimeId: (parTimeId: num
   };
 
   const onClickOption = (id: number, name: string) => {
-    setPartTimeId(id);
+    onClickPartTime(id);
     setSelectedJob(name);
     setIsDropDown(false);
   };

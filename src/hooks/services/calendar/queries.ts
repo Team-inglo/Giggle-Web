@@ -32,13 +32,20 @@ export const useGetPartTimeList = () => useQuery({ queryKey: [QueryKeys.CALENDAR
 /*
 아르바이트 상세 조회
 */
-const getPartTimeDetail = async (id: number) => {
+const getPartTimeDetail = async (id: number | null) => {
+  if (!id) return;
   return axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/v1/applicants/part-times/${id}`, {
     headers: headers,
   });
 };
 
-export const useGetPartTimeDetail = (id: number) => useQuery({ queryKey: [QueryKeys.CALENDAR, id], queryFn: () => getPartTimeDetail(id) });
+export const useGetPartTimeDetail = (id: number | null) =>
+  useQuery({
+    queryKey: [QueryKeys.CALENDAR, id],
+    queryFn: () => getPartTimeDetail(id),
+    enabled: id ? true : false, // id가 존재할 때만 쿼리 활성화
+    retry: 3,
+  });
 
 /*
 특정 아르바이트 캘린더 조회
