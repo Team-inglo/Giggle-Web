@@ -79,7 +79,7 @@ const ScheduleAddInput = () => {
   const today = new Date();
 
   const [year, setYear] = useState<number>(today.getFullYear());
-  const [month, setMonth] = useState<number>(today.getMonth());
+  const [month, setMonth] = useState<number>(today.getMonth() + 1);
 
   const [partTimeId, setPartTimeId] = useState<number | null>(null); // 선택된 알바 id
   const [partTimeData, setPartTimeData] = useState<PartTimeDetail | null>(null); // 선택된 알바 상세 정보
@@ -87,7 +87,7 @@ const ScheduleAddInput = () => {
   //const [prevSchedules, setPrevSchedules] = useState<Calendar[]>([]); // 한 번이라도 조회한 달의 데이터
   const [changedSchedules, setChangedSchedules] = useState<Calendar[]>([]); // 이거 어떻게 변경할 지를 정해야 함!
 
-  const getPartTimeCalendar = async (partTimeId: number, _year: number, _month: number) => {
+  const getPartTimeCalendar = async (prevSchdule: Calendar[], partTimeId: number, _year: number, _month: number) => {
     const headers = {
       Authorization: `Bearer ${import.meta.env.VITE_APP_ACCESSTOKEN}`,
     };
@@ -110,7 +110,7 @@ const ScheduleAddInput = () => {
           const endAt = parseArrToTime(value.endAt);
           return { date: date, startAt: startAt, endAt: endAt };
         });
-        setChangedSchedules([...changedSchedules, ...newSchedule]);
+        setChangedSchedules([...prevSchdule, ...newSchedule]);
       })
       .catch((err) => console.error(err));
   };
@@ -123,7 +123,7 @@ const ScheduleAddInput = () => {
     const newMonth = moment(newDate).format("MM");
     if (!changedSchedules.some((value) => value.date.split("-")[0] === newYear && value.date.split("-")[1] === newMonth)) {
       // 새로 조회하기...
-      getPartTimeCalendar(partTimeId, Number(newYear), Number(newMonth));
+      getPartTimeCalendar(changedSchedules, partTimeId, Number(newYear), Number(newMonth));
     }
     setYear(Number(newYear));
     setMonth(Number(newMonth));
@@ -173,7 +173,7 @@ const ScheduleAddInput = () => {
       })
       .then((res) => {
         setPartTimeData(res?.data?.data);
-        getPartTimeCalendar(id, year, month);
+        getPartTimeCalendar([], id, year, month);
       })
       .catch((err) => console.log(err));
   };
