@@ -1,4 +1,4 @@
-import MainHeader from "../../components/Common/Header/MainHeader";
+import MainHeader from "../../components/Common/MainHeader/MainHeader";
 import Menu from "../../components/Common/Menu/Menu";
 import JobListCategory from "../../components/JobList/Category/JobListCategory";
 import DropDownIcon from "../../assets/icons/dropdown_icon.svg?react";
@@ -9,72 +9,89 @@ import JobListBottomSheet from "../../components/JobList/BottomSheet/JobListBott
 import useBottomSheet from "../../hooks/useBottomSheet";
 import { useState } from "react";
 import { JobNotice } from "../../interfaces/notice/jobNotice";
+import { NoticeListFilter } from "../../interfaces/notice/noticeListFilter";
+import { JOB_CATEGORY } from "../../constants/jobCategory";
+import { useGetNoticeList } from "../../hooks/services/notice/queries";
 
-const jobNoticeList: JobNotice[] = [
-  {
-    id: 1,
-    restOfDay: 25,
-    hourlyWage: 10000,
-    title: "파리바게트 파트타이머 모집",
-    addressName: "서울시 강북구 수유동",
-    numberRecruited: 1,
-  },
-  {
-    id: 2,
-    restOfDay: 15,
-    hourlyWage: 11000,
-    title: "베스킨라빈스 파트타이머 모집",
-    addressName: "서울시 강북구 솔샘로",
-    numberRecruited: 3,
-  },
-  {
-    id: 3,
-    restOfDay: 5,
-    hourlyWage: 10000,
-    title: "이마트 판촉 파트타이머 모집",
-    addressName: "서울시 강북구 한천로",
-    numberRecruited: 5,
-  },
-  {
-    id: 4,
-    restOfDay: 10,
-    hourlyWage: 11000,
-    title: "고등학생 영어 조교 모집",
-    addressName: "서울시 강북구 덕릉로",
-    numberRecruited: 2,
-  },
-  {
-    id: 5,
-    restOfDay: 30,
-    hourlyWage: 10000,
-    title: "롯데시네마 영화관 파트타이머 모집",
-    addressName: "서울시 중구",
-    numberRecruited: 4,
-  },
-];
+// const jobNoticeList: JobNotice[] = [
+//   {
+//     id: 1,
+//     restOfDay: 25,
+//     hourlyWage: 10000,
+//     title: "파리바게트 파트타이머 모집",
+//     addressName: "서울시 강북구 수유동",
+//     numberRecruited: 1,
+//   },
+//   {
+//     id: 2,
+//     restOfDay: 15,
+//     hourlyWage: 11000,
+//     title: "베스킨라빈스 파트타이머 모집",
+//     addressName: "서울시 강북구 솔샘로",
+//     numberRecruited: 3,
+//   },
+//   {
+//     id: 3,
+//     restOfDay: 5,
+//     hourlyWage: 10000,
+//     title: "이마트 판촉 파트타이머 모집",
+//     addressName: "서울시 강북구 한천로",
+//     numberRecruited: 5,
+//   },
+//   {
+//     id: 4,
+//     restOfDay: 10,
+//     hourlyWage: 11000,
+//     title: "고등학생 영어 조교 모집",
+//     addressName: "서울시 강북구 덕릉로",
+//     numberRecruited: 2,
+//   },
+//   {
+//     id: 5,
+//     restOfDay: 30,
+//     hourlyWage: 10000,
+//     title: "롯데시네마 영화관 파트타이머 모집",
+//     addressName: "서울시 중구",
+//     numberRecruited: 4,
+//   },
+// ];
 
 const JobListPage = () => {
   const { onDragEnd, controls, setIsOpen } = useBottomSheet();
 
-  const [jobFilter, setJobFilter] = useState<string[]>([]); // 정렬 조건 -> 남아있도록 하려면 상태 관리 필요할듯? + bottomSheet에도 기존 선택값 반영 필요
+  const [jobType, setJobType] = useState<string>(JOB_CATEGORY[0].key);
+  const [searchFilter, setSearchFilter] = useState<NoticeListFilter>({}); // 검색 필터 params
+  const [jobFilter, setJobFilter] = useState<string[]>([]); // 검색 조건 문자열
+  // 정렬 조건 -> 남아있도록 하려면 상태 관리 필요할듯? + bottomSheet에도 기존 선택값 반영 필요
+
+  const { isLoading, error, data } = useGetNoticeList(1, jobType, searchFilter);
+
+  if (isLoading) return <div></div>;
+  if (error) return <div>에러남: {error.message}</div>;
 
   return (
     <>
       <Container>
         <MainHeader />
-        <JobListCategory />
+        <JobListCategory jobType={jobType} setJobType={setJobType} />
         <FilterButton onClick={() => setIsOpen(true)}>
           정렬 조건 선택
           <DropDownIcon />
         </FilterButton>
         <JobListFilter jobFilter={jobFilter} />
         <JobListContainer>
-          {jobNoticeList.map((jobNotice) => (
+          {data?.data?.announcements.map((jobNotice: JobNotice) => (
             <JobListNotice key={jobNotice.id} jobNotice={jobNotice} />
           ))}
         </JobListContainer>
       </Container>
-      <JobListBottomSheet onDragEnd={onDragEnd} controls={controls} setIsOpen={setIsOpen} setJobFilter={setJobFilter} />
+      <JobListBottomSheet
+        onDragEnd={onDragEnd}
+        controls={controls}
+        setIsOpen={setIsOpen}
+        setJobFilter={setJobFilter}
+        setSearchFilter={setSearchFilter}
+      />
       <Menu />
     </>
   );

@@ -1,19 +1,12 @@
-import {
-  Container,
-  LeftDate,
-  ProgressBar,
-  ProgressBarBox,
-  Title,
-  VisaBox,
-  VisaButton,
-} from "./style";
+import { HomeInfo } from "../../../interfaces/home/homeInfo";
+import { Container, LeftDate, ProgressBar, ProgressBarBox, Title, VisaBox, VisaButton } from "./style";
 
-const MainVisaInfo = () => {
+const MainVisaInfo = ({ homeInfo }: { homeInfo: HomeInfo }) => {
   return (
     <Container>
       <VisaBox>
         <Title>남은 체류 기간</Title>
-        <LeftDate>D-132</LeftDate>
+        <LeftDate>{homeInfo?.periodOfStay}</LeftDate>
         <ProgressBarBox>
           <ProgressBar></ProgressBar>
         </ProgressBarBox>

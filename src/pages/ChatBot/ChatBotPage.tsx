@@ -8,9 +8,9 @@ import {
   ChatBotContent,
   ChatBotName,
   ChatBotText,
-  ChatBotTime,
   Container,
   ContentContainer,
+  GiGiIconWrapper,
   HeaderContainer,
   Input,
   InputContainer,
@@ -18,11 +18,56 @@ import {
   UserChatBox,
   UserChatContent,
   UserChatText,
-  UserChatTime,
 } from "./style";
+import { usePostChat } from "../../hooks/services/chatbot/mutations";
+import { useState } from "react";
+
+interface ChatBotPage {
+  isBot: boolean;
+  message: string;
+  // 시간 값도 필요함...
+}
 
 const ChatBotPage = () => {
   const navigate = useNavigate();
+
+  const [prompt, setPrompt] = useState<string>("");
+  const [chatData, setChatData] = useState<ChatBotPage[]>([]);
+
+  const mutation = usePostChat();
+
+  const onClickSubmit = () => {
+    if (!prompt) return;
+
+    const newUserChatData = {
+      isBot: false,
+      message: prompt,
+    };
+
+    setChatData([...chatData, newUserChatData]);
+    setPrompt("");
+
+    mutation.mutate(
+      { userId: 1, prompt: prompt },
+      {
+        onSuccess: (data) => {
+          // I will fire second!
+          const newChatBotData = {
+            isBot: true,
+            message: data?.data?.data,
+          };
+
+          console.log("success: ", data);
+
+          setChatData([...chatData, newUserChatData, newChatBotData]);
+        },
+        onError: (error) => {
+          // I will fire second!
+          console.error("error: ", error.message);
+        },
+      }
+    );
+  };
 
   return (
     <Container>
@@ -34,24 +79,30 @@ const ChatBotPage = () => {
         <ChatBotName>GIGI</ChatBotName>
       </HeaderContainer>
       <ContentContainer>
-        <ChatBotBox>
-          <GiGiIcon />
-          <ChatBotContent>
-            <ChatBotText>difuherogih</ChatBotText>
-            <ChatBotTime>12:12</ChatBotTime>
-          </ChatBotContent>
-        </ChatBotBox>
-        <UserChatBox>
-          <UserChatContent>
-            <UserChatText>difuherogihherogihherogihherogihherogih</UserChatText>
-            <UserChatTime>12:12</UserChatTime>
-          </UserChatContent>
-        </UserChatBox>
+        {chatData.map((data, idx) =>
+          data.isBot ? (
+            <ChatBotBox key={idx}>
+              <GiGiIconWrapper>
+                <GiGiIcon />
+              </GiGiIconWrapper>
+              <ChatBotContent>
+                <ChatBotText>{data.message}</ChatBotText>
+                {/* <ChatBotTime>12:12</ChatBotTime> */}
+              </ChatBotContent>
+            </ChatBotBox>
+          ) : (
+            <UserChatBox key={idx}>
+              <UserChatContent>
+                <UserChatText>{data.message}</UserChatText>
+                {/* <UserChatTime>12:12</UserChatTime> */}
+              </UserChatContent>
+            </UserChatBox>
+          )
+        )}
       </ContentContainer>
-      {/* 이거 모바일에서 키보드나올 때 인풋창도 같이 올라오도록 해야할듯한데? */}
       <InputContainer>
-        <Input placeholder="입력해주세요." />
-        <SubmitButton>
+        <Input placeholder="입력해주세요." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+        <SubmitButton onClick={onClickSubmit}>
           <SendIcon />
         </SubmitButton>
       </InputContainer>

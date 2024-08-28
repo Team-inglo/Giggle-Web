@@ -7,6 +7,7 @@ import { Container, EditButton, TotalSalaryBox, TotalSalaryText } from "./style"
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { TotalSchedule } from "../../../interfaces/calendar/totalSchedule";
+import { useGetCalendar } from "../../../hooks/services/calendar/queries";
 
 const ScheduleListSalary = () => {
   const navigate = useNavigate();
@@ -14,8 +15,8 @@ const ScheduleListSalary = () => {
   const today = new Date();
 
   const [date, setDate] = useState<Date>(today);
-  const [, setYear] = useState<number>(today.getFullYear());
-  const [, setMonth] = useState<number>(today.getMonth());
+  const [year, setYear] = useState<number>(today.getFullYear());
+  const [month, setMonth] = useState<number>(today.getMonth() + 1);
 
   // 캘린더 년,월 변경 시 새로 조회하기
   const onChangeCalendarView = (newDate: Date) => {
@@ -24,71 +25,76 @@ const ScheduleListSalary = () => {
   };
 
   // 알바 날짜 예시
-  const jobScheduleData: TotalSchedule = {
-    summary: [
-      {
-        name: "베스킨라빈스",
-        totalHour: 5.0,
-        salary: 55000.0,
-        color: "#FFB65A",
-      },
-      {
-        name: "파리바게트",
-        totalHour: 16.0,
-        salary: 160000.0,
-        color: "#7DD0B6",
-      },
-    ],
-    totalSalary: 215000.0,
-    schedules: [
-      {
-        id: 1,
-        partTimeName: "파리바게트",
-        hourlyRate: 10000,
-        startAt: [2024, 8, 25, 9, 0],
-        endAt: [2024, 8, 25, 17, 0],
-      },
-      {
-        id: 2,
-        partTimeName: "파리바게트",
-        hourlyRate: 10000,
-        startAt: [2024, 8, 26, 10, 0],
-        endAt: [2024, 8, 26, 18, 0],
-      },
-      {
-        id: 3,
-        partTimeName: "베스킨라빈스",
-        hourlyRate: 11000,
-        startAt: [2024, 8, 16, 9, 0],
-        endAt: [2024, 8, 16, 12, 0],
-      },
-      {
-        id: 4,
-        partTimeName: "베스킨라빈스",
-        hourlyRate: 11000,
-        startAt: [2024, 8, 18, 10, 0],
-        endAt: [2024, 8, 18, 12, 0],
-      },
-      {
-        id: 2,
-        partTimeName: "베스킨라빈스",
-        hourlyRate: 10000,
-        startAt: [2024, 8, 25, 10, 0],
-        endAt: [2024, 8, 25, 18, 0],
-      },
-    ],
-  };
+  // const jobScheduleData: TotalSchedule = {
+  //   summary: [
+  //     {
+  //       name: "베스킨라빈스",
+  //       totalHour: 5.0,
+  //       salary: 55000.0,
+  //       color: "#FFB65A",
+  //     },
+  //     {
+  //       name: "파리바게트",
+  //       totalHour: 16.0,
+  //       salary: 160000.0,
+  //       color: "#7DD0B6",
+  //     },
+  //   ],
+  //   totalSalary: 215000.0,
+  //   schedules: [
+  //     {
+  //       id: 1,
+  //       partTimeName: "파리바게트",
+  //       hourlyRate: 10000,
+  //       startAt: [2024, 8, 25, 9, 0],
+  //       endAt: [2024, 8, 25, 17, 0],
+  //     },
+  //     {
+  //       id: 2,
+  //       partTimeName: "파리바게트",
+  //       hourlyRate: 10000,
+  //       startAt: [2024, 8, 26, 10, 0],
+  //       endAt: [2024, 8, 26, 18, 0],
+  //     },
+  //     {
+  //       id: 3,
+  //       partTimeName: "베스킨라빈스",
+  //       hourlyRate: 11000,
+  //       startAt: [2024, 8, 16, 9, 0],
+  //       endAt: [2024, 8, 16, 12, 0],
+  //     },
+  //     {
+  //       id: 4,
+  //       partTimeName: "베스킨라빈스",
+  //       hourlyRate: 11000,
+  //       startAt: [2024, 8, 18, 10, 0],
+  //       endAt: [2024, 8, 18, 12, 0],
+  //     },
+  //     {
+  //       id: 2,
+  //       partTimeName: "베스킨라빈스",
+  //       hourlyRate: 10000,
+  //       startAt: [2024, 8, 25, 10, 0],
+  //       endAt: [2024, 8, 25, 18, 0],
+  //     },
+  //   ],
+  // };
 
   const goToAddPage = () => {
     navigate("/calendar/add");
   };
 
+  const { isLoading, error, data } = useGetCalendar(year.toString(), month.toString());
+
+  if (isLoading) return <div></div>;
+  if (error) return <div>에러남: {error.message}</div>;
+  const jobScheduleData: TotalSchedule = data?.data?.data;
   return (
     <>
       <Container>
         <TotalSalaryBox>
           <TotalSalaryText>월급</TotalSalaryText>
-          <TotalSalaryText>{jobScheduleData.totalSalary}원</TotalSalaryText>
+          <TotalSalaryText>{jobScheduleData?.totalSalary}원</TotalSalaryText>
         </TotalSalaryBox>
         <EditButton onClick={goToAddPage}>스케쥴 편집하기 +</EditButton>
         <ScheduleListCalendar jobScheduleData={jobScheduleData} date={date} setDate={setDate} onChangeCalendarView={onChangeCalendarView} />
@@ -96,7 +102,7 @@ const ScheduleListSalary = () => {
           <ScheduleListJob key={`${data.name}_${idx}`} data={data} />
         ))}
       </Container>
-      <ScheduleListBottomSheet date={date} schedules={jobScheduleData.schedules} />
+      <ScheduleListBottomSheet date={date} schedules={jobScheduleData?.schedules} />
     </>
   );
 };

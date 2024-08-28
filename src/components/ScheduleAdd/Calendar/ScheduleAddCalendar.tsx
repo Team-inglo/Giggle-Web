@@ -21,6 +21,7 @@ type ScheduleAddCalendarProp = {
   onChangeCalendarView: (newDate: Date) => void;
   changedSchedules: Calendar[];
   setChangedSchedules: (value: Calendar[]) => void;
+  color: string | null;
 };
 
 const ScheduleAddCalendar = ({
@@ -28,6 +29,7 @@ const ScheduleAddCalendar = ({
   onChangeCalendarView,
   changedSchedules,
   setChangedSchedules,
+  color,
 }: ScheduleAddCalendarProp) => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<string>();
@@ -77,7 +79,7 @@ const ScheduleAddCalendar = ({
             if (view !== "month") return;
             const html = [];
             if (changedSchedules.some((value) => value.date === moment(date).format("YYYY-MM-DD"))) {
-              html.push(<DotStyled key={moment(date).format("YYYY-MM-DD")}></DotStyled>);
+              html.push(<DotStyled key={moment(date).format("YYYY-MM-DD")} $color={color}></DotStyled>);
             }
             return <>{html}</>;
           }}

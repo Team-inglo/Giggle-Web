@@ -15,10 +15,9 @@ import MapPinIcon from "../../../assets/icons/map_pin_icon.svg?react";
 import EyeOffIcon from "../../../assets/icons/eye_off_icon.svg?react";
 import EyeOnIcon from "../../../assets/icons/eye_on_icon.svg?react";
 import { useState } from "react";
+import { HomeInfo } from "../../../interfaces/home/homeInfo";
 
-const foreignNumber = "123456-1234567";
-
-const MainUserInfo = () => {
+const MainUserInfo = ({ homeInfo }: { homeInfo: HomeInfo }) => {
   const [showNumber, setShowNumber] = useState<boolean>(false);
 
   const onClickShowNumber = () => {
@@ -32,8 +31,8 @@ const MainUserInfo = () => {
   return (
     <Container>
       <UserNameBox>
-        <UserName>정은지님</UserName>
-        <UserCountry>미국</UserCountry>
+        <UserName>{homeInfo?.name}님</UserName>
+        <UserCountry>{homeInfo?.nationality}</UserCountry>
       </UserNameBox>
       <InfoBox>
         <InfoContentBox>
@@ -42,7 +41,7 @@ const MainUserInfo = () => {
           </InfoIcon>
           <InfoTextBox>
             <InfoTitle>외국인 등록번호</InfoTitle>
-            <InfoContent>{showNumber ? foreignNumber : "******-*******"}</InfoContent>
+            <InfoContent>{showNumber ? homeInfo?.registrationNumber : "******-*******"}</InfoContent>
           </InfoTextBox>
         </InfoContentBox>
         {showNumber ? <EyeOnIcon onClick={onClickHiddenNumber} /> : <EyeOffIcon onClick={onClickShowNumber} />}
@@ -54,7 +53,7 @@ const MainUserInfo = () => {
           </InfoIcon>
           <InfoTextBox>
             <InfoTitle>거주지</InfoTitle>
-            <InfoContent>서울특별시 강북구 수유동 222-55</InfoContent>
+            <InfoContent>{homeInfo?.addressName}</InfoContent>
           </InfoTextBox>
         </InfoContentBox>
       </InfoBox>
