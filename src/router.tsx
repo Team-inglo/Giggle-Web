@@ -9,6 +9,7 @@ import JobDetailPage from "./pages/JobDetail/JobDetailPage";
 import ChatBotPage from "./pages/ChatBot/ChatBotPage";
 import EmployerJobListPage from "./pages/EmployerJobList/EmployerJobList";
 import EmployerJobDetailPage from "./pages/EmployerJobDetail/EmployerJobDetailPage";
+import EmployerRegistrationPage from "./pages/EmployerRegistration/EmployerRegistrationPage";
 import ScrollToTop from "./components/Common/ScrollToTop/ScrollToTop";
 import EmployerDocumentPage from "./pages/EmployerDocument/EmployerDocumentPage";
 import EmployerDocumentDetailPage from "./pages/EmployerDocumentDetail/EmployerDocumentDetail";
@@ -28,6 +29,7 @@ const Router = () => {
         <Route path="/chatbot" element={<ChatBotPage />} />
         <Route path="/notice-employer" element={<EmployerJobListPage />} />
         <Route path="/notice-employer/detail/:id" element={<EmployerJobDetailPage />} />
+        <Route path="/employer-registration" element={<EmployerRegistrationPage />} />
         <Route path="/document-employer" element={<EmployerDocumentPage />} />
         <Route path="/document-employer/:id" element={<EmployerDocumentDetailPage />} />
       </Routes>
