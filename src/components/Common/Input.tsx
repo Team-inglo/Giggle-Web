@@ -15,11 +15,12 @@ type InputStatus = (typeof INPUT_STATUS)[keyof typeof INPUT_STATUS];
 type InputProps = {
   inputType: 'INPUT' | 'PASSWORD' | 'SEARCH'; // 입력 필드의 타입
   placeholder: string; // 플레이스홀더 텍스트
+  value: string | undefined; // 입력 필드의 현재 값
   onChange: (value: string) => void; // 입력값 변경 시 호출될 함수
   canDelete: boolean; // 삭제 버튼 표시 여부
-  isInvalid: boolean; // 유효하지 않은 입력 상태 여부
+  clearInvalid?: () => void; // 토글 시 invalid 상태를 해제할 함수 (선택적)
+  isInvalid?: boolean; // 유효하지 않은 입력 상태 여부 (선택적)
   onDelete?: () => void; // 삭제 버튼 클릭 시 호출될 함수 (선택적)
-  value: string; // 입력 필드의 현재 값
 };
 
 // inputStyler 함수: 입력 필드의 상태에 따른 스타일을 반환합니다.
@@ -41,6 +42,7 @@ const Input = ({
   onChange,
   canDelete,
   onDelete,
+  clearInvalid,
   isInvalid,
   value,
 }: InputProps) => {
@@ -54,12 +56,22 @@ const Input = ({
 
   // isInvalid prop이 변경될 때 상태를 업데이트합니다.
   useEffect(() => {
-    setCurrentStatus(isInvalid ? INPUT_STATUS.INVALID : INPUT_STATUS.DISABLED);
+    if (isInvalid) setCurrentStatus(INPUT_STATUS.INVALID);
   }, [isInvalid]);
 
   // 입력값 변경 핸들러
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (clearInvalid) clearInvalid();
     onChange(e.target.value);
+  };
+
+  const handleFocus = (type: string) => {
+    if (clearInvalid) clearInvalid();
+    if (type === 'click') {
+      setCurrentStatus(INPUT_STATUS.TYPING);
+      return;
+    }
+    setCurrentStatus(INPUT_STATUS.DISABLED);
   };
 
   return (
@@ -72,8 +84,8 @@ const Input = ({
         placeholder={placeholder}
         value={value}
         className={'w-full outline-none placeholder:text-[var(--input-color)]'}
-        onClick={() => setCurrentStatus(INPUT_STATUS.TYPING)}
-        onBlur={() => setCurrentStatus(INPUT_STATUS.DISABLED)}
+        onClick={() => handleFocus('click')}
+        onBlur={() => handleFocus('blur')}
         onChange={handleInputChange}
         type={
           inputType === 'PASSWORD'

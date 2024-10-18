@@ -1,15 +1,15 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
 import DatePicker from './DatePicker';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {
   title?: string; // 드롭다운의 제목 (선택적)
-  value: string; // 현재 선택된 값
+  value: string | undefined; // 현재 선택된 값
   placeholder: string; // 플레이스홀더 텍스트
   options: Array<string>; // 드롭다운 옵션 목록
   isCalendar?: boolean; // 캘린더 모드 여부 (선택적)
-  setValue: Dispatch<SetStateAction<string>>; // 선택된 값을 설정하는 함수
+  setValue: (value: string) => void; // 선택된 값을 설정하는 함수
 };
 
 // DropdownModal 컴포넌트: 드롭다운 옵션을 표시하는 모달
@@ -19,7 +19,7 @@ const DropdownModal = ({
   onSelect,
 }: {
   options: string[];
-  value: string;
+  value: string | undefined;
   onSelect: (option: string) => void;
 }) => {
   return (
@@ -88,7 +88,7 @@ const Dropdown = ({
                   isOpen ? '' : 'rotate-180'
                 }`}
               >
-                <ArrowIcon isMarked={value !== ''} />
+                <ArrowIcon isMarked={value !== undefined} />
               </div>
             </button>
           </div>

@@ -1,0 +1,6 @@
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="btn_radio_on">
+<circle id="radio_off" cx="12.5" cy="12" r="8.5" stroke="#1E1926"/>
+<circle id="radio_on" cx="12.5" cy="12" r="5" fill="#1E1926"/>
+</g>
+</svg>
