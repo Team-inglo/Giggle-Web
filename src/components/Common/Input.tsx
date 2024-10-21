@@ -77,7 +77,7 @@ const Input = ({
 
   return (
     <div
-      className={`w-full flex gap-2 items-center justify-between text-left text-sm font-[Pretendard] border rounded-xl ${inputStyler(currentStatus)} bg-white py-[10px] pl-4 pr-[14px]`}
+      className={`w-full flex gap-2 items-center justify-between text-left body-2 border rounded-xl ${inputStyler(currentStatus)} bg-white py-[10px] pl-4 pr-[14px]`}
     >
       {/* 검색 타입일 경우 검색 아이콘을 표시합니다. */}
       {inputType === 'SEARCH' && <SearchIcon />}

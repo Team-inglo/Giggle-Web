@@ -1,6 +1,6 @@
 const StepIndicator = ({ currentStep }: { currentStep: number }) => {
   return (
-    <div className="relative w-full flex flex-row items-center justify-center text-center text-xs text-[#bdbdbd] font-[Pretendard]">
+    <div className="relative w-full flex flex-row items-center justify-center text-center body-3 text-[#bdbdbd]">
       <div
         className={`relative flex items-center justify-center w-[1.5rem] h-[1.5rem] text-[#464646]`}
       >

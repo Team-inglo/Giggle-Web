@@ -1,4 +1,4 @@
-import { SignInRequest, SignInResponse } from '@/types/api/auth';
+import { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse } from '@/types/api/auth';
 import { api } from './index.ts';
 
 /**
@@ -27,3 +27,8 @@ export const signIn = async (
   const response = await api.post(`/auth/sign-in`, signinInfo);
   return response.data;
 };
+
+export const signUp = async (signupInfo : SignUpRequest): Promise<SignUpResponse> => {
+  const response = await api.post(`/auth/users`, signupInfo);
+  return response.data;
+}

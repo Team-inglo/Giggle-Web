@@ -42,7 +42,7 @@ const DatePicker = ({ setSelectedDate }: Props) => {
   };
 
   return (
-    <div className="w-full relative rounded-[11px] bg-white border border-[rgba(55,56,60,0.16)] box-border flex flex-col items-end justify-start py-5 gap-5 text-center text-xs text-[#121212] font-[Inter]">
+    <div className="w-full relative rounded-[11px] bg-white border border-[rgba(55,56,60,0.16)] box-border flex flex-col items-end justify-start py-5 gap-5 text-center body-3 text-[#121212]">
       <div className={styles.customCalendar}>
         <Calendar
           onChange={setValue} // 날짜 선택 시 호출되는 핸들러

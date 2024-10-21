@@ -26,7 +26,7 @@ export enum Visa {
   'F-2' = 'F-2',
 }
 
-enum Language {
+export enum Language {
   KOREAN = 'KOREAN',
   VIETNAMESE = 'VIETNAMESE',
   UZBEK = 'UZBEK',

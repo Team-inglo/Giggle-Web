@@ -13,6 +13,7 @@ import { Document } from '@/types/api/map';
 import { DropdownModal } from '../Common/Dropdown';
 import { AddressType } from '@/types/api/map';
 import { pick } from '../../utils/map';
+import Button from '../Common/Button';
 
 type AddressStepProps = {
   userInfo: UserInfoRequestBody;
@@ -103,7 +104,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
       <div className="w-full flex flex-col gap-[1.125rem]">
         {/* 주소 검색 입력 input */}
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Main Address
           </div>
           <Input
@@ -142,7 +143,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
           </Map>
         </div>
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Detailed Address
           </div>
           <Input
@@ -159,19 +160,27 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
       {/* 다음 step 이동 버튼 포함한 Bottom Panel */}
       <BottomButtonPanel>
         {newAddress.region_1depth_name === '' ? (
-          <button className="w-[15rem] bg-[#F4F4F9]">Next</button>
+          <Button
+            type="large"
+            bgColor="bg-[#F4F4F9]"
+            fontColor=""
+            isBorder={false}
+            title="Next"
+          />
         ) : (
-          <button
-            className="w-[15rem] bg-[#fef387]"
+          <Button
+            type="large"
+            bgColor="bg-[#fef387]"
+            fontColor=""
+            isBorder={false}
+            title="Next"
             onClick={() =>
               onNext({
                 ...userInfo,
                 address: newAddress,
               })
             }
-          >
-            Next
-          </button>
+          />
         )}
       </BottomButtonPanel>
     </div>

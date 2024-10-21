@@ -23,7 +23,7 @@ export const DropdownModal = ({
   onSelect: (option: string) => void;
 }) => {
   return (
-    <div className="w-full relative shadow rounded-2xl bg-white border border-[#dcdcdc] flex flex-row items-start justify-start p-2 text-left text-sm text-[#656565] font-['Pretendard']">
+    <div className="w-full relative shadow rounded-2xl bg-white border border-[#dcdcdc] flex flex-row items-start justify-start p-2 text-left body-2 text-[#656565]">
       <div className="flex-1 flex flex-col items-start justify-start gap-[5px]">
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
@@ -60,7 +60,7 @@ const Dropdown = ({
     <div className="w-full flex flex-col">
       {/* 드롭다운 제목 (있는 경우에만 표시) */}
       {title && (
-        <div className="w-full relative flex flex-row items-center justify-start px-1 py-1.5 box-border text-left text-xs text-[#222] font-[Pretendard]">
+        <div className="w-full relative flex flex-row items-center justify-start px-1 py-1.5 box-border text-left body-3 text-[#222]">
           <div className="flex-1 overflow-hidden flex flex-col items-start justify-start">
             <div className="self-stretch flex flex-row items-center justify-start">
               <div className="relative leading-4">{title}</div>
@@ -70,7 +70,7 @@ const Dropdown = ({
       )}
       {/* 드롭다운 입력 영역 */}
       <div className="w-full flex flex-col gap-2">
-        <div className="w-full relative shadow rounded-lg bg-white border border-[#eae9f6] box-border h-11 flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left text-sm text-[#656565] font-[Pretendard]">
+        <div className="w-full relative shadow rounded-lg bg-white border border-[#eae9f6] box-border h-11 flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-2 text-[#656565]">
           <div className="flex-1 h-5 flex flex-row items-center justify-between">
             <input
               className="w-full relative leading-5 outline-none bg-white"

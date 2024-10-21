@@ -22,3 +22,5 @@ export const visa: Array<string> = [
 export const phone = ['010', '+81', '+86', '+84', '+998', '+90', '+7'];
 
 export const gender = ['Male', 'Female', 'None'];
+
+export const languageList = ['English', 'Korean', 'Vietnamese', 'Uzbek', 'Turkish']

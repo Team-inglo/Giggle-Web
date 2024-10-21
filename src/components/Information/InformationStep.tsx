@@ -12,6 +12,7 @@ import { country, gender, phone, visa } from '@/constants/information';
 import RadioButton from './RadioButton';
 import { InputType } from '../../types/common/input';
 import BottomButtonPanel from '../Common/BottomButtonPanel';
+import Button from '../Common/Button';
 
 const InformationStep = ({
   userInfo,
@@ -58,7 +59,7 @@ const InformationStep = ({
       <div className="w-full flex flex-col gap-[1.125rem]">
         {/* 이름 작성 */}
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             First Name
           </div>
           <Input
@@ -73,7 +74,7 @@ const InformationStep = ({
         </div>
         {/* 성 작성 */}
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Last Name
           </div>
           <Input
@@ -87,7 +88,7 @@ const InformationStep = ({
           />
         </div>
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Gender
           </div>
           <div className="w-full flex flex-row gap-[1.75rem]">
@@ -107,7 +108,7 @@ const InformationStep = ({
         </div>
         {/* 생년월일 선택 */}
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Date of birth
           </div>
           <Dropdown
@@ -122,7 +123,7 @@ const InformationStep = ({
         </div>
         {/* 국적 선택 */}
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Nationality
           </div>
           <Dropdown
@@ -136,7 +137,7 @@ const InformationStep = ({
         </div>
         {/* 비자 선택 */}
         <div className="w-full">
-          <div className="w-full flex items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Visa Status
           </div>
           <Dropdown
@@ -150,7 +151,7 @@ const InformationStep = ({
         </div>
         {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
         <div className="w-full">
-          <div className="w-full flex flex-row items-center justify-start text-xs font-[Pretendard] color-[#222] px-[0.25rem] py-[0.375rem]">
+          <div className="w-full flex flex-row items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
             Telephone No.
           </div>
           <div className="w-full flex flex-row gap-2 justify-between mb-[30rem]">
@@ -182,10 +183,20 @@ const InformationStep = ({
       {/* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */}
       <BottomButtonPanel>
         {isInvalid ? (
-          <button className="w-[15rem] bg-[#F4F4F9]">Next</button>
+          <Button
+            type="large"
+            bgColor="bg-[#F4F4F9]"
+            fontColor=""
+            isBorder={false}
+            title="Next"
+          />
         ) : (
-          <button
-            className="w-[15rem] bg-[#fef387]"
+          <Button
+            type="large"
+            bgColor="bg-[#fef387]"
+            fontColor="text-[#222]"
+            isBorder={false}
+            title="Next"
             onClick={() =>
               onNext({
                 ...userInfo,
@@ -195,9 +206,7 @@ const InformationStep = ({
                 },
               })
             }
-          >
-            Next
-          </button>
+          />
         )}
       </BottomButtonPanel>
     </div>
