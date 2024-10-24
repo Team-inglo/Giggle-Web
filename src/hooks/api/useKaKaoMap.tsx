@@ -1,6 +1,11 @@
 import { getGeoInfo, searchAddress } from '@/api/map';
 import { Document, GeoPosition, UseSearchAddressProps } from '@/types/api/map';
-import { useMutation, UseMutationResult, useQuery } from '@tanstack/react-query';
+import {
+  UseMutateFunction,
+  useMutation,
+  UseMutationResult,
+  useQuery,
+} from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
 
 export function useGetGeoInfo(
@@ -12,11 +17,15 @@ export function useGetGeoInfo(
   });
 }
 
+type SearchAddressMutation = Omit<UseMutationResult<Document[], unknown, string, unknown>, 'mutate'> & {
+  searchAddress: UseMutateFunction<Document[], unknown, string, unknown>;
+};
+
 export const useSearchAddress = ({
   onSuccess,
   onError,
-}: UseSearchAddressProps): UseMutationResult<Document[], unknown, string, unknown> => {
-  return useMutation({
+}: UseSearchAddressProps): SearchAddressMutation => {
+  const { mutate, ...rest } = useMutation({
     mutationFn: searchAddress,
     onSuccess,
     onError: (error) => {
@@ -24,4 +33,5 @@ export const useSearchAddress = ({
       onError?.(error);
     },
   });
+  return { searchAddress: mutate, ...rest };
 };

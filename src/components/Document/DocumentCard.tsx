@@ -119,10 +119,9 @@ const BeforeConfirmationCard = ({
         <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
           <div className="flex-1 relative">
             <p className="m-0">
-              The employer has completed the part-time employment permit form.
-              Please review the content and if there are any issues, submit a
-              Request. If everything is fine, complete the process by selecting
-              Confirm.
+              r has completed the part-time employment permit form. Please
+              review the content and if there are any issues, submit a Request.
+              If everything is fine, complete the process by selecting Confirm.
             </p>
             <div>&nbsp;</div>
             <p className="m-0 text-[#FF6F61]">

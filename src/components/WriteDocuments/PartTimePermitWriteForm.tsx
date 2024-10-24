@@ -1,5 +1,6 @@
 import { initialPartTimePermitForm } from '@/constants/documents';
 import {
+  DocumentType,
   PartTimePermitData,
   PartTimePermitFormRequest,
 } from '@/types/api/document';
@@ -198,7 +199,10 @@ const PartTimePermitWriteForm = ({
         </div>
         {/* 고용주 정보가 있다면 표시 */}
         {document?.employer_information && (
-          <EmployerInfoSection employ={document.employer_information} />
+          <EmployerInfoSection
+            employ={document.employer_information}
+            type={DocumentType.PART_TIME_PERMIT}
+          />
         )}
       </div>
 

@@ -202,7 +202,9 @@ const InformationStep = ({
                 ...userInfo,
                 user_info: {
                   ...newUserInfo,
-                  nationality: newUserInfo.nationality?.toUpperCase(),
+                  nationality: newUserInfo.nationality
+                    ?.toUpperCase()
+                    .replace(/\s/g, '_'),
                 },
               })
             }

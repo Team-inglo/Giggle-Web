@@ -1,11 +1,26 @@
-import { PartTimeEmployPermitEmployerInfo } from '@/constants/documents';
 import {
+  LaborContractEmployerInfoNameMap,
+  PartTimeEmployPermitEmployerInfo,
+} from '@/constants/documents';
+import {
+  DocumentType,
   EmployerInfoProperty,
   EmployerInformation,
+  LaborContractEmployerInfo,
+  LaborContractEmployerInfoProperty,
 } from '@/types/api/document';
 import { Address } from '@/types/api/users';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { WorkDayTime } from '../../../types/api/document';
+import {
+  arrayToString,
+  getDetailAddress,
+  propertyToString,
+  workDayTimeToString,
+} from '@/utils/document';
+import Tag from '@/components/Common/Tag';
 
+// 회사 주소지 지도로 렌더링하는 함수
 const renderMap = (address: Address) => {
   return (
     <>
@@ -33,7 +48,13 @@ const renderMap = (address: Address) => {
   );
 };
 
-const EmployerInfoSection = ({ employ }: { employ: EmployerInformation }) => {
+const EmployerInfoSection = ({
+  employ,
+  type,
+}: {
+  employ: EmployerInformation | LaborContractEmployerInfo;
+  type: DocumentType;
+}) => {
   return (
     <div className="w-full relative rounded-3xl flex flex-col items center justify-center px-6 py-3 text-left body-3 text-[#1e1926] bg-[#f4f4f9]">
       <div className="w-full self-stretch flex flex-col items-center jusitfy-center">
@@ -46,40 +67,92 @@ const EmployerInfoSection = ({ employ }: { employ: EmployerInformation }) => {
                 <div className="w-full flex-1 flex flex-col items-start justify-start">
                   <div className="w-full self-stretch flex items-center justify-start">
                     <div className="w-full relative">
-                      {
+                      {type === DocumentType.PART_TIME_PERMIT &&
                         PartTimeEmployPermitEmployerInfo[
                           key as EmployerInfoProperty
-                        ].name
-                      }
+                        ].name}
+                      {type === DocumentType.LABOR_CONTRACT &&
+                        LaborContractEmployerInfoNameMap[
+                          key as LaborContractEmployerInfoProperty
+                        ].name}
                     </div>
                   </div>
                 </div>
                 {/* value */}
-                {key !== 'address' && (
+                {![
+                  'address',
+                  'signature_base64',
+                  'work_day_time_list',
+                  'weekly_last_days',
+                  'company_name',
+                ].includes(key) && (
                   <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
                     <div className="w-full flex-1 relative">
-                      {value as string}
+                      {propertyToString(String(value))}
                     </div>
                   </div>
                 )}
-                {key === 'address' && renderMap(value as Address)}
+                {key === LaborContractEmployerInfoProperty.ADDRESS &&
+                  renderMap(value as Address)}
               </div>
               {/* 별도 property가 없는 detailed address 예외 처리 */}
-              {key === 'address' && (
+              {key === LaborContractEmployerInfoProperty.ADDRESS && (
                 <div className="w-full self-stretch flex flex-col text-left items-center justify-start px-1 py-1.5">
                   <div className="w-full flex-1 flex flex-col items-start justify-start">
                     <div className="w-full self-stretch flex items-center justify-start">
-                      <div className="w-full relative">Detailed Address</div>
-                    </div>
-                  </div>
-                  {key === 'address' && (
-                    <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
-                      <div className="w-full flex-1 relative">
-                        {typeof value !== 'string' &&
-                          (value.address_detail as string)}
+                      <div className="w-full relative">
+                        Detailed Address in Korea
                       </div>
                     </div>
-                  )}
+                  </div>
+                  <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
+                    <div className="w-full flex-1 relative">
+                      {getDetailAddress(value as Address)}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* 회사명(데이터 가공이 필요없는 string) */}
+              {key === LaborContractEmployerInfoProperty.COMPANY_NAME && (
+                <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
+                  <div className="w-full flex-1 relative">{String(value)}</div>
+                </div>
+              )}
+              {/* 대표 서명 */}
+              {key === LaborContractEmployerInfoProperty.SIGNATURE_BASE64 && (
+                <div className="flex flex-col gap-4">
+                  <div className="border border-gray-200 rounded-xl">
+                    {value !== '' && (
+                      <img
+                        src={value as string}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
+              {/* 주휴일 (배열 형태로 주어져 별도 가공 필요) */}
+              {key === LaborContractEmployerInfoProperty.WEEKLY_LAST_DAYS && (
+                <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
+                  <div className="w-full flex-1 relative">
+                    {arrayToString(value as string[])}
+                  </div>
+                </div>
+              )}
+              {/* 근무 요일과 시간(복잡한 객체 구조 및 태그로 변환해야 해 별도 가공) */}
+              {key === LaborContractEmployerInfoProperty.WORK_DAY_TIME_LIST && (
+                <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5">
+                  <div className="w-full flex-1 relative">
+                    <Tag
+                      value={workDayTimeToString(value as WorkDayTime[])}
+                      padding="4px 12px"
+                      isRounded
+                      hasCheckIcon={false}
+                      backgroundColor="#FEF387"
+                      color="#1E1926"
+                      fontStyle="button-2"
+                    />
+                  </div>
                 </div>
               )}
             </>

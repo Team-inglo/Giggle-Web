@@ -32,7 +32,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
   });
   const { data, isSuccess } = useGetGeoInfo(setCurrentGeoInfo); // 현재 좌표 기준 주소 획득
   // 키워드로 주소 검색
-  const { mutate } = useSearchAddress({
+  const { searchAddress } = useSearchAddress({
     onSuccess: (data) => setAddressSearchResult(data),
   });
 
@@ -49,12 +49,12 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
     (address: string) => {
       setAddressInput(address);
       if (address !== '') {
-        mutate(address);
+        searchAddress(address);
       } else {
         setAddressSearchResult([]);
       }
     },
-    [mutate],
+    [searchAddress],
   );
 
   // 검색 결과 중 원하는 주소를 선택할 시 state에 입력
