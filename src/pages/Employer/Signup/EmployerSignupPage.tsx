@@ -65,7 +65,7 @@ const EmployerSignupPage = () => {
   return (
     <div className="flex flex-col w-[100vw] h-[100vh] bg-white">
       {currentStep === 4 ? (
-        <VerificationSuccessful />
+        <VerificationSuccessful id={id} pw={password}/>
       ) : (
         <div className="flex justify-center items-center gap-3 pt-6 pr-8 pb-[3.125rem] pl-8">
           <Stroke stroke="#FFF" />

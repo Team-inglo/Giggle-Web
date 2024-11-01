@@ -5,14 +5,14 @@ import CompleteModal from '@/components/Common/CompleteModal';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
 import InformationInputSection from '@/components/Employer/Signup/InformationInputSection';
-import { useSignupEmployer } from '@/hooks/api/useAuth';
+import { useSignIn, useSignupEmployer } from '@/hooks/api/useAuth';
 import {
   EmployerRegistrationRequestBody,
   initialEmployerRegistration,
 } from '@/types/api/employ';
 import { isValidEmployerRegistration } from '@/utils/signup';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const EmployerSignupInfoPage = () => {
   const [newEmployData, setNewEmployData] =
@@ -22,6 +22,9 @@ const EmployerSignupInfoPage = () => {
   const [isAgreeModal, setIsAgreeModal] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const { mutate } = useSignupEmployer(() => setDevIsModal(true));
+  const { mutate: signin } = useSignIn();
+  const location = useLocation();
+  const { id, pw } = location.state;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +34,10 @@ const EmployerSignupInfoPage = () => {
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
   const handleSubmit = () => {
     if (isValidEmployerRegistration(newEmployData)) {
+      const formData = new FormData();
+      formData.append('serial_id', id);
+      formData.append('password', pw);
+      signin(formData);
       mutate({
         image: logoFile,
         body: {

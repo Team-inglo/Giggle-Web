@@ -5,7 +5,7 @@ import { signInputTranclation } from '@/constants/translation';
 import { checkEmployerPage } from '@/utils/checkUserPage';
 import { isEmployer } from '@/utils/signup';
 
-const VerificationSuccessful = () => {
+const VerificationSuccessful = ({id, pw}: {id: string, pw: string}) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -14,7 +14,10 @@ const VerificationSuccessful = () => {
       navigate(
         checkEmployerPage(pathname)
           ? '/employer/signup/information'
-          : '/information',
+          : '/information', { state : {
+            id: id,
+            pw: pw,
+          }}
       );
     }, 2000);
 

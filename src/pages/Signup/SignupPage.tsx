@@ -73,7 +73,7 @@ const SignupPage = () => {
       className={`flex flex-col w-[100vw] h-[100vh] ${currentStep == 1 ? `bg-[#FEF387]` : 'bg-white'} `}
     >
       {currentStep === 5 ? (
-        <VerificationSuccessful />
+        <VerificationSuccessful id={id} pw={password} />
       ) : (
         <div className="flex justify-center items-center gap-3 pt-6 pr-8 pb-[3.125rem] pl-8">
           <Stroke stroke={currentStep === 1 ? '#1E1926' : '#FFF'} />

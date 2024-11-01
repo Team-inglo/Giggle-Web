@@ -5,7 +5,7 @@ import AddressStep from '@/components/Information/AddressStep';
 import InformationStep from '@/components/Information/InformationStep';
 import LanguageStep from '@/components/Information/LanguageStep';
 import StepIndicator from '@/components/Information/StepIndicator';
-import { useSignUp } from '@/hooks/api/useAuth';
+import { useSignIn, useSignUp } from '@/hooks/api/useAuth';
 //import { useSignUp } from '@/hooks/api/useAuth';
 import {
   initialUserInfoRequestBody,
@@ -14,7 +14,7 @@ import {
 } from '@/types/api/users';
 import { getTemporaryToken } from '@/utils/auth';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // funnel 패턴으로 구현한 추가정보 입력 페이지. 총 3 step으로 구성
 const InformationPage = () => {
@@ -23,6 +23,9 @@ const InformationPage = () => {
     initialUserInfoRequestBody,
   );
   const { mutate } = useSignUp();
+  const { mutate: signin } = useSignIn();
+  const location = useLocation();
+  const { id, pw } = location.state;
   const [isAgreeModal, setIsAgreeModal] = useState(true);
   const [devIsModal, setDevIsModal] = useState(false);
   const [marketingAllowed, setMarketAllowed] = useState(false);
@@ -35,6 +38,9 @@ const InformationPage = () => {
   };
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
   const handleSubmit = (language: Language) => {
+    const formData = new FormData();
+    formData.append('serial_id', id);
+    formData.append('password', pw);
     mutate({
       ...userInfo,
       marketing_allowed: marketingAllowed,
@@ -42,6 +48,7 @@ const InformationPage = () => {
       temporary_token: String(getTemporaryToken()),
       language: language,
     });
+    signin(formData);
     setDevIsModal(true);
   };
   return (
