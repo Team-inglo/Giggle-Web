@@ -26,7 +26,7 @@ const TextFieldHeader = ({
   };
 
   return (
-    <section className="w-full h-[3.5rem] my-[0.5rem] px-[0.5rem] flex justify-between items-center bg-white border-b border-solid border-[#1E1926]">
+    <section className="w-full h-16 px-2 flex justify-between items-center bg-white border-b border-solid border-[#1E1926] sticky top-0 z-40">
       <button className="p-[0.5rem]" onClick={onClickBackButton}>
         <LeftArrowIcon />
       </button>

@@ -21,7 +21,7 @@ const ActionHeader = ({
   title,
 }: HeaderProps) => {
   return (
-    <section className="w-full h-[3.5rem] px-[0.75rem] py-[0.5rem] flex justify-between items-center bg-white">
+    <section className="w-full h-[3.5rem] px-[0.75rem] py-[0.5rem] flex justify-between items-center bg-white sticky top-0">
       <div className="flex items-center">
         {hasBackButton && (
           <button

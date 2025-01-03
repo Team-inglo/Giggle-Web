@@ -3,15 +3,32 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: 'Pretendard Variable';
   src:
     url('/src/assets/fonts/PretendardVariable.woff2') format('woff2'),
     url('/src/assets/fonts/PretendardVariable.ttf') format('truetype');
   font-display: 'fallback';
 }
 
+html,
 body {
-  font-family: 'Pretendard', sans-serif;
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif;
+  font-synthesis: none;
 }
 
 @layer components {
