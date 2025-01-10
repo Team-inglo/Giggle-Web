@@ -4,8 +4,8 @@ export const signInputTranclation = {
     en: 'Sign In',
   },
   signup: {
-    ko: '회원가입',
-    en: 'Sign Up',
+    ko: '아이디와 비밀번호를 입력해주세요',
+    en: 'Enter your ID and Password',
   },
   id: {
     ko: '아이디',
@@ -60,7 +60,7 @@ export const signInputTranclation = {
     en: 'Email Address',
   },
   enterEmail: {
-    ko: '이메일을 입력해주세요',
+    ko: '인증을 위해 이메일을 입력해주세요',
     en: 'Enter email address',
   },
   invalidEmail: {
@@ -74,6 +74,10 @@ export const signInputTranclation = {
   verification: {
     ko: '인증번호',
     en: 'Verification',
+  },
+  almost: {
+    ko: '거의 다했어요!',
+    en: 'Almost done!',
   },
   enterCode: {
     ko: '입력하신 이메일로 인증번호를 전송하였습니다.',

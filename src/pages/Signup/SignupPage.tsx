@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import FindJourney from '@/components/Signup/FindJourney';
-import Stroke from '@/assets/icons/SignupStroke.svg?react';
 import SignupInput from '@/components/Signup/SignupInput';
 import { UserType } from '@/constants/user';
 import EmailInput from '@/components/Signup/EmailInput';
@@ -10,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePatchAuthentication, useTempSignUp } from '@/hooks/api/useAuth';
 import { deleteAccessToken, deleteRefreshToken } from '@/utils/auth';
 import { useUserStore } from '@/store/user';
+import BaseHeader from '@/components/Common/Header/BaseHeader';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -30,6 +30,12 @@ const SignupPage = () => {
   // mutate 관리
   const { mutate: tempSignUp } = useTempSignUp();
   const { mutate: verifyAuthCode } = usePatchAuthentication();
+
+  // back 버튼 핸들러
+  const handleBackButtonClick = () => {
+    if (currentStep <= 1) navigate('/signin');
+    if (currentStep > 1 && currentStep < 5) setCurrentStep(currentStep - 1);
+  };
 
   // handler 정의
   const handleSignUpClick = () => {
@@ -81,19 +87,40 @@ const SignupPage = () => {
   }, []);
 
   return (
-    <div
-      className={`flex flex-col w-[100vw] h-[100vh] ${currentStep == 1 ? `bg-[#FEF387]` : 'bg-white'} `}
-    >
+    <div className="flex flex-col w-screen h-screen bg-white">
+      <BaseHeader
+        hasBackButton={true}
+        onClickBackButton={() => handleBackButtonClick()}
+        hasMenuButton={false}
+        title="Sign Up"
+      />
       {currentStep === 5 ? (
         <VerificationSuccessful />
       ) : (
-        <div className="flex justify-center items-center gap-3 pt-6 pr-8 pb-[3.125rem] pl-8">
-          <Stroke stroke={currentStep === 1 ? '#1E1926' : '#FFF'} />
-          <Stroke stroke={currentStep === 2 ? '#1E1926' : '#FFF'} />
-          <Stroke stroke={currentStep === 3 ? '#1E1926' : '#FFF'} />
-          <Stroke stroke={currentStep === 4 ? '#1E1926' : '#FFF'} />
+        <div className="w-screen flex justify-center items-center pt-6 pb-[3.125rem]">
+          <hr
+            className={`w-[25%] h-1 border-0 ${
+              currentStep >= 1 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
+            }`}
+          />
+          <hr
+            className={`w-[25%] h-1 border-0 ${
+              currentStep >= 2 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
+            }`}
+          />
+          <hr
+            className={`w-[25%] h-1 border-0 ${
+              currentStep >= 3 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
+            }`}
+          />
+          <hr
+            className={`w-[25%] h-1 border-0 ${
+              currentStep === 4 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
+            }`}
+          />
         </div>
       )}
+      {/* 회원가입 STEP 별 랜딩 컴포넌트 */}
       <div className="grow px-6 flex flex-col items-center">
         {currentStep === 1 && (
           <FindJourney

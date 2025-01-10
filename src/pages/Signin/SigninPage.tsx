@@ -1,8 +1,8 @@
+import BaseHeader from '@/components/Common/Header/BaseHeader';
 import SigninInputSection from '@/components/Signin/SigninInputSection';
 import { useUserStore } from '@/store/user';
 import { deleteAccessToken, deleteRefreshToken } from '@/utils/auth';
 import { useEffect } from 'react';
-import CloseIcon from '@/assets/icons/CloseIcon.svg?react';
 import { useNavigate } from 'react-router-dom';
 
 const SigninPage = () => {
@@ -19,14 +19,20 @@ const SigninPage = () => {
   }, []);
 
   return (
-    <div className="h-[100vh] flex flex-col justify-center items-center px-7">
-      <CloseIcon
-        onClick={() => navigate('/')}
-        className="fixed top-6 right-6"
+    <div className="h-screen flex flex-col justify-center items-center">
+      <BaseHeader
+        hasBackButton={true}
+        hasMenuButton={false}
+        title="Sign In"
+        onClickBackButton={() => navigate('/')}
       />
-      <div className="text-[#1E1926] text-[1.75rem] font-semibold">Sign In</div>
-      <SigninInputSection />
-      {/* <SigninSocialButtons /> */}
+      <div className="w-full flex-grow flex flex-col">
+        <div className="flex items-start mx-6 my-[3.125rem] h-[5rem] text-[#1E1926] text-[1.75rem] font-semibold">
+          이메일로 로그인
+        </div>
+        <SigninInputSection />
+        {/* <SigninSocialButtons /> */}
+      </div>
     </div>
   );
 };

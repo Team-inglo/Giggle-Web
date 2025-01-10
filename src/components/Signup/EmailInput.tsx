@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { validateEmail } from '@/utils/signin';
 import { signInputTranclation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useGetEmailValidation } from '@/hooks/api/useAuth';
+import BottomButtonPanel from '../Common/BottomButtonPanel';
 
 type EmailInputProps = {
   email: string;
@@ -14,7 +15,6 @@ type EmailInputProps = {
 };
 
 const EmailInput = ({ email, onEmailChange, onSubmit }: EmailInputProps) => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [emailError, setEmailError] = useState<string | null>(null);
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -56,11 +56,11 @@ const EmailInput = ({ email, onEmailChange, onSubmit }: EmailInputProps) => {
   };
 
   return (
-    <>
-      <div className="title-1 text-center py-6">
-        {signInputTranclation.signup[isEmployer(pathname)]}
+    <div className="w-full">
+      <div className="title-1 pb-12">
+        {signInputTranclation.enterEmail[isEmployer(pathname)]}
       </div>
-      <div className="w-[20.5rem] flex flex-col py-6">
+      <div className="flex flex-col py-6">
         <div>
           <p className="py-2 px-1 text-sm font-normal text-[#171719]">
             {signInputTranclation.email[isEmployer(pathname)]}
@@ -78,33 +78,19 @@ const EmailInput = ({ email, onEmailChange, onSubmit }: EmailInputProps) => {
           )}
         </div>
       </div>
-      <div className="py-6 flex flex-col items-center gap-2 absolute bottom-[16%]">
-        <Button
-          type="large"
-          bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-          fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
-          isBorder={false}
-          title={signInputTranclation.continue[isEmployer(pathname)]}
-          onClick={isValid ? handleSignupClick : undefined}
-        />
-        <div className="flex items-center justify-center gap-2 pb-2">
-          <p className="text-[#7D8A95] text-sm font-normal">
-            {signInputTranclation.haveAccount[isEmployer(pathname)]}
-          </p>
-          {/* 로그인 화면 이동 */}
-          <button
-            className="text-[#7872ED] text-sm font-semibold"
-            onClick={() => navigate('/signin')}
-          >
-            {signInputTranclation.signin[isEmployer(pathname)]}
-          </button>
+      <BottomButtonPanel>
+        <div className="w-full">
+          <Button
+            type="large"
+            bgColor={isValid ? 'bg-[#1E1926]' : 'bg-[#F4F4F9]'}
+            fontColor={isValid ? 'text-[#FEF387]' : 'text-[#BDBDBD]'}
+            isBorder={false}
+            title={signInputTranclation.continue[isEmployer(pathname)]}
+            onClick={isValid ? handleSignupClick : undefined}
+          />
         </div>
-        {/* 소셜은 잠깐 제외 */}
-        {/* 
-        <SigninSocialButtons />
-        */}
-      </div>
-    </>
+      </BottomButtonPanel>
+    </div>
   );
 };
 

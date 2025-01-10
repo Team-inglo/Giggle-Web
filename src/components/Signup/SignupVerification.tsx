@@ -6,6 +6,7 @@ import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import { useEmailTryCountStore } from '@/store/signup';
 import { useReIssueAuthentication } from '@/hooks/api/useAuth';
+import BottomButtonPanel from '../Common/BottomButtonPanel';
 
 type SignupVerificationProps = {
   email: string;
@@ -126,7 +127,10 @@ const SignupVerification = ({
   };
 
   return (
-    <div>
+    <div className="w-full">
+      <div className="title-1 pb-12">
+        {signInputTranclation.almost[isEmployer(pathname)]}
+      </div>
       <div className="title-1 text-center pt-6 pb-2">
         {signInputTranclation.verification[isEmployer(pathname)]}
       </div>
@@ -134,7 +138,7 @@ const SignupVerification = ({
         {signInputTranclation.enterCode[isEmployer(pathname)]}
       </div>
       <div className="py-[3.125rem] flex flex-col gap-8">
-        <div className="flex gap-3">
+        <div className="flex gap-3 justify-center">
           {Array.from({ length: 6 }).map((_, index) => (
             <input
               key={index}
@@ -156,11 +160,13 @@ const SignupVerification = ({
         {resendMessage && (
           <div className="button-2 text-[#7872ED]">{resendMessage}</div>
         )}
-        <div className="w-full px-6">
+      </div>
+      <BottomButtonPanel>
+        <div className="w-full relative">
           <Button
             type="large"
-            bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-            fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+            bgColor={isValid ? 'bg-[#1E1926]' : 'bg-[#F4F4F9]'}
+            fontColor={isValid ? 'text-[#FEF387]' : 'text-[#BDBDBD]'}
             isBorder={false}
             title={signInputTranclation.verify[isEmployer(pathname)]}
             onClick={isValid ? handleVerifyClick : undefined}
@@ -168,19 +174,21 @@ const SignupVerification = ({
         </div>
         {/* 5회 이내 이메일 재발송 가능 */}
         {!resendDisabled && (
-          <div className="flex items-center justify-center gap-2">
-            <p className="text-[#7D8A95] text-sm font-normal">
-              {signInputTranclation.requestResend[isEmployer(pathname)]}
-            </p>
-            <button
-              className="text-[#7872ED] text-sm font-semibold"
-              onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
-            >
-              {signInputTranclation.resend[isEmployer(pathname)]}
-            </button>
-          </div>
+          <>
+            <div className="absolute top-[-1.125rem] flex items-center justify-center gap-2">
+              <p className="text-[#7D8A95] text-sm font-normal">
+                {signInputTranclation.requestResend[isEmployer(pathname)]}
+              </p>
+              <button
+                className="text-[#7872ED] text-sm font-semibold"
+                onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
+              >
+                {signInputTranclation.resend[isEmployer(pathname)]}
+              </button>
+            </div>
+          </>
         )}
-      </div>
+      </BottomButtonPanel>
     </div>
   );
 };

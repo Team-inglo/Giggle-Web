@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
@@ -50,10 +50,23 @@ import EmployerWriteDocumentsPage from '@/pages/Employer/WriteDocuments/Employer
 import EmployerEditPostPage from './pages/Employer/Post/EmployerEditPostPage';
 import DocumentViewerPage from './pages/WriteDocuments/DocumentViewerPage';
 import PostSearchFilterPage from '@/pages/PostSearch/PostSearchFilterPage';
+import { useEffect } from 'react';
+import { setRedirectToLogin } from '@/api';
 
 const Layout = () => {
+  // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setRedirectToLogin(() => {
+      navigate('/signin');
+    });
+  }, [navigate]);
+
+  // -- 2. Nav bar 조건부 랜딩 로직 --
   const location = useLocation();
   const { account_type } = useUserStore();
+
   // Nav bar 컴포넌트가 랜딩되는 페이지
   const showNavbarPaths = () => {
     if (account_type === UserType.OWNER) {

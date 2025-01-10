@@ -45,7 +45,7 @@ const Splash = () => {
 
         if (!access && refresh) {
           if (userTypeResponse?.error?.code === 401) {
-            reIssueToken();
+            reIssueToken(refresh);
           } else {
             setGuest();
           }
@@ -62,7 +62,7 @@ const Splash = () => {
           }
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
         alert('로그인 오류입니다 다시 시도해주세요');
         setGuest();
       } finally {
