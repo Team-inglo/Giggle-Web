@@ -12,14 +12,12 @@ export type DocumentStatus =
 // 통합 신청서 외 문서 타입
 export type DocumentInfo = {
   id: number;
-  hwp_url: string | null;
   word_url: string | null;
   status: DocumentStatus | null;
 };
 
 export type EmployDocumentInfo = {
   id: number;
-  hwp_url: string | null;
   word_url: string | null;
   reason: string | null;
   status: DocumentStatusEmployer | null;
@@ -28,7 +26,6 @@ export type EmployDocumentInfo = {
 // 통합 신청서 타입
 export type IntegratedApplicationInfo = {
   id: number;
-  hwp_url: string | null;
   word_url: string | null;
 };
 

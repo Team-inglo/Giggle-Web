@@ -14,15 +14,6 @@ const ApplicantDocumentsDetailPage = () => {
   const { data } = useGetDocumentsEmployer(Number(currentApplicantId));
   const navigate = useNavigate();
 
-  {
-    /*
-  integrated_application: {
-    id: 3001,
-    hwp_url: 'https://example.com/applications/integrated_3001.hwp',
-    word_url: 'https://example.com/applications/integrated_3001.docx',
-  },
-    */
-  }
   return (
     <>
       {isLoading && (
@@ -46,7 +37,7 @@ const ApplicantDocumentsDetailPage = () => {
         <div className="flex flex-col gap-2 p-6">
           {data && data?.data[DocumentType.PART_TIME_PERMIT] ? (
             <DocumentCardDispenserEmployer
-            documentInfo={
+              documentInfo={
                 data.data[DocumentType.PART_TIME_PERMIT] as EmployDocumentInfo
               }
               title={DocumentTypeInfo[DocumentType.PART_TIME_PERMIT].name}
@@ -69,7 +60,7 @@ const ApplicantDocumentsDetailPage = () => {
           )}
           {data && data?.data[DocumentType.LABOR_CONTRACT] ? (
             <DocumentCardDispenserEmployer
-            documentInfo={
+              documentInfo={
                 data.data[DocumentType.LABOR_CONTRACT] as EmployDocumentInfo
               }
               title={DocumentTypeInfo[DocumentType.LABOR_CONTRACT].name}

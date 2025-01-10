@@ -288,7 +288,7 @@ const ConfirmationCard = ({
             <div className="relative head-3">{title}</div>
           </div>
           <div className="overflow-hidden flex items-center justify-center p-2">
-            {!documentInfo.hwp_url && !documentInfo.word_url ? (
+            {!documentInfo.word_url ? (
               <WriteIcon />
             ) : (
               <CheckIconGreen />
@@ -318,21 +318,6 @@ const ConfirmationCard = ({
               </div>
             </div>
             <div onClick={() => onDownload(documentInfo.word_url as string)}>
-              <DownloadIcon />
-            </div>
-          </div>
-        )}
-        {documentInfo.hwp_url && (
-          <div className="w-full rounded-3xl bg-[#f4f4f9] flex items-center justify-between border border-[#dcdcdc] px-4 py-2 pl-2.5">
-            <div className="flex items-center justify-start gap-2">
-              <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-[#1e1926]">
-                <FolderIcon />
-              </div>
-              <div className="relative body-3 opacity-75">
-                smth file download
-              </div>
-            </div>
-            <div onClick={() => onDownload(documentInfo.hwp_url as string)}>
               <DownloadIcon />
             </div>
           </div>
