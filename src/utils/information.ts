@@ -47,7 +47,22 @@ export const parsePhoneNumber = (phoneNumber: string) => {
 };
 
 // 사업자 등록번호 입력 시 000/00/00000 형태로 슬래시 추가하기
+const validateCompanyRegistrationNumber = (value: string): boolean => {
+  if (value.length > 12) return false;
+
+  for (let i = 0; i < value.length; i++) {
+    if (i === 3 || i === 6) {
+      if (value[i] !== '/') return false; // 3, 6번째는 / 필수
+    } else {
+      if (!/^\d$/.test(value[i])) return false; // 나머지는 숫자만 가능
+    }
+  }
+  return true;
+};
+
 export const formatCompanyRegistrationNumber = (value: string) => {
+  if (validateCompanyRegistrationNumber(value)) return value;
+
   const numberValue = value.replace(/\D/g, '').slice(0, 10);
 
   const formatValue =
