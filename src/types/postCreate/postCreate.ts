@@ -61,16 +61,16 @@ export type Address = {
   region_1depth_name: string;
   region_2depth_name: string;
   region_3depth_name: string;
-  region_4depth_name?: string;
+  region_4depth_name: string | null;
   address_detail: string;
   longitude: number;
   latitude: number;
 };
 
 export type Image = {
-  id: number,
+  id: number;
   img_url: string;
-}
+};
 
 export type JobPostingForm = {
   images: (File | Image)[];

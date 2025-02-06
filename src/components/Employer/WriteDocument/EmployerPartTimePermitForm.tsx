@@ -11,7 +11,6 @@ import {
   PartTimePermitData,
   WorkPeriod,
 } from '@/types/api/document';
-import { AddressType } from '@/types/api/map';
 import { InputType } from '@/types/common/input';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
@@ -213,12 +212,7 @@ const EmployerPartTimePermitForm = ({
                 <DropdownModal
                   value={newDocumentData.address.address_name}
                   options={Array.from(
-                    addressSearchResult.filter(
-                      (address) =>
-                        address.address_type !==
-                        (AddressType.REGION_ADDR || AddressType.ROAD_ADDR),
-                    ),
-                    (address) => address.address_name,
+                    addressSearchResult.map((address) => address.address_name),
                   )}
                   onSelect={handleAddressSelection}
                 />

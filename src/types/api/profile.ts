@@ -52,6 +52,7 @@ export type UserProfileDetailResponse = {
   nationality: string;
   visa: string;
   phone_number: string;
+  address: Address;
 };
 
 export type UserEditProfileRequest = {
@@ -68,6 +69,7 @@ export type UserEditRequestBody = {
   visa: string; // Enum(D_2_1, D_2_2, D_2_3, D_2_4, D_2_6, D_2_7, D_2_8, D_4_1, D_4_7, F_2)
   phone_number: string;
   is_profile_img_changed: boolean;
+  address: Address;
 };
 
 export const InitialUserProfileDetail: UserEditRequestBody = {
@@ -79,6 +81,16 @@ export const InitialUserProfileDetail: UserEditRequestBody = {
   visa: '', // Enum(D_2_1, D_2_2, D_2_3, D_2_4, D_2_6, D_2_7, D_2_8, D_4_1, D_4_7, F_2)
   phone_number: '',
   is_profile_img_changed: false,
+  address: {
+    address_name: '',
+    region_1depth_name: '',
+    region_2depth_name: '',
+    region_3depth_name: '',
+    region_4depth_name: '',
+    address_detail: '',
+    longitude: 0,
+    latitude: 0,
+  },
 };
 
 // 고용주 프로필

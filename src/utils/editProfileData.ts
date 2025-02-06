@@ -5,6 +5,7 @@ import {
   UserEditRequestBody,
   UserProfileDetailResponse,
 } from '@/types/api/profile';
+import { isValidPhoneNumber } from './information';
 
 // GET 데이터를 PATCH 요청 데이터로 변환
 export const changeValidData = (
@@ -24,6 +25,7 @@ export const changeValidData = (
     // phone_number 통합
     phone_number: `${phoneNum.start}-${phoneNum.middle}-${phoneNum.end}`,
     is_profile_img_changed: isProfileImgChanged,
+    address: userData.address,
   };
 };
 
@@ -45,6 +47,7 @@ export const transformToProfileRequest = (
     visa: data.visa.replace(/_/g, '-'),
     phone_number: data.phone_number,
     is_profile_img_changed: false,
+    address: data.address,
   };
 };
 
@@ -89,5 +92,38 @@ export const validateChanges = (
       );
     }
     return value !== originalData[typedKey];
+  });
+};
+
+export const validateFieldValues = (
+  userData: UserEditRequestBody,
+  phoneNum: { start: string; middle: string; end: string },
+) => {
+  return Object.entries(userData).every(([key, value]) => {
+    const typedKey = key as keyof UserEditRequestBody;
+    const nameRegex = /^[a-zA-Z가-힣\s]+$/;
+    switch (typedKey) {
+      case 'first_name':
+      case 'last_name':
+        // 50자 제한, 특수문자 사용 불가, 숫자 사용 불가
+        return (
+          String(value).trim().length < 50 && nameRegex.test(String(value))
+        );
+      case 'birth':
+        // 생일이 현재 날짜보다 이전인지 확인
+        return Date.parse(value as string) < Date.now();
+      case 'phone_number':
+        return isValidPhoneNumber(phoneNum);
+      case 'address':
+        // 주소 필드는 address_name이 존재하고, 길이가 0보다 큰지 확인
+        return (
+          typeof value !== 'string' &&
+          typeof value !== 'boolean' &&
+          'address_name' in value &&
+          value.address_name !== null &&
+          value.address_name.length > 0
+        );
+    }
+    return true;
   });
 };

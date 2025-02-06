@@ -1,6 +1,6 @@
+import { Address } from '@/types/api/users';
 import { useSearchAddress } from '@/hooks/api/useKaKaoMap';
 import { Document, AddressType, GeoPosition } from '@/types/api/map';
-import { Address } from '@/types/postCreate/postCreate';
 import { pick } from '@/utils/map';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
@@ -65,8 +65,7 @@ export const useAddressSearch = (
 
     if (!selectedAddress) return;
 
-    const isRoadAddr = selectedAddress.address_type === AddressType.ROAD;
-    const addressData = isRoadAddr
+    const isRoadAddr = [AddressType.ROAD_ADDR, AddressType.ROAD].includes(selectedAddress.address_type);    const addressData = isRoadAddr
       ? selectedAddress.road_address
       : selectedAddress.address;
 

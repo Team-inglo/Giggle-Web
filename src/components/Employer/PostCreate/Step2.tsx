@@ -3,7 +3,6 @@ import Button from '@/components/Common/Button';
 import Dropdown, { DropdownModal } from '@/components/Common/Dropdown';
 import Input from '@/components/Common/Input';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { AddressType } from '@/types/api/map';
 import { InputType } from '@/types/common/input';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { useEffect, useState } from 'react';
@@ -82,12 +81,7 @@ const Step2 = ({
               <DropdownModal
                 value={newPostInfo.body.address.address_name}
                 options={Array.from(
-                  addressSearchResult.filter(
-                    (address) =>
-                      address.address_type !==
-                      (AddressType.REGION_ADDR || AddressType.ROAD_ADDR),
-                  ),
-                  (address) => address.address_name,
+                  addressSearchResult.map((address) => address.address_name),
                 )}
                 onSelect={handleAddressSelection}
               />

@@ -8,9 +8,8 @@ import {
 } from '@/types/api/users';
 import { useEffect, useState } from 'react';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
-import { useGetGeoInfo} from '@/hooks/api/useKaKaoMap';
+import { useGetGeoInfo } from '@/hooks/api/useKaKaoMap';
 import { DropdownModal } from '@/components/Common/Dropdown';
-import { AddressType } from '@/types/api/map';
 import Button from '@/components/Common/Button';
 import { useAddressSearch } from '@/hooks/api/useAddressSearch';
 
@@ -47,7 +46,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
   const handleAddressSelection = (selectedAddressName: string) => {
     const result = handleAddressSelect(selectedAddressName);
     if (!result) return;
-    setNewAddress({...newAddress, ...result.addressData});
+    setNewAddress({ ...newAddress, ...result.addressData });
     setAddressInput(result.selectedAddressName);
   };
 
@@ -73,12 +72,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
                 newAddress.address_name === null ? '' : newAddress.address_name
               }
               options={Array.from(
-                addressSearchResult.filter(
-                  (address) =>
-                    address.address_type !==
-                    (AddressType.REGION_ADDR || AddressType.ROAD_ADDR),
-                ),
-                (address) => address.address_name,
+                addressSearchResult.map((address) => address.address_name),
               )}
               onSelect={handleAddressSelection}
             />
@@ -105,6 +99,8 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
             placeholder="ex) 101-dong"
             value={newAddress.address_detail}
             onChange={(value) =>
+              newAddress.address_detail &&
+              newAddress.address_detail.trim().length < 100 &&
               setNewAddress({ ...newAddress, address_detail: value })
             }
             canDelete={false}
