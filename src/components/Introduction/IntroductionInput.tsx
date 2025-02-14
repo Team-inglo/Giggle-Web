@@ -18,7 +18,7 @@ const IntroductionInput = ({
       </div>
       <div
         onClick={handleFocusTextArea}
-        className="w-full min-h-32 px-4 py-3 flex flex-col gap-2.5 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow p-2"
+        className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow p-2"
       >
         <textarea
           ref={textareaRef}

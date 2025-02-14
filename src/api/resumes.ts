@@ -50,6 +50,9 @@ export const getLanguagesSummaries = async (): Promise<
 export const postWorkExperience = async (
   workExperience: WorkExperienctRequest,
 ) => {
+  // NOTE: optional 값은 "-"으로 전달
+  if (workExperience?.description === '') workExperience.description = '-';
+
   const response = await api.post(
     `/users/resumes/work-experiences`,
     workExperience,
@@ -88,6 +91,8 @@ export const patchWorkExperience = async ({
   id: string;
   workExperience: WorkExperienctRequest;
 }) => {
+  if (workExperience?.description === '') workExperience.description = '-';
+
   const response = await api.patch(
     `/users/resumes/work-experiences/${id}`,
     workExperience,

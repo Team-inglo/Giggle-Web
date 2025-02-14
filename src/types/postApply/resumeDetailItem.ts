@@ -53,10 +53,13 @@ export type VisaListType = {
 };
 
 export type PersonalInformationType = {
-  main_address: string;
-  detailed_address: string;
+  main_address: string | null;
+  detailed_address: string | null;
   phone_number: string;
   email: string;
+  gender?: string;
+  birth?: string | null;
+  nationality?: string | null;
 };
 
 export type ResumeDetailItemType = {

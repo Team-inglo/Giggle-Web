@@ -20,7 +20,6 @@ import ApplicationPage from '@/pages/Application/ApplicationPage';
 import ManageResumePage from '@/pages/ManageResumePage/ManageResumePage';
 import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
 import ScrappedJobPostsPage from '@/pages/ScrappedJobPosts/ScrappedJobPostsPage';
-import LanguagePage from '@/pages/Language/LanguagePage';
 import PostEducationPage from '@/pages/SetEducation/PostEducationPage';
 import PatchEducationPage from '@/pages/SetEducation/PatchEducationPage';
 import PostWorkExperiencePage from '@/pages/SetWorkExperience/PostWorkExperiencePage';
@@ -54,6 +53,7 @@ import { useEffect } from 'react';
 import { setRedirectToLogin } from '@/api';
 import AccountPage from '@/pages/Profile/AccountPage';
 import AboutPage from '@/pages/Profile/AboutPage';
+import EditResumePage from '@/pages/ManageResumePage/EditResumePage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -113,10 +113,10 @@ const Router = () => {
           <Route path="/profile/account" element={<AccountPage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
           <Route path="/profile/manage-resume" element={<ManageResumePage />} />
+          <Route path="/profile/edit-resume" element={<EditResumePage />} />
           <Route path="/profile/language" element={<LanguageSettingPage />} />
 
           <Route path="/resume/introduction" element={<IntroductionPage />} />
-          <Route path="/resume/language" element={<LanguagePage />} />
           <Route path="/resume/language/add" element={<PostLanguagePage />} />
           <Route path="/resume/scrapped" element={<ScrappedJobPostsPage />} />
           <Route path="/resume/education" element={<PostEducationPage />} />

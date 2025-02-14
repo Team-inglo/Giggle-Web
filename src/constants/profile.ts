@@ -82,3 +82,9 @@ export const UserProfileSummaryData = {
     },
   },
 };
+
+export const EDUCATION_PERIOD = {
+  BACHELOR: 4,
+  ASSOCIATE: 2,
+  HIGHSCHOOL: 3,
+} as const;

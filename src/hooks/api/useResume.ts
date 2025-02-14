@@ -85,7 +85,7 @@ export const usePostWorkExperience = () => {
   return useMutation({
     mutationFn: postWorkExperience,
     onSuccess: () => {
-      navigate('/profile/manage-resume');
+      navigate('/profile/edit-resume');
     },
     onError: (error) => {
       console.error('경력 작성 실패', error);
@@ -99,7 +99,7 @@ export const usePostEducation = () => {
   return useMutation({
     mutationFn: postEducation,
     onSuccess: () => {
-      navigate('/profile/manage-resume');
+      navigate('/profile/edit-resume');
     },
     onError: (error) => {
       console.error('학력 작성 실패', error);
@@ -113,7 +113,7 @@ export const usePostEtcLanguageLevel = () => {
   return useMutation({
     mutationFn: postEtcLanguageLevel,
     onSuccess: () => {
-      navigate('/resume/language', { state: { from: location.pathname } });
+      navigate('/profile/edit-resume');
     },
     onError: (error) => {
       alert('이미 존재하는 언어입니다');
@@ -128,7 +128,7 @@ export const usePatchIntroduction = () => {
   return useMutation({
     mutationFn: patchIntroduction,
     onSuccess: () => {
-      navigate('/profile/manage-resume');
+      navigate('/profile/edit-resume');
     },
     onError: (error) => {
       console.error('자기소개 작성 실패', error);
@@ -142,7 +142,7 @@ export const usePatchWorkExperience = () => {
   return useMutation({
     mutationFn: patchWorkExperience,
     onSuccess: () => {
-      navigate('/profile/manage-resume');
+      navigate('/profile/edit-resume');
     },
     onError: (error) => {
       console.error('경력 수정 실패', error);
@@ -156,7 +156,7 @@ export const usePatchEducation = () => {
   return useMutation({
     mutationFn: patchEducation,
     onSuccess: () => {
-      navigate('/profile/manage-resume');
+      navigate('/profile/edit-resume');
     },
     onError: (error) => {
       console.error('학력 수정 실패', error);
@@ -190,7 +190,7 @@ export const useDeleteIntroduction = () => {
     mutationFn: deleteIntroduction,
     onSuccess: () => {
       window.location.reload();
-      navigate('/profile/manage-resume');
+      navigate('/profile/edit-resume');
     },
     onError: (error) => {
       console.error('자기소개 삭제 실패', error);

@@ -40,9 +40,7 @@ const PostLanguagePage = () => {
     <div>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={() =>
-          navigate('/resume/language', { state: { from: location.pathname } })
-        }
+        onClickBackButton={() => navigate('/profile/edit-resume')}
         hasMenuButton={false}
         title="Add Language"
       />

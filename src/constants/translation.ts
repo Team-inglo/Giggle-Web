@@ -162,11 +162,22 @@ export const profileTranslation = {
     ko: '위치정보 이용약관',
     en: 'Location Information Service',
   },
+  introductionQuestion: {
+    ko: '나를 한 줄로 표현한다면?',
+    en: 'If you were to express yourself in one line?',
+  },
 };
 
 export const headerTranslation = {
   profile: {
     ko: '마이페이지',
     en: 'My Page',
+  },
+};
+
+export const infoTranslation = {
+  notEntered: {
+    ko: '미입력',
+    en: 'Not Entered',
   },
 };

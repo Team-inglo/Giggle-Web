@@ -1,53 +1,32 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import MypageCardSection from '@/components/ManageResume/MypageCardSection';
-import ProfilePicture from '@/components/ManageResume/ProfilePicture';
-import ResumeEditSection from '@/components/ManageResume/ResumeEditSection';
 import { useNavigate } from 'react-router-dom';
-import { useGetResume } from '@/hooks/api/useResume';
-import { useEffect, useState } from 'react';
-import { UserResumeDetailResponse } from '@/types/api/resumes';
+import PostApplyResume from '@/components/PostApply/PostApplyResume';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import Button from '@/components/Common/Button';
 
 const ManageResumePage = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<UserResumeDetailResponse>();
-  const { data: resumeData } = useGetResume(true);
-
-  useEffect(() => {
-    if (resumeData) {
-      setData(resumeData.data);
-    }
-  }, [resumeData]);
 
   return (
     <>
-      {data && (
-        <>
-          <BaseHeader
-            hasBackButton={true}
-            onClickBackButton={() => navigate('/profile')}
-            hasMenuButton={false}
-            title="Manage Resume"
-          />
-          <div className="flex flex-col px-6 gap-9 pb-9">
-            <div className="flex flex-col pt-5 gap-6">
-              <ProfilePicture
-                name={data.name}
-                profileImg={data.profile_img_url}
-              />
-              <MypageCardSection
-                visaData={data.visa}
-                personalData={data.personal_information}
-              />
-            </div>
-            <ResumeEditSection
-              introductionData={data.introduction}
-              workexperienceData={data.work_experience}
-              educationData={data.education}
-              languageData={data.languages}
-            />
-          </div>
-        </>
-      )}
+      <BaseHeader
+        hasBackButton={true}
+        onClickBackButton={() => navigate('/profile')}
+        hasMenuButton={false}
+        title="Manage Resume"
+      />
+      <PostApplyResume />
+      <BottomButtonPanel>
+        {/* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */}
+        <Button
+          type="large"
+          bgColor={'bg-[#fef387]'}
+          fontColor={'text-[#191919]'}
+          isBorder={false}
+          title="Edit Resume"
+          onClick={() => navigate('/profile/edit-resume')}
+        />
+      </BottomButtonPanel>
     </>
   );
 };

@@ -50,7 +50,7 @@ const IntroductionPage = () => {
     } else {
       setIsEditing(true);
     }
-  }, [data]);
+  }, [data, initialData]);
 
   return (
     <div>
