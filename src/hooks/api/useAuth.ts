@@ -39,6 +39,7 @@ import { useEmailTryCountStore } from '@/store/signup';
 import { RESTYPE } from '@/types/api/common';
 import { clearAllStore } from '@/utils/clearAllStore';
 import { TermType } from '@/types/api/users';
+import { AxiosError } from 'axios';
 
 /**
  * 로그인 프로세스를 처리하는 커스텀 훅
@@ -161,7 +162,7 @@ export const useTempSignUp = () => {
     mutationFn: tempSignUp,
     onSuccess: (data: RESTYPE<TempSignUpResponse>) => {
       if (data.success) {
-        updateTryCnt(data.data.try_cnt);
+        updateTryCnt(data.data.tryCnt);
       }
     },
     onError: (error) => {
@@ -237,11 +238,18 @@ export const useReIssueAuthentication = () => {
     onSuccess: (data: RESTYPE<TempSignUpResponse>) => {
       if (data.success) {
         // 이메일 재발송 횟수 업데이트
-        updateTryCnt(data.data.try_cnt);
+        updateTryCnt(data.data.tryCnt);
       }
     },
-    onError: () => {
-      alert('인증코드 재발송이 실패하였습니다. 회원가입을 다시 시도해주세요.');
+    onError: (error) => {
+      const axiosError = error as AxiosError<{ error: { code: number } }>;
+      if (axiosError.response?.data.error.code === 42900) {
+        alert('너무 많은 요청이 발생했습니다. 잠시 후 다시 시도해주세요.');
+      } else {
+        alert(
+          '인증코드 재발송이 실패하였습니다. 회원가입을 다시 시도해주세요.',
+        );
+      }
       navigate('/signup');
     },
   });

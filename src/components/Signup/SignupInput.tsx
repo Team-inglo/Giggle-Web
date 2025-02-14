@@ -4,67 +4,95 @@ import Button from '@/components/Common/Button';
 import { useLocation } from 'react-router-dom';
 import {
   validatedConfirmPassword,
-  validateId,
+  validateEmail,
   validatePassword,
 } from '@/utils/signin';
 import { isEmployer } from '@/utils/signup';
 import { signInputTranclation } from '@/constants/translation';
-import { useGetIdValidation } from '@/hooks/api/useAuth';
+import {
+  useGetEmailValidation,
+  usePatchAuthentication,
+  useReIssueAuthentication,
+} from '@/hooks/api/useAuth';
 import BottomButtonPanel from '../Common/BottomButtonPanel';
+import InputLayout from '../WorkExperience/InputLayout';
+import { useEmailTryCountStore } from '@/store/signup';
 
 type signupInputProps = {
-  id: string;
+  email: string;
+  onEmailChange: (value: string) => void;
   password: string;
-  onIdChange: (value: string) => void;
   onPasswordChange: (value: string) => void;
+  authenticationCode: string;
+  onAuthCodeChange: (value: string) => void;
   onSignUpClick: () => void;
 };
 
 const SignupInput = ({
   onSignUpClick,
-  id,
+  email,
   password,
-  onIdChange,
+  authenticationCode,
+  onEmailChange,
   onPasswordChange,
+  onAuthCodeChange,
 }: signupInputProps) => {
   const { pathname } = useLocation();
-
-  // // ===== state =====
+  const [emailVerifyStatus, setEmailVerifyStatus] = useState<string | null>(
+    null,
+  );
   const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
-  const [idError, setIdError] = useState<string | null>();
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const { try_cnt } = useEmailTryCountStore();
   const [passwordError, setPasswordError] = useState<string | null>();
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
   >(null);
   const [isValid, setIsValid] = useState(false);
-  const [idValid, setIdValid] = useState(false);
 
-  const { data: validationResponse } = useGetIdValidation(id);
+  const { data: ValidationResponse } = useGetEmailValidation(email);
+
+  // 이메일 재발송 훅
+  const { mutate: reIssueAuthentication } = useReIssueAuthentication();
+  // 인증코드 검증 훅
+  const { mutate: verifyAuthCode } = usePatchAuthentication();
+
+  // 이메일 입력 시, 인증번호 발송 초기화
+  const handleEmailInput = (value: string) => {
+    if (emailVerifyStatus === 'verified') return;
+    onEmailChange(value);
+    setEmailVerifyStatus(null);
+  };
 
   // ID 검사
   useEffect(() => {
-    if (!id) {
-      setIdError(null);
-      setIdValid(false);
-      return;
-    }
-    onIdChange(id);
+    const validateEmailAsync = async () => {
+      if (!email) return; // 이메일이 없을 경우 바로 반환
 
-    // ID 유효성 검사
-    if (validateId(id, setIdError, pathname)) {
-      setIdValid(true);
-    }
+      onEmailChange(email);
 
-    // ID 중복 검사
-    const validateIdAsync = async () => {
-      if (validationResponse && validationResponse.data.is_valid === false) {
-        setIdError(signInputTranclation.idAvailability[isEmployer(pathname)]);
-        setIdValid(false);
+      // 이메일 형식 유효성 검사
+      if (!validateEmail(email, setEmailError, pathname)) {
+        setIsValid(false); // 유효성 검사 실패 시 버튼 비활성화
+        return;
+      }
+
+      // 이메일 중복 검사 API 호출 결과 처리
+      if (ValidationResponse && ValidationResponse.data.is_valid === false) {
+        setEmailError(
+          signInputTranclation.emailAvailability[isEmployer(pathname)],
+        );
+        setIsValid(false); // 중복 검사 실패 시 버튼 비활성화
+      } else if (ValidationResponse && ValidationResponse.data.is_valid) {
+        setEmailError(null); // email 중복 오류 메시지 초기화
+        setIsValid(true); // 중복 검사 통과 시 버튼 활성화
+      } else {
+        setIsValid(false); // 예외처리
       }
     };
 
-    validateIdAsync();
-  }, [id, onIdChange, validationResponse, idError, idValid]);
+    validateEmailAsync();
+  }, [email, pathname, ValidationResponse, onEmailChange]);
 
   // password 유효성 검사
   useEffect(() => {
@@ -89,45 +117,156 @@ const SignupInput = ({
   // 모든 필드의 유효성 검사 후, Continue 버튼 활성화
   useEffect(() => {
     if (
-      validateId(id, setIdError, pathname) &&
+      validateEmail(email, setEmailError, pathname) &&
       validatePassword(password, setPasswordError, pathname) &&
       confirmPasswordValue == password
     ) {
       setIsValid(true);
     }
-  }, [id, password, confirmPasswordValue]);
+  }, [email, password, confirmPasswordValue]);
+
+  // API - 2.7 이메일 인증코드 검증
+  const handleVerifyClick = () => {
+    verifyAuthCode(
+      //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
+      { id: 'goorm', email: email, authentication_code: authenticationCode },
+      {
+        onSuccess: () => setEmailVerifyStatus('verified'),
+        onError: () => {
+          setEmailVerifyStatus('error');
+          setEmailError(
+            `${signInputTranclation.verifyFailed[isEmployer(pathname)]} (${try_cnt}/5)`,
+          );
+        },
+      },
+    );
+  };
 
   const handleConfirmPasswordChange = (value: string) => {
     setConfirmPasswordValue(value);
   };
 
+  // 이메일 인증코드 재전송 API 호출
+  const handleResendClick = async () => {
+    if (email === '') {
+      return;
+    }
+
+    try {
+      // 5회 이내 재발송 가능
+      reIssueAuthentication(
+        { id: email, email: email },
+        {
+          onSuccess: () => {
+            onAuthCodeChange('');
+            setIsValid(false);
+            const status = try_cnt > 1 ? 'resent' : 'sent';
+            setEmailVerifyStatus(status);
+          },
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="w-full">
-      <div className="title-1 pb-12">
+      <div className="max-w-[230px] title-1 pb-12">
         {signInputTranclation.signup[isEmployer(pathname)]}
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
-          <div>
-            <p className="py-2 px-1 body-2 text-[#656565]">
-              {signInputTranclation.id[isEmployer(pathname)]}
-            </p>
-            <Input
-              inputType="TEXT"
-              placeholder={signInputTranclation.enterId[isEmployer(pathname)]}
-              value={id}
-              onChange={onIdChange}
-              canDelete={false}
-              isInvalid={!idValid}
-            />
-            {!idValid && (
-              <p className="text-[#FF6F61] text-xs p-2">{idError}</p>
+          <InputLayout
+            isEssential
+            title={signInputTranclation.email[isEmployer(pathname)]}
+          >
+            <div className="flex gap-2">
+              <Input
+                inputType="TEXT"
+                placeholder={
+                  signInputTranclation.enterEmail[isEmployer(pathname)]
+                }
+                value={email}
+                onChange={handleEmailInput}
+                canDelete={false}
+                isInvalid={!isValid}
+              />
+              <button
+                className={`flex items-center justify-center button-2 min-w-[4.25rem] px-5 py-3 rounded-md ${
+                  emailVerifyStatus === null
+                    ? 'bg-surface-primary text-text-normal'
+                    : 'bg-surface-secondary text-text-disabled'
+                }`}
+                onClick={handleResendClick}
+              >
+                {emailVerifyStatus === null
+                  ? signInputTranclation.sendEmail[isEmployer(pathname)]
+                  : signInputTranclation.emailSentBtnText[isEmployer(pathname)]}
+              </button>
+            </div>
+            {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
+            {emailVerifyStatus !== null && (
+              <div className="flex gap-2 h-full pt-2">
+                <div className="relative w-full">
+                  <Input
+                    inputType="TEXT"
+                    placeholder={
+                      signInputTranclation.verification[isEmployer(pathname)]
+                    }
+                    value={authenticationCode}
+                    onChange={onAuthCodeChange}
+                    canDelete={false}
+                  />
+                  {emailVerifyStatus !== 'verified' && (
+                    <button
+                      className="caption-1 text-blue-500 underline absolute right-[1rem] top-[1rem]"
+                      onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
+                    >
+                      {signInputTranclation.resend[isEmployer(pathname)]}
+                    </button>
+                  )}
+                </div>
+                <button
+                  className={`flex items-center justify-center min-w-[5.5rem] button-2 px-5 py-3 rounded-md ${
+                    emailVerifyStatus === 'verified'
+                      ? 'bg-surface-secondary text-text-disabled'
+                      : 'bg-surface-primary text-text-normal'
+                  }`}
+                  onClick={
+                    emailVerifyStatus === 'verified'
+                      ? undefined
+                      : handleVerifyClick
+                  }
+                >
+                  {signInputTranclation.verify[isEmployer(pathname)]}
+                </button>
+              </div>
             )}
-          </div>
-          <div>
-            <p className="py-2 px-1 body-2 text-[#656565]">
-              {signInputTranclation.password[isEmployer(pathname)]}
-            </p>
+            {emailVerifyStatus === 'sent' && (
+              <p className="text-blue-600 text-xs p-2">
+                {signInputTranclation.enterCode[isEmployer(pathname)]}
+              </p>
+            )}
+            {emailVerifyStatus === 'resent' && (
+              <p className="text-blue-600 text-xs p-2">
+                {signInputTranclation.resentMessage[isEmployer(pathname)]}
+              </p>
+            )}
+            {emailVerifyStatus === 'verified' && (
+              <p className="text-blue-600 text-xs p-2">
+                {signInputTranclation.successVerify[isEmployer(pathname)]}
+              </p>
+            )}
+            {emailError && (
+              <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
+            )}
+            {/* 비밀번호 입력 input */}
+          </InputLayout>
+          <InputLayout
+            isEssential
+            title={signInputTranclation.password[isEmployer(pathname)]}
+          >
             <Input
               inputType="PASSWORD"
               placeholder={
@@ -141,11 +280,11 @@ const SignupInput = ({
             {passwordError && (
               <p className="text-[#FF6F61] text-xs p-2">{passwordError}</p>
             )}
-          </div>
-          <div>
-            <p className="py-2 px-1 body-2 text-[#656565]">
-              {signInputTranclation.confirmPassword[isEmployer(pathname)]}
-            </p>
+          </InputLayout>
+          <InputLayout
+            isEssential
+            title={signInputTranclation.confirmPassword[isEmployer(pathname)]}
+          >
             <Input
               inputType="PASSWORD"
               placeholder={
@@ -161,7 +300,7 @@ const SignupInput = ({
                 {confirmPasswordError}
               </p>
             )}
-          </div>
+          </InputLayout>
         </div>
         <BottomButtonPanel>
           <div className="w-full">
@@ -170,16 +309,12 @@ const SignupInput = ({
               bgColor={isValid ? 'bg-[#1E1926]' : 'bg-[#F4F4F9]'}
               fontColor={isValid ? 'text-[#FEF387]' : 'text-[#BDBDBD]'}
               isBorder={false}
-              title={signInputTranclation.continue[isEmployer(pathname)]}
+              title={signInputTranclation.signupTitle[isEmployer(pathname)]}
               onClick={isValid ? onSignUpClick : undefined}
             />
           </div>
         </BottomButtonPanel>
       </div>
-      {/* 소셜은 잠깐 제외 */}
-      {/* 
-      <SigninSocialButtons />
-      */}
     </div>
   );
 };

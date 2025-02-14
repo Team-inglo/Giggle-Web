@@ -45,7 +45,7 @@ const SignupVerification = ({
     index: number,
   ) => {
     const value = e.target.value;
-    let newCodeArray = authenticationCode.split('');
+    const newCodeArray = authenticationCode.split('');
 
     // 입력 코드 유효성 검사(1자리 숫자)
     if (validateCode(value)) {
@@ -72,7 +72,7 @@ const SignupVerification = ({
     index: number,
   ) => {
     if (e.key === 'Backspace') {
-      let newCodeArray = authenticationCode.split('');
+      const newCodeArray = authenticationCode.split('');
 
       // 현재 필드 값이 있으면 먼저 값을 지움
       if (newCodeArray[index]) {
@@ -122,6 +122,7 @@ const SignupVerification = ({
         },
       );
     } catch (error) {
+      console.error(error);
       setResendMessage('오류가 발생했습니다.');
     }
   };

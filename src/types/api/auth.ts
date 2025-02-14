@@ -21,7 +21,7 @@ export type TempSignUpRequest = {
 };
 
 export type TempSignUpResponse = {
-  try_cnt: number;
+  tryCnt: number;
 };
 
 export type SignUpRequest = {

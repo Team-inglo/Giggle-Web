@@ -4,8 +4,12 @@ export const signInputTranclation = {
     en: 'Sign In',
   },
   signup: {
-    ko: '아이디와 비밀번호를 입력해주세요',
-    en: 'Enter your ID and Password',
+    ko: '이메일과 비밀번호를 입력해주세요',
+    en: 'Enter your Email and Password',
+  },
+  signupTitle: {
+    ko: '회원가입',
+    en: 'Sign Up',
   },
   id: {
     ko: '아이디',
@@ -63,6 +67,18 @@ export const signInputTranclation = {
     ko: '인증을 위해 이메일을 입력해주세요',
     en: 'Enter email address',
   },
+  sendEmail: {
+    ko: '전송',
+    en: 'Send',
+  },
+  emailSentBtnText: {
+    ko: '완료',
+    en: 'Sent',
+  },
+  verifyConfirmBtnText: {
+    ko: '완료',
+    en: 'Confirmed',
+  },
   invalidEmail: {
     ko: '이메일 형식을 확인해주세요',
     en: 'Invalid email format',
@@ -73,15 +89,19 @@ export const signInputTranclation = {
   },
   verification: {
     ko: '인증번호',
-    en: 'Verification',
+    en: 'Verification code',
   },
   almost: {
     ko: '거의 다했어요!',
     en: 'Almost done!',
   },
   enterCode: {
-    ko: '입력하신 이메일로 인증번호를 전송하였습니다.',
+    ko: '인증번호를 보내드렸어요. (5분)',
     en: 'Enter the code from the email we sent you',
+  },
+  verifyFailed : {
+    ko: "인증에 실패했습니다. 인증번호 재발급 후 다시 시도해주세요. ",
+    en: "Verification failed. Please try again after reissuing the verification code. "
   },
   availabilityTime: {
     ko: '5분 후에 코드를 재전송 하겠습니다.',
@@ -108,7 +128,7 @@ export const signInputTranclation = {
     en: 'Resend',
   },
   successVerify: {
-    ko: '인증 완료되었습니다.',
+    ko: '인증 완료되었어요!',
     en: 'Verification successful',
   },
 };

@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import FindJourney from '@/components/Signup/FindJourney';
 import SignupInput from '@/components/Signup/SignupInput';
 import { UserType } from '@/constants/user';
-import EmailInput from '@/components/Signup/EmailInput';
-import SignupVerification from '@/components/Signup/SignupVerification';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
 import { useNavigate } from 'react-router-dom';
-import { usePatchAuthentication, useTempSignUp } from '@/hooks/api/useAuth';
+import { useTempSignUp } from '@/hooks/api/useAuth';
 import { deleteAccessToken, deleteRefreshToken } from '@/utils/auth';
 import { useUserStore } from '@/store/user';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
@@ -19,7 +17,6 @@ const SignupPage = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
 
   // sign-up Field 상태 관리
-  const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [accountType, setCurrentType] = useState<UserType | null>(null);
@@ -29,7 +26,6 @@ const SignupPage = () => {
 
   // mutate 관리
   const { mutate: tempSignUp } = useTempSignUp();
-  const { mutate: verifyAuthCode } = usePatchAuthentication();
 
   // back 버튼 핸들러
   const handleBackButtonClick = () => {
@@ -47,9 +43,6 @@ const SignupPage = () => {
   const handleTypeSelect = (type: UserType) => {
     setCurrentType(type);
   };
-  const handleIdChange = (value: string) => {
-    setId(value);
-  };
   const handlePasswordChange = (value: string) => {
     setPassword(value);
   };
@@ -64,16 +57,13 @@ const SignupPage = () => {
   // API - 2.4 임시 회원가입 API 호출
   const handleSignUp = () => {
     tempSignUp(
-      { id: id, password: password, email: email, account_type: UserType.USER },
+      {
+        id: "goorm", // TODO: 이메일로 통합되면 제거
+        password: password,
+        email: email,
+        account_type: UserType.USER,
+      },
       { onSuccess: handleSignUpClick },
-    );
-  };
-
-  // API - 2.7 이메일 인증코드 검증
-  const handleVerify = () => {
-    verifyAuthCode(
-      { id: id, email: email, authentication_code: authenticationCode },
-      { onSuccess: () => setCurrentStep(currentStep + 1) },
     );
   };
 
@@ -94,7 +84,7 @@ const SignupPage = () => {
         hasMenuButton={false}
         title="Sign Up"
       />
-      {currentStep === 5 ? (
+      {currentStep === 3 ? (
         <VerificationSuccessful />
       ) : (
         <div className="w-screen flex justify-center items-center pt-6 pb-[3.125rem]">
@@ -110,12 +100,12 @@ const SignupPage = () => {
           />
           <hr
             className={`w-[25%] h-1 border-0 ${
-              currentStep >= 3 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
+              currentStep >= 2 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
             }`}
           />
           <hr
             className={`w-[25%] h-1 border-0 ${
-              currentStep === 4 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
+              currentStep === 2 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
             }`}
           />
         </div>
@@ -131,27 +121,13 @@ const SignupPage = () => {
         )}
         {currentStep === 2 && (
           <SignupInput
-            onSignUpClick={handleSignUpClick}
-            id={id}
-            password={password}
-            onIdChange={handleIdChange}
-            onPasswordChange={handlePasswordChange}
-          />
-        )}
-        {currentStep === 3 && (
-          <EmailInput
             email={email}
             onEmailChange={handleEmailChange}
-            onSubmit={handleSignUp} // 이메일을 입력하고 제출하면 임시 회원가입 API 호출
-          />
-        )}
-        {currentStep === 4 && (
-          <SignupVerification
-            email={email}
-            id={id}
             authenticationCode={authenticationCode}
             onAuthCodeChange={handleAuthCodeChange}
-            onSubmit={handleVerify} // 인증코드 입력하고 제출하면 이메일 인증코드 검증 API 호출
+            onSignUpClick={handleSignUp}
+            password={password}
+            onPasswordChange={handlePasswordChange}
           />
         )}
       </div>
