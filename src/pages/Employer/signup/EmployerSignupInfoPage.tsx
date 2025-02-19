@@ -144,12 +144,6 @@ const EmployerSignupInfoPage = () => {
           isShowBottomsheet={isAgreeModal}
         >
           <AgreeModalInner
-            setMarketingAllowed={(value: boolean) =>
-              setNewEmployData({
-                ...newEmployData,
-                marketing_allowed: value,
-              })
-            }
             onPolicyPreview={(policy: TermType) => {
               getPolicy(policy);
             }}
