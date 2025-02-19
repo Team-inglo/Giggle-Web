@@ -65,61 +65,61 @@ const SignupInput = ({
     setEmailVerifyStatus(null);
   };
 
-  // ID 검사
-  useEffect(() => {
-    const validateEmailAsync = async () => {
-      if (!email) return; // 이메일이 없을 경우 바로 반환
+// 이메일 유효성 검사를 위한 단일 useEffect
+useEffect(() => {
+  const validateEmailAsync = async () => {
+    if (!email) {
+      setEmailError(null);
+      setIsValid(false);
+      return;
+    }
 
-      onEmailChange(email);
+    // 1. 기본 이메일 형식 검사
+    const isEmailFormatValid = validateEmail(email, setEmailError, pathname);
+    if (!isEmailFormatValid) {
+      setIsValid(false);
+      return;
+    }
 
-      // 이메일 형식 유효성 검사
-      if (!validateEmail(email, setEmailError, pathname)) {
-        return;
+    // 2. 이메일 중복 검사 결과 처리
+    if (ValidationResponse) {
+      if (!ValidationResponse.data.is_valid) {
+        setEmailError(signInputTranclation.emailAvailability[isEmployer(pathname)]);
+        setIsValid(false);
       }
-
-      // 이메일 중복 검사 API 호출 결과 처리
-      if (ValidationResponse && ValidationResponse.data.is_valid === false) {
-        setEmailError(
-          signInputTranclation.emailAvailability[isEmployer(pathname)],
-        );
-      } else if (ValidationResponse && ValidationResponse.data.is_valid) {
-        setEmailError(null); // email 중복 오류 메시지 초기화
-      }
-    };
-
-    validateEmailAsync();
-  }, [email, pathname, ValidationResponse, onEmailChange]);
-
-  // password 유효성 검사
-  useEffect(() => {
-    if (password) {
-      onPasswordChange(password);
-      validatePassword(password, setPasswordError, pathname);
     }
-  }, [password, pathname, onPasswordChange]);
+  };
 
-  // password 일치 유효성 검사
-  useEffect(() => {
-    if (confirmPasswordValue) {
-      validatedConfirmPassword(
-        password,
-        confirmPasswordValue,
-        setConfirmPasswordError,
-        pathname,
-      );
-    }
-  }, [password, confirmPasswordValue, pathname]);
+  validateEmailAsync();
+}, [email, ValidationResponse, pathname]);
 
-  // 모든 필드의 유효성 검사 후, Continue 버튼 활성화
-  useEffect(() => {
-    if (
-      validateEmail(email, setEmailError, pathname) &&
-      validatePassword(password, setPasswordError, pathname) &&
-      confirmPasswordValue == password
-    ) {
-      setIsValid(true);
-    }
-  }, [email, password, confirmPasswordValue]);
+// 비밀번호 유효성 검사를 위한 단일 useEffect
+useEffect(() => {
+  const isPasswordValid = password ? validatePassword(password, setPasswordError, pathname) : false;
+  const isConfirmValid = confirmPasswordValue === password;
+
+  if (confirmPasswordValue) {
+    validatedConfirmPassword(
+      password,
+      confirmPasswordValue,
+      setConfirmPasswordError,
+      pathname,
+    );
+  }
+
+  // 전체 폼 유효성 상태 업데이트
+  const isEmailValid = !!email && !emailError;
+  setIsValid(isEmailValid && isPasswordValid && isConfirmValid);
+}, [email, emailError, password, confirmPasswordValue, pathname]);
+
+// 부모 컴포넌트로 값 전달
+useEffect(() => {
+  if (email) onEmailChange(email);
+}, [email, onEmailChange]);
+
+useEffect(() => {
+  if (password) onPasswordChange(password);
+}, [password, onPasswordChange]);
 
   // API - 2.7 이메일 인증코드 검증
   const handleVerifyClick = () => {
@@ -144,10 +144,6 @@ const SignupInput = ({
 
   // 이메일 인증코드 재전송 API 호출
   const handleResendClick = async () => {
-    if (email === '') {
-      return;
-    }
-
     try {
       // 5회 이내 재발송 가능
       reIssueAuthentication(
@@ -189,13 +185,15 @@ const SignupInput = ({
               />
               <button
                 className={`flex items-center justify-center button-2 min-w-[4.25rem] px-5 py-3 rounded-lg ${
-                  emailVerifyStatus === null
+                  emailVerifyStatus === null && !emailError
                     ? 'bg-surface-primary text-text-normal'
                     : 'bg-surface-secondary text-text-disabled'
                 }`}
                 onClick={handleResendClick}
+                disabled={!(emailVerifyStatus === null && !emailError)}
+                aria-disabled={!(emailVerifyStatus === null && !emailError)}
               >
-                {emailVerifyStatus === null
+                {emailVerifyStatus === null && !emailError
                   ? signInputTranclation.sendEmail[isEmployer(pathname)]
                   : signInputTranclation.emailSentBtnText[isEmployer(pathname)]}
               </button>
