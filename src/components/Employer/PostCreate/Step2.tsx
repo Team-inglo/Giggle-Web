@@ -59,7 +59,8 @@ const Step2 = ({
   useEffect(() => {
     const { address } = newPostInfo.body;
 
-    const isFormValid = address.region_1depth_name !== '';
+    const isFormValid =
+      address.region_1depth_name !== '' && address.address_detail !== '';
     // work_day_times.length &&
     setIsInvalid(!isFormValid);
   }, [newPostInfo]);
@@ -99,7 +100,7 @@ const Step2 = ({
               ></MapMarker>
             </Map>
           </div>
-          <InputLayout title="상세주소" isEssential={false}>
+          <InputLayout title="상세주소" isEssential>
             <Input
               inputType={InputType.TEXT}
               placeholder="ex) 101동"
