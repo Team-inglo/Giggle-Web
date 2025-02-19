@@ -144,7 +144,10 @@ const SignupInput = ({
       //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
       { email: email, authentication_code: authenticationCode },
       {
-        onSuccess: () => setEmailVerifyStatus('verified'),
+        onSuccess: () => {
+          setEmailVerifyStatus('verified');
+          setEmailError(null);
+        },
         onError: () => {
           setEmailVerifyStatus('error');
           setEmailError(
@@ -330,8 +333,8 @@ const SignupInput = ({
           <div className="w-full">
             <Button
               type="large"
-              bgColor={isValid ? 'bg-[#1E1926]' : 'bg-[#F4F4F9]'}
-              fontColor={isValid ? 'text-[#FEF387]' : 'text-[#BDBDBD]'}
+              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
+              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
               isBorder={false}
               title={signInputTranclation.continue[isEmployer(pathname)]}
               onClick={isValid ? onSignUpClick : undefined}
