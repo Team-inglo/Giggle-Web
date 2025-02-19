@@ -11,6 +11,7 @@ import {
 import { usePostEducation } from '@/hooks/api/useResume';
 import { educationDataValidation } from '@/utils/editResume';
 import { EducationRequest } from '@/types/api/resumes';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 const PostEducationPage = () => {
   const { mutate } = usePostEducation();
@@ -51,7 +52,7 @@ const PostEducationPage = () => {
           setEducationData={setEducationData}
         />
       </div>
-      <div className="pb-[2.5rem] px-6 w-full fixed bottom-0 bg-grayGradient">
+      <BottomButtonPanel>
         <Button
           type={buttonTypeKeys.LARGE}
           bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
@@ -60,7 +61,7 @@ const PostEducationPage = () => {
           isBorder={false}
           onClick={isValid ? handleSubmit : undefined}
         />
-      </div>
+      </BottomButtonPanel>
     </>
   );
 };

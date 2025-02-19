@@ -23,7 +23,7 @@ export const validatePassword = (
   pathname: string,
 ): boolean => {
   const passwordRegex =
-    /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,}$/;
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,20}$/;
   if (!passwordRegex.test(password)) {
     setPasswordError(
       signInputTranclation.invalidPassword[isEmployer(pathname)],

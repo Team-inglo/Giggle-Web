@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { usePatchHiKoreaResult } from '@/hooks/api/useApplication';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 const ApplicationResultPage = () => {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ const ApplicationResultPage = () => {
           onChange={(e) => setFeedback(e.target.value)}
         />
       </section>
-      <footer className="fixed w-full bottom-0 left-0 pt-[0.75rem] px-[1.5rem] pb-[3.125rem] bg-white">
+      <BottomButtonPanel>
         <Button
           type={buttonTypeKeys.LARGE}
           bgColor={'bg-[#FEF387]'}
@@ -70,7 +71,7 @@ const ApplicationResultPage = () => {
           isBorder={false}
           onClick={onClickRegistration}
         />
-      </footer>
+      </BottomButtonPanel>
     </>
   );
 };

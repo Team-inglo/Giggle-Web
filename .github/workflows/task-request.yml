@@ -1,0 +1,62 @@
+name: Notify Discord on Assigned Issues or Task Requests
+
+on:
+  issues:
+    types: [opened] # 이슈가 할당되거나 새로 생성될 때 실행
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Environment Variables
+        run: |
+          # Assignee가 없는 경우 기본값 설정
+          ASSIGNEE="${{ github.event.issue.assignee.login }}"
+          if [[ -z "$ASSIGNEE" ]]; then
+            ASSIGNEE="bianbbc87"
+          fi
+          echo "ASSIGNEE=$ASSIGNEE" >> $GITHUB_ENV
+
+          # 이슈 본문 처리 (이모지 및 개행 문제 해결)
+          ISSUE_BODY_RAW="${{ github.event.issue.body }}"
+          ISSUE_BODY=$(echo "$ISSUE_BODY_RAW" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+
+          echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_ENV
+          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+          echo "ISSUE_BODY=$ISSUE_BODY" >> $GITHUB_ENV
+          echo "WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }}" >> $GITHUB_ENV
+
+      - name: Check Assignee or Title & Send Discord Notification
+        run: |
+          JSON_FILE=$(mktemp)
+          TITLE_MATCH=false
+
+          # 제목이 '✅ Task Request -'로 시작하는지 확인
+          if [[ "$ISSUE_TITLE" =~ ^✅\ Task\ Request\ - ]]; then
+            TITLE_MATCH=true
+          fi
+
+          # 이슈 본문 길이 제한 (500자 초과 시 생략)
+          TRUNCATED_BODY=$(echo "$ISSUE_BODY" | cut -c1-500)
+          if [[ ${#ISSUE_BODY} -gt 500 ]]; then
+            TRUNCATED_BODY+="..."
+          fi
+
+          # 조건 만족 시 Discord 알림 전송
+          if [[ "$TITLE_MATCH" == "true" ]]; then
+            echo '{' > $JSON_FILE
+            echo '  "content": "📢 ** 프론트엔드 팀 새로운 작업 요청 @나경 @savien_woojoon **",' >> $JSON_FILE
+            echo '  "embeds": [' >> $JSON_FILE
+            echo '    {' >> $JSON_FILE
+            echo '      "title": "🔗 [GitHub 이슈 링크]('$ISSUE_URL')",' >> $JSON_FILE
+            echo '      "description": "**이슈 제목:** '$ISSUE_TITLE'\n\n**이슈 내용:** '$TRUNCATED_BODY'",' >> $JSON_FILE
+            echo '      "color": 15258703,' >> $JSON_FILE
+            echo '      "footer": {"text": "GitHub Actions | Issue Alert"},' >> $JSON_FILE
+            echo '      "timestamp": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'"' >> $JSON_FILE
+            echo '    }' >> $JSON_FILE
+            echo '  ]' >> $JSON_FILE
+            echo '}' >> $JSON_FILE
+
+            curl -X POST -H 'Content-type: application/json' --data @$JSON_FILE "$WEBHOOK_URL"
+            rm $JSON_FILE
+          fi

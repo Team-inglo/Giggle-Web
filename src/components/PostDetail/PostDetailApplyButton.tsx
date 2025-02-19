@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useGetPostValidation } from '@/hooks/api/useApplication';
 import { UserType } from '@/constants/user';
 import { usePutPostBookmark } from '@/hooks/api/usePost';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 type PostDetailApplyButtonProps = {
   isBookmarked: boolean;
@@ -59,24 +60,26 @@ const PostDetailApplyButton = ({
 
   return (
     <>
-      <footer className="fixed bottom-0 left-0 w-full flex gap-[0.5rem] pt-[0.75rem] px-[1.5rem] pb-[2.5rem] bg-white z-20">
-        {account_type && (
-          <button
-            className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-full bg-[#F4F4F980]"
-            onClick={onClickBookmark}
-          >
-            {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
-          </button>
-        )}
-        <Button
-          type={buttonTypeKeys.APPLY}
-          bgColor=""
-          fontColor="text-white"
-          isBorder={false}
-          title="Apply Now"
-          onClick={onClickApply}
-        />
-      </footer>
+      <BottomButtonPanel>
+        <footer className="w-full flex gap-2 z-20">
+          {account_type && (
+            <button
+              className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-full bg-[#F4F4F980]"
+              onClick={onClickBookmark}
+            >
+              {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
+            </button>
+          )}
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor=""
+            fontColor="text-white"
+            isBorder={false}
+            title="Apply Now"
+            onClick={onClickApply}
+          />
+        </footer>
+      </BottomButtonPanel>
       <PostDetailConfirmBottomSheet
         isShowBottomsheet={isOpenConfirmBottomSheet}
         setIsShowBottomSheet={setIsOpenConfirmBottomSheet}

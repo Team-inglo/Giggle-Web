@@ -67,3 +67,8 @@ export type ReIssueAuthenticationRequest = {
 export type PolicyResponse = {
   content: string;
 };
+
+export type ChangePasswordRequest = {
+  current_password: string;
+  new_password: string;
+}

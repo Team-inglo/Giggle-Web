@@ -24,6 +24,7 @@ import { useGetUserProfile, usePatchUserProfile } from '@/hooks/api/useProfile';
 import { useAddressSearch } from '@/hooks/api/useAddressSearch';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 const EditProfilePage = () => {
   const { data: userProfile } = useGetUserProfile();
@@ -316,8 +317,8 @@ const EditProfilePage = () => {
             </InputLayout>
             {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
             <InputLayout title="Telephone No." isEssential={true}>
-              <div className="w-full flex flex-row gap-2 justify-between">
-                <div className="w-full h-[2.75rem]">
+              <div className="w-full flex gap-2 justify-between items-start">
+                <div className="w-full">
                   <Dropdown
                     value={phoneNum.start}
                     placeholder="+82"
@@ -346,7 +347,7 @@ const EditProfilePage = () => {
               </div>
             </InputLayout>
           </div>
-          <div className="pb-[2.5rem] px-6 w-full fixed bottom-0 bg-grayGradient">
+          <BottomButtonPanel>
             <Button
               type={buttonTypeKeys.LARGE}
               title="Save"
@@ -355,7 +356,7 @@ const EditProfilePage = () => {
               onClick={isChanged ? handleSubmit : undefined}
               isBorder={false}
             />
-          </div>
+          </BottomButtonPanel>
         </div>
       )}
     </>

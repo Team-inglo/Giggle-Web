@@ -11,7 +11,7 @@ export default {
         navbarGradient:
           'linear-gradient(270deg, #FEFEFE 0.35%, #F4F4F9 175.32%)',
         grayGradient:
-          'linear-gradient(180deg, rgba(255, 255, 255, 0.80) 36.54%, #FFF 94.71%)',
+          'linear-gradient(180deg, rgba(255, 255, 255, 1) 36.54%, #FFF 94.71%)',
         profileMenuGradient:
           'linear-gradient(0deg, var(--grey, #F4F4F9) 0%, var(--grey, #F4F4F9) 100%), linear-gradient(0deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.50) 100%), url(<path-to-image>)',
         profilePageGradient:

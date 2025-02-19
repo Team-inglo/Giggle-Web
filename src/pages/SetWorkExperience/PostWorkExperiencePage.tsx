@@ -1,3 +1,4 @@
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import WorkExperiencePost from '@/components/WorkExperience/WorkExperiencePost';
@@ -59,17 +60,19 @@ const PostWorkExperiencePage = () => {
           setWorkExperienceData={setWorkExperienceData}
         />
       </div>
-      <div className="pb-[2.5rem] px-6 w-full fixed bottom-0 bg-grayGradient">
-        {/* post 버튼 */}
-        <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-          fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
-          title="Save"
-          isBorder={false}
-          onClick={isEditing ? handleSubmit : undefined}
-        />
-      </div>
+      <BottomButtonPanel>
+        <div className="w-full z-40">
+          {/* post 버튼 */}
+          <Button
+            type={buttonTypeKeys.LARGE}
+            bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
+            fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+            title="Save"
+            isBorder={false}
+            onClick={isEditing ? handleSubmit : undefined}
+          />
+        </div>
+      </BottomButtonPanel>
     </div>
   );
 };

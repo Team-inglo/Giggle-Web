@@ -1,3 +1,4 @@
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import EducationPatch from '@/components/SetEducation/EducationPatch';
@@ -93,24 +94,26 @@ const PatchEducationPage = () => {
               schoolData={fetchData.school}
             />
           </div>
-          <div className="fixed bottom-0 flex gap-2 pb-[2.5rem] px-6 w-full bg-grayGradient">
-            <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor="bg-[#F4F4F9]"
-              fontColor="text-[#BDBDBD]"
-              title="Reset"
-              isBorder={false}
-              onClick={isEditing ? handleReset : undefined}
-            />
-            <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-              fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
-              title="Save"
-              isBorder={false}
-              onClick={isEditing ? handleSubmit : undefined}
-            />
-          </div>
+          <BottomButtonPanel>
+            <div className="w-full flex gap-2">
+              <Button
+                type={buttonTypeKeys.LARGE}
+                bgColor="bg-[#F4F4F9]"
+                fontColor="text-[#BDBDBD]"
+                title="Reset"
+                isBorder={false}
+                onClick={isEditing ? handleReset : undefined}
+              />
+              <Button
+                type={buttonTypeKeys.LARGE}
+                bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
+                fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+                title="Save"
+                isBorder={false}
+                onClick={isEditing ? handleSubmit : undefined}
+              />
+            </div>
+          </BottomButtonPanel>
         </>
       )}
     </>

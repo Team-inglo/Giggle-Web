@@ -4,23 +4,23 @@ import { useEffect } from 'react';
 type CompleteModalProps = {
   title: string;
   content?: string;
-  onNext: () => void;
+  onNext?: () => void;
 };
 
 const CompleteModal = ({ title, content, onNext }: CompleteModalProps) => {
   // 2초 뒤에 페이지 이동
   useEffect(() => {
     const timer = setTimeout(() => {
-      onNext();
+      onNext?.();
     }, 2000);
 
     return () => clearTimeout(timer);
   }, [onNext]);
   return (
-    <div className="w-screen h-screen px-14 flex flex-col gap-4 items-center justify-center text-center">
+    <div className="w-screen h-screen px-4 flex flex-col gap-4 items-center justify-center text-center break-keep">
       <CheckIconLarge />
-      <div className="title-2">{title}</div>
-      <div className="body-2">{content}</div>
+      <div className="head-2">{title}</div>
+      <div className="body-2 text-text-alternative">{content}</div>
     </div>
   );
 };

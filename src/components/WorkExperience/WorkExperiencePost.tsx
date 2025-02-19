@@ -93,29 +93,23 @@ const WorkExperiencePost = ({
       </InputLayout>
       {/* 시작 날짜 입력 */}
       <InputLayout title="Start Date" isEssential={true}>
-        <div className="absolute z-50">
-          <Dropdown
-            value={workExperienceData.start_date.replace(/-/g, '/')}
-            placeholder="Select Date"
-            options={[]}
-            isCalendar={true}
-            setValue={(value) => handleDateChange('start_date', value)}
-          />
-        </div>
+        <Dropdown
+          value={workExperienceData.start_date.replace(/-/g, '/')}
+          placeholder="Select Date"
+          options={[]}
+          isCalendar={true}
+          setValue={(value) => handleDateChange('start_date', value)}
+        />
       </InputLayout>
-      <div className="h-8" />
       {/* 끝 날짜 입력 */}
       <InputLayout title="End Date" isEssential={true}>
-        <div className="absolute z-40">
-          <Dropdown
-            value={workExperienceData.end_date?.replace(/-/g, '/')}
-            placeholder="Select Date"
-            options={[]}
-            isCalendar={true}
-            setValue={(value) => handleDateChange('end_date', value)}
-          />
-        </div>
-        <div className="h-12" />
+        <Dropdown
+          value={workExperienceData.end_date?.replace(/-/g, '/')}
+          placeholder="Select Date"
+          options={[]}
+          isCalendar={true}
+          setValue={(value) => handleDateChange('end_date', value)}
+        />
         <div
           className="flex items-center gap-3 mt-2 cursor-pointer"
           onClick={handleOngoingToggle}

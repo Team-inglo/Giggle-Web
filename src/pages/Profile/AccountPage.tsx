@@ -41,6 +41,15 @@ const AccountPage = () => {
             <ProfileMenu
               title={
                 account_type === UserType.USER
+                  ? profileTranslation.changePassword.en
+                  : profileTranslation.changePassword.ko
+              }
+              iconType={IconType.LOGOUT}
+              onClick={() => navigate('/profile/change-password')}
+            />
+            <ProfileMenu
+              title={
+                account_type === UserType.USER
                   ? profileTranslation.deleteAccount.en
                   : profileTranslation.deleteAccount.ko
               }

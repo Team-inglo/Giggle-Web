@@ -21,7 +21,6 @@ const AgreeModalInner = ({
     false,
     false,
     false,
-    false,
   ]);
   const handleCheckboxChange = (index: number) => {
     setEssentialAgreeList((prev) => {
@@ -51,7 +50,7 @@ const AgreeModalInner = ({
                 onClick={() => {
                   setEssentialAgreeList(
                     essentialAgreeList.includes(false)
-                      ? [true, true, true, true]
+                      ? [true, true, true, false]
                       : [false, false, false, false],
                   );
                 }}
@@ -129,23 +128,6 @@ const AgreeModalInner = ({
                 onClick={() => onPolicyPreview(TermType.LOCATION_BASED_TERMS)}
               >
                 <ArrowIcon />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="w-full flex items-center justify-center gap-3">
-          <div className="w-full flex items-center justify-center gap-3">
-            <div className="flex items-center justify-start py-0.5">
-              <div
-                className={`w-6 h-6 relative flex items-center justify-center border ${essentialAgreeList[3] ? 'bg-[#1e1926]' : 'bg-white'} border-[#F4F4F9]`}
-                onClick={() => handleCheckboxChange(3)}
-              >
-                <CheckIcon />
-              </div>
-            </div>
-            <div className="w-full flex items-center justify-between gap-1">
-              <div className="w-full flex items-center">
-                (선택) 마케팅 이용동의
               </div>
             </div>
           </div>

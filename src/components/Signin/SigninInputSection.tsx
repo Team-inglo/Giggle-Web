@@ -2,34 +2,33 @@ import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { validateEmail, validatePassword } from '@/utils/signin';
-import { useSignIn } from '@/hooks/api/useAuth';
+import { validateEmail } from '@/utils/signin';
+import { useGetEmailValidation, useSignIn } from '@/hooks/api/useAuth';
 import { useUserInfoforSigninStore } from '@/store/signup';
-import InputLayout from '../WorkExperience/InputLayout';
+import InputLayout from '@/components/WorkExperience/InputLayout';
+import { signInputTranclation } from '@/constants/translation';
 
 const SigninInputSection = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   // ===== state =====
-  const [emailValue, setIdValue] = useState<string>('');
+  const [emailValue, setEmailValue] = useState<string>('');
   const [passwordValue, setPasswordValue] = useState<string>('');
-  const [idError, setIdError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [isValid, setIsValid] = useState(false);
 
   const { mutate: signIn } = useSignIn();
+  const { data: ValidationResponse } = useGetEmailValidation(emailValue);
   const { updateId, updatePassword } = useUserInfoforSigninStore();
 
   // ===== handler =====
   const handleIdChange = (value: string) => {
-    setIdValue(value);
-    validateEmail(value, setIdError, pathname); // ID 입력 시 유효성 검사
+    setEmailValue(value);
   };
 
   const handlePasswordChange = (value: string) => {
     setPasswordValue(value);
-    validatePassword(value, setPasswordError, pathname); // 비밀번호 입력 시 유효성 검사
   };
 
   // ====== Sign in API =======
@@ -47,12 +46,29 @@ const SigninInputSection = () => {
     signIn(formData);
   };
 
+  useEffect(() => {
+    const validateEmailAsync = async () => {
+      if (!emailValue) return; // 이메일이 없을 경우 바로 반환
+
+      // 이메일 형식 유효성 검사
+      if (!validateEmail(emailValue, setEmailError, '/employer/signin')) {
+        return;
+      }
+
+      // 이메일 중복 검사 API 호출 결과 처리
+      if (ValidationResponse && ValidationResponse.data.is_valid === true) {
+        setEmailError(signInputTranclation.emailWrong['ko']);
+      } else if (ValidationResponse && ValidationResponse.data.is_valid) {
+        setEmailError(null); // email 중복 오류 메시지 초기화
+      }
+    };
+
+    validateEmailAsync();
+  }, [emailValue, pathname, ValidationResponse, setEmailValue]);
+
   // 모든 필드의 유효성 검사 후, Sign In 버튼 활성화
   useEffect(() => {
-    if (
-      validateEmail(emailValue, setIdError, pathname) &&
-      validatePassword(passwordValue, setPasswordError, pathname)
-    ) {
+    if (validateEmail(emailValue, setEmailError, '/employer/signin')) {
       setIsValid(true);
     }
   }, [emailValue, passwordValue]);
@@ -68,7 +84,9 @@ const SigninInputSection = () => {
             onChange={handleIdChange}
             canDelete={false}
           />
-          {idError && <p className="text-[#FF6F61] text-xs p-2">{idError}</p>}
+          {emailError && (
+            <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
+          )}
         </InputLayout>
         <InputLayout isEssential title="비밀번호">
           <Input
@@ -78,9 +96,6 @@ const SigninInputSection = () => {
             onChange={handlePasswordChange}
             canDelete={false}
           />
-          {passwordError && (
-            <p className="text-[#FF6F61] text-xs p-2">{passwordError}</p>
-          )}
         </InputLayout>
         <div className="flex w-full justify-center">
           <button
@@ -108,10 +123,10 @@ const SigninInputSection = () => {
           <div className="w-full flex flex-col items-center gap-6">
             <Button
               type="large"
-              bgColor={isValid ? 'bg-[#000]' : 'bg-[#F4F4F9]'}
-              fontColor={isValid ? 'text-[#FEF387]' : 'text-[#BDBDBD]'}
+              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
+              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
               isBorder={false}
-              title="Sign In"
+              title="로그인"
               onClick={isValid ? handleSubmit : undefined}
             />
           </div>

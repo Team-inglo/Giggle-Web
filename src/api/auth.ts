@@ -1,6 +1,7 @@
 import {
   AuthenticationRequest,
   AuthenticationResponse,
+  ChangePasswordRequest,
   PolicyResponse,
   ReIssueAuthenticationRequest,
   SignInRequest,
@@ -141,6 +142,30 @@ export const reIssueAuthentication = async (
 // 2.9 탈퇴하기
 export const withdraw = async (): Promise<RESTYPE<null>> => {
   const response = await api.delete('/auth');
+  return response.data;
+};
+
+// 2.10 임시 비밀번호 발급 및 메일 전송
+export const reIssuePassword = async (): Promise<RESTYPE<null>> => {
+  const temporaryToken = localStorage.getItem('temporary_token'); // 로컬 스토리지에서 토큰 가져오기
+
+  const response = await apiWithoutAuth.post(
+    '/auth/reissue/password',
+    {}, // 빈 객체로 request body 유지
+    {
+      headers: {
+        Authorization: `Bearer ${temporaryToken}`, // 헤더에 토큰 추가
+      },
+    },
+  );
+  return response.data;
+};
+
+// 2.11 비밀번호 변경
+export const patchPassword = async (
+  passwords: ChangePasswordRequest,
+): Promise<RESTYPE<null>> => {
+  const response = await api.patch('/auth/password', passwords);
   return response.data;
 };
 

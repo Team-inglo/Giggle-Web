@@ -1,3 +1,4 @@
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import EtcLanguageCard from '@/components/Language/EtcLanguageCard';
@@ -65,7 +66,7 @@ const PostLanguagePage = () => {
           </>
         )}
       </div>
-      <div className="pb-[2.5rem] px-6 pt-3 w-full fixed bottom-0 bg-grayGradient">
+      <BottomButtonPanel>
         {/* 1단계: 언어 선택 버튼 */}
         {step === 1 && (
           <Button
@@ -88,7 +89,7 @@ const PostLanguagePage = () => {
             onClick={handleSubmit}
           />
         )}
-      </div>
+      </BottomButtonPanel>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import IntroductionInput from '@/components/Introduction/IntroductionInput';
@@ -66,7 +67,7 @@ const IntroductionPage = () => {
         handleFocusTextArea={handleFocusTextArea}
         handleChange={handleChange}
       />
-      <div className="fixed bottom-0 pb-[3.125rem] px-6 w-full">
+      <BottomButtonPanel>
         <Button
           type={buttonTypeKeys.LARGE}
           bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
@@ -75,7 +76,7 @@ const IntroductionPage = () => {
           isBorder={false}
           onClick={isEditing ? handleSubmit : undefined}
         />
-      </div>
+      </BottomButtonPanel>
     </div>
   );
 };

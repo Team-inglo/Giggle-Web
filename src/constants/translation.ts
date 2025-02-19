@@ -91,6 +91,10 @@ export const signInputTranclation = {
     ko: '이미 가입된 이메일입니다',
     en: 'This email already exists',
   },
+  emailWrong: {
+    ko: '존재하지 않는 이메일입니다.',
+    en: 'Wrong email address',
+  },
   verification: {
     ko: '인증번호',
     en: 'Verification code',
@@ -102,6 +106,9 @@ export const signInputTranclation = {
   enterCode: {
     ko: '인증번호를 보내드렸어요. (5분)',
     en: 'Enter the code from the email we sent you',
+  },
+  resetPasswordVerifySuccess: {
+    ko: '인증이 완료되었어요!',
   },
   verifyFailed: {
     ko: '인증에 실패했습니다. 인증번호 재발급 후 다시 시도해주세요. ',
@@ -230,6 +237,50 @@ export const profileTranslation = {
     ko: '위치정보 이용약관',
     en: 'Location Information Service',
   },
+  changePassword: {
+    ko: '비밀번호 재설정',
+    en: 'Change Password',
+  },
+  enterYourPassword: {
+    ko: '현재 비밀번호를 입력해주세요',
+    en: 'Enter your password',
+  },
+  currentPassword: {
+    ko: '현재 비밀번호',
+    en: 'Current Password',
+  },
+  enterCurrentPassword: {
+    ko: '비밀번호를 입력해주세요',
+    en: 'Enter current password',
+  },
+  newPassword: {
+    ko: '비밀번호 입력',
+    en: 'New Password',
+  },
+  enterNewPassword: {
+    ko: '새로운 비밀번호를 입력해주세요',
+    en: 'Enter new password',
+  },
+  confirmPassword: {
+    ko: '비밀번호 확인',
+    en: 'Confirm New Password',
+  },
+  enterConfirmPassword: {
+    ko: '비밀번호를 확인해주세요',
+    en: 'Confirm new password',
+  },
+  completeTitle: {
+    ko: '비밀번호 변경이 완료되었어요!',
+    en: 'Your password has been changed!',
+  },
+  completeContent: {
+    ko: '이제 새로운 비밀번호로 로그인해보세요',
+    en: 'You can now sign in with your new password.',
+  },
+  completeBtnText: {
+    ko: '알겠어요',
+    en: 'Okay',
+  },
   introductionQuestion: {
     ko: '나를 한 줄로 표현한다면?',
     en: 'If you were to express yourself in one line?',
@@ -240,6 +291,13 @@ export const headerTranslation = {
   profile: {
     ko: '마이페이지',
     en: 'My Page',
+  },
+};
+
+export const postTranslation = {
+  dDay: {
+    ko: '상시모집',
+    en: 'always',
   },
 };
 
