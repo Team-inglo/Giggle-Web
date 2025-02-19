@@ -18,6 +18,7 @@ import BottomButtonPanel from '../Common/BottomButtonPanel';
 import InputLayout from '../WorkExperience/InputLayout';
 import { useEmailTryCountStore } from '@/store/signup';
 import PageTitle from '../Common/PageTitle';
+import useDebounce from '@/hooks/useDebounce';
 
 type signupInputProps = {
   email: string;
@@ -50,6 +51,8 @@ const SignupInput = ({
     string | null
   >(null);
   const [isValid, setIsValid] = useState(false);
+  const debouncedEmail = useDebounce(email);
+  const debouncedPassword = useDebounce(password);
 
   const { data: ValidationResponse } = useGetEmailValidation(email);
 
@@ -65,61 +68,75 @@ const SignupInput = ({
     setEmailVerifyStatus(null);
   };
 
-// 이메일 유효성 검사를 위한 단일 useEffect
-useEffect(() => {
-  const validateEmailAsync = async () => {
-    if (!email) {
-      setEmailError(null);
-      setIsValid(false);
-      return;
-    }
-
-    // 1. 기본 이메일 형식 검사
-    const isEmailFormatValid = validateEmail(email, setEmailError, pathname);
-    if (!isEmailFormatValid) {
-      setIsValid(false);
-      return;
-    }
-
-    // 2. 이메일 중복 검사 결과 처리
-    if (ValidationResponse) {
-      if (!ValidationResponse.data.is_valid) {
-        setEmailError(signInputTranclation.emailAvailability[isEmployer(pathname)]);
+  // 이메일 유효성 검사를 위한 단일 useEffect
+  useEffect(() => {
+    const validateEmailAsync = async () => {
+      if (debouncedEmail === '') {
+        setEmailError(null);
         setIsValid(false);
+        return;
       }
+
+      // 1. 기본 이메일 형식 검사
+      const isEmailFormatValid = validateEmail(
+        debouncedEmail,
+        setEmailError,
+        pathname,
+      );
+      if (!isEmailFormatValid) {
+        setIsValid(false);
+        return;
+      }
+
+      // 2. 이메일 중복 검사 결과 처리
+      if (ValidationResponse) {
+        if (!ValidationResponse.data.is_valid) {
+          setEmailError(
+            signInputTranclation.emailAvailability[isEmployer(pathname)],
+          );
+          setIsValid(false);
+        }
+      }
+    };
+
+    validateEmailAsync();
+  }, [debouncedEmail, ValidationResponse, pathname]);
+
+  // 비밀번호 유효성 검사를 위한 단일 useEffect
+  useEffect(() => {
+    const isPasswordValid = debouncedPassword
+      ? validatePassword(debouncedPassword, setPasswordError, pathname)
+      : false;
+    const isConfirmValid = confirmPasswordValue === debouncedPassword;
+
+    if (confirmPasswordValue) {
+      validatedConfirmPassword(
+        debouncedPassword,
+        confirmPasswordValue,
+        setConfirmPasswordError,
+        pathname,
+      );
     }
-  };
 
-  validateEmailAsync();
-}, [email, ValidationResponse, pathname]);
+    // 전체 폼 유효성 상태 업데이트
+    const isEmailValid = !!debouncedEmail && !emailError;
+    setIsValid(isEmailValid && isPasswordValid && isConfirmValid);
+  }, [
+    debouncedEmail,
+    emailError,
+    debouncedPassword,
+    confirmPasswordValue,
+    pathname,
+  ]);
 
-// 비밀번호 유효성 검사를 위한 단일 useEffect
-useEffect(() => {
-  const isPasswordValid = password ? validatePassword(password, setPasswordError, pathname) : false;
-  const isConfirmValid = confirmPasswordValue === password;
+  // 부모 컴포넌트로 값 전달
+  useEffect(() => {
+    if (email) onEmailChange(email);
+  }, [email, onEmailChange]);
 
-  if (confirmPasswordValue) {
-    validatedConfirmPassword(
-      password,
-      confirmPasswordValue,
-      setConfirmPasswordError,
-      pathname,
-    );
-  }
-
-  // 전체 폼 유효성 상태 업데이트
-  const isEmailValid = !!email && !emailError;
-  setIsValid(isEmailValid && isPasswordValid && isConfirmValid);
-}, [email, emailError, password, confirmPasswordValue, pathname]);
-
-// 부모 컴포넌트로 값 전달
-useEffect(() => {
-  if (email) onEmailChange(email);
-}, [email, onEmailChange]);
-
-useEffect(() => {
-  if (password) onPasswordChange(password);
-}, [password, onPasswordChange]);
+  useEffect(() => {
+    if (password) onPasswordChange(password);
+  }, [password, onPasswordChange]);
 
   // API - 2.7 이메일 인증코드 검증
   const handleVerifyClick = () => {
@@ -153,6 +170,7 @@ useEffect(() => {
             onAuthCodeChange('');
             const status = try_cnt > 1 ? 'resent' : 'sent';
             setEmailVerifyStatus(status);
+            setEmailError(null);
           },
         },
       );
@@ -185,13 +203,27 @@ useEffect(() => {
               />
               <button
                 className={`flex items-center justify-center button-2 min-w-[4.25rem] px-5 py-3 rounded-lg ${
-                  emailVerifyStatus === null && !emailError
+                  emailVerifyStatus === null &&
+                  !emailError &&
+                  debouncedEmail !== ''
                     ? 'bg-surface-primary text-text-normal'
                     : 'bg-surface-secondary text-text-disabled'
                 }`}
                 onClick={handleResendClick}
-                disabled={!(emailVerifyStatus === null && !emailError)}
-                aria-disabled={!(emailVerifyStatus === null && !emailError)}
+                disabled={
+                  !(
+                    emailVerifyStatus === null &&
+                    !emailError &&
+                    debouncedEmail !== ''
+                  )
+                }
+                aria-disabled={
+                  !(
+                    emailVerifyStatus === null &&
+                    !emailError &&
+                    debouncedEmail !== ''
+                  )
+                }
               >
                 {emailVerifyStatus === null && !emailError
                   ? signInputTranclation.sendEmail[isEmployer(pathname)]
@@ -222,7 +254,8 @@ useEffect(() => {
                 </div>
                 <button
                   className={`flex items-center justify-center min-w-[5.5rem] button-2 px-5 py-3 rounded-lg ${
-                    emailVerifyStatus === 'verified'
+                    emailVerifyStatus === 'verified' &&
+                    authenticationCode !== ''
                       ? 'bg-surface-secondary text-text-disabled'
                       : 'bg-surface-primary text-text-normal'
                   }`}
@@ -268,7 +301,6 @@ useEffect(() => {
               value={password}
               onChange={onPasswordChange}
               canDelete={false}
-              isInvalid={passwordError ? true : false}
             />
             {passwordError && (
               <p className="text-[#FF6F61] text-xs p-2">{passwordError}</p>
@@ -286,7 +318,6 @@ useEffect(() => {
               value={confirmPasswordValue}
               onChange={handleConfirmPasswordChange}
               canDelete={false}
-              isInvalid={confirmPasswordError ? true : false}
             />
             {confirmPasswordError && (
               <p className="text-[#FF6F61] text-xs p-2">
