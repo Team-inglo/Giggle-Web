@@ -80,7 +80,7 @@ const InformationPage = () => {
           buttonText={
             signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
           }
-          onNext={() => navigate('/')}
+          onNext={() => navigate('/splash')}
         />
       ) : (
         <>

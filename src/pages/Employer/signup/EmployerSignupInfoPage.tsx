@@ -94,7 +94,7 @@ const EmployerSignupInfoPage = () => {
           buttonText={
             signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
           }
-          onNext={() => navigate('/')}
+          onNext={() => navigate('/splash')}
         />
       ) : (
         <div className="m-auto max-w-[500px] relative h-screen flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide">
