@@ -70,7 +70,7 @@ const InformationStep = ({
   }, [newUserInfo, phoneNum]);
 
   return (
-    <div className='w-full flex flex-col gap-4'>
+    <div className="w-full flex flex-col gap-4">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
           title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}

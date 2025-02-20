@@ -56,7 +56,7 @@ export enum VisaGroup {
 
 // Types
 
-export type Address = {
+export type GiggleAddress = {
   address_name: string;
   region_1depth_name: string;
   region_2depth_name: string;
@@ -81,7 +81,7 @@ export type JobPostingForm = {
     work_period: WorkPeriod | string;
     hourly_rate: number;
     employment_type: EmploymentType;
-    address: Address;
+    address: GiggleAddress;
     recruitment_dead_line: string | null;
     recruitment_number: number;
     gender: Gender;

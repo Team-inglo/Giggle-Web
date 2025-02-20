@@ -1,4 +1,4 @@
-import { Address } from './users';
+import { GiggleAddress } from '@/types/api/users';
 
 export type OwnerInfo = {
   company_name: string;
@@ -15,7 +15,7 @@ export type EmployerRegistrationRequest = {
 export type EmployerRegistrationRequestBody = {
   temporary_token: string;
   owner_info: OwnerInfo;
-  address: Address;
+  address: GiggleAddress;
   marketing_allowed: boolean;
   notification_allowed: boolean;
 };

@@ -53,7 +53,7 @@ export type UserInfo = {
 };
 
 // Type for address with nullable fields
-export type Address = {
+export type GiggleAddress = {
   address_name: string | null;
   region_1depth_name: string | null;
   region_2depth_name: string | null;
@@ -68,7 +68,7 @@ export type Address = {
 export type UserInfoRequestBody = {
   temporary_token: string | null;
   user_info: UserInfo;
-  address: Address;
+  address: GiggleAddress;
   language: Language | null;
 };
 
@@ -84,7 +84,7 @@ export const initialUserInfo: UserInfo = {
 };
 
 // Initial state for Address
-export const initialAddress: Address = {
+export const initialAddress: GiggleAddress = {
   address_name: '',
   region_1depth_name: '',
   region_2depth_name: '',
