@@ -23,23 +23,19 @@ const BottomSheetLayout = ({
 }: BottomSheetLayoutProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { setIsOpen, onDragEnd, controls } =
+  const { setIsOpen, onDragEnd, controls, viewHeight } =
     useBottomSheet(setIsShowBottomSheet);
   const [contentHeight, setContentHeight] = useState<number>(0);
-  const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
 
   useEffect(() => {
-    setIsOpen(isShowBottomsheet);
-  }, [isShowBottomsheet, setIsOpen]);
+    if (setIsShowBottomSheet) setIsOpen(isShowBottomsheet);
+  }, [isShowBottomsheet, setIsShowBottomSheet, setIsOpen]);
 
   // children의 height를 계산
   useEffect(() => {
     if (contentRef.current) {
       const height = contentRef.current.offsetHeight;
       setContentHeight(height);
-      setViewHeight(
-        window?.innerHeight || document.documentElement.clientHeight,
-      );
     }
   }, [children]);
 

@@ -40,7 +40,7 @@ const EmployerApplicantCard = ({
         className={`flex justify-between items-center px-[1rem] py-[0.5rem] ${statusStyler(applicantData.step)}`}
       >
         <div className="flex gap-[0.25rem]">
-          <p className="pl-[0.5rem] caption-1 text-[#1E1926]">
+          <p className="pl-[0.5rem] caption text-[#1E1926]">
             {applicantData.step.replace(/_/g, ' ').toLowerCase()}
           </p>
           <div className="w-[0.375rem] h-[0.375rem] rounded-full bg-[#FF6F61]"></div>
@@ -77,30 +77,28 @@ const EmployerApplicantCard = ({
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-2"
+          fontStyle="caption"
         />
       </div>
       <div className="flex flex-col gap-[0.125rem] w-full px-[1.5rem] pb-[0.75rem]">
         <div className="flex items-center gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">{applicantData.gender}</p>
+          <p className="text-[#464646] caption">{applicantData.gender}</p>
         </div>
         <div className="flex items-center gap-[0.5rem] px-[0.5rem]">
           <MoneyIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
-            {applicantData.school_name}
-          </p>
+          <p className="text-[#464646] caption">{applicantData.school_name}</p>
         </div>
         <div className="flex items-center gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             {applicantData.visa.replace(/_/g, '-')}
           </p>
         </div>
       </div>
       <div className="flex flex-col gap-[0.625rem] px-[1rem] pb-[1rem]">
         <button
-          className="w-full px-[1.5rem] py-[0.75rem] text-center rounded-full bg-[#1E1926] text-[#F4F4F9] caption-1-sb"
+          className="w-full px-[1.5rem] py-[0.75rem] text-center rounded-full bg-[#1E1926] text-[#F4F4F9] caption"
           onClick={() => {
             updateCurrentApplicantId(applicantData.id);
             navigate(`/employer/applicant/${applicantData.id}`);
@@ -109,7 +107,7 @@ const EmployerApplicantCard = ({
           Check Application Status
         </button>
         <button
-          className="w-full px-[1.5rem] py-[0.75rem] text-center rounded-full bg-[#FEF387] text-[#1E1926] caption-1-sb"
+          className="w-full px-[1.5rem] py-[0.75rem] text-center rounded-full bg-[#FEF387] text-[#1E1926] caption"
           onClick={() => {
             updateCurrentApplicantId(applicantData.id);
             navigate(`/employer/applicant/${applicantData.id}/resume`);

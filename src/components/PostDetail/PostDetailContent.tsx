@@ -47,14 +47,14 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Recruitment Period
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.recruitment_conditions?.recruitment_dead_line ??
                   'Open recruitment'}
               </p>
             </div>
             <div>
               <h5 className="pb-[0.5rem] text-[#656565] button-2">Education</h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.recruitment_conditions.education.toLowerCase()}{' '}
                 requirement
               </p>
@@ -63,20 +63,20 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Number of recruits
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.recruitment_conditions.number_of_recruits}{' '}
                 people
               </p>
             </div>
             <div>
               <h5 className="pb-[0.5rem] text-[#656565] button-2">Visa</h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.recruitment_conditions.visa.replace(/_/g, '-')}
               </p>
             </div>
             <div>
               <h5 className="pb-[0.5rem] text-[#656565] button-2">Gender</h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.recruitment_conditions.gender.toLowerCase()}
               </p>
             </div>
@@ -84,7 +84,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Preferred Conditions
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.recruitment_conditions.preferred_conditions}
               </p>
             </div>
@@ -150,7 +150,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
           <div className="flex flex-col gap-[1rem] w-full p-[1rem] rounded-[0.563rem] bg-[#F4F4F9]">
             <div>
               <h5 className="pb-[0.5rem] text-[#656565] button-2">Salary</h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {formatMoney(postDetailData.working_conditions.hourly_rate)} KRW
               </p>
             </div>
@@ -158,7 +158,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Work Period
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.working_conditions.job_category
                   .replace(/_/g, ' ')
                   .toLowerCase()}
@@ -168,7 +168,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Working Days
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.working_conditions.work_day_times
                   .map((value) => value.day_of_week.toLowerCase())
                   .join(', ')}
@@ -178,7 +178,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Working Hours
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {/* day_of_week이 요일무관인 경우, start time, end time에도 예외처리 */}
                 {postDetailData.working_conditions.work_day_times
                   .filter(
@@ -199,7 +199,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Job Category
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.working_conditions.job_category
                   .replace(/_/g, ' ')
                   .toLowerCase()}
@@ -209,7 +209,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Employment Type
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.working_conditions.employment_type.toLowerCase()}
               </p>
             </div>
@@ -224,7 +224,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Company Address
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.company_information.company_address}
               </p>
             </div>
@@ -232,25 +232,25 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <h5 className="pb-[0.5rem] text-[#656565] button-2">
                 Representative Name
               </h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.company_information.representative_name}
               </p>
             </div>
             <div>
               <h5 className="pb-[0.5rem] text-[#656565] button-2">Recruiter</h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.company_information.recruiter}
               </p>
             </div>
             <div>
               <h5 className="pb-[0.5rem] text-[#656565] button-2">Contact</h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.company_information.contact}
               </p>
             </div>
             <div>
               <h5 className="pb-[0.5rem] text-[#656565] button-2">Email</h5>
-              <p className="text-[#656565] caption-1">
+              <p className="text-[#656565] caption">
                 {postDetailData.company_information.email}
               </p>
             </div>

@@ -32,7 +32,7 @@ type DocumentCardProps = {
 
 const NullCard = ({ title }: { title: string }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative text-[#f4f4f9]">
           대기 ...
@@ -48,7 +48,7 @@ const NullCard = ({ title }: { title: string }) => {
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">유학생이 서류를 작성 중이에요.</p>
           </div>
@@ -93,7 +93,7 @@ const TemporarySaveCard = ({
     checkDocuments();
   }, []);
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#fef387] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative ">
           클릭해서 서류 내용을 확인해보세요.
@@ -116,7 +116,7 @@ const TemporarySaveCard = ({
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               유학생이 서류 작성을 요청했어요. 유학생이 작성한 내용을 검토하고,
@@ -157,7 +157,7 @@ const TemporarySaveCard = ({
 
 const SubmittedCard = ({ title }: { title: string }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative text-[#f4f4f9]">
           대기 ...
@@ -173,7 +173,7 @@ const SubmittedCard = ({ title }: { title: string }) => {
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">유학생이 서류를 검토 중이에요.</p>
           </div>
@@ -220,7 +220,7 @@ const RewritingCard = ({
     checkDocuments();
   }, []);
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#fef387] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative ">
           클릭해서 서류 내용을 확인해보세요.
@@ -243,7 +243,7 @@ const RewritingCard = ({
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               유학생이 아래 사유로 서류 수정을 요청했어요. 수정 후 다시
@@ -291,7 +291,7 @@ const ConfirmationCard = ({
   onDownload: (url: string) => void;
 }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative text-[#fef387]">
           서류 작성이 완료되었습니다.
@@ -307,7 +307,7 @@ const ConfirmationCard = ({
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               아래 버튼을 통해 원본 파일을 다운로드 할 수 있습니다.

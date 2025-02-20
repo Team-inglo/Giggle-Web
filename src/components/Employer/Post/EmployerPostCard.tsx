@@ -41,7 +41,7 @@ const EmployerPostCard = ({ postData }: EmployerPostCardType) => {
             backgroundColor="white"
             color="#1E1926"
             borderColor="#1E1926"
-            fontStyle="caption-1"
+            fontStyle="caption"
           />
           <p className="body-3 text-[#656565]">
             {postData.duration_of_days} Days After
@@ -50,7 +50,7 @@ const EmployerPostCard = ({ postData }: EmployerPostCardType) => {
       </div>
       <div className="flex">
         <button
-          className="flex-1 py-[0.75rem] caption-1-sb text-[#464646] bg-[#F4F4F9]  text-center"
+          className="flex-1 py-[0.75rem] caption text-[#464646] bg-[#F4F4F9]  text-center"
           onClick={() => {
             updateCurrentPostId(postData.id);
             navigate(`/employer/post/${postData.id}`);
@@ -59,7 +59,7 @@ const EmployerPostCard = ({ postData }: EmployerPostCardType) => {
           공고 상세보기
         </button>
         <button
-          className="flex-1 py-[0.75rem] caption-1-sb text-[#1E1926] bg-[#FEF387]  text-center"
+          className="flex-1 py-[0.75rem] caption text-[#1E1926] bg-[#FEF387]  text-center"
           onClick={() => {
             updateCurrentPostId(postData.id);
             navigate(`/employer/post/${postData.id}/applicant`);

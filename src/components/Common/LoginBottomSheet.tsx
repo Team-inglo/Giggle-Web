@@ -59,9 +59,9 @@ const LoginBottomSheet = ({
           onClick={() => navigate('/signin')}
         />
         <div className="flex justify-center gap-[0.5rem]">
-          <p className="caption-1 text-[#7D8A95]">Don't have an account?</p>
+          <p className="caption text-[#7D8A95]">Don't have an account?</p>
           <button
-            className="caption-1-sb text-[#7872ED]"
+            className="caption text-[#7872ED]"
             onClick={() => navigate('/signin')}
           >
             Create Account

@@ -39,7 +39,7 @@ const ContactRecruiterModal = ({
             </div>
             <div>
               <h5 className="button-2 text-black">{name}</h5>
-              <p className="caption-1 text-[#656565]">{phoneNumber}</p>
+              <p className="caption text-[#656565]">{phoneNumber}</p>
             </div>
           </div>
         </div>

@@ -44,9 +44,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         <div className="w-full h-[6.75rem] rounded-lg border border-[#E2E5EB] bg-[#F4F4F9]"></div>
       )}
       <div>
-        <p className="caption-1 text-[#252525]">
-          {jobPostingData.company_name}
-        </p>
+        <p className="caption text-[#252525]">{jobPostingData.company_name}</p>
         <h3 className="button-1 text-[#191919]">{jobPostingData.title}</h3>
         <div className="py-2 flex items-center flex-wrap gap-1">
           <Tag
@@ -56,7 +54,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
             hasCheckIcon={false}
             backgroundColor="#0066FF1F"
             color="#0066FF"
-            fontStyle="caption-2"
+            fontStyle="caption"
           />
           <Tag
             value={jobPostingData.tags.visa.replace(/_/g, '-').toLowerCase()}
@@ -65,7 +63,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
             hasCheckIcon={false}
             backgroundColor="#191919"
             color="#F4F4F9"
-            fontStyle="caption-2"
+            fontStyle="caption"
           />
         </div>
         <div className="flex justify-between items-center">
@@ -74,7 +72,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
               ? postTranslation.dDay[translateLanguage()]
               : calculateDDay(jobPostingData.recruitment_dead_line)}
           </p>
-          <p className="caption-1 text-[#252525]">
+          <p className="caption text-[#252525]">
             <span className="mr-[0.125rem] text-[#9397A1]">Hr</span>
             {formatMoney(jobPostingData.hourly_rate)}KRW
           </p>

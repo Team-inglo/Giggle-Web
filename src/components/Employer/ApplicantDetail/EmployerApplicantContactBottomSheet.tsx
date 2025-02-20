@@ -67,7 +67,7 @@ const EmployerApplicantContactBottomSheet = ({
             <h5 className="button-2 text-black text-start">
               {data?.data?.applicant_name}
             </h5>
-            <p className="caption-1 text-[#656565] text-start">
+            <p className="caption text-[#656565] text-start">
               {data?.data?.applicant_phone_number}
             </p>
           </div>

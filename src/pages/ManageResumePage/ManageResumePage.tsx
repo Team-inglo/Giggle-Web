@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import PostApplyResume from '@/components/PostApply/PostApplyResume';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
+import useNavigateBack from '@/hooks/useNavigateBack';
 
 const ManageResumePage = () => {
+  const handleBackButtonClick = useNavigateBack();
   const navigate = useNavigate();
 
   return (
     <>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={() => navigate('/profile')}
+        onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
         title="Manage Resume"
       />

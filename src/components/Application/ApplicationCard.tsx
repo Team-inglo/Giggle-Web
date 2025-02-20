@@ -37,7 +37,7 @@ const ApplicationCard = ({ applicationData }: ApplicationCardPropsType) => {
         className={`flex justify-between items-center px-[1rem] py-[0.5rem] ${statusStyler(applicationData.step)}`}
       >
         <div className="flex gap-[0.25rem]">
-          <p className="pl-[0.5rem] caption-1 text-[#1E1926]">
+          <p className="pl-[0.5rem] caption text-[#1E1926]">
             {applicationData.step.replace(/_/g, ' ').toLowerCase()}
           </p>
           <div className="w-[0.375rem] h-[0.375rem] rounded-full bg-[#FF6F61]"></div>
@@ -81,7 +81,7 @@ const ApplicationCard = ({ applicationData }: ApplicationCardPropsType) => {
             backgroundColor="white"
             color="#1E1926"
             borderColor="#1E1926"
-            fontStyle="caption-1"
+            fontStyle="caption"
           />
           <p className="body-3 text-[#656565]">
             {applicationData.duration_of_days} Days After
@@ -90,7 +90,7 @@ const ApplicationCard = ({ applicationData }: ApplicationCardPropsType) => {
       </div>
       <div className="flex">
         <button
-          className="flex-1 py-[0.75rem] caption-1-sb text-[#F4F4F9] bg-[#1E1926]  text-center"
+          className="flex-1 py-[0.75rem] caption text-[#F4F4F9] bg-[#1E1926]  text-center"
           onClick={() => {
             updateCurrentPostId(applicationData.user_owner_job_posting_id);
             navigate(
@@ -101,7 +101,7 @@ const ApplicationCard = ({ applicationData }: ApplicationCardPropsType) => {
           Read More Posting
         </button>
         <button
-          className="flex-1 py-[0.75rem] caption-1-sb text-[#1E1926] bg-[#FEF387]  text-center"
+          className="flex-1 py-[0.75rem] caption text-[#1E1926] bg-[#FEF387]  text-center"
           onClick={() => {
             updateCurrentPostId(applicationData.user_owner_job_posting_id);
             navigate(

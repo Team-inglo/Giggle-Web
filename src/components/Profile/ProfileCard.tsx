@@ -10,7 +10,7 @@ const ProfileCard = ({ data }: ProfileCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col relative px-[1.125rem] mt-4 py-5 rounded-[0.5rem] gap-4 bg-[#fff]">
+    <div className="flex flex-col relative p-4 mt-4 rounded-[0.5rem] gap-4 bg-[#fff]">
       <div
         className="absolute top-5 right-[18px] w-8 h-8 bg-[#f4f4f9] flex items-center justify-center rounded-lg"
         onClick={() => navigate('/profile/edit')}

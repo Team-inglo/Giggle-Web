@@ -71,13 +71,13 @@ const JobPostingCard = ({ jobPostingData }: JobPostingCardProps) => {
           <div className="flex flex-col gap-[0.125rem]">
             <div className="flex items-center gap-[0.625rem]">
               <LocationIcon />
-              <p className="caption-1 text-[#464646]">
+              <p className="caption text-[#464646]">
                 {jobPostingData.summaries.address}
               </p>
             </div>
             <div className="flex items-center gap-[0.625rem]">
               <ClockIcon />
-              <p className="caption-1 text-[#464646]">
+              <p className="caption text-[#464646]">
                 {jobPostingData.summaries.work_period
                   .replace(/_/g, ' ')
                   .toLowerCase()}
@@ -85,7 +85,7 @@ const JobPostingCard = ({ jobPostingData }: JobPostingCardProps) => {
             </div>
             <div className="flex items-center gap-[0.625rem]">
               <CalendarIcon />
-              <p className="caption-1 text-[#464646]">
+              <p className="caption text-[#464646]">
                 {jobPostingData.summaries.work_days_per_week}
               </p>
             </div>
@@ -122,7 +122,7 @@ const JobPostingCard = ({ jobPostingData }: JobPostingCardProps) => {
           borderColor="#1E1926"
           backgroundColor="white"
           color="#1E1926"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
         <Tag
           value={jobPostingData.tags.job_category
@@ -134,7 +134,7 @@ const JobPostingCard = ({ jobPostingData }: JobPostingCardProps) => {
           borderColor="#1E1926"
           backgroundColor="white"
           color="#1E1926"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
         <Tag
           value={jobPostingData.tags.visa.replace(/_/g, '-')}
@@ -144,11 +144,11 @@ const JobPostingCard = ({ jobPostingData }: JobPostingCardProps) => {
           borderColor="#1E1926"
           backgroundColor="white"
           color="#1E1926"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
       </div>
       <div className="w-full px-[0.25rem] flex justify-between items-center">
-        <p className="text-[#656565] caption-2">
+        <p className="text-[#656565] caption">
           {calculateTimeAgo(jobPostingData.created_at)}
         </p>
         <p className="text-[#656565] body-3">

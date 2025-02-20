@@ -2,12 +2,12 @@ import { PanInfo, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import usePreviousValue from '@/hooks/usePreviousValue';
 
-const VIEW_HEIGHT = window.innerHeight;
-
 const useBottomSheet = (
   setIsShowBottomSheet?: (isShowBottomsheet: boolean) => void,
 ) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
+
   const controls = useAnimation();
   const prevIsOpen = usePreviousValue(isOpen);
 
@@ -15,28 +15,28 @@ const useBottomSheet = (
     _event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo,
   ) => {
-    const shouldClose = info.offset.y > VIEW_HEIGHT / 4;
+    const shouldClose = info.offset.y > viewHeight / 4;
 
-    if (shouldClose) {
-      controls.start('hidden');
-      setIsOpen(false);
-    } else {
-      controls.start('visible');
-      setIsOpen(true);
-    }
+    if (shouldClose) controls.start('hidden');
+    else controls.start('visible');
+
+    if (setIsShowBottomSheet) setIsShowBottomSheet(!shouldClose);
+    else setIsOpen(!shouldClose);
   };
+
+  useEffect(() => {
+    setViewHeight(window?.innerHeight || document.documentElement.clientHeight);
+  }, []);
 
   useEffect(() => {
     if (prevIsOpen && !isOpen) {
       controls.start('hidden');
-      if (setIsShowBottomSheet) setIsShowBottomSheet(false);
     } else if (!prevIsOpen && isOpen) {
       controls.start('visible');
-      if (setIsShowBottomSheet) setIsShowBottomSheet(true);
     }
-  }, [controls, isOpen, prevIsOpen, setIsShowBottomSheet]);
+  }, [controls, isOpen, prevIsOpen]);
 
-  return { onDragEnd, controls, setIsOpen, isOpen };
+  return { onDragEnd, controls, setIsOpen, viewHeight };
 };
 
 export default useBottomSheet;

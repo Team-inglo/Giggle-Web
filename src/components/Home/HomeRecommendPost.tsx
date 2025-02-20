@@ -35,7 +35,7 @@ const HomeRecommendPost = () => {
               <MessageIcon />
             </div>
             <div>
-              <p className="pb-[0.5rem] caption-1 text-[#656565]">
+              <p className="pb-[0.5rem] caption text-[#656565]">
                 Filling your resume
               </p>
               <div className="button-2 text-[#1E1926] break-keep whitespace-normal">
@@ -52,7 +52,7 @@ const HomeRecommendPost = () => {
               <MessageIcon />
             </div>
             <div>
-              <p className="pb-[0.5rem] caption-1 text-[#656565]">
+              <p className="pb-[0.5rem] caption text-[#656565]">
                 Search for job postings
               </p>
               <div className="button-2 text-[#1E1926] break-keep whitespace-normal">

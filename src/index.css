@@ -94,22 +94,10 @@ body {
     line-height: 1rem;
   }
 
-  .caption-1 {
+  .caption {
     font-weight: 400;
-    font-size: 0.625rem;
-    line-height: 0.75rem;
-  }
-
-  .caption-1-sb {
-    font-weight: 600;
-    font-size: 0.625rem;
-    line-height: 0.75rem;
-  }
-
-  .caption-2 {
-    font-weight: 400;
-    font-size: 0.5rem;
-    line-height: 0.625rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
   }
 }
 

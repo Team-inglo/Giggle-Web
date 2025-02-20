@@ -18,7 +18,7 @@ const HomeApplicationCard = ({ applicationData }: HomeApplicationCardProps) => {
 
   return (
     <article className="flex flex-col gap-2 px-5 pt-3 pb-5 min-w-fit bg-white rounded-2xl shadow-cardShadow">
-      <div className="w-fit px-[0.438rem] py-[0.125rem] caption-2 bg-[#1E1926] rounded-sm text-[#F4F4F9]">
+      <div className="w-fit px-[0.438rem] py-[0.125rem] caption bg-[#1E1926] rounded-sm text-[#F4F4F9]">
         Under the Review
       </div>
       <div className="w-full flex gap-4 items-center">
@@ -36,7 +36,7 @@ const HomeApplicationCard = ({ applicationData }: HomeApplicationCardProps) => {
           <h5 className="pb-[0.125rem] button-2 text-[#171719]">
             {applicationData.title}
           </h5>
-          <p className="caption-1 text-[#BDBDBD]">
+          <p className="caption text-[#BDBDBD]">
             {applicationData.address_name}
           </p>
         </div>
