@@ -57,14 +57,14 @@ export enum VisaGroup {
 // Types
 
 export type GiggleAddress = {
-  address_name: string;
-  region_1depth_name: string;
-  region_2depth_name: string;
-  region_3depth_name: string;
+  address_name: string | null;
+  region_1depth_name: string | null;
+  region_2depth_name: string | null;
+  region_3depth_name: string | null;
   region_4depth_name: string | null;
-  address_detail: string;
-  longitude: number;
-  latitude: number;
+  address_detail: string | null;
+  longitude: number | null;
+  latitude: number | null;
 };
 
 export type Image = {
