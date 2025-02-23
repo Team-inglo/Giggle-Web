@@ -1,5 +1,6 @@
-import { Address } from '@/types/api/users';
+import { GiggleAddress } from '@/types/api/users';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Address } from 'react-daum-postcode';
 
 /**
  * 객체에서 지정된 속성들만 선택하여 새 객체를 반환하는 함수
@@ -22,7 +23,7 @@ export const pick = <T extends object, K extends keyof T>(
   );
 
 // 입력된 주소지 지도로 렌더링하는 함수
-export const renderMap = (address: Address) => {
+export const renderMap = (address: GiggleAddress) => {
   return (
     <>
       <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex flex-col items-center justify-start py-2.5 pr-3.5 pl-4">
@@ -49,4 +50,63 @@ export const renderMap = (address: Address) => {
       </div>
     </>
   );
+};
+
+export const convertToAddress = (addressData: Address): GiggleAddress => {
+  // 주소 타입에 따라 기본 주소 선택
+  const baseAddress =
+    addressData.userSelectedType === 'R'
+      ? addressData.roadAddress
+      : addressData.jibunAddress;
+  // region_3depth_name 추출
+  const region3DepthName = baseAddress
+    .replace(addressData.sido, '')
+    .replace(addressData.sigungu, '')
+    .trim();
+
+  return {
+    address_name: baseAddress,
+    region_1depth_name: addressData.sido,
+    region_2depth_name: addressData.sigungu,
+    region_3depth_name: region3DepthName,
+    region_4depth_name: null,
+    address_detail: null,
+    longitude: null,
+    latitude: null,
+  };
+};
+
+
+interface KakaoAddressResult {
+  x: string;
+  y: string;
+  address_name: string;
+}
+
+// 이름으로 좌표 검색하는 함수
+export const getAddressCoords = async (
+  address: string,
+): Promise<kakao.maps.LatLng> => {
+  const geoCoder = new kakao.maps.services.Geocoder();
+  try {
+    const result = await new Promise<KakaoAddressResult>((resolve, reject) => {
+      geoCoder.addressSearch(
+        address,
+        (results: KakaoAddressResult[], status: kakao.maps.services.Status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            resolve(results[0]);
+          } else {
+            reject(new Error(`Geocoding failed with status: ${status}`));
+          }
+        },
+      );
+    });
+
+    return new kakao.maps.LatLng(Number(result.x), Number(result.y));
+  } catch (error) {
+    const err = error as Error;
+    throw new Error(
+      `Failed to get coordinates for address: ${address}. ${err.message}`,
+    );
+  }
 };

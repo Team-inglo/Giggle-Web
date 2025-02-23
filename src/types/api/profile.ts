@@ -1,5 +1,5 @@
 import { OwnerInfo } from '@/types/api/employ';
-import { Address } from '@/types/api/users';
+import { GiggleAddress } from '@/types/api/users';
 
 export type LanguageLevelType = {
   topik_level: number;
@@ -52,7 +52,7 @@ export type UserProfileDetailResponse = {
   nationality: string;
   visa: string;
   phone_number: string;
-  address: Address;
+  address: GiggleAddress;
 };
 
 export type UserEditProfileRequest = {
@@ -69,7 +69,7 @@ export type UserEditRequestBody = {
   visa: string; // Enum(D_2_1, D_2_2, D_2_3, D_2_4, D_2_6, D_2_7, D_2_8, D_4_1, D_4_7, F_2)
   phone_number: string;
   is_profile_img_changed: boolean;
-  address: Address;
+  address: GiggleAddress;
 };
 
 export const InitialUserProfileDetail: UserEditRequestBody = {
@@ -128,7 +128,7 @@ export type EmployerCountsInfoResponse = {
 
 export type EmployerProfileRequestBody = {
   owner_info: OwnerInfo;
-  address: Address;
+  address: GiggleAddress;
   is_icon_img_changed: boolean;
 };
 

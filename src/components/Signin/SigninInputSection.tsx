@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { validateEmail } from '@/utils/signin';
 import { useGetEmailValidation, useSignIn } from '@/hooks/api/useAuth';
 import { useUserInfoforSigninStore } from '@/store/signup';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { signInputTranclation } from '@/constants/translation';
+import useDebounce from '@/hooks/useDebounce';
 
 const SigninInputSection = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   // ===== state =====
   const [emailValue, setEmailValue] = useState<string>('');
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [emailError, setEmailError] = useState<string | null>(null);
   const [isValid, setIsValid] = useState(false);
+  const debouncedEmail = useDebounce(emailValue);
 
   const { mutate: signIn } = useSignIn();
-  const { data: ValidationResponse } = useGetEmailValidation(emailValue);
+  const { data: ValidationResponse } = useGetEmailValidation(debouncedEmail);
   const { updateId, updatePassword } = useUserInfoforSigninStore();
 
   // ===== handler =====
@@ -48,30 +49,39 @@ const SigninInputSection = () => {
 
   useEffect(() => {
     const validateEmailAsync = async () => {
-      if (!emailValue) return; // 이메일이 없을 경우 바로 반환
-
-      // 이메일 형식 유효성 검사
-      if (!validateEmail(emailValue, setEmailError, '/employer/signin')) {
+      if (debouncedEmail === '') {
+        setEmailError(null);
+        setIsValid(false);
         return;
       }
 
-      // 이메일 중복 검사 API 호출 결과 처리
-      if (ValidationResponse && ValidationResponse.data.is_valid === true) {
-        setEmailError(signInputTranclation.emailWrong['ko']);
-      } else if (ValidationResponse && ValidationResponse.data.is_valid) {
-        setEmailError(null); // email 중복 오류 메시지 초기화
+      // 1. 기본 이메일 형식 검사
+      const isEmailFormatValid = validateEmail(
+        debouncedEmail,
+        setEmailError,
+        '/employer/signin',
+      );
+
+      if (!isEmailFormatValid) {
+        setIsValid(false);
+        return;
+      }
+
+      // 2. 이메일 존재 여부 검사 결과 처리
+      if (ValidationResponse) {
+        if (ValidationResponse.data.is_valid === true) {
+          setEmailError(signInputTranclation.emailWrong['ko']);
+          setIsValid(false);
+        } else {
+          setEmailError(null);
+          // 이메일 형식도 맞고, 비밀번호도 있다면 버튼 활성화
+          setIsValid(!!passwordValue);
+        }
       }
     };
 
     validateEmailAsync();
-  }, [emailValue, pathname, ValidationResponse, setEmailValue]);
-
-  // 모든 필드의 유효성 검사 후, Sign In 버튼 활성화
-  useEffect(() => {
-    if (validateEmail(emailValue, setEmailError, '/employer/signin')) {
-      setIsValid(true);
-    }
-  }, [emailValue, passwordValue]);
+  }, [debouncedEmail, passwordValue, ValidationResponse]);
 
   return (
     <div className="w-full px-4 flex flex-grow flex-col justify-between">

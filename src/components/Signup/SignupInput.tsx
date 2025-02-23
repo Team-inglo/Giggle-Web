@@ -18,6 +18,7 @@ import BottomButtonPanel from '../Common/BottomButtonPanel';
 import InputLayout from '../WorkExperience/InputLayout';
 import { useEmailTryCountStore } from '@/store/signup';
 import PageTitle from '../Common/PageTitle';
+import useDebounce from '@/hooks/useDebounce';
 
 type signupInputProps = {
   email: string;
@@ -50,6 +51,8 @@ const SignupInput = ({
     string | null
   >(null);
   const [isValid, setIsValid] = useState(false);
+  const debouncedEmail = useDebounce(email);
+  const debouncedPassword = useDebounce(password);
 
   const { data: ValidationResponse } = useGetEmailValidation(email);
 
@@ -65,61 +68,75 @@ const SignupInput = ({
     setEmailVerifyStatus(null);
   };
 
-  // ID 검사
+  // 이메일 유효성 검사를 위한 단일 useEffect
   useEffect(() => {
     const validateEmailAsync = async () => {
-      if (!email) return; // 이메일이 없을 경우 바로 반환
-
-      onEmailChange(email);
-
-      // 이메일 형식 유효성 검사
-      if (!validateEmail(email, setEmailError, pathname)) {
+      if (debouncedEmail === '') {
+        setEmailError(null);
+        setIsValid(false);
         return;
       }
 
-      // 이메일 중복 검사 API 호출 결과 처리
-      if (ValidationResponse && ValidationResponse.data.is_valid === false) {
-        setEmailError(
-          signInputTranclation.emailAvailability[isEmployer(pathname)],
-        );
-      } else if (ValidationResponse && ValidationResponse.data.is_valid) {
-        setEmailError(null); // email 중복 오류 메시지 초기화
+      // 1. 기본 이메일 형식 검사
+      const isEmailFormatValid = validateEmail(
+        debouncedEmail,
+        setEmailError,
+        pathname,
+      );
+      if (!isEmailFormatValid) {
+        setIsValid(false);
+        return;
+      }
+
+      // 2. 이메일 중복 검사 결과 처리
+      if (ValidationResponse) {
+        if (!ValidationResponse.data.is_valid) {
+          setEmailError(
+            signInputTranclation.emailAvailability[isEmployer(pathname)],
+          );
+          setIsValid(false);
+        }
       }
     };
 
     validateEmailAsync();
-  }, [email, pathname, ValidationResponse, onEmailChange]);
+  }, [debouncedEmail, ValidationResponse, pathname]);
 
-  // password 유효성 검사
+  // 비밀번호 유효성 검사를 위한 단일 useEffect
   useEffect(() => {
-    if (password) {
-      onPasswordChange(password);
-      validatePassword(password, setPasswordError, pathname);
-    }
-  }, [password, pathname, onPasswordChange]);
+    const isPasswordValid = debouncedPassword
+      ? validatePassword(debouncedPassword, setPasswordError, pathname)
+      : false;
+    const isConfirmValid = confirmPasswordValue === debouncedPassword;
 
-  // password 일치 유효성 검사
-  useEffect(() => {
     if (confirmPasswordValue) {
       validatedConfirmPassword(
-        password,
+        debouncedPassword,
         confirmPasswordValue,
         setConfirmPasswordError,
         pathname,
       );
     }
-  }, [password, confirmPasswordValue, pathname]);
 
-  // 모든 필드의 유효성 검사 후, Continue 버튼 활성화
+    // 전체 폼 유효성 상태 업데이트
+    const isEmailValid = !!debouncedEmail && !emailError;
+    setIsValid(isEmailValid && isPasswordValid && isConfirmValid);
+  }, [
+    debouncedEmail,
+    emailError,
+    debouncedPassword,
+    confirmPasswordValue,
+    pathname,
+  ]);
+
+  // 부모 컴포넌트로 값 전달
   useEffect(() => {
-    if (
-      validateEmail(email, setEmailError, pathname) &&
-      validatePassword(password, setPasswordError, pathname) &&
-      confirmPasswordValue == password
-    ) {
-      setIsValid(true);
-    }
-  }, [email, password, confirmPasswordValue]);
+    if (email) onEmailChange(email);
+  }, [email, onEmailChange]);
+
+  useEffect(() => {
+    if (password) onPasswordChange(password);
+  }, [password, onPasswordChange]);
 
   // API - 2.7 이메일 인증코드 검증
   const handleVerifyClick = () => {
@@ -127,7 +144,10 @@ const SignupInput = ({
       //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
       { email: email, authentication_code: authenticationCode },
       {
-        onSuccess: () => setEmailVerifyStatus('verified'),
+        onSuccess: () => {
+          setEmailVerifyStatus('verified');
+          setEmailError(null);
+        },
         onError: () => {
           setEmailVerifyStatus('error');
           setEmailError(
@@ -144,10 +164,6 @@ const SignupInput = ({
 
   // 이메일 인증코드 재전송 API 호출
   const handleResendClick = async () => {
-    if (email === '') {
-      return;
-    }
-
     try {
       // 5회 이내 재발송 가능
       reIssueAuthentication(
@@ -157,6 +173,7 @@ const SignupInput = ({
             onAuthCodeChange('');
             const status = try_cnt > 1 ? 'resent' : 'sent';
             setEmailVerifyStatus(status);
+            setEmailError(null);
           },
         },
       );
@@ -189,13 +206,29 @@ const SignupInput = ({
               />
               <button
                 className={`flex items-center justify-center button-2 min-w-[4.25rem] px-5 py-3 rounded-lg ${
-                  emailVerifyStatus === null
+                  emailVerifyStatus === null &&
+                  !emailError &&
+                  debouncedEmail !== ''
                     ? 'bg-surface-primary text-text-normal'
                     : 'bg-surface-secondary text-text-disabled'
                 }`}
                 onClick={handleResendClick}
+                disabled={
+                  !(
+                    emailVerifyStatus === null &&
+                    !emailError &&
+                    debouncedEmail !== ''
+                  )
+                }
+                aria-disabled={
+                  !(
+                    emailVerifyStatus === null &&
+                    !emailError &&
+                    debouncedEmail !== ''
+                  )
+                }
               >
-                {emailVerifyStatus === null
+                {emailVerifyStatus === null && !emailError
                   ? signInputTranclation.sendEmail[isEmployer(pathname)]
                   : signInputTranclation.emailSentBtnText[isEmployer(pathname)]}
               </button>
@@ -224,7 +257,8 @@ const SignupInput = ({
                 </div>
                 <button
                   className={`flex items-center justify-center min-w-[5.5rem] button-2 px-5 py-3 rounded-lg ${
-                    emailVerifyStatus === 'verified'
+                    emailVerifyStatus === 'verified' &&
+                    authenticationCode !== ''
                       ? 'bg-surface-secondary text-text-disabled'
                       : 'bg-surface-primary text-text-normal'
                   }`}
@@ -270,7 +304,6 @@ const SignupInput = ({
               value={password}
               onChange={onPasswordChange}
               canDelete={false}
-              isInvalid={passwordError ? true : false}
             />
             {passwordError && (
               <p className="text-[#FF6F61] text-xs p-2">{passwordError}</p>
@@ -288,7 +321,6 @@ const SignupInput = ({
               value={confirmPasswordValue}
               onChange={handleConfirmPasswordChange}
               canDelete={false}
-              isInvalid={confirmPasswordError ? true : false}
             />
             {confirmPasswordError && (
               <p className="text-[#FF6F61] text-xs p-2">
@@ -301,8 +333,8 @@ const SignupInput = ({
           <div className="w-full">
             <Button
               type="large"
-              bgColor={isValid ? 'bg-[#1E1926]' : 'bg-[#F4F4F9]'}
-              fontColor={isValid ? 'text-[#FEF387]' : 'text-[#BDBDBD]'}
+              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
+              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
               isBorder={false}
               title={signInputTranclation.continue[isEmployer(pathname)]}
               onClick={isValid ? onSignUpClick : undefined}

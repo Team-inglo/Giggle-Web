@@ -5,19 +5,18 @@ import { TermType } from '@/types/api/users';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 type AgreeModalInnerProps = {
-  setMarketingAllowed: (value: boolean) => void;
   onPolicyPreview: (termType: TermType) => void;
   onNext: Dispatch<SetStateAction<boolean>>;
   accountType: 'USER' | 'EMPLOYER';
 };
 
 const AgreeModalInner = ({
-  setMarketingAllowed,
   onPolicyPreview,
   onNext,
   accountType,
 }: AgreeModalInnerProps) => {
   const [essentialAgreeList, setEssentialAgreeList] = useState<boolean[]>([
+    false,
     false,
     false,
     false,
@@ -30,7 +29,6 @@ const AgreeModalInner = ({
     });
   };
   const handleNext = () => {
-    setMarketingAllowed(essentialAgreeList[3]);
     onNext(false);
   };
   return (
@@ -50,7 +48,7 @@ const AgreeModalInner = ({
                 onClick={() => {
                   setEssentialAgreeList(
                     essentialAgreeList.includes(false)
-                      ? [true, true, true, false]
+                      ? [true, true, true, true]
                       : [false, false, false, false],
                   );
                 }}

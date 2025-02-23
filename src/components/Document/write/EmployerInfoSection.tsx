@@ -9,7 +9,7 @@ import {
   LaborContractEmployerInfo,
   LaborContractEmployerInfoProperty,
 } from '@/types/api/document';
-import { Address } from '@/types/api/users';
+import { GiggleAddress } from '@/types/api/users';
 import { WorkDayTime } from '@/types/api/document';
 import {
   arrayToString,
@@ -67,7 +67,7 @@ const EmployerInfoSection = ({
                   </div>
                 )}
                 {key === LaborContractEmployerInfoProperty.ADDRESS &&
-                  renderMap(value as Address)}
+                  renderMap(value as GiggleAddress)}
               </div>
               {/* 별도 property가 없는 detailed address 예외 처리 */}
               {key === LaborContractEmployerInfoProperty.ADDRESS && (
@@ -81,7 +81,7 @@ const EmployerInfoSection = ({
                   </div>
                   <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
                     <div className="w-full flex-1 relative">
-                      {getDetailAddress(value as Address)}
+                      {getDetailAddress(value as GiggleAddress)}
                     </div>
                   </div>
                 </div>

@@ -84,8 +84,8 @@ const EmployerEditProfilePage = () => {
         <Button
           type="large"
           isBorder={false}
-          bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-          fontColor={isValid ? 'text-[#1E1926]' : 'text-[#1E1926]'}
+          bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
+          fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
           title="수정 완료"
           onClick={handleSubmit}
         />

@@ -210,8 +210,8 @@ const Step1 = ({
         {/* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */}
         <Button
           type="large"
-          bgColor={isInvalid ? 'bg-[#F4F4F9]' : 'bg-[#fef387]'}
-          fontColor={isInvalid ? '' : 'text-[#222]'}
+          bgColor={isInvalid ? 'bg-surface-secondary' : 'bg-surface-primary'}
+          fontColor={isInvalid ? 'text-text-disabled' : 'text-text-normal'}
           isBorder={false}
           title="다음"
           onClick={

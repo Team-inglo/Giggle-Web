@@ -31,7 +31,9 @@ export const isValidEmployerRegistration = (
     !address.region_2depth_name ||
     !isValidString(address.region_2depth_name) ||
     !address.region_3depth_name ||
-    !isValidString(address.region_3depth_name)
+    !isValidString(address.region_3depth_name) ||
+    !address.address_detail ||
+    !isValidString(address.address_detail)
   ) {
     return false;
   }

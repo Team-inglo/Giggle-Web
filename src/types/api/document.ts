@@ -1,5 +1,5 @@
 import { DocumentStatusEmployer } from '@/constants/documents';
-import { Address, Gender } from '@/types/api/users';
+import { GiggleAddress, Gender } from '@/types/api/users';
 
 //현재 문서의 작성 상태
 export type DocumentStatus =
@@ -105,7 +105,7 @@ export type EmployerInformation = {
   hourly_rate: number | null;
   work_days_weekdays: string | null;
   work_days_weekends: string | null;
-  address: Address;
+  address: GiggleAddress;
 };
 
 // 시간제 근무 허가서 조회 응답 양식
@@ -134,7 +134,7 @@ export type LaborContractDataResponse = {
 export type LaborContractEmployeeInfo = {
   first_name: string;
   last_name: string;
-  address: Address;
+  address: GiggleAddress;
   phone_number: string;
   signature_base64: string; // base64 문자열
 };
@@ -191,7 +191,7 @@ export type LaborContractEmployerInfo = {
   name: string;
   start_date: string; // yyyy-MM-dd 형식
   end_date: string; // yyyy-MM-dd 형식
-  address: Address;
+  address: GiggleAddress;
   description: string;
   work_day_time_list: WorkDayTimeWithRest[];
   weekly_last_days: DayOfWeek[];
@@ -246,7 +246,7 @@ export type IntegratedApplicationData = {
   occupation: string;
   email: string;
   signature_base64: string;
-  address: Address;
+  address: GiggleAddress;
 };
 
 export type School = {
