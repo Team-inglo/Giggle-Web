@@ -33,7 +33,7 @@ const LicenseCard = ({ languageData, metaData }: LicenseCardProps) => {
       {/* 모든 언어 레벨이 0인 경우 */}
       {emptyLevel() ? (
         <button
-          className="text-center py-2 bg-[#F4F4F9] rounded-lg text-[#656565] caption-1"
+          className="text-center py-2 bg-[#F4F4F9] rounded-lg text-[#656565] caption"
           onClick={handleEnterButton}
         >
           Please enter your language level
@@ -43,7 +43,7 @@ const LicenseCard = ({ languageData, metaData }: LicenseCardProps) => {
         <div>
           <div className="flex items-center gap-2">
             <div className="button-2 text-[#464646]">Industries</div>
-            <div className="caption-1 text-[#656565]">
+            <div className="caption text-[#656565]">
               {metaData.is_language_skill_4_or_more
                 ? // 토픽 4급 이상
                   'Everywhere possible'
@@ -54,14 +54,14 @@ const LicenseCard = ({ languageData, metaData }: LicenseCardProps) => {
           {/* 근무 시간 */}
           <div className="flex items-center gap-2">
             <div className="button-2 text-[#464646]">Hours</div>
-            <div className="caption-1 text-[#656565]">
+            <div className="caption text-[#656565]">
               {metaData.weekday_work_hour} hrs on weekdays,{' '}
               {metaData.weekend_work_hour} hrs on weekends
             </div>
           </div>
           <div className="flex items-center gap-2">
             <div className="button-2 text-[#464646]">Location</div>
-            <div className="caption-1 text-[#656565]">
+            <div className="caption text-[#656565]">
               {metaData.is_metropolitan_area
                 ? // 수도권
                   'Within 90 mins from home (Seoul metro area)'

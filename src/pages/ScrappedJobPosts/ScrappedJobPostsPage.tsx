@@ -2,15 +2,16 @@ import BaseHeader from '@/components/Common/Header/BaseHeader';
 import HomePostCard from '@/components/Home/HomePostCard';
 import { POST_SEARCH_MENU } from '@/constants/postSearch';
 import { useGetPostList } from '@/hooks/api/usePost';
+import useNavigateBack from '@/hooks/useNavigateBack';
 import { useUserStore } from '@/store/user';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const ScrappedJobPostsPage = () => {
+  const handleBackButtonClick = useNavigateBack();
   const { account_type } = useUserStore();
   const isLogin = !!account_type;
-  const navigate = useNavigate();
+
   const [jobPostingData, setJobPostingData] = useState<JobPostingItemType[]>(
     [],
   );
@@ -39,7 +40,7 @@ const ScrappedJobPostsPage = () => {
     <>
       <BaseHeader
         hasBackButton
-        onClickBackButton={() => navigate('/profile')}
+        onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
         title="Scrap Job Posting"
       />

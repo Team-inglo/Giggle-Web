@@ -111,7 +111,7 @@ const SigninInputSection = () => {
           </p>
           {/* 회원가입 화면 이동 */}
           <button
-            className="flex items-center justify-center px-2 py-1.5 border-border-alternative border text-text-normal caption-1 rounded"
+            className="flex items-center justify-center px-2 py-1.5 border-border-alternative border text-text-normal caption rounded"
             onClick={() => navigate('/signup')}
           >
             회원가입 하러가기

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { usePatchUserLanguage } from '@/hooks/api/useSetting';
 import { UserLanguageRequest } from '@/types/api/mypage';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 const LanguageSettingPage = () => {
   const [language, setLanguage] = useState<string>('Select Language');
@@ -20,14 +21,14 @@ const LanguageSettingPage = () => {
   };
 
   return (
-    <div className="w-full h-[100vh] flex flex-col">
+    <div className="w-full h-screen">
       <BaseHeader
         hasBackButton={true}
         onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
         title="Language"
       />
-      <div className="grow flex px-6 items-center justify-center">
+      <div className="p-4">
         <Dropdown
           title="Language"
           value={language}
@@ -36,7 +37,7 @@ const LanguageSettingPage = () => {
           setValue={(value: string) => setLanguage(value)}
         />
       </div>
-      <div className="pt-3 pb-[3.125rem] px-6 w-full flex justify-between items-center">
+      <BottomButtonPanel>
         <Button
           type="large"
           bgColor="bg-[#FEF387]"
@@ -45,7 +46,7 @@ const LanguageSettingPage = () => {
           isBorder={false}
           onClick={handleSaveButton}
         />
-      </div>
+      </BottomButtonPanel>
     </div>
   );
 };

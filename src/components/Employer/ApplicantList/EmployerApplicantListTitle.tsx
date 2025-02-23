@@ -42,7 +42,7 @@ const EmployerApplicantListTitle = ({
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
         <Tag
           value={postData.tags.job_category.replace(/_/g, ' ').toLowerCase()}
@@ -51,7 +51,7 @@ const EmployerApplicantListTitle = ({
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
         <Tag
           value={postData.tags.visa.replace(/_/g, '-')}
@@ -60,37 +60,35 @@ const EmployerApplicantListTitle = ({
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
       </div>
       <div className="grid grid-cols-2 gap-[0.5rem] py-[0.375rem] px-[1.5rem]">
         <div className="flex justify-end gap-[0.5rem] px-[0.5rem]">
           <LocationIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
-            {postData.summaries.address}
-          </p>
+          <p className="text-[#464646] caption">{postData.summaries.address}</p>
         </div>
         <div className="flex gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             {postData.summaries.work_days_per_week} days a week
           </p>
         </div>
         <div className="flex justify-end gap-[0.5rem] px-[0.5rem]">
           <MoneyIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             ${formatMoney(postData.summaries.hourly_rate)}
           </p>
         </div>
         <div className="flex gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             {postData.summaries.work_period.replace(/_/g, ' ').toLowerCase()}
           </p>
         </div>
       </div>
       <div className="w-full px-[1.5rem] py-[0.5rem] flex justify-end items-center gap-[0.625rem] bg-[#FFFFFF3D]">
-        <p className="caption-1 text-black">See my post</p>
+        <p className="caption text-black">See my post</p>
         <button
           className="px-[0.625rem] py-[0.125rem] bg-[#1B1B1B] rounded-[1.313rem]"
           onClick={() => navigate(`/employer/post/${id}`)}

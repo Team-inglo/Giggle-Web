@@ -42,7 +42,7 @@ const SubHeader = ({
   const InfoHeader = () => (
     <div className="w-full px-8 pt-6 pb-7 rounded-b-lg shadow-subHeaderShadow">
       <h1 className="w-[70%] head-2">{title}</h1>
-      <p className="w-[70%] caption-1">{body}</p>
+      <p className="w-[70%] caption">{body}</p>
     </div>
   );
 

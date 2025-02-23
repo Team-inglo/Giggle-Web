@@ -68,7 +68,7 @@ const HomeJobPostingList = () => {
               : '🔥 Trending Job Lists for You'}
           </h3>
           <button
-            className="caption-1 text-[#9397A1]"
+            className="caption text-[#9397A1]"
             onClick={() => goToSearchPage(POST_SORTING.POPULAR)}
           >
             {account_type === UserType.OWNER ? '더보기' : 'See more'}
@@ -90,7 +90,7 @@ const HomeJobPostingList = () => {
               : '🌟 Recently Added Job'}
           </h3>
           <button
-            className="caption-1 text-[#9397A1]"
+            className="caption text-[#9397A1]"
             onClick={() => goToSearchPage(POST_SORTING.RECENT)}
           >
             {account_type === UserType.OWNER ? '더보기' : 'See more'}
@@ -109,7 +109,7 @@ const HomeJobPostingList = () => {
           <div className="flex justify-between items-center py-1">
             <h3 className="head-3 text-black">🌟 My Bookmarks</h3>
             <button
-              className="caption-1 text-[#9397A1]"
+              className="caption text-[#9397A1]"
               onClick={() => navigate('/resume/scrapped')}
             >
               See more

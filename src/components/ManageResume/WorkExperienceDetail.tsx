@@ -52,12 +52,12 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
               <h5 className="pb-[0.125rem] button-2 text-[#252525]">
                 {work.title}
               </h5>
-              <p className="pb-2 caption-1 text-[#252525]">
+              <p className="pb-2 caption text-[#252525]">
                 {work.description !== '-'
                   ? work.description
                   : infoTranslation.notEntered[isEmployer(pathname)]}
               </p>
-              <div className="flex gap-[0.5rem] caption-1">
+              <div className="flex gap-[0.5rem] caption">
                 <p className="text-[#656565]">
                   {formatDate(work.start_date)}~
                   {work?.end_date ? formatDate(work.end_date) : ''}

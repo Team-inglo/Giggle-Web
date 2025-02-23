@@ -38,7 +38,7 @@ const EmployerProfilePage = () => {
           hasMenuButton={false}
           title={headerTranslation.profile[isEmployer(pathname)]}
         />
-        <div className="flex flex-col px-6 gap-4 pb-24">
+        <div className="flex flex-col px-4 gap-4 pb-24">
           <EmployerProfileCard />
           <EmployerJobInfo />
           <EmployerProfileMenuList

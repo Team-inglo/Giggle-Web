@@ -34,7 +34,7 @@ const PostDetailTitle = ({ postDetailData }: PostDetailTitleProps) => {
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
         <Tag
           value={postDetailData.tags.job_category
@@ -45,7 +45,7 @@ const PostDetailTitle = ({ postDetailData }: PostDetailTitleProps) => {
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
         <Tag
           value={postDetailData.tags.visa.replace(/_/g, '-')}
@@ -54,31 +54,31 @@ const PostDetailTitle = ({ postDetailData }: PostDetailTitleProps) => {
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-1"
+          fontStyle="caption"
         />
       </div>
       <div className="grid grid-cols-2 gap-[0.5rem] py-[0.375rem]">
         <div className="flex justify-end gap-[0.5rem] px-[0.5rem]">
           <LocationIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             {postDetailData.company_information.company_address}
           </p>
         </div>
         <div className="flex gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             {postDetailData.summaries.work_days_per_week}
           </p>
         </div>
         <div className="flex justify-end gap-[0.5rem] px-[0.5rem]">
           <MoneyIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             ${formatMoney(postDetailData.summaries.hourly_rate)}
           </p>
         </div>
         <div className="flex gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             {postDetailData.summaries.work_period
               .replace(/_/g, ' ')
               .toLowerCase()}

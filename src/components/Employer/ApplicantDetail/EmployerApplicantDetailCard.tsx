@@ -40,23 +40,21 @@ const EmployerApplicantDetailCard = ({
           hasCheckIcon={false}
           backgroundColor="#1E1926"
           color="#F4F4F9"
-          fontStyle="caption-2"
+          fontStyle="caption"
         />
       </div>
       <div className="flex flex-col gap-[0.125rem] w-full px-[1.5rem] pb-[0.75rem]">
         <div className="flex items-center gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">{applicantData.gender}</p>
+          <p className="text-[#464646] caption">{applicantData.gender}</p>
         </div>
         <div className="flex items-center gap-[0.5rem] px-[0.5rem]">
           <MoneyIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
-            {applicantData.school_name}
-          </p>
+          <p className="text-[#464646] caption">{applicantData.school_name}</p>
         </div>
         <div className="flex items-center gap-[0.5rem] px-[0.5rem]">
           <ClockIcon className="min-w-[0.5rem]" />
-          <p className="text-[#464646] caption-1">
+          <p className="text-[#464646] caption">
             {applicantData.visa.replace(/_/g, '-')}
           </p>
         </div>

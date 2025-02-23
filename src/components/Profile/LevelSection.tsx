@@ -5,7 +5,7 @@ const LevelSection = ({ title, level }: { title: string; level: number }) => {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <div className="head-2 text-[#1E1926] text-center">{title}</div>
-        <div className="caption-2 text-[#464646] text-center">
+        <div className="caption text-[#464646] text-center">
           {title} description description
         </div>
       </div>

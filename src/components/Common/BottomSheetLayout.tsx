@@ -23,10 +23,9 @@ const BottomSheetLayout = ({
 }: BottomSheetLayoutProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { setIsOpen, onDragEnd, controls } =
+  const { isOpen, setIsOpen, onDragEnd, controls, viewHeight } =
     useBottomSheet(setIsShowBottomSheet);
   const [contentHeight, setContentHeight] = useState<number>(0);
-  const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
 
   useEffect(() => {
     setIsOpen(isShowBottomsheet);
@@ -37,25 +36,21 @@ const BottomSheetLayout = ({
     if (contentRef.current) {
       const height = contentRef.current.offsetHeight;
       setContentHeight(height);
-      setViewHeight(
-        window?.innerHeight || document.documentElement.clientHeight,
-      );
     }
   }, [children]);
 
   useEffect(() => {
-    if (isShowBottomsheet && isFixedBackground)
-      document.body.style.overflow = 'hidden';
+    if (isOpen && isFixedBackground) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'auto';
 
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isShowBottomsheet, isFixedBackground]);
+  }, [isOpen, isFixedBackground]);
 
   return (
     <>
-      {isShowBottomsheet && isFixedBackground && (
+      {isOpen && isFixedBackground && (
         <div className="fixed w-screen h-screen top-0 bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.3)] z-40"></div>
       )}
       <motion.div

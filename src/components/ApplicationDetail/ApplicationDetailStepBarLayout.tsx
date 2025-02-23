@@ -33,7 +33,7 @@ const ApplicationDetailStepBarLayout = ({
         >
           {title}
         </h5>
-        <p className="caption-2 text-[#656565]">{explain}</p>
+        <p className="caption text-[#656565]">{explain}</p>
       </div>
     </div>
   );

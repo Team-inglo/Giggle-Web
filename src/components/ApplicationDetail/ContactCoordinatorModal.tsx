@@ -39,7 +39,7 @@ const ContactCoordinatorModal = ({
               <h5 className="button-2 text-black">
                 {coordinatorData?.coordinator_name ?? ''}
               </h5>
-              <p className="caption-1 text-[#656565]">
+              <p className="caption text-[#656565]">
                 {coordinatorData?.coordinator_phone_number ?? ''}
               </p>
             </div>
@@ -52,7 +52,7 @@ const ContactCoordinatorModal = ({
               {coordinatorData?.school_name ?? ''}{' '}
               {coordinatorData?.institute_name ?? ''}
             </p>
-            <p className="pb-[0.75rem] px-[0.5rem] caption-1 text-[##656565]">
+            <p className="pb-[0.75rem] px-[0.5rem] caption text-[##656565]">
               {coordinatorData?.address?.address_detail}
             </p>
             {coordinatorData?.address?.latitude &&

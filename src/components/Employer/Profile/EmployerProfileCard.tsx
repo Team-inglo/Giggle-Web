@@ -15,7 +15,7 @@ const EmployerProfileCard = () => {
   return (
     <>
       {profileData && (
-        <div className="flex flex-col px-[1.125rem] mt-4 py-5 rounded-[0.5rem] gap-4 bg-[#fff]">
+        <div className="flex flex-col p-4 mt-4 rounded-[0.5rem] gap-4 bg-[#fff]">
           <div className="flex items-center gap-6">
             <div className="w-16 h-16 rounded-full overflow-hidden">
               <img src={profileData.icon_img_url} alt="profile image" />

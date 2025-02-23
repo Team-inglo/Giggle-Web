@@ -52,12 +52,12 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
                 <h5 className="button-2 text-[#252525]">
                   {education.school_name}
                 </h5>
-                <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-2">
+                <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
                   {EDUCATION_PERIOD[education.education_level]} years program
                 </div>
               </div>
-              <p className="pb-2 caption-1 text-[#252525]">{education.major}</p>
-              <div className="flex gap-[0.5rem] caption-1">
+              <p className="pb-2 caption text-[#252525]">{education.major}</p>
+              <div className="flex gap-[0.5rem] caption">
                 <p className="text-[#656565]">
                   {formatDate(education.start_date)}~
                   {formatDate(education.end_date)}

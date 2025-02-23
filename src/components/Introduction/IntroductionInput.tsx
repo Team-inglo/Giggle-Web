@@ -27,7 +27,7 @@ const IntroductionInput = ({
           onChange={handleChange}
           className="h-auto body-2 placeholder:text-[#abb0b9] text-[#1E1926] w-full resize-none outline-none"
         />
-        <span className="caption-1 text-[#464646] text-end">
+        <span className="caption text-[#464646] text-end">
           {data.length}/200
         </span>
       </div>

@@ -42,7 +42,7 @@ const TemporarySaveCard = ({
   onPreview?: () => void;
 }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#fef387] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative ">
           Check my Work Permit Form
@@ -66,7 +66,7 @@ const TemporarySaveCard = ({
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               You can request the employer to complete the part-time employment
@@ -114,7 +114,7 @@ const BeforeConfirmationCard = ({
   onPreview: () => void;
 }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#fef387] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative ">
           Check my Work Permit Form
@@ -137,7 +137,7 @@ const BeforeConfirmationCard = ({
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               The employer has completed the part-time employment permit form.
@@ -176,7 +176,7 @@ const BeforeConfirmationCard = ({
 
 const SubmittedCard = ({ title }: { title: string }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative text-[#f4f4f9]">
           Pending ...
@@ -192,7 +192,7 @@ const SubmittedCard = ({ title }: { title: string }) => {
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               The employer is in the process of completing the part-time
@@ -218,7 +218,7 @@ const SubmittedCard = ({ title }: { title: string }) => {
 
 const RequestedCard = ({ title }: { title: string }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative text-[#f4f4f9]">
           Pending ...
@@ -234,7 +234,7 @@ const RequestedCard = ({ title }: { title: string }) => {
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               The employer is revising the document according to the requested
@@ -270,7 +270,7 @@ const ConfirmationCard = ({
   onPreview: () => void;
 }) => {
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption-2 text-left text-[#1e1926]">
+    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
       <div className="self-stretch rounded-t-[1.125rem] bg-[#fef387] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
         <div className="flex items-center justify-start relative ">
           Check my Work Permit Form
@@ -289,15 +289,11 @@ const ConfirmationCard = ({
             <div className="relative head-3">{title}</div>
           </div>
           <div className="overflow-hidden flex items-center justify-center p-2">
-            {!documentInfo.word_url ? (
-              <WriteIcon />
-            ) : (
-              <CheckIconGreen />
-            )}
+            {!documentInfo.word_url ? <WriteIcon /> : <CheckIconGreen />}
           </div>
         </div>
 
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption-1">
+        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
           <div className="flex-1 relative">
             <p className="m-0">
               The employer is in the process of completing the part-time

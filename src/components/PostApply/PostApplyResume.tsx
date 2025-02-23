@@ -144,11 +144,11 @@ const PostApplyResume = () => {
                   <h5 className="pb-[0.125rem] button-2 text-[#252525]">
                     {data.title}
                   </h5>
-                  <p className="pb-2 caption-1 text-[#252525]">
+                  <p className="pb-2 caption text-[#252525]">
                     {data?.description ??
                       infoTranslation.notEntered[isEmployer(pathname)]}
                   </p>
-                  <div className="flex gap-[0.5rem] caption-1">
+                  <div className="flex gap-[0.5rem] caption">
                     <p className="text-[#656565]">
                       {formatDate(data.start_date)}~
                       {data.end_date ? formatDate(data.end_date) : ''}
@@ -176,12 +176,12 @@ const PostApplyResume = () => {
                     <h5 className="button-2 text-[#252525]">
                       {data.school_name}
                     </h5>
-                    <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-2">
+                    <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
                       {EDUCATION_PERIOD[data.education_level]} years program
                     </div>
                   </div>
-                  <p className="pb-2 caption-1 text-[#252525]">{data.major}</p>
-                  <div className="flex gap-[0.5rem] caption-1">
+                  <p className="pb-2 caption text-[#252525]">{data.major}</p>
+                  <div className="flex gap-[0.5rem] caption">
                     <p className="text-[#656565]">
                       {formatDate(data.start_date)}~{formatDate(data.end_date)}
                     </p>
@@ -200,7 +200,7 @@ const PostApplyResume = () => {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center w-full p-4 rounded-lg bg-[#F4F4F9]">
               <h5 className="pb-[0.125rem] button-2 text-[#464646]">TOPIK</h5>
-              <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-2">
+              <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
                 LEVEL {data?.data?.languages.topik}
               </div>
             </div>
@@ -208,7 +208,7 @@ const PostApplyResume = () => {
               <h5 className="pb-[0.125rem] button-2 text-[#464646]">
                 Social Intergration
               </h5>
-              <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-2">
+              <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
                 LEVEL {data?.data?.languages.social_integration}
               </div>
             </div>
@@ -216,7 +216,7 @@ const PostApplyResume = () => {
               <h5 className="pb-[0.125rem] button-2 text-[#464646]">
                 Sejong Institute
               </h5>
-              <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-2">
+              <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
                 LEVEL {data?.data?.languages.sejong_institute}
               </div>
             </div>
@@ -228,7 +228,7 @@ const PostApplyResume = () => {
                 <h5 className="pb-[0.125rem] button-2 text-[#464646]">
                   {data.language_name}
                 </h5>
-                <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-2">
+                <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
                   Level {data.level}
                 </div>
               </div>

@@ -215,7 +215,7 @@ const SignupInput = ({
                   />
                   {emailVerifyStatus !== 'verified' && (
                     <button
-                      className="caption-1 text-blue-500 underline absolute right-[1rem] top-[1rem]"
+                      className="caption text-blue-500 underline absolute right-[1rem] top-[1rem]"
                       onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
                     >
                       {signInputTranclation.resend[isEmployer(pathname)]}

@@ -9,7 +9,7 @@ const InfoAlert = ({ content }: { content: string }) => {
       </div>
       <div className="flex-1 flex items-center justify-start gap-2">
         <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="self-stretch relative caption-1-sb text-[#464646]">
+          <div className="self-stretch relative caption text-[#464646]">
             {content}
           </div>
         </div>
