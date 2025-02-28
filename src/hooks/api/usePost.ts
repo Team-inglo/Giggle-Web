@@ -32,7 +32,7 @@ export const useGetPostGuestList = (
   page: number = 1,
 ) => {
   return useQuery({
-    queryKey: ['post', req],
+    queryKey: ['post', 'guest', req],
     queryFn: () => getPostListGuest(req, page),
     enabled: isEnabled,
     staleTime: 0,
@@ -46,7 +46,7 @@ export const useInfiniteGetPostGuestList = (
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['post', req],
+      queryKey: ['post', 'guest', req],
       queryFn: ({ pageParam = 1 }) => getPostListGuest(req, pageParam),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPage) => {
@@ -68,7 +68,7 @@ export const useInfiniteGetPostGuestList = (
 // 4.2 (게스트) 공고 상세 조회하기 훅
 export const useGetPostDetailGuest = (id: number, isEnabled: boolean) => {
   return useQuery({
-    queryKey: ['post', id],
+    queryKey: ['post', 'guest', id],
     queryFn: () => getPostDetailGuest(id),
     enabled: isEnabled,
   });
@@ -244,7 +244,7 @@ export const useDeletePost = () => {
 // 5.1 (유학생) 북마크한 공고 리스트 조회하기 훅
 export const useGetBookmarkPostList = (page: number, size: number) => {
   return useQuery({
-    queryKey: ['post'],
+    queryKey: ['post', 'bookmark'],
     queryFn: () => getBookmarkPostList(page, size),
   });
 };
@@ -257,7 +257,7 @@ export const useGetApplyPostList = ({
 }: GetApplyPostListReqType) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['post', sorting, status],
+      queryKey: ['post', 'apply', sorting, status],
       queryFn: ({ pageParam = 1 }) =>
         getApplyPostList({ page: pageParam, size, sorting, status }),
       initialPageParam: 1,
@@ -279,7 +279,7 @@ export const useGetApplyPostList = ({
 // 6.3 (유학생) 현재 진행중인 인터뷰 리스트 조회하기 훅
 export const useGetInterviewList = (page: number, size: number) => {
   return useQuery({
-    queryKey: ['post'],
+    queryKey: ['post', 'interview'],
     queryFn: () => getInterviewList(page, size),
   });
 };
@@ -287,7 +287,7 @@ export const useGetInterviewList = (page: number, size: number) => {
 // 6.6 (고용주) 등록한 공고 리스트 조회하기 훅
 export const useGetEmployerPostList = (sorting: MatchKoEnAscendingSortType) => {
   return useQuery({
-    queryKey: ['post', sorting],
+    queryKey: ['post', 'owner', sorting],
     queryFn: () => getEmployerPostList(sorting),
   });
 };

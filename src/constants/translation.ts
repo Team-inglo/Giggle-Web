@@ -299,6 +299,10 @@ export const postTranslation = {
     ko: '상시모집',
     en: 'always',
   },
+  emptyJobList: {
+    ko: 'Giggle이 열심히 인재를 찾고 있어요!',
+    en: 'Giggle is searching for the best jobs for you!',
+  },
 };
 
 export const infoTranslation = {

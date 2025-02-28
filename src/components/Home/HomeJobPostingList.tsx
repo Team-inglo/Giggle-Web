@@ -6,6 +6,8 @@ import { UserType } from '@/constants/user';
 import { useGetPostGuestList, useGetPostList } from '@/hooks/api/usePost';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import HomePostCard from '@/components/Home/HomePostCard';
+import HomeEmptyJobList from '@/components/Home/HomeEmptyJobList';
+import LoadingPostItem from '@/components/Common/LoadingPostItem';
 
 const HomeJobPostingList = () => {
   const navigate = useNavigate();
@@ -19,40 +21,39 @@ const HomeJobPostingList = () => {
     size: 5,
     type: POST_SEARCH_MENU.TRENDING,
   };
-  const { data: guestTrendData } = useGetPostGuestList(
+  const { data: guestTrendData, isLoading: guestTrendLoading } =
+    useGetPostGuestList(trendingDataRequest, !isLogin);
+
+  const { data: userTrendData, isLoading: userTrendLoading } = useGetPostList(
     trendingDataRequest,
-    !isLogin,
+    isLogin,
   );
 
-  const { data: userTrendData } = useGetPostList(trendingDataRequest, isLogin);
-
   const trendData = account_type ? userTrendData : guestTrendData;
+  const trendLoading = account_type ? userTrendLoading : guestTrendLoading;
 
   // 최신 공고
   const recentlyDataRequest = {
     size: 5,
     type: POST_SEARCH_MENU.RECENTLY,
   };
-  const { data: guestRecentlyData } = useGetPostGuestList(
-    recentlyDataRequest,
-    !isLogin,
-  );
-  const { data: userRecentlyData } = useGetPostList(
-    recentlyDataRequest,
-    isLogin,
-  );
+  const { data: guestRecentlyData, isLoading: guestRecentlyLoading } =
+    useGetPostGuestList(recentlyDataRequest, !isLogin);
+  const { data: userRecentlyData, isLoading: userRecentlyLoading } =
+    useGetPostList(recentlyDataRequest, isLogin);
 
   const recentlyData = account_type ? userRecentlyData : guestRecentlyData;
+  const recentlyLoading = account_type
+    ? userRecentlyLoading
+    : guestRecentlyLoading;
 
   // 관심 공고
   const bookmarkedDataRequest = {
     size: 5,
     type: POST_SEARCH_MENU.BOOKMARKED,
   };
-  const { data: userBookmarkedData } = useGetPostList(
-    bookmarkedDataRequest,
-    isLogin,
-  );
+  const { data: userBookmarkedData, isLoading: userBookmarkedLoading } =
+    useGetPostList(bookmarkedDataRequest, isLogin);
 
   const goToSearchPage = (type: PostSortingType) => {
     navigate(`/search`, { state: { sortType: type } });
@@ -74,13 +75,21 @@ const HomeJobPostingList = () => {
             {account_type === UserType.OWNER ? '더보기' : 'See more'}
           </button>
         </div>
-        <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
-          {trendData?.data?.job_posting_list?.map(
-            (value: JobPostingItemType) => (
-              <HomePostCard key={value.id} jobPostingData={value} />
-            ),
-          )}
-        </div>
+        {trendLoading ? (
+          <LoadingPostItem />
+        ) : (
+          <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
+            {trendData?.data?.job_posting_list?.length > 0 ? (
+              trendData.data.job_posting_list.map(
+                (value: JobPostingItemType) => (
+                  <HomePostCard key={value.id} jobPostingData={value} />
+                ),
+              )
+            ) : (
+              <HomeEmptyJobList />
+            )}
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center py-1">
@@ -96,13 +105,21 @@ const HomeJobPostingList = () => {
             {account_type === UserType.OWNER ? '더보기' : 'See more'}
           </button>
         </div>
-        <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
-          {recentlyData?.data?.job_posting_list?.map(
-            (value: JobPostingItemType) => (
-              <HomePostCard key={value.id} jobPostingData={value} />
-            ),
-          )}
-        </div>
+        {recentlyLoading ? (
+          <LoadingPostItem />
+        ) : (
+          <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
+            {recentlyData?.data?.job_posting_list?.length > 0 ? (
+              recentlyData.data.job_posting_list.map(
+                (value: JobPostingItemType) => (
+                  <HomePostCard key={value.id} jobPostingData={value} />
+                ),
+              )
+            ) : (
+              <HomeEmptyJobList />
+            )}
+          </div>
+        )}
       </div>
       {account_type === UserType.USER && (
         <div className="flex flex-col gap-2">
@@ -115,13 +132,21 @@ const HomeJobPostingList = () => {
               See more
             </button>
           </div>
-          <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
-            {userBookmarkedData?.data?.job_posting_list?.map(
-              (value: JobPostingItemType) => (
-                <HomePostCard key={value.id} jobPostingData={value} />
-              ),
-            )}
-          </div>
+          {userBookmarkedLoading ? (
+            <LoadingPostItem />
+          ) : (
+            <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
+              {userBookmarkedData?.data?.job_posting_list?.length > 0 ? (
+                userBookmarkedData.data.job_posting_list.map(
+                  (value: JobPostingItemType) => (
+                    <HomePostCard key={value.id} jobPostingData={value} />
+                  ),
+                )
+              ) : (
+                <HomeEmptyJobList />
+              )}
+            </div>
+          )}
         </div>
       )}
     </section>
