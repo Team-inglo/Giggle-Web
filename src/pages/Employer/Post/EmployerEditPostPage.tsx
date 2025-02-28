@@ -22,6 +22,7 @@ const EmployerEditPostPage = () => {
   const { currentPostId } = useCurrentPostIdStore();
   console.log(currentPostId);
   const [currentStep, setCurrentStep] = useState(1);
+  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
     initialJobPostingState,
   );
@@ -128,6 +129,8 @@ const EmployerEditPostPage = () => {
             {!isPending && isDataMapped && currentStep === 2 && (
               <Step2
                 key={`${data?.data.id}2`} // 또는 다른 유니크한 값
+                isAddressSearch={isAddressSearch}
+                setIsAddressSearch={setIsAddressSearch}
                 postInfo={postInfo}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}

@@ -33,7 +33,7 @@ const InformationStep = ({
   const [isInvalid, setIsInvalid] = useState(true);
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
-    start: '',
+    start: '010',
     middle: '',
     end: '',
   });
@@ -70,7 +70,7 @@ const InformationStep = ({
   }, [newUserInfo, phoneNum]);
 
   return (
-    <div className='w-full flex flex-col gap-4'>
+    <div className="w-full flex flex-col gap-4">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
           title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}
@@ -109,7 +109,7 @@ const InformationStep = ({
               <div className="w-full h-[2.75rem]">
                 <Dropdown
                   value={phoneNum.start}
-                  placeholder="+82"
+                  placeholder="010"
                   options={phone}
                   setValue={(value) =>
                     setPhoneNum({ ...phoneNum, start: value })

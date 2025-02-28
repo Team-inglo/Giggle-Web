@@ -2,7 +2,7 @@ import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import {
-  Address,
+  GiggleAddress,
   initialAddress,
   UserInfoRequestBody,
 } from '@/types/api/users';
@@ -24,7 +24,7 @@ type AddressStepProps = {
 
 const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
   const { pathname } = useLocation();
-  const [newAddress, setNewAddress] = useState<Address>(initialAddress);
+  const [newAddress, setNewAddress] = useState<GiggleAddress>(initialAddress);
   const {
     addressInput, // 주소 검색용 input 저장하는 state
     addressSearchResult, // 주소 검색 결과를 저장하는 array

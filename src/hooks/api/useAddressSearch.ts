@@ -1,4 +1,4 @@
-import { Address } from '@/types/api/users';
+import { GiggleAddress } from '@/types/api/users';
 import { useSearchAddress } from '@/hooks/api/useKaKaoMap';
 import { Document, AddressType, GeoPosition } from '@/types/api/map';
 import { pick } from '@/utils/map';
@@ -29,7 +29,7 @@ interface UseAddressSearchReturn {
 }
 
 export const useAddressSearch = (
-  addressBeforeEdit?: Address,
+  addressBeforeEdit?: GiggleAddress,
 ): UseAddressSearchReturn => {
   const [addressInput, setAddressInput] = useState(
     addressBeforeEdit?.address_name || '',

@@ -94,10 +94,10 @@ const EmployerSignupInfoPage = () => {
           buttonText={
             signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
           }
-          onNext={() => navigate('/')}
+          onNext={() => navigate('/splash')}
         />
       ) : (
-        <div className="m-auto max-w-[500px] relative h-screen flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide">
+        <div className="w-full m-auto max-w-[500px] relative h-screen flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide">
           <BaseHeader
             title="추가정보"
             hasBackButton={true}
@@ -117,8 +117,8 @@ const EmployerSignupInfoPage = () => {
               <Button
                 type="large"
                 isBorder={false}
-                bgColor="bg-[#FEF387]"
-                fontColor="text-[#1E1926]"
+                bgColor="bg-surface-primary"
+                fontColor="text-text-normal"
                 title="완료"
                 onClick={() => {
                   handleSubmit();
@@ -128,8 +128,8 @@ const EmployerSignupInfoPage = () => {
               <Button
                 type="large"
                 isBorder={false}
-                bgColor="bg-[#F4F4F9]"
-                fontColor="text-[#1E1926]"
+                bgColor="bg-surface-secondary"
+                fontColor="text-text-disabled"
                 title="완료"
               />
             )}
@@ -144,12 +144,6 @@ const EmployerSignupInfoPage = () => {
           isShowBottomsheet={isAgreeModal}
         >
           <AgreeModalInner
-            setMarketingAllowed={(value: boolean) =>
-              setNewEmployData({
-                ...newEmployData,
-                marketing_allowed: value,
-              })
-            }
             onPolicyPreview={(policy: TermType) => {
               getPolicy(policy);
             }}

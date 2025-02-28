@@ -1,5 +1,5 @@
 import { UserType } from '@/constants/user';
-import { Address, Language, TermType, UserInfo } from '@/types/api/users';
+import { GiggleAddress, Language, TermType, UserInfo } from '@/types/api/users';
 
 export type SignInRequest = FormData;
 
@@ -26,7 +26,7 @@ export type TempSignUpResponse = {
 export type SignUpRequest = {
   temporary_token: string;
   user_info: UserInfo;
-  address: Address;
+  address: GiggleAddress;
   marketing_allowed: boolean;
   notification_allowed: boolean;
   language: Language;

@@ -7,6 +7,7 @@ import { signInputTranclation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useGetEmailValidation } from '@/hooks/api/useAuth';
 import BottomButtonPanel from '../Common/BottomButtonPanel';
+import { InputType } from '@/types/common/input';
 
 type EmailInputProps = {
   email: string;
@@ -66,7 +67,7 @@ const EmailInput = ({ email, onEmailChange, onSubmit }: EmailInputProps) => {
             {signInputTranclation.email[isEmployer(pathname)]}
           </p>
           <Input
-            inputType="TEXT"
+            inputType={InputType.TEXT}
             placeholder={signInputTranclation.enterEmail[isEmployer(pathname)]}
             value={email}
             onChange={onEmailChange}

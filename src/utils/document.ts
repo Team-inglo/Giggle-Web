@@ -6,7 +6,7 @@ import {
   PartTimePermitFormRequest,
   WorkDayTime,
 } from '@/types/api/document';
-import { Address } from '@/types/api/users';
+import { GiggleAddress } from '@/types/api/users';
 import { extractNumbersAsNumber } from './post';
 import { InsuranceInfo } from '@/constants/documents';
 import { parsePhoneNumber } from './information';
@@ -87,7 +87,7 @@ export const workDayTimeToString = (workDayTimes: WorkDayTime[]): string => {
   return `${arrayToString(daysOfWeek)} / ${work_start_time} - ${work_end_time}`;
 };
 
-export const getDetailAddress = (value: Address) => {
+export const getDetailAddress = (value: GiggleAddress) => {
   return value.address_detail;
 };
 
