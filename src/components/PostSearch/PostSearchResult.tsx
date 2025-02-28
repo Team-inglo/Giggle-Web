@@ -4,6 +4,7 @@ import JobPostingCard from '@/components/Common/JobPostingCard';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
+import LoadingItem from '@/components/Common/LoadingItem';
 
 type PostSearchResultProps = {
   postData: JobPostingItemType[];
@@ -49,7 +50,7 @@ const PostSearchResult = ({
       {postData.map((value: JobPostingItemType) => (
         <JobPostingCard key={value.id} jobPostingData={value} />
       ))}
-      {isLoading && <LoadingPostItem />}
+      {isLoading && <LoadingItem />}
     </>
   );
 };
