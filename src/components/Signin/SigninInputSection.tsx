@@ -8,6 +8,7 @@ import { useUserInfoforSigninStore } from '@/store/signup';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { signInputTranclation } from '@/constants/translation';
 import useDebounce from '@/hooks/useDebounce';
+import { InputType } from '@/types/common/input';
 
 const SigninInputSection = () => {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ const SigninInputSection = () => {
       <div className="flex flex-col gap-4">
         <InputLayout isEssential title="이메일">
           <Input
-            inputType="TEXT"
+            inputType={InputType.TEXT}
             placeholder="이메일을 입력해주세요"
             value={emailValue}
             onChange={handleIdChange}
@@ -100,7 +101,7 @@ const SigninInputSection = () => {
         </InputLayout>
         <InputLayout isEssential title="비밀번호">
           <Input
-            inputType="PASSWORD"
+            inputType={InputType.PASSWORD}
             placeholder="Enter password"
             value={passwordValue}
             onChange={handlePasswordChange}

@@ -10,6 +10,7 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import Input from '@/components/Common/Input';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
+import { InputType } from '@/types/common/input';
 
 interface CurrentPasswordStepProps {
   password: string;
@@ -49,7 +50,7 @@ const CurrentPasswordStep = ({
           title={profileTranslation.currentPassword[userLanguage]}
         >
           <Input
-            inputType="PASSWORD"
+            inputType={InputType.PASSWORD}
             placeholder={profileTranslation.enterCurrentPassword[userLanguage]}
             value={password}
             onChange={onPasswordChange}

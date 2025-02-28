@@ -19,6 +19,7 @@ import InputLayout from '../WorkExperience/InputLayout';
 import { useEmailTryCountStore } from '@/store/signup';
 import PageTitle from '../Common/PageTitle';
 import useDebounce from '@/hooks/useDebounce';
+import { InputType } from '@/types/common/input';
 
 type signupInputProps = {
   email: string;
@@ -196,7 +197,7 @@ const SignupInput = ({
           >
             <div className="flex gap-2">
               <Input
-                inputType="TEXT"
+                inputType={InputType.TEXT}
                 placeholder={
                   signInputTranclation.enterEmail[isEmployer(pathname)]
                 }
@@ -238,7 +239,7 @@ const SignupInput = ({
               <div className="flex gap-2 h-full pt-2">
                 <div className="relative w-full">
                   <Input
-                    inputType="TEXT"
+                    inputType={InputType.TEXT}
                     placeholder={
                       signInputTranclation.verification[isEmployer(pathname)]
                     }
@@ -297,7 +298,7 @@ const SignupInput = ({
             title={signInputTranclation.password[isEmployer(pathname)]}
           >
             <Input
-              inputType="PASSWORD"
+              inputType={InputType.PASSWORD}
               placeholder={
                 signInputTranclation.enterPassword[isEmployer(pathname)]
               }
@@ -314,7 +315,7 @@ const SignupInput = ({
             title={signInputTranclation.confirmPassword[isEmployer(pathname)]}
           >
             <Input
-              inputType="PASSWORD"
+              inputType={InputType.PASSWORD}
               placeholder={
                 signInputTranclation.enterConfirmPassword[isEmployer(pathname)]
               }

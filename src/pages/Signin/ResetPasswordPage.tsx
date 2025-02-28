@@ -13,6 +13,7 @@ import {
   useReIssueAuthentication,
 } from '@/hooks/api/useAuth';
 import { useEmailTryCountStore } from '@/store/signup';
+import { InputType } from '@/types/common/input';
 import { validateEmail } from '@/utils/signin';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -140,7 +141,7 @@ const ResetPasswordPage = () => {
                 >
                   <div className="flex gap-2">
                     <Input
-                      inputType="TEXT"
+                      inputType={InputType.TEXT}
                       placeholder={signInputTranclation.enterEmail['ko']}
                       value={email}
                       onChange={handleEmailInput}
@@ -164,7 +165,7 @@ const ResetPasswordPage = () => {
                     <div className="flex gap-2 h-full pt-2">
                       <div className="relative w-full">
                         <Input
-                          inputType="TEXT"
+                          inputType={InputType.TEXT}
                           placeholder={signInputTranclation.verification['ko']}
                           value={authenticationCode}
                           onChange={setAuthenticationCode}
