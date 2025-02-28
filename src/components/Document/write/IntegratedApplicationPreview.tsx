@@ -3,7 +3,7 @@ import InputLayout from '@/components/Document/write/InputLayout';
 import { propertyToString } from '@/utils/document';
 import Notice from '@/components/Document/write/Notice';
 import { renderMap } from '@/utils/map';
-import { Address } from '@/types/api/users';
+import { GiggleAddress } from '@/types/api/users';
 
 type IntegratedApplicationFormProps = {
   document?: IntegratedApplicationData;
@@ -68,7 +68,7 @@ const IntegratedApplicationPreview = ({
             </div>
           </InputLayout>
           {/* 검색한 위치를 보여주는 지도 */}
-          {renderMap(document?.address as Address)}
+          {renderMap(document?.address as GiggleAddress)}
           <InputLayout title="Detailed Address" isEssential>
             <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
               <div className="w-full flex-1 relative">

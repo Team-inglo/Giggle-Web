@@ -1,8 +1,7 @@
-import Dropdown, { DropdownModal } from '@/components/Common/Dropdown';
+import Dropdown from '@/components/Common/Dropdown';
 import Input from '@/components/Common/Input';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { phone } from '@/constants/information';
-import { useGetGeoInfo } from '@/hooks/api/useKaKaoMap';
 import { EmployerRegistrationRequestBody } from '@/types/api/employ';
 import { InputType } from '@/types/common/input';
 import { useEffect, useState } from 'react';
@@ -15,11 +14,12 @@ import {
   formatCompanyRegistrationNumber,
   formatPhoneNumber,
 } from '@/utils/information';
-import { useAddressSearch } from '@/hooks/api/useAddressSearch';
 import PageTitle from '@/components/Common/PageTitle';
 import { signInputTranclation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
+import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
+import { convertToAddress, getAddressCoords } from '@/utils/map';
 
 type InformationInputSectionProps = {
   newEmployData: EmployerRegistrationRequestBody;
@@ -39,51 +39,52 @@ const InformationInputSection = ({
   setLogoFile,
 }: InformationInputSectionProps) => {
   const { pathname } = useLocation();
-  const {
-    addressInput, // 주소 검색용 input 저장하는 state
-    addressSearchResult, // 주소 검색 결과를 저장하는 array
-    currentGeoInfo, // 지도에 표시할 핀에 사용되는 위/경도 좌표
-    setCurrentGeoInfo,
-    handleAddressSearch, // 검색할 주소 입력 시 실시간 검색
-    handleAddressSelect, // 검색 결과 중 원하는 주소를 선택할 시 state에 입력
-    setAddressInput,
-  } = useAddressSearch();
+  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
-    start: '',
+    start: '010',
     middle: '',
     end: '',
   });
   const [logoStatus, setLogoStatus] = useState<LogoType>(LogoType.NONE);
   const [selectedImage, setSelectedImage] = useState<string>();
-  // 현재 좌표 기준 주소 획득
-  const { data, isSuccess } = useGetGeoInfo(setCurrentGeoInfo);
 
   // 검색된 주소 선택 시 state에 반영
-  const handleAddressSelection = (selectedAddressName: string) => {
-    const result = handleAddressSelect(selectedAddressName);
-    if (!result) return;
+  const handleAddressSelection = async (data: Address) => {
+    const convertedAddress = convertToAddress(data);
+    const coords = await getAddressCoords(
+      convertedAddress.address_name as string,
+    );
+    const x = coords.getLng();
+    const y = coords.getLat();
 
     setNewEmployData({
       ...newEmployData,
       address: {
         ...newEmployData.address,
-        ...result.addressData,
+        ...convertedAddress,
+        longitude: y,
+        latitude: x,
       },
     });
-    setAddressInput(result.selectedAddressName);
+    setIsAddressSearch(false);
   };
 
   // 첫 로딩 시 현재 사용자의 위치 파악 해 지도에 표기
   useEffect(() => {
-    setNewEmployData({
-      ...newEmployData,
-      address: {
-        ...newEmployData.address,
-        address_name: String(data?.address.address_name),
-      },
-    });
-  }, [isSuccess]);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        setNewEmployData({
+          ...newEmployData,
+          address: {
+            ...newEmployData.address,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          },
+        });
+      });
+    }
+  }, []);
 
   useEffect(() => {
     setNewEmployData({
@@ -131,215 +132,233 @@ const InformationInputSection = ({
   };
   return (
     <>
-      <div className="w-full flex flex-col px-4 items-center justify-between [&>*:last-child]:mb-40">
-        <PageTitle
-          title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}
-          content={signInputTranclation.infoStepContent[isEmployer(pathname)]}
-        />
-        <div className="flex flex-col gap-4">
-          {/* 이름 입력 */}
-          <InputLayout title="회사/점포명" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="회사/점포명을 입력해주세요"
-              value={newEmployData.owner_info.company_name}
-              onChange={(value) =>
-                setNewEmployData({
-                  ...newEmployData,
-                  owner_info: {
-                    ...newEmployData.owner_info,
-                    company_name: value,
-                  },
-                })
+      <div className="w-full flex flex-col px-4 items-center justify-between ">
+        {isAddressSearch ? (
+          <DaumPostcodeEmbed
+            style={{
+              position: 'fixed',
+              top: '50px',
+              width: '100%',
+              height: 'calc(100vh - 100px)',
+              marginTop: '3.125rem',
+              paddingBottom: '6.25rem',
+            }}
+            theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
+            onComplete={handleAddressSelection}
+            onClose={() => setIsAddressSearch(false)}
+          />
+        ) : (
+          <>
+            <PageTitle
+              title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}
+              content={
+                signInputTranclation.infoStepContent[isEmployer(pathname)]
               }
-              canDelete={false}
             />
-          </InputLayout>
-          {/* 대표자명 입력 */}
-          <InputLayout title="대표자명" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="대표자명을 입력해주세요"
-              value={newEmployData.owner_info.owner_name}
-              onChange={(value) =>
-                setNewEmployData({
-                  ...newEmployData,
-                  owner_info: {
-                    ...newEmployData.owner_info,
-                    owner_name: value,
-                  },
-                })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 개인 휴대폰 번호 입력 */}
-          <InputLayout title="대표자 전화번호" isEssential>
-            <div className="w-full flex flex-row gap-2 justify-between">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={phoneNum.start}
-                  placeholder="+82"
-                  options={phone}
-                  setValue={(value) =>
-                    setPhoneNum({ ...phoneNum, start: value })
-                  }
-                />
-              </div>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.middle}
-                onChange={(value) =>
-                  setPhoneNum({ ...phoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.end}
-                onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
-                canDelete={false}
-              />
-            </div>
-          </InputLayout>
-          {/* 주소 입력 */}
-          <div className="w-full flex flex-col gap-[1.125rem]">
-            {/* 주소 검색 입력 input */}
-            <InputLayout title="회사/점포주소" isEssential>
-              <Input
-                inputType={InputType.SEARCH}
-                placeholder="주소 검색"
-                value={addressInput}
-                onChange={(value) => handleAddressSearch(value)}
-                canDelete={false}
-              />
-              {/* 주소 검색 결과 보여주는 dropdown modal */}
-              {addressSearchResult && addressSearchResult.length !== 0 && (
-                <DropdownModal
-                  value={newEmployData.address.address_name}
-                  options={Array.from(
-                    addressSearchResult.map((address) => address.address_name),
-                  )}
-                  onSelect={handleAddressSelection}
-                />
-              )}
-            </InputLayout>
-            {/* 검색한 위치를 보여주는 지도 */}
-            <div className="w-full rounded-xl">
-              <Map
-                center={{ lat: currentGeoInfo.lat, lng: currentGeoInfo.lon }}
-                style={{ width: '100%', height: '200px', zIndex: -100 }}
-                className="rounded-xl"
-              >
-                <MapMarker
-                  position={{
-                    lat: currentGeoInfo.lat,
-                    lng: currentGeoInfo.lon,
-                  }}
-                ></MapMarker>
-              </Map>
-            </div>
-            <InputLayout title="상세 주소" isEssential={false}>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="ex) 101-dong"
-                value={newEmployData.address.address_detail}
-                onChange={(value) =>
-                  setNewEmployData({
-                    ...newEmployData,
-                    address: {
-                      ...newEmployData.address,
-                      address_detail: value,
-                    },
-                  })
-                }
-                canDelete={false}
-              />
-            </InputLayout>
-          </div>
-          {/* 사업자 등록번호 입력 */}
-          <InputLayout title="사업자 등록번호" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="X X X / X X / X X X X X"
-              value={newEmployData.owner_info.company_registration_number}
-              onChange={(value) =>
-                setNewEmployData({
-                  ...newEmployData,
-                  owner_info: {
-                    ...newEmployData.owner_info,
-                    company_registration_number:
-                      formatCompanyRegistrationNumber(value),
-                  },
-                })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
 
-          {/* 회사 로고 입력 */}
-          <InputLayout title="회사 로고" isEssential={false}>
-            <div className="w-full flex flex-col items-center justify-start">
-              <div className="w-full flex items-center justify-start">
-                <label
-                  className="cursor-pointer"
-                  htmlFor="logo-upload"
-                  aria-label={
-                    logoStatus === LogoType.SELECTED
-                      ? 'Change logo image'
-                      : 'Upload logo image'
+            <div className="flex flex-col gap-4 [&>*:last-child]:mb-40">
+              {/* 이름 입력 */}
+              <InputLayout title="회사/점포명" isEssential>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="회사/점포명을 입력해주세요"
+                  value={newEmployData.owner_info.company_name}
+                  onChange={(value) =>
+                    setNewEmployData({
+                      ...newEmployData,
+                      owner_info: {
+                        ...newEmployData.owner_info,
+                        company_name: value,
+                      },
+                    })
                   }
-                >
-                  <div className="w-11 shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-lg bg-white border-[0.5px] border-[#eae9f6] h-11 flex items-center justify-center">
-                    {logoStatus === LogoType.NONE && <FileAddIcon />}
-                    {logoStatus === LogoType.DEFAULT && <GiggleLogo />}
-                    {logoStatus === LogoType.SELECTED && selectedImage && (
-                      <div className="relative w-full h-full group">
-                        <img
-                          src={selectedImage}
-                          alt="Selected logo"
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                        {/* Hover overlay */}
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity rounded-lg flex items-center justify-center">
-                          <FileAddIcon className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                      </div>
-                    )}
+                  canDelete={false}
+                />
+              </InputLayout>
+              {/* 대표자명 입력 */}
+              <InputLayout title="대표자명" isEssential>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="대표자명을 입력해주세요"
+                  value={newEmployData.owner_info.owner_name}
+                  onChange={(value) =>
+                    setNewEmployData({
+                      ...newEmployData,
+                      owner_info: {
+                        ...newEmployData.owner_info,
+                        owner_name: value,
+                      },
+                    })
+                  }
+                  canDelete={false}
+                />
+              </InputLayout>
+              {/* 개인 휴대폰 번호 입력 */}
+              <InputLayout title="대표자 전화번호" isEssential>
+                <div className="w-full flex flex-row gap-2 justify-between">
+                  <div className="w-full h-[2.75rem]">
+                    <Dropdown
+                      value={phoneNum.start}
+                      placeholder="010"
+                      options={phone}
+                      setValue={(value) =>
+                        setPhoneNum({ ...phoneNum, start: value })
+                      }
+                    />
                   </div>
-                  <input
-                    id="logo-upload"
-                    type="file"
-                    accept="image/jpeg, image/png"
-                    onChange={handleImageChange}
-                    className="hidden"
-                    // input을 재선택할 수 있도록 key를 추가
-                    key={selectedImage}
-                  />
-                </label>
-              </div>
-              <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left body-3 text-[#656565]">
-                <div className="w-6 h-6 relative">
-                  <div
-                    className={`w-full h-full border border-[#f4f4f9] flex items-center justify-center ${logoStatus === LogoType.DEFAULT ? 'bg-[#1E1926]' : 'bg-white'}`}
-                    onClick={
-                      logoStatus === LogoType.DEFAULT
-                        ? () => handleDefaultLogo(LogoType.NONE)
-                        : () => handleDefaultLogo(LogoType.DEFAULT)
+                  <Input
+                    inputType={InputType.TEXT}
+                    placeholder="0000"
+                    value={phoneNum.middle}
+                    onChange={(value) =>
+                      setPhoneNum({ ...phoneNum, middle: value })
                     }
+                    canDelete={false}
+                  />
+                  <Input
+                    inputType={InputType.TEXT}
+                    placeholder="0000"
+                    value={phoneNum.end}
+                    onChange={(value) =>
+                      setPhoneNum({ ...phoneNum, end: value })
+                    }
+                    canDelete={false}
+                  />
+                </div>
+              </InputLayout>
+              {/* 주소 입력 */}
+              <div className="w-full flex flex-col gap-[1.125rem]">
+                {/* 주소 검색 입력 input */}
+                <InputLayout title="회사/점포주소" isEssential>
+                  <div onClick={() => setIsAddressSearch(true)}>
+                    <Input
+                      inputType={InputType.SEARCH}
+                      placeholder="주소 검색"
+                      value={newEmployData.address.address_name}
+                      onChange={() => {}}
+                      canDelete={false}
+                    />
+                  </div>
+                </InputLayout>
+                {/* 검색한 위치를 보여주는 지도 */}
+                <div className="w-full rounded-xl">
+                  <Map
+                    center={{
+                      lat: newEmployData.address?.latitude ?? 0,
+                      lng: newEmployData.address?.longitude ?? 0,
+                    }}
+                    style={{ width: '100%', height: '200px', zIndex: -100 }}
+                    className="rounded-xl"
                   >
-                    <CheckIcon />
+                    <MapMarker
+                      position={{
+                        lat: newEmployData.address?.latitude ?? 0,
+                        lng: newEmployData.address?.longitude ?? 0,
+                      }}
+                    ></MapMarker>
+                  </Map>
+                </div>
+                <InputLayout title="상세 주소" isEssential>
+                  <Input
+                    inputType={InputType.TEXT}
+                    placeholder="ex) 101-dong"
+                    value={newEmployData.address.address_detail}
+                    onChange={(value) =>
+                      setNewEmployData({
+                        ...newEmployData,
+                        address: {
+                          ...newEmployData.address,
+                          address_detail: value,
+                        },
+                      })
+                    }
+                    canDelete={false}
+                  />
+                </InputLayout>
+              </div>
+              {/* 사업자 등록번호 입력 */}
+              <InputLayout title="사업자 등록번호" isEssential>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="X X X / X X / X X X X X"
+                  value={newEmployData.owner_info.company_registration_number}
+                  onChange={(value) =>
+                    setNewEmployData({
+                      ...newEmployData,
+                      owner_info: {
+                        ...newEmployData.owner_info,
+                        company_registration_number:
+                          formatCompanyRegistrationNumber(value),
+                      },
+                    })
+                  }
+                  canDelete={false}
+                />
+              </InputLayout>
+
+              {/* 회사 로고 입력 */}
+              <InputLayout title="회사 로고" isEssential={false}>
+                <div className="w-full flex flex-col items-center justify-start">
+                  <div className="w-full flex items-center justify-start">
+                    <label
+                      className="cursor-pointer"
+                      htmlFor="logo-upload"
+                      aria-label={
+                        logoStatus === LogoType.SELECTED
+                          ? 'Change logo image'
+                          : 'Upload logo image'
+                      }
+                    >
+                      <div className="w-11 shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-lg bg-white border-[0.5px] border-[#eae9f6] h-11 flex items-center justify-center">
+                        {logoStatus === LogoType.NONE && <FileAddIcon />}
+                        {logoStatus === LogoType.DEFAULT && <GiggleLogo />}
+                        {logoStatus === LogoType.SELECTED && selectedImage && (
+                          <div className="relative w-full h-full group">
+                            <img
+                              src={selectedImage}
+                              alt="Selected logo"
+                              className="w-full h-full object-cover rounded-lg"
+                            />
+                            {/* Hover overlay */}
+                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity rounded-lg flex items-center justify-center">
+                              <FileAddIcon className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <input
+                        id="logo-upload"
+                        type="file"
+                        accept="image/jpeg, image/png"
+                        onChange={handleImageChange}
+                        className="hidden"
+                        // input을 재선택할 수 있도록 key를 추가
+                        key={selectedImage}
+                      />
+                    </label>
+                  </div>
+                  <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left body-3 text-[#656565]">
+                    <div className="w-6 h-6 relative">
+                      <div
+                        className={`w-full h-full border border-[#f4f4f9] flex items-center justify-center ${logoStatus === LogoType.DEFAULT ? 'bg-[#1E1926]' : 'bg-white'}`}
+                        onClick={
+                          logoStatus === LogoType.DEFAULT
+                            ? () => handleDefaultLogo(LogoType.NONE)
+                            : () => handleDefaultLogo(LogoType.DEFAULT)
+                        }
+                      >
+                        <CheckIcon />
+                      </div>
+                    </div>
+                    <div className="flex items-start justify-start">
+                      Giggle 기본로고를 사용 할게요
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-start justify-start">
-                  Giggle 기본로고를 사용 할게요
-                </div>
-              </div>
+              </InputLayout>
             </div>
-          </InputLayout>
-        </div>
+          </>
+        )}
       </div>
     </>
   );

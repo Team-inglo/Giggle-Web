@@ -179,7 +179,6 @@ export const useTempSignUp = () => {
 // 2.5  기본 유저 회원가입 훅
 export const useSignUp = (setSuccess: () => void) => {
   const navigate = useNavigate();
-
   return useMutation({
     mutationFn: signUp,
     onSuccess: (data: RESTYPE<SignInResponse>) => {
@@ -187,7 +186,6 @@ export const useSignUp = (setSuccess: () => void) => {
         deleteTemporaryToken();
         setAccessToken(data.data.access_token);
         setRefreshToken(data.data.refresh_token);
-        navigate('/splash');
         setSuccess();
       }
     },
@@ -208,7 +206,6 @@ export const useSignupEmployer = (setSuccess: () => void) => {
         deleteTemporaryToken();
         setAccessToken(data.data.access_token);
         setRefreshToken(data.data.refresh_token);
-        navigate('/splash');
         setSuccess();
       }
     },
