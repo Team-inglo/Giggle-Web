@@ -124,7 +124,7 @@ export const initialJobPostingState: JobPostingForm = {
       latitude: 0,
     },
     recruitment_dead_line: null,
-    recruitment_number: 1,
+    recruitment_number: 0,
     gender: Gender.MALE,
     age_restriction: 0,
     education_level: '',
