@@ -65,7 +65,9 @@ const EmployerEditPostPage = () => {
         address_detail: serverData.workplace_information.detailed_address,
       },
       recruitment_dead_line:
-        serverData.recruitment_conditions.recruitment_deadline,
+        serverData.recruitment_conditions.recruitment_deadline === '상시모집'
+          ? null
+          : serverData.recruitment_conditions.recruitment_deadline,
       recruitment_number: serverData.recruitment_conditions.number_of_recruits,
       gender: serverData.recruitment_conditions.gender,
       age_restriction: initialJobPostingState.body.age_restriction,

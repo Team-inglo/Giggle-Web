@@ -44,7 +44,7 @@ const Step4 = ({
   const [phoneNum, setPhoneNum] = useState({
     start: newPostInfo.body.recruiter_phone_number
       ? parsePhoneNumber(newPostInfo.body.recruiter_phone_number).start
-      : '',
+      : '010',
     middle: newPostInfo.body.recruiter_phone_number
       ? parsePhoneNumber(newPostInfo.body.recruiter_phone_number).middle
       : '',
