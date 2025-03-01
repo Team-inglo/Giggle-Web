@@ -43,9 +43,13 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
       ) : (
         <div className="w-full h-[6.75rem] rounded-lg border border-[#E2E5EB] bg-[#F4F4F9]"></div>
       )}
-      <div>
-        <p className="caption text-[#252525]">{jobPostingData.company_name}</p>
-        <h3 className="button-1 text-[#191919]">{jobPostingData.title}</h3>
+      <div className="block">
+        <p className="caption text-[#252525] line-clamp-1 whitespace-normal">
+          {jobPostingData.company_name}
+        </p>
+        <h3 className="min-h-10 button-1 text-[#191919] line-clamp-2 whitespace-normal">
+          {jobPostingData.title}
+        </h3>
         <div className="py-2 flex items-center flex-wrap gap-1">
           <Tag
             value={jobPostingData.tags.employment_type.toLowerCase()}
