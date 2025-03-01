@@ -11,7 +11,7 @@ const RadioButton = ({
   isOn: boolean;
 }) => {
   return (
-    <div className="w-full relative flex flex-row items-center justify-start gap-[0.75rem] text-[#656565] body-3">
+    <div className="relative flex flex-row items-center justify-start gap-3 text-[#656565] body-2">
       <div onClick={() => setValue(value)}>
         {isOn ? <RadioOnIcon /> : <RadioOffIcon />}
       </div>

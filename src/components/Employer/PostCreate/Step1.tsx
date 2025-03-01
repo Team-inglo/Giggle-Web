@@ -150,7 +150,7 @@ const Step1 = ({
         </InputLayout>
         {/* 타입 선택 */}
         <InputLayout title="타입" isEssential>
-          <div className="w-full relative flex items-start justify-center px-1 py-1.5 gap-3 text-left text-[#656565]">
+          <div className="w-full relative flex items-start px-1 py-1.5 gap-8 text-left text-[#656565]">
             <RadioButton
               value="아르바이트"
               setValue={() =>
