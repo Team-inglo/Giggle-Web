@@ -6,6 +6,7 @@ import PostDetailTitle from '@/components/PostDetail/PostDetailTitle';
 import { UserType } from '@/constants/user';
 import { useGetPostDetail, useGetPostDetailGuest } from '@/hooks/api/usePost';
 import { useUserStore } from '@/store/user';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const PostDetailPage = () => {
@@ -25,10 +26,12 @@ const PostDetailPage = () => {
 
   const postDetailData = account_type ? userData : guestData;
 
-  if (!postDetailData?.data) return <></>;
+  useEffect(() => {
+    if (navigate && postDetailData?.data?.is_my_post)
+      navigate(`/employer/post/${postDetailData?.data?.id}`);
+  }, [postDetailData, navigate]);
 
-  if (postDetailData?.data?.is_my_post)
-    navigate(`/employer/post/${postDetailData?.data?.id}`);
+  if (!postDetailData?.data) return <></>;
 
   return (
     <>
