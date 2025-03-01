@@ -45,11 +45,16 @@ const LanguageCard = ({
       });
     }
     // 기본 언어 수정
-    else
+    else {
+      const formattedTitle = title.toLowerCase().replace(/\s+/g, '-');
       patchLanguagesLevel({
-        type: title.toLowerCase().replace(/\s+/g, '-') as LanguagesLevelType,
+        type:
+          formattedTitle === 'social-integration'
+            ? 'social-integration-program'
+            : (formattedTitle as LanguagesLevelType),
         level: selectedLevel,
       });
+    }
     setLevelBottomSheetOpen(false);
   };
 
