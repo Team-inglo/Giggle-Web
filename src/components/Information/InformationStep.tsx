@@ -136,7 +136,7 @@ const InformationStep = ({
           </InputLayout>
           {/* 성별 선택 */}
           <InputLayout title="Gender" isEssential={true}>
-            <div className="w-full flex flex-row gap-[1.75rem]">
+            <div className="w-full flex flex-row gap-8">
               {gender.map((gender) => (
                 <RadioButton
                   value={gender}

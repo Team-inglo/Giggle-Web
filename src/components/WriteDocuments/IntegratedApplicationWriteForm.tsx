@@ -236,7 +236,7 @@ const IntegratedApplicationWriteForm = ({
           </InputLayout>
           {/* 성별 입력 */}
           <InputLayout title="Gender" isEssential>
-            <div className="w-full flex flex-row gap-[1.75rem]">
+            <div className="w-full flex flex-row gap-8">
               {gender.map((gender) => (
                 <RadioButton
                   value={gender}

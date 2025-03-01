@@ -11,7 +11,7 @@ const LanguageManageDetail = ({ data }: LanguageManageDetailProps) => {
       <div className="flex flex-col gap-2">
         <LanguageCard title="TOPIK" level={data.topik} maxLevel={6} />
         <LanguageCard
-          title="Social integration"
+          title="Social Integration"
           level={data.social_integration}
           maxLevel={5}
         />
