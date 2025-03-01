@@ -22,6 +22,7 @@ const EmployerCreatePostPage = () => {
   const { updateCurrentPostId } = useCurrentPostIdStore();
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
     initialJobPostingState,
   );
@@ -50,7 +51,10 @@ const EmployerCreatePostPage = () => {
         title="공고등록"
       />
       {devIsModal ? (
-        <CompleteModal title="공고 등록이 완료되었습니다." onNext={() => {}} />
+        <CompleteModal
+          title={`${isEdit ? '공고 수정' : '공고 등록'}이 완료되었습니다.`}
+          onNext={() => navigate('/employer/post')}
+        />
       ) : (
         <>
           <div className="w-full flex flex-row p-6 items-center justify-between">
@@ -61,7 +65,7 @@ const EmployerCreatePostPage = () => {
               length={5}
               currentStep={currentStep}
               mainColor="#1E1926"
-              textColor='#FFFFFF'
+              textColor="#FFFFFF"
             />
           </div>
           <div className="w-full flex justify-center px-6">
@@ -71,6 +75,8 @@ const EmployerCreatePostPage = () => {
             {currentStep === 2 && (
               <Step2
                 postInfo={postInfo}
+                isAddressSearch={isAddressSearch}
+                setIsAddressSearch={setIsAddressSearch}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />

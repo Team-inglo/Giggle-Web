@@ -31,7 +31,7 @@ const InformationPage = () => {
   const [isPolicyPreview, setIsPolicyPreview] = useState(false);
   const [policy, setPolicy] = useState('');
   const [devIsModal, setDevIsModal] = useState(false);
-  const [marketingAllowed, setMarketAllowed] = useState(false);
+  const marketingAllowed = false;
   const [isLoading, setIsLoading] = useState(false);
   const { mutate } = useSignUp(() => setDevIsModal(true));
   const { mutate: getPolicy } = useGetPolicy({
@@ -80,7 +80,7 @@ const InformationPage = () => {
           buttonText={
             signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
           }
-          onNext={() => navigate('/')}
+          onNext={() => navigate('/splash')}
         />
       ) : (
         <>
@@ -129,7 +129,6 @@ const InformationPage = () => {
           isShowBottomsheet={isAgreeModal}
         >
           <AgreeModalInner
-            setMarketingAllowed={(value: boolean) => setMarketAllowed(value)}
             onPolicyPreview={(policy: TermType) => {
               getPolicy(policy);
             }}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import SearchIcon from '@/assets/icons/MagnifyGlassIcon.svg?react';
 import CloseIcon from '@/assets/icons/CloseIcon.svg?react';
 import VisibleIcon from '@/assets/icons/Hide.svg?react';
-import { InputType } from 'zlib';
+import { InputType } from '@/types/common/input';
 
 const INPUT_STATUS = {
   DISABLED: 'DISABLED',
