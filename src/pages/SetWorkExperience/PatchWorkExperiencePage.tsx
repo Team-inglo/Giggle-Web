@@ -10,9 +10,10 @@ import {
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { WorkExperienctRequest } from '@/types/api/resumes';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PatchWorkExperiencePage = () => {
+  const navigate = useNavigate();
   const handleBackButtonClick = useNavigateBack();
   const { id } = useParams();
 
@@ -28,16 +29,16 @@ const PatchWorkExperiencePage = () => {
   const [workExperienceData, setWorkExperienceData] =
     useState<WorkExperienctRequest>(initialData);
 
-  // 초기 값에서 수정된 내용이 있는지 확인
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(false);
 
   const { data: getWorkExperienceData } = useGetWorkExperience(id!);
   const { mutate } = usePatchWorkExperience();
 
   const handleSubmit = () => {
-    // 모든 필드가 입력되었는지 확인
-    if (Object.values(workExperienceData).every((value) => value === ''))
+    if (workExperienceData == initialData) {
+      navigate('/profile/edit-resume');
       return;
+    }
 
     // 날짜 형식 서버 데이터와 통일, optional 값은 "-"으로 전달
     const formattedData = {
@@ -77,12 +78,11 @@ const PatchWorkExperiencePage = () => {
   }, [getWorkExperienceData]);
 
   useEffect(() => {
-    // 편집 중인지 여부 확인
-    if (workExperienceData == initialData) {
-      setIsEditing(false);
-    } else {
-      setIsEditing(true);
-    }
+    // 모든 필수 입력필드가 입력되었는지 확인
+    const isValidEssentialField = Object.entries(workExperienceData)
+      .filter(([key]) => key !== 'description') // 선택값 키 제외
+      .every(([, value]) => value.length > 0);
+    setIsValid(isValidEssentialField);
   }, [workExperienceData]);
 
   return (
@@ -114,11 +114,11 @@ const PatchWorkExperiencePage = () => {
           {/* patch 버튼 */}
           <Button
             type={buttonTypeKeys.LARGE}
-            bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-            fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+            bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
+            fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
             title="Save"
             isBorder={false}
-            onClick={isEditing ? handleSubmit : undefined}
+            onClick={isValid ? handleSubmit : undefined}
           />
         </div>
       </BottomButtonPanel>
