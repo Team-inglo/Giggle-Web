@@ -1,7 +1,7 @@
 import HomeBanner from '@/components/Home/HomeBanner';
 import HomeMenu from '@/components/Home/HomeMenu';
 import HomeHeader from '@/components/Home/HomeHeader';
-import HomeJobPostingList from '@/components/Home/HomeJobPostingList';
+import HomeJobPostingSection from '@/components/Home/HomeJobPostingSection';
 
 const HomePage = () => {
   return (
@@ -9,7 +9,7 @@ const HomePage = () => {
       <HomeHeader />
       <HomeBanner />
       <HomeMenu />
-      <HomeJobPostingList />
+      <HomeJobPostingSection />
     </>
   );
 };
