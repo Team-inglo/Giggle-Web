@@ -1,8 +1,10 @@
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
+import { errorTranslation } from '@/constants/translation';
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 type ServerErrorBottomSheetPropsType = {
   isShowBottomsheet: boolean;
@@ -34,28 +36,20 @@ const ServerErrorBottomSheet = ({
       isShowBottomsheet={isShowBottomsheet}
     >
       <div className="w-full pt-2 px-2 pb-6 flex flex-col gap-6 items-center text-center">
-        {account_type === UserType.OWNER ? (
-          <>
-            <h3 className="head-3 text-[#252525]">
-              서버가 커피 타러 갔어요! ☕
-            </h3>
-            <p className="body-2 text-[#252525]">
-              현재 서버가 원활하지 않습니다. <br />
-              급한 일이시면 고객센터에 문의해 주세요!
-            </p>
-          </>
-        ) : (
-          <>
-            <h3 className="head-3 text-[#252525]">
-              The server went to grab a coffee! ☕
-            </h3>
-            <p className="body-2 text-[#252525]">
-              The server is currently unavailable.
-              <br />
-              If it's urgent, please contact customer support.
-            </p>
-          </>
-        )}
+        <h3 className="head-3 text-[#252525]">
+          {
+            errorTranslation.serverErrorTitle[
+              isEmployerByAccountType(account_type)
+            ]
+          }
+        </h3>
+        <p className="body-2 text-[#252525]">
+          {
+            errorTranslation.serverErrorContent[
+              isEmployerByAccountType(account_type)
+            ]
+          }
+        </p>
       </div>
       <div className="w-full pt-3 flex flex-col gap-2">
         <Button
