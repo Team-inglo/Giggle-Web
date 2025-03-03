@@ -18,7 +18,11 @@ const EmployerProfileCard = () => {
         <div className="flex flex-col p-4 mt-4 rounded-[0.5rem] gap-4 bg-[#fff]">
           <div className="flex items-center gap-6">
             <div className="w-16 h-16 rounded-full overflow-hidden">
-              <img src={profileData.icon_img_url} alt="profile image" />
+              <img
+                src={profileData.icon_img_url}
+                alt="profile image"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h1 className="head-2 text-[#1E1926]">
               {profileData.company_name}
