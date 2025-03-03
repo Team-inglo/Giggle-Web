@@ -318,8 +318,8 @@ const IntegratedApplicationWriteForm = ({
                 placeholder="ex) 101-dong"
                 value={newDocumentData.address.address_detail}
                 onChange={(value) =>
-                  newDocumentData.address.address_detail &&
-                  newDocumentData.address.address_detail.trim().length < 100 &&
+                  value &&
+                  value.trim().length < 100 &&
                   setNewDocumentData({
                     ...newDocumentData,
                     address: {
