@@ -174,7 +174,7 @@ const EditProfilePage = () => {
               />
             </InputLayout>
             <InputLayout title="Gender" isEssential={true}>
-              <div className="w-full flex flex-row gap-[1.75rem]">
+              <div className="w-full flex flex-row gap-8">
                 <RadioButton
                   value={GenderType.MALE as string}
                   setValue={(value: string) =>

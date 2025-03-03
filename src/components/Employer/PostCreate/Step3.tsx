@@ -51,7 +51,7 @@ const Step3 = ({
       newPostInfo.body;
 
     const isFormValid =
-      recruitment_number !== 0 &&
+      recruitment_number >= 0 &&
       age_restriction !== 0 &&
       education_level !== '' &&
       newPostInfo.body.visa !== '';
@@ -83,9 +83,10 @@ const Step3 = ({
         </InputLayout>
         {/* 성별 입력 */}
         <InputLayout title="성별" isEssential>
-          <div className="w-full flex flex-row gap-[1.75rem]">
+          <div className="w-full flex flex-row gap-8">
             {GenderList.map((gender) => (
               <RadioButton
+                key={gender}
                 value={gender}
                 setValue={(value: string) =>
                   setNewPostInfo({

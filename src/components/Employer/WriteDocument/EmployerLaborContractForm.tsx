@@ -433,7 +433,7 @@ const EmployerLaborContractForm = ({
           </InputLayout>
           {/* 상여급 입력 */}
           <InputLayout title="상여급" isEssential>
-            <div className="w-full flex flex-row gap-[1.75rem]">
+            <div className="w-full flex flex-row gap-8">
               <RadioButton
                 value="있음"
                 setValue={() =>
@@ -470,7 +470,7 @@ const EmployerLaborContractForm = ({
           </InputLayout>
           {/* 기타급여(제수당 등) 입력 */}
           <InputLayout title="기타급여 (제수당 등)" isEssential>
-            <div className="w-full flex flex-row gap-[1.75rem]">
+            <div className="w-full flex flex-row gap-8">
               <RadioButton
                 value="있음"
                 setValue={() =>
@@ -554,7 +554,7 @@ const EmployerLaborContractForm = ({
           </InputLayout>
           {/* 임금 지급방법 입력 */}
           <InputLayout title="임금 지급방법" isEssential>
-            <div className="w-full flex flex-row gap-[1.75rem]">
+            <div className="w-full flex flex-row gap-8">
               <RadioButton
                 value="근로자에게 직접지급"
                 setValue={() =>

@@ -236,7 +236,7 @@ const IntegratedApplicationWriteForm = ({
           </InputLayout>
           {/* 성별 입력 */}
           <InputLayout title="Gender" isEssential>
-            <div className="w-full flex flex-row gap-[1.75rem]">
+            <div className="w-full flex flex-row gap-8">
               {gender.map((gender) => (
                 <RadioButton
                   value={gender}
@@ -318,8 +318,8 @@ const IntegratedApplicationWriteForm = ({
                 placeholder="ex) 101-dong"
                 value={newDocumentData.address.address_detail}
                 onChange={(value) =>
-                  newDocumentData.address.address_detail &&
-                  newDocumentData.address.address_detail.trim().length < 100 &&
+                  value &&
+                  value.trim().length < 100 &&
                   setNewDocumentData({
                     ...newDocumentData,
                     address: {
