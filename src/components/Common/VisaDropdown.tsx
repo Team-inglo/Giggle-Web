@@ -25,7 +25,7 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
           <div className="flex-1 h-5 flex flex-row items-center justify-between">
             <input
               className="w-full relative leading-5 outline-none bg-white"
-              value={value ?? ''}
+              value={value.join(', ').replace(/_/g, '-')}
               placeholder={placeholder}
               disabled
             />
