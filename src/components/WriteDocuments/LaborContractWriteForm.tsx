@@ -41,7 +41,7 @@ const LaborContractWriteForm = ({
   const { currentPostId } = useCurrentPostIdEmployeeStore();
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
-    start: '',
+    start: '010',
     middle: '',
     end: '',
   });
