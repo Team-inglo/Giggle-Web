@@ -1,3 +1,4 @@
+import { UserType } from '@/constants/user';
 import { EmployerRegistrationRequestBody } from '@/types/api/employ';
 
 const isValidString = (value: string): boolean => {
@@ -62,5 +63,11 @@ export const isEmployer = (pathname: string) => {
   if (pathname.includes('/employer')) {
     return 'ko';
   }
+  return 'en';
+};
+
+// account_type을 통해 고용주라면 한국어, 아니라면 영어를 보여주기 위함
+export const isEmployerByAccountType = (accountType: UserType | undefined) => {
+  if (accountType === UserType.OWNER) return 'ko';
   return 'en';
 };

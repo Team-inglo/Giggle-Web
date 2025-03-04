@@ -117,7 +117,7 @@ const WorkExperiencePatch = ({
         </div>
       </InputLayout>
       {/* 상세설명 입력 */}
-      <InputLayout title="Description" isEssential={true}>
+      <InputLayout title="Description" isEssential={false} isOptional={true}>
         <div
           onClick={handleFocusTextArea}
           className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow p-2"
