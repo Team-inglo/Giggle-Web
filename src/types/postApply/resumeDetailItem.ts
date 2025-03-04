@@ -1,16 +1,13 @@
 type VisaType =
-  | 'D_2_1'
-  | 'D_2_2'
-  | 'D_2_3'
-  | 'D_2_4'
-  | 'D_2_6'
-  | 'D_2_7'
-  | 'D_2_8'
-  | 'D_4_1'
-  | 'D_4_7'
   | 'D_2'
   | 'D_4'
-  | 'F_2';
+  | 'D_10'
+  | 'C_4'
+  | 'F_2'
+  | 'F_4'
+  | 'F_5'
+  | 'F_6'
+  | 'H_1';
 
 export type EducationLevelType = 'BACHELOR' | 'ASSOCIATE' | 'HIGHSCHOOL';
 

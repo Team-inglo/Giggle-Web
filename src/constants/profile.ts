@@ -14,16 +14,15 @@ export const enum GenderType {
 }
 
 export const enum VisaType {
-  D_2_1 = 'D-2-1',
-  D_2_2 = 'D-2-2',
-  D_2_3 = 'D-2-3',
-  D_2_4 = 'D-2-4',
-  D_2_6 = 'D-2-6',
-  D_2_7 = 'D-2-7',
-  D_2_8 = 'D-2-8',
-  D_4_1 = 'D-4-1',
-  D_4_7 = 'D-4-7',
+  D_2 = 'D-2',
+  D_4 = 'D-4',
+  D_10 = 'D-10',
+  C_4 = 'C-4',
   F_2 = 'F-2',
+  F_4 = 'F-4',
+  F_5 = 'F-5',
+  F_6 = 'F-6',
+  H_1 = 'H-1',
 }
 
 export const enum NationalityType {

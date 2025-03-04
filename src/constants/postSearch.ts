@@ -85,7 +85,17 @@ export const FILTER_CATEGORY_OPTIONS: FilterOptionsType = {
   ],
   [FILTER_CATEGORY.RECRUITMENT_PERIOD]: ['Opening', 'Closed'],
   [FILTER_CATEGORY.EMPLOYMENT_TYPE]: ['PartTime', 'Internship'],
-  [FILTER_CATEGORY.VISA]: ['D-2', 'D-4', 'F-2'],
+  [FILTER_CATEGORY.VISA]: [
+    'D-2',
+    'D-4',
+    'D-10',
+    'C-4',
+    'F-2',
+    'F-4',
+    'F-5',
+    'F-6',
+    'H-1',
+  ],
 };
 
 export const initialFilterList: PostSearchFilterItemType = {

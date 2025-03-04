@@ -51,7 +51,13 @@ export enum EducationLevel {
 export enum VisaGroup {
   D_2 = 'D_2',
   D_4 = 'D_4',
+  D_10 = 'D_10',
+  C_4 = 'C_4',
   F_2 = 'F_2',
+  F_4 = 'F_4',
+  F_5 = 'F_5',
+  F_6 = 'F_6',
+  H_1 = 'H_1',
 }
 
 // Types
@@ -87,7 +93,7 @@ export type JobPostingForm = {
     gender: Gender;
     age_restriction: number | null;
     education_level: EducationLevel | string;
-    visa: VisaGroup | string;
+    visa: VisaGroup[];
     recruiter_name: string;
     recruiter_email: string;
     recruiter_phone_number: string;
@@ -128,7 +134,7 @@ export const initialJobPostingState: JobPostingForm = {
     gender: Gender.MALE,
     age_restriction: 0,
     education_level: '',
-    visa: '',
+    visa: [],
     recruiter_name: '',
     recruiter_email: '',
     recruiter_phone_number: '',

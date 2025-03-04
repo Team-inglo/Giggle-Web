@@ -330,3 +330,14 @@ export const errorTranslation = {
     en: "The server is currently unavailable. If it's urgent, please contact customer support.",
   },
 };
+
+export const buttonTranslation = {
+  selectComplete: {
+    ko: '선택완료',
+    en: 'Save',
+  },
+  reset: {
+    ko: '초기화',
+    en: 'Reset',
+  },
+};
