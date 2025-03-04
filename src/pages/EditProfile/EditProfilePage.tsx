@@ -309,7 +309,7 @@ const EditProfilePage = () => {
                   <div className="w-full">
                     <Dropdown
                       value={phoneNum.start}
-                      placeholder="+82"
+                      placeholder="010"
                       options={phone}
                       setValue={(value) =>
                         setPhoneNum({ ...phoneNum, start: value })

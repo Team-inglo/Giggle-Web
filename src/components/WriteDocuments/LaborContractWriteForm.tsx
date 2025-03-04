@@ -278,7 +278,7 @@ const LaborContractWriteForm = ({
                 <div className="w-full h-[2.75rem]">
                   <Dropdown
                     value={phoneNum.start}
-                    placeholder="+82"
+                    placeholder="010"
                     options={phone}
                     setValue={(value) =>
                       setPhoneNum({ ...phoneNum, start: value })

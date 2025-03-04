@@ -376,7 +376,7 @@ const IntegratedApplicationWriteForm = ({
                 <div className="w-full h-[2.75rem]">
                   <Dropdown
                     value={cellPhoneNum.start}
-                    placeholder="+82"
+                    placeholder="010"
                     options={phone}
                     setValue={(value) =>
                       setCellPhoneNum({ ...cellPhoneNum, start: value })
