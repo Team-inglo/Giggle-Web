@@ -14,7 +14,6 @@ import { InputType } from '@/types/common/input';
 import {
   changeValidData,
   transformToProfileRequest,
-  validateChanges,
   validateFieldValues,
 } from '@/utils/editProfileData';
 import { useEffect, useState } from 'react';
@@ -30,7 +29,7 @@ const EditProfilePage = () => {
   const { data: userProfile } = useGetUserProfile();
   const { mutate } = usePatchUserProfile();
 
-  const [isChanged, setIsChanged] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const [originalData, setOriginalData] = useState<UserEditRequestBody>();
   const [userData, setUserData] = useState<UserEditRequestBody>(
     InitialUserProfileDetail,
@@ -71,7 +70,7 @@ const EditProfilePage = () => {
 
   const handleSubmit = () => {
     // API - 3.5 (유학생) 프로필 수정
-    if (!userData) return;
+    if (!originalData || !userData) return;
 
     // api 요청 형식과 일치시키는 함수(유효성 검증)
     const transformedData = changeValidData(
@@ -116,23 +115,17 @@ const EditProfilePage = () => {
         lon: userProfile.data.address?.longitude ?? 0,
       });
     }
-  }, [userProfile]);
+  }, [userProfile, setAddressInput, setCurrentGeoInfo]);
 
   useEffect(() => {
     if (addressInput !== '') handleAddressSearch(addressInput);
-  }, []);
+  }, [addressInput, handleAddressSearch]);
 
   // 수정 여부를 확인(프로필 사진만 변경했을 경우 포함)
   useEffect(() => {
-    if (
-      originalData &&
-      validateChanges(originalData, userData, phoneNum) &&
-      validateFieldValues(userData, phoneNum)
-    ) {
-      setIsChanged(true);
-    } else {
-      setIsChanged(false);
-    }
+    const isValidNewData =
+      !!originalData && validateFieldValues(userData, phoneNum);
+    setIsValid(isValidNewData);
   }, [userData, originalData, phoneNum]);
 
   return (
@@ -288,8 +281,8 @@ const EditProfilePage = () => {
                       placeholder="ex) 101dong"
                       value={userData.address.address_detail}
                       onChange={(value) =>
-                        userData.address.address_detail &&
-                        userData.address.address_detail.trim().length < 100 &&
+                        value &&
+                        value.trim().length < 100 &&
                         setUserData({
                           ...userData,
                           address: {
@@ -351,9 +344,9 @@ const EditProfilePage = () => {
             <Button
               type={buttonTypeKeys.LARGE}
               title="Save"
-              bgColor={isChanged ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-              fontColor={isChanged ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
-              onClick={isChanged ? handleSubmit : undefined}
+              bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
+              fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+              onClick={isValid ? handleSubmit : undefined}
               isBorder={false}
             />
           </BottomButtonPanel>

@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCurrentPostIdStore } from '@/store/url';
 import { formatMoney } from '@/utils/formatMoney';
 import { useUserStore } from '@/store/user';
-import { UserType } from '@/constants/user';
 import { postTranslation } from '@/constants/translation';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 type HomePostCardProps = {
   jobPostingData: JobPostingItemType;
@@ -21,11 +21,6 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
   const goToPostDetailPage = () => {
     updateCurrentPostId(Number(jobPostingData.id));
     navigate(`/post/${jobPostingData.id}`);
-  };
-
-  const translateLanguage = () => {
-    if (account_type === UserType.OWNER) return 'ko';
-    return 'en';
   };
 
   return (
@@ -73,7 +68,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         <div className="flex justify-between items-center">
           <p className="head-3 text-[#9397A1]">
             {jobPostingData.recruitment_dead_line === '상시모집'
-              ? postTranslation.dDay[translateLanguage()]
+              ? postTranslation.dDay[isEmployerByAccountType(account_type)]
               : calculateDDay(jobPostingData.recruitment_dead_line)}
           </p>
           <p className="caption text-[#252525]">

@@ -3,18 +3,18 @@ import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import EducationPatch from '@/components/SetEducation/EducationPatch';
 import { buttonTypeKeys } from '@/constants/components';
+import { EducationLevels } from '@/constants/manageResume';
 import { useGetEducation, usePatchEducation } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
-import {
-  GetEducationType,
-  PostEducationType,
-} from '@/types/postResume/postEducation';
+import { EducationLevelType } from '@/types/postApply/resumeDetailItem';
+import { PostEducationType } from '@/types/postResume/postEducation';
 import { transformToPatchEducation } from '@/utils/editResume';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PatchEducationPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const handleBackButtonClick = useNavigateBack();
 
   const { mutate } = usePatchEducation();
@@ -30,18 +30,14 @@ const PatchEducationPage = () => {
     grade: 2,
   });
 
-  // get form의 학력 데이터
-  const [fetchData, setFetchData] = useState<GetEducationType>();
-
   // reset 버튼을 대비하여 patch form 의 초기 데이터를 저장하는 상태
   const [initialData, setInitialData] = useState<PostEducationType>();
-
-  // 초기 값에서 수정된 내용이 있는지 확인
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(false);
 
   // API - 7.10 학력 수정하기
   const handleSubmit = () => {
-    mutate({ id: id!, education: educationData });
+    if (educationData == initialData) navigate('/profile/edit-resume');
+    else mutate({ id: id!, education: educationData });
   };
 
   const handleReset = () => {
@@ -53,8 +49,6 @@ const PatchEducationPage = () => {
   const { data: getEducationData } = useGetEducation(id!);
   useEffect(() => {
     if (getEducationData) {
-      setFetchData(getEducationData.data);
-
       // patch 타입 initialData 설정
       const transformedData = transformToPatchEducation(getEducationData.data);
       setInitialData(transformedData);
@@ -68,18 +62,23 @@ const PatchEducationPage = () => {
     }
   }, [initialData]);
 
-  // 편집 중인지 여부 확인
+  // 유효성 검사
   useEffect(() => {
-    if (educationData == initialData) {
-      setIsEditing(false);
-    } else {
-      setIsEditing(true);
-    }
+    const isValidEducationData = () => {
+      return Object.entries(educationData).every(([key, value]) => {
+        if (key === 'education_level')
+          return EducationLevels.includes(value as EducationLevelType);
+        else if (typeof value === 'string') return value.trim().length > 0;
+        else if (typeof value === 'number') return value >= 0;
+        return false;
+      });
+    };
+    setIsValid(isValidEducationData);
   }, [educationData]);
 
   return (
     <>
-      {fetchData && initialData && (
+      {getEducationData?.data && initialData && (
         <>
           <div className="mb-24">
             <BaseHeader
@@ -91,7 +90,7 @@ const PatchEducationPage = () => {
             <EducationPatch
               educationData={educationData}
               setEducationData={setEducationData}
-              schoolData={fetchData.school}
+              schoolData={getEducationData.data.school}
             />
           </div>
           <BottomButtonPanel>
@@ -102,15 +101,15 @@ const PatchEducationPage = () => {
                 fontColor="text-[#BDBDBD]"
                 title="Reset"
                 isBorder={false}
-                onClick={isEditing ? handleReset : undefined}
+                onClick={isValid ? handleReset : undefined}
               />
               <Button
                 type={buttonTypeKeys.LARGE}
-                bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-                fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+                bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
+                fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
                 title="Save"
                 isBorder={false}
-                onClick={isEditing ? handleSubmit : undefined}
+                onClick={isValid ? handleSubmit : undefined}
               />
             </div>
           </BottomButtonPanel>

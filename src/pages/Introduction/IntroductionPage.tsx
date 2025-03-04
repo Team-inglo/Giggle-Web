@@ -6,9 +6,10 @@ import { buttonTypeKeys } from '@/constants/components';
 import { usePatchIntroduction } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const IntroductionPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const handleBackButtonClick = useNavigateBack();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -16,7 +17,7 @@ const IntroductionPage = () => {
   const [data, setData] = useState<string>(initialData);
 
   // 초기 값에서 수정된 내용이 있는지 확인
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(false);
 
   // 입력창을 감싸는 div 클릭 시 textarea에 포커스 설정
   const handleFocusTextArea = () => {
@@ -36,7 +37,8 @@ const IntroductionPage = () => {
 
   const handleSubmit = () => {
     // API - 7.8 (유학생) 자기소개 수정하기
-    mutate({ introduction: data });
+    if (initialData === data) navigate('/profile/edit-resume');
+    else mutate({ introduction: data });
   };
 
   // textarea에 스크롤이 생기지 않도록 길이 자동 조정
@@ -46,11 +48,8 @@ const IntroductionPage = () => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
     // 편집 중인지 여부 확인
-    if (data == initialData) {
-      setIsEditing(false);
-    } else {
-      setIsEditing(true);
-    }
+    const isValidEdit = data.trim().length > 0;
+    setIsValid(isValidEdit);
   }, [data, initialData]);
 
   return (
@@ -70,11 +69,11 @@ const IntroductionPage = () => {
       <BottomButtonPanel>
         <Button
           type={buttonTypeKeys.LARGE}
-          bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-          fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+          bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
+          fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
           title="Save"
           isBorder={false}
-          onClick={isEditing ? handleSubmit : undefined}
+          onClick={isValid ? handleSubmit : undefined}
         />
       </BottomButtonPanel>
     </div>

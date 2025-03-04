@@ -299,11 +299,34 @@ export const postTranslation = {
     ko: '상시모집',
     en: 'always',
   },
+  emptyJobList: {
+    ko: 'Giggle이 열심히 인재를 찾고 있어요!',
+    en: 'Giggle is searching for the best jobs for you!',
+  },
+  emptySearchResultTitle: {
+    ko: '찾고 계신 공고가 없어요.',
+    en: 'No results found',
+  },
+  emptySearchResultContent: {
+    ko: '필터를 변경하거나 다른 키워드로 검색해보세요!',
+    en: 'We couldn’t find any jobs matching your search. Try adjusting your filters!',
+  },
 };
 
 export const infoTranslation = {
   notEntered: {
     ko: '미입력',
     en: 'Not Entered',
+  },
+};
+
+export const errorTranslation = {
+  serverErrorTitle: {
+    ko: '서버가 커피 타러 갔어요! ☕',
+    en: 'The server went to grab a coffee! ☕',
+  },
+  serverErrorContent: {
+    ko: '현재 서버가 원활하지 않습니다. 급한 일이시면 고객센터에 문의해 주세요!',
+    en: "The server is currently unavailable. If it's urgent, please contact customer support.",
   },
 };

@@ -9,7 +9,7 @@ import {
   patchOwnerProfile,
   patchUserProfile,
 } from '@/api/mypage';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 // 3.1 (유학생) 유저 프로필 조회하기 API 통신 훅
@@ -46,10 +46,15 @@ export const usegetOwnerSummaries = () => {
 
 // 3.5 (유학생) 프로필 수정
 export const usePatchUserProfile = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   return useMutation({
     mutationFn: patchUserProfile,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['userSummaries'],
+      });
       navigate('/profile');
     },
     onError: (error) => {
