@@ -1,5 +1,5 @@
 import Button from '@/components/Common/Button';
-import Dropdown, { DropdownModal } from '@/components/Common/Dropdown';
+import Dropdown from '@/components/Common/Dropdown';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import Input from '@/components/Common/Input';
 import RadioButton from '@/components/Information/RadioButton';
@@ -20,16 +20,18 @@ import { useEffect, useState } from 'react';
 import { country, phone, visa } from '@/constants/information';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useGetUserProfile, usePatchUserProfile } from '@/hooks/api/useProfile';
-import { useAddressSearch } from '@/hooks/api/useAddressSearch';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
+import { convertToAddress, getAddressCoords } from '@/utils/map';
 
 const EditProfilePage = () => {
   const { data: userProfile } = useGetUserProfile();
   const { mutate } = usePatchUserProfile();
 
   const [isValid, setIsValid] = useState(false);
+  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [originalData, setOriginalData] = useState<UserEditRequestBody>();
   const [userData, setUserData] = useState<UserEditRequestBody>(
     InitialUserProfileDetail,
@@ -41,31 +43,26 @@ const EditProfilePage = () => {
     end: '',
   });
 
-  const {
-    addressInput, // 주소 검색용 input 저장하는 state
-    addressSearchResult, // 주소 검색 결과를 저장하는 array
-    currentGeoInfo, // 지도에 표시할 핀에 사용되는 위/경도 좌표
-    setCurrentGeoInfo,
-    handleAddressSearch, // 검색할 주소 입력 시 실시간 검색
-    handleAddressSelect, // 검색 결과 중 원하는 주소를 선택할 시 state에 입력
-    setAddressInput,
-  } = useAddressSearch(userData.address);
-
   const handleBackButtonClick = useNavigateBack();
 
   // 검색된 주소 선택 시 state에 반영
-  const handleAddressSelection = (selectedAddressName: string) => {
-    const result = handleAddressSelect(selectedAddressName);
-    if (!result) return;
+  const handleAddressSelection = async (data: Address) => {
+    const convertedAddress = convertToAddress(data);
+    const coords = await getAddressCoords(
+      convertedAddress.address_name as string,
+    );
+    const x = coords.getLng();
+    const y = coords.getLat();
 
     setUserData({
       ...userData,
       address: {
-        ...userData.address,
-        ...result.addressData,
+        ...convertedAddress,
+        longitude: y,
+        latitude: x,
       },
     });
-    setAddressInput(result.selectedAddressName);
+    setIsAddressSearch(false);
   };
 
   const handleSubmit = () => {
@@ -109,17 +106,8 @@ const EditProfilePage = () => {
       const initailData = transformToProfileRequest(userProfile.data);
       setOriginalData(initailData);
       setUserData(initailData);
-      setAddressInput(userProfile.data.address?.address_name ?? '');
-      setCurrentGeoInfo({
-        lat: userProfile.data.address?.latitude ?? 0,
-        lon: userProfile.data.address?.longitude ?? 0,
-      });
     }
-  }, [userProfile, setAddressInput, setCurrentGeoInfo]);
-
-  useEffect(() => {
-    if (addressInput !== '') handleAddressSearch(addressInput);
-  }, [addressInput, handleAddressSearch]);
+  }, [userProfile]);
 
   // 수정 여부를 확인(프로필 사진만 변경했을 경우 포함)
   useEffect(() => {
@@ -138,208 +126,219 @@ const EditProfilePage = () => {
             hasMenuButton={false}
             title="Edit Profile"
           />
-          <div className="flex flex-col px-6 gap-4 mb-32">
-            <EditProfilePicture
-              profileImgUrl={userProfile.data.profile_img_url}
-              onImageUpdate={setProfileImage}
+          {isAddressSearch ? (
+            <DaumPostcodeEmbed
+              style={{
+                position: 'fixed',
+                top: '50px',
+                width: '100%',
+                height: 'calc(100vh - 100px)',
+                marginTop: '3.125rem',
+                paddingBottom: '6.25rem',
+              }}
+              theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
+              onComplete={handleAddressSelection}
+              onClose={() => setIsAddressSearch(false)}
             />
-            {/* 이름 작성 */}
-            <InputLayout title="First Name" isEssential={true}>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="First Name"
-                value={userData.first_name}
-                onChange={(value) =>
-                  setUserData({
-                    ...userData,
-                    first_name: value,
-                  })
-                }
-                canDelete={false}
+          ) : (
+            <div className="flex flex-col px-6 gap-4 mb-32">
+              <EditProfilePicture
+                profileImgUrl={userProfile.data.profile_img_url}
+                onImageUpdate={setProfileImage}
               />
-            </InputLayout>
-            {/* 성 작성 */}
-            <InputLayout title="Last Name" isEssential={true}>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="Last Name"
-                value={userData.last_name}
-                onChange={(value) =>
-                  setUserData({
-                    ...userData,
-                    last_name: value,
-                  })
-                }
-                canDelete={false}
-              />
-            </InputLayout>
-            <InputLayout title="Gender" isEssential={true}>
-              <div className="w-full flex flex-row gap-8">
-                <RadioButton
-                  value={GenderType.MALE as string}
-                  setValue={(value: string) =>
-                    setUserData({
-                      ...userData,
-                      gender: value as GenderType,
-                    })
-                  }
-                  isOn={userData.gender === GenderType.MALE}
-                />
-                <RadioButton
-                  value={GenderType.FEMALE as string}
-                  setValue={(value: string) =>
-                    setUserData({
-                      ...userData,
-                      gender: value as GenderType,
-                    })
-                  }
-                  isOn={userData.gender === GenderType.FEMALE}
-                />
-                <RadioButton
-                  value={GenderType.NONE as string}
-                  setValue={(value: string) =>
-                    setUserData({
-                      ...userData,
-                      gender: value as GenderType,
-                    })
-                  }
-                  isOn={userData.gender === GenderType.NONE}
-                />
-              </div>
-            </InputLayout>
-            {/* 생년월일 선택 */}
-            <InputLayout title="Date of birth" isEssential={false} isOptional>
-              <Dropdown
-                value={userData.birth.replace(/-/g, '/')}
-                placeholder="Select Date"
-                options={[]}
-                isCalendar={true}
-                setValue={(value) => setUserData({ ...userData, birth: value })}
-              />
-            </InputLayout>
-            {/* 국적 선택 */}
-            <InputLayout title="Nationality" isEssential={false} isOptional>
-              <Dropdown
-                value={userData.nationality}
-                placeholder="Select Nationality"
-                options={country}
-                setValue={(value: string) =>
-                  setUserData({ ...userData, nationality: value })
-                }
-              />
-            </InputLayout>
-            <div className="w-full flex flex-col gap-[1.125rem]">
-              {/* 주소 검색 입력 input */}
-              <InputLayout title="Address" isEssential={false} isOptional>
+              {/* 이름 작성 */}
+              <InputLayout title="First Name" isEssential={true}>
                 <Input
-                  inputType={InputType.SEARCH}
-                  placeholder="Search Your Address"
-                  value={addressInput}
-                  onChange={(value) => handleAddressSearch(value)}
+                  inputType={InputType.TEXT}
+                  placeholder="First Name"
+                  value={userData.first_name}
+                  onChange={(value) =>
+                    setUserData({
+                      ...userData,
+                      first_name: value,
+                    })
+                  }
                   canDelete={false}
                 />
-                {/* 주소 검색 결과 보여주는 dropdown modal */}
-                {addressSearchResult && addressSearchResult.length !== 0 && (
-                  <DropdownModal
-                    value={userData.address.address_name}
-                    options={Array.from(
-                      addressSearchResult.map(
-                        (address) => address.address_name,
-                      ),
-                    )}
-                    onSelect={handleAddressSelection}
-                  />
-                )}
               </InputLayout>
-              {/* 검색한 위치를 보여주는 지도 */}
-              {userData.address.address_name !== '' && (
-                <>
-                  <div className="w-full rounded-xl z-0">
-                    <Map
-                      center={{
-                        lat: currentGeoInfo.lat,
-                        lng: currentGeoInfo.lon,
-                      }}
-                      style={{ width: '100%', height: '200px' }}
-                      className="rounded-xl"
-                    >
-                      <MapMarker
-                        position={{
-                          lat: currentGeoInfo.lat,
-                          lng: currentGeoInfo.lon,
-                        }}
-                      ></MapMarker>
-                    </Map>
-                  </div>
-                  <InputLayout
-                    title="Detailed Address"
-                    isEssential={false}
-                    isOptional
-                  >
-                    <Input
-                      inputType={InputType.TEXT}
-                      placeholder="ex) 101dong"
-                      value={userData.address.address_detail}
-                      onChange={(value) =>
-                        value &&
-                        value.trim().length < 100 &&
-                        setUserData({
-                          ...userData,
-                          address: {
-                            ...userData.address,
-                            address_detail: value,
-                          },
-                        })
-                      }
-                      canDelete={false}
-                    />
-                  </InputLayout>
-                </>
-              )}
-            </div>
-            {/* 비자 선택 */}
-            <InputLayout title="Visa Status" isEssential={true}>
-              <Dropdown
-                value={userData.visa}
-                placeholder="Select Visa Status"
-                options={visa}
-                setValue={(value: string) =>
-                  setUserData({ ...userData, visa: value })
-                }
-              />
-            </InputLayout>
-            {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
-            <InputLayout title="Telephone No." isEssential={true}>
-              <div className="w-full flex gap-2 justify-between items-start">
-                <div className="w-full">
-                  <Dropdown
-                    value={phoneNum.start}
-                    placeholder="+82"
-                    options={phone}
-                    setValue={(value) =>
-                      setPhoneNum({ ...phoneNum, start: value })
+              {/* 성 작성 */}
+              <InputLayout title="Last Name" isEssential={true}>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="Last Name"
+                  value={userData.last_name}
+                  onChange={(value) =>
+                    setUserData({
+                      ...userData,
+                      last_name: value,
+                    })
+                  }
+                  canDelete={false}
+                />
+              </InputLayout>
+              <InputLayout title="Gender" isEssential={true}>
+                <div className="w-full flex flex-row gap-8">
+                  <RadioButton
+                    value={GenderType.MALE as string}
+                    setValue={(value: string) =>
+                      setUserData({
+                        ...userData,
+                        gender: value as GenderType,
+                      })
                     }
+                    isOn={userData.gender === GenderType.MALE}
+                  />
+                  <RadioButton
+                    value={GenderType.FEMALE as string}
+                    setValue={(value: string) =>
+                      setUserData({
+                        ...userData,
+                        gender: value as GenderType,
+                      })
+                    }
+                    isOn={userData.gender === GenderType.FEMALE}
+                  />
+                  <RadioButton
+                    value={GenderType.NONE as string}
+                    setValue={(value: string) =>
+                      setUserData({
+                        ...userData,
+                        gender: value as GenderType,
+                      })
+                    }
+                    isOn={userData.gender === GenderType.NONE}
                   />
                 </div>
-                <Input
-                  inputType={InputType.TEXT}
-                  placeholder="0000"
-                  value={phoneNum.middle}
-                  onChange={(value) =>
-                    setPhoneNum({ ...phoneNum, middle: value })
+              </InputLayout>
+              {/* 생년월일 선택 */}
+              <InputLayout title="Date of birth" isEssential={false} isOptional>
+                <Dropdown
+                  value={userData.birth.replace(/-/g, '/')}
+                  placeholder="Select Date"
+                  options={[]}
+                  isCalendar={true}
+                  setValue={(value) =>
+                    setUserData({ ...userData, birth: value })
                   }
-                  canDelete={false}
                 />
-                <Input
-                  inputType={InputType.TEXT}
-                  placeholder="0000"
-                  value={phoneNum.end}
-                  onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
-                  canDelete={false}
+              </InputLayout>
+              {/* 국적 선택 */}
+              <InputLayout title="Nationality" isEssential={false} isOptional>
+                <Dropdown
+                  value={userData.nationality}
+                  placeholder="Select Nationality"
+                  options={country}
+                  setValue={(value: string) =>
+                    setUserData({ ...userData, nationality: value })
+                  }
                 />
+              </InputLayout>
+              <div className="w-full flex flex-col gap-[1.125rem]">
+                {/* 주소 검색 입력 input */}
+                <InputLayout title="Address" isEssential={false} isOptional>
+                  <div onClick={() => setIsAddressSearch(true)}>
+                    <Input
+                      inputType={InputType.SEARCH}
+                      placeholder="Search Your Address"
+                      value={userData.address.address_name}
+                      onChange={() => {}}
+                      canDelete={false}
+                    />
+                  </div>
+                </InputLayout>
+                {/* 검색한 위치를 보여주는 지도 */}
+                {userData.address.address_name !== '' && (
+                  <>
+                    <div className="w-full rounded-xl z-0">
+                      <Map
+                        center={{
+                          lat: userData.address?.latitude ?? 0,
+                          lng: userData.address?.longitude ?? 0,
+                        }}
+                        style={{ width: '100%', height: '200px' }}
+                        className="rounded-xl"
+                      >
+                        <MapMarker
+                          position={{
+                            lat: userData.address?.latitude ?? 0,
+                            lng: userData.address?.longitude ?? 0,
+                          }}
+                        ></MapMarker>
+                      </Map>
+                    </div>
+                    <InputLayout
+                      title="Detailed Address"
+                      isEssential={false}
+                      isOptional
+                    >
+                      <Input
+                        inputType={InputType.TEXT}
+                        placeholder="ex) 101dong"
+                        value={userData.address.address_detail}
+                        onChange={(value) =>
+                          value &&
+                          value.trim().length < 100 &&
+                          setUserData({
+                            ...userData,
+                            address: {
+                              ...userData.address,
+                              address_detail: value,
+                            },
+                          })
+                        }
+                        canDelete={false}
+                      />
+                    </InputLayout>
+                  </>
+                )}
               </div>
-            </InputLayout>
-          </div>
+              {/* 비자 선택 */}
+              <InputLayout title="Visa Status" isEssential={true}>
+                <Dropdown
+                  value={userData.visa}
+                  placeholder="Select Visa Status"
+                  options={visa}
+                  setValue={(value: string) =>
+                    setUserData({ ...userData, visa: value })
+                  }
+                />
+              </InputLayout>
+              {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
+              <InputLayout title="Telephone No." isEssential={true}>
+                <div className="w-full flex gap-2 justify-between items-start">
+                  <div className="w-full">
+                    <Dropdown
+                      value={phoneNum.start}
+                      placeholder="010"
+                      options={phone}
+                      setValue={(value) =>
+                        setPhoneNum({ ...phoneNum, start: value })
+                      }
+                    />
+                  </div>
+                  <Input
+                    inputType={InputType.TEXT}
+                    placeholder="0000"
+                    value={phoneNum.middle}
+                    onChange={(value) =>
+                      setPhoneNum({ ...phoneNum, middle: value })
+                    }
+                    canDelete={false}
+                  />
+                  <Input
+                    inputType={InputType.TEXT}
+                    placeholder="0000"
+                    value={phoneNum.end}
+                    onChange={(value) =>
+                      setPhoneNum({ ...phoneNum, end: value })
+                    }
+                    canDelete={false}
+                  />
+                </div>
+              </InputLayout>
+            </div>
+          )}
+
           <BottomButtonPanel>
             <Button
               type={buttonTypeKeys.LARGE}
