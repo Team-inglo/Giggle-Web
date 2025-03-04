@@ -82,7 +82,7 @@ const PostApplyResume = () => {
                 Date of birth
               </h4>
               <p className="px-[0.25rem] body-3 text-[#252525]">
-                {data?.data?.personal_information?.birth ??
+                {data?.data?.personal_information?.birth ||
                   infoTranslation.notEntered[isEmployer(pathname)]}
               </p>
             </div>
@@ -91,7 +91,7 @@ const PostApplyResume = () => {
                 Nationality
               </h4>
               <p className="px-[0.25rem] body-3 text-[#252525]">
-                {data?.data?.personal_information.nationality ??
+                {data?.data?.personal_information?.nationality ||
                   infoTranslation.notEntered[isEmployer(pathname)]}
               </p>
             </div>
