@@ -50,7 +50,8 @@ export const formatSearchFilter = (
       .replace(/\s+/g, '_'),
     employment_type:
       filterList[FILTER_CATEGORY.EMPLOYMENT_TYPE]?.[0]?.toUpperCase() ?? null,
-    visa: filterList[FILTER_CATEGORY.VISA]?.[0]?.replace(/-/g, '_') ?? null,
+    visa:
+      filterList[FILTER_CATEGORY.VISA]?.join(',')?.replace(/-/g, '_') ?? null,
   };
 
   return newSearchFilter;

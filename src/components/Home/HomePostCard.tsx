@@ -56,7 +56,10 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
             fontStyle="caption"
           />
           <Tag
-            value={jobPostingData.tags.visa.replace(/_/g, '-').toLowerCase()}
+            value={jobPostingData.tags.visa
+              .join(',')
+              .replace(/_/g, '-')
+              .toLowerCase()}
             padding="0.188rem 0.25rem"
             isRounded={false}
             hasCheckIcon={false}

@@ -6,7 +6,7 @@ export type JobPostingSummariesType = {
 
 export type JobPostingTagType = {
   is_recruiting: boolean; // “모집중/마감"
-  visa: string; // “비자종류"
+  visa: string[]; // “비자종류"
   job_category: string; // “업직종종류",
   employment_type: 'PARTTIME' | 'INTERNSHIP';
 };
