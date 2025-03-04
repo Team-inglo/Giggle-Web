@@ -239,7 +239,7 @@ const EmployerPartTimePermitForm = ({
                       ></MapMarker>
                     </Map>
                   </div>
-                  <InputLayout title="상세주소" isEssential={false}>
+                  <InputLayout title="상세주소" isEssential>
                     <Input
                       inputType={InputType.TEXT}
                       placeholder="ex) 101동"

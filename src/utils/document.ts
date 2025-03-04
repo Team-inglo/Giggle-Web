@@ -145,7 +145,7 @@ export const validateEmployerInformation = (
   }
 
   // 주소 체크
-  if (!info.address?.region_1depth_name) {
+  if (!info.address?.region_1depth_name || !info.address.address_detail) {
     return false;
   }
 
@@ -209,7 +209,7 @@ export const validateLaborContractEmployerInformation = (
   }
 
   // 주소 체크
-  if (!info.address?.region_1depth_name) {
+  if (!info.address?.region_1depth_name || !info.address.address_detail) {
     return false;
   }
 
