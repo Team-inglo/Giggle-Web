@@ -1,6 +1,7 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import PageTitle from '@/components/Common/PageTitle';
 import DocumentCardList from '@/components/Document/DocumentCardList';
 import { usePatchWritingDocumentFinish } from '@/hooks/api/useApplication';
 import { useGetDocumentsEmployee } from '@/hooks/api/useDocument';
@@ -24,7 +25,11 @@ const ApplicationDocumentsPage = () => {
         title="Application Documents"
       />
       {!isPending && (
-        <>
+        <section className='w-full bg-surface-secondary'>
+          <PageTitle
+            title={`Your Resume,\nYour Next Opportunity 🚀`}
+            content={`Keep your resume updated and\ntrack your job applications in one place!`}
+          />
           <DocumentCardList
             documents={data?.data as DocumentsSummaryResponse}
           />
@@ -52,7 +57,7 @@ const ApplicationDocumentsPage = () => {
               />
             )}
           </BottomButtonPanel>
-        </>
+        </section>
       )}
     </div>
   );

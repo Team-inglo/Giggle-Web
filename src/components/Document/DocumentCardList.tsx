@@ -44,7 +44,7 @@ const DocumentCardList = ({
           <LoadingItem />
         </div>
       )}
-      <div className="flex flex-col w-full px-6 gap-2 pb-[8rem]">
+      <div className="flex flex-col w-full p-4 gap-3 pb-[8rem]">
         {documentTypes.map((property, index) =>
           documents[property] ? (
             <DocumentCardDispenser
