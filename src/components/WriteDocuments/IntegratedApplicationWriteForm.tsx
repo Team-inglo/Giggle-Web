@@ -3,7 +3,7 @@ import { IntegratedApplicationData } from '@/types/api/document';
 import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
 import { InputType } from '@/types/common/input';
-import Dropdown, { DropdownModal } from '@/components/Common/Dropdown';
+import Dropdown from '@/components/Common/Dropdown';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { country, gender, phone } from '@/constants/information';
 import RadioButton from '@/components/Information/RadioButton';
@@ -30,7 +30,8 @@ import {
 } from '@/utils/information';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
 import LoadingItem from '../Common/LoadingItem';
-import { useAddressSearch } from '@/hooks/api/useAddressSearch';
+import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
+import { convertToAddress, getAddressCoords } from '@/utils/map';
 
 type IntegratedApplicationFormProps = {
   document?: IntegratedApplicationData;
@@ -43,6 +44,7 @@ const IntegratedApplicationWriteForm = ({
 }: IntegratedApplicationFormProps) => {
   const [isInvalid, setIsInvalid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const { currentPostId } = useCurrentPostIdEmployeeStore();
   const [newDocumentData, setNewDocumentData] =
     useState<IntegratedApplicationData>(initialIntegratedApplication);
@@ -68,15 +70,6 @@ const IntegratedApplicationWriteForm = ({
     middle: '',
     end: '',
   });
-  const {
-    addressInput, // 주소 검색용 input 저장하는 state
-    addressSearchResult, // 주소 검색 결과를 저장하는 array
-    currentGeoInfo, // 지도에 표시할 핀에 사용되는 위/경도 좌표
-    setCurrentGeoInfo,
-    handleAddressSearch, // 검색할 주소 입력 시 실시간 검색
-    handleAddressSelect, // 검색 결과 중 원하는 주소를 선택할 시 state에 입력
-    setAddressInput,
-  } = useAddressSearch();
   // 학교 선택 모달 출현 여부 관리 state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { mutate: postDocument } = usePostIntegratedApplicants(
@@ -120,11 +113,6 @@ const IntegratedApplicationWriteForm = ({
         middle: parsePhoneNumber(newDocumentData.school_phone_number).middle,
         end: parsePhoneNumber(newDocumentData.school_phone_number).end,
       });
-      setAddressInput(newDocumentData.address.address_name as string);
-      setCurrentGeoInfo({
-        lat: document.address.latitude ?? 0,
-        lon: document.address.longitude ?? 0,
-      });
     }
   }, [document, isEdit]);
   // 데이터 입력 시 실시간으로 유효성 검사
@@ -148,18 +136,23 @@ const IntegratedApplicationWriteForm = ({
   ]);
 
   // 검색된 주소 선택 시 state에 반영
-  const handleAddressSelection = (selectedAddressName: string) => {
-    const result = handleAddressSelect(selectedAddressName);
-    if (!result) return;
+  const handleAddressSelection = async (data: Address) => {
+    const convertedAddress = convertToAddress(data);
+    const coords = await getAddressCoords(
+      convertedAddress.address_name as string,
+    );
+    const x = coords.getLng();
+    const y = coords.getLat();
 
     setNewDocumentData({
       ...newDocumentData,
       address: {
-        ...newDocumentData.address,
-        ...result.addressData,
+        ...convertedAddress,
+        longitude: y,
+        latitude: x,
       },
     });
-    setAddressInput(result.selectedAddressName);
+    setIsAddressSearch(false);
   };
 
   // 문서 작성 완료 핸들러 함수
@@ -195,446 +188,467 @@ const IntegratedApplicationWriteForm = ({
         </div>
       )}
       <div
-        className={`w-full p-6 flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
       >
-        <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
-          {/* 이름 입력 */}
-          <InputLayout title="First Name" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="First Name"
-              value={newDocumentData.first_name}
-              onChange={(value) =>
-                setNewDocumentData({ ...newDocumentData, first_name: value })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 성 입력 */}
-          <InputLayout title="Last Name" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Last Name"
-              value={newDocumentData.last_name}
-              onChange={(value) =>
-                setNewDocumentData({ ...newDocumentData, last_name: value })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 생일 입력 */}
-          <InputLayout title="Date Of Birth" isEssential>
-            <Dropdown
-              value={newDocumentData.birth}
-              placeholder="Select Date"
-              options={[]}
-              isCalendar={true}
-              setValue={(value) =>
-                setNewDocumentData({ ...newDocumentData, birth: value })
-              }
-            />
-          </InputLayout>
-          {/* 성별 입력 */}
-          <InputLayout title="Gender" isEssential>
-            <div className="w-full flex flex-row gap-8">
-              {gender.map((gender) => (
+        {isAddressSearch ? (
+          <DaumPostcodeEmbed
+            style={{
+              position: 'fixed',
+              top: '50px',
+              width: '100%',
+              height: 'calc(100vh - 100px)',
+              marginTop: '3.125rem',
+              paddingBottom: '6.25rem',
+            }}
+            theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
+            onComplete={handleAddressSelection}
+            onClose={() => setIsAddressSearch(false)}
+          />
+        ) : (
+          <div className="p-6 [&>*:last-child]:mb-40 flex flex-col gap-4">
+            {/* 이름 입력 */}
+            <InputLayout title="First Name" isEssential>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="First Name"
+                value={newDocumentData.first_name}
+                onChange={(value) =>
+                  setNewDocumentData({ ...newDocumentData, first_name: value })
+                }
+                canDelete={false}
+              />
+            </InputLayout>
+            {/* 성 입력 */}
+            <InputLayout title="Last Name" isEssential>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="Last Name"
+                value={newDocumentData.last_name}
+                onChange={(value) =>
+                  setNewDocumentData({ ...newDocumentData, last_name: value })
+                }
+                canDelete={false}
+              />
+            </InputLayout>
+            {/* 생일 입력 */}
+            <InputLayout title="Date Of Birth" isEssential>
+              <Dropdown
+                value={newDocumentData.birth}
+                placeholder="Select Date"
+                options={[]}
+                isCalendar={true}
+                setValue={(value) =>
+                  setNewDocumentData({ ...newDocumentData, birth: value })
+                }
+              />
+            </InputLayout>
+            {/* 성별 입력 */}
+            <InputLayout title="Gender" isEssential>
+              <div className="w-full flex flex-row gap-8">
+                {gender.map((gender) => (
+                  <RadioButton
+                    value={gender}
+                    setValue={(value: string) =>
+                      setNewDocumentData({
+                        ...newDocumentData,
+                        gender: value.toUpperCase() as Gender,
+                      })
+                    }
+                    isOn={gender.toUpperCase() === newDocumentData.gender}
+                  />
+                ))}
+              </div>
+            </InputLayout>
+            {/* 국적 입력 */}
+            <InputLayout title="Nationality" isEssential>
+              <Dropdown
+                value={propertyToString(newDocumentData.nationality)}
+                placeholder="Select Nationality"
+                options={country} // TODO: 국가명 데이터 받으면 교체해야 함.
+                setValue={(value: string) =>
+                  setNewDocumentData({
+                    ...newDocumentData,
+                    nationality: value,
+                  })
+                }
+              />
+            </InputLayout>
+            {/* 서류 출력 후 작성 정보 입력 안내 */}
+            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
+              <Notice
+                title="Foreign Resident Registration No."
+                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
+              />
+              <Notice
+                title="Passport number, passport issuance date, passport expiration date"
+                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
+              />
+            </div>
+            <div className="w-full flex flex-col gap-[1.125rem]">
+              {/* 주소 검색 입력 input */}
+              <InputLayout title="Address in Korea" isEssential>
+                <div onClick={() => setIsAddressSearch(true)}>
+                  <Input
+                    inputType={InputType.SEARCH}
+                    placeholder="Search Your Address"
+                    value={newDocumentData.address.address_name}
+                    onChange={() => {}}
+                    canDelete={false}
+                  />
+                </div>
+              </InputLayout>
+              {/* 검색한 위치를 보여주는 지도 */}
+              {newDocumentData.address.address_name && (
+                <>
+                  <div className="w-full rounded-xl">
+                    <Map
+                      center={{
+                        lat: newDocumentData.address?.latitude ?? 0,
+                        lng: newDocumentData.address?.longitude ?? 0,
+                      }}
+                      style={{ width: '100%', height: '200px' }}
+                      className="rounded-xl"
+                    >
+                      <MapMarker
+                        position={{
+                          lat: newDocumentData.address?.latitude ?? 0,
+                          lng: newDocumentData.address?.longitude ?? 0,
+                        }}
+                      ></MapMarker>
+                    </Map>
+                  </div>
+                  <InputLayout title="Detailed Address" isEssential>
+                    <Input
+                      inputType={InputType.TEXT}
+                      placeholder="ex) 101-dong"
+                      value={newDocumentData.address.address_detail}
+                      onChange={(value) =>
+                        value &&
+                        value.trim().length < 100 &&
+                        setNewDocumentData({
+                          ...newDocumentData,
+                          address: {
+                            ...newDocumentData.address,
+                            address_detail: value,
+                          },
+                        })
+                      }
+                      canDelete={false}
+                    />
+                  </InputLayout>
+                </>
+              )}
+            </div>
+            {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
+            <InputLayout title="Telephone No." isEssential>
+              <div className="w-full flex flex-row gap-2 justify-between">
+                <div className="w-full h-[2.75rem]">
+                  <Dropdown
+                    value={phoneNum.start}
+                    placeholder="+82"
+                    options={phone}
+                    setValue={(value) =>
+                      setPhoneNum({ ...phoneNum, start: value })
+                    }
+                  />
+                </div>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={phoneNum.middle}
+                  onChange={(value) =>
+                    setPhoneNum({ ...phoneNum, middle: value })
+                  }
+                  canDelete={false}
+                />
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={phoneNum.end}
+                  onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
+                  canDelete={false}
+                />
+              </div>
+            </InputLayout>
+            {/* 개인 휴대폰 번호 입력 */}
+            <InputLayout title="Cell Phone No." isEssential>
+              <div className="w-full flex flex-row gap-2 justify-between">
+                <div className="w-full h-[2.75rem]">
+                  <Dropdown
+                    value={cellPhoneNum.start}
+                    placeholder="010"
+                    options={phone}
+                    setValue={(value) =>
+                      setCellPhoneNum({ ...cellPhoneNum, start: value })
+                    }
+                  />
+                </div>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={cellPhoneNum.middle}
+                  onChange={(value) =>
+                    setCellPhoneNum({ ...cellPhoneNum, middle: value })
+                  }
+                  canDelete={false}
+                />
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={cellPhoneNum.end}
+                  onChange={(value) =>
+                    setCellPhoneNum({ ...cellPhoneNum, end: value })
+                  }
+                  canDelete={false}
+                />
+              </div>
+            </InputLayout>
+            {/* 서류 출력 후 작성 정보 입력 안내 */}
+            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
+              <Notice
+                title="Address, Phone Number, in Home Country"
+                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
+              />
+            </div>
+            {/* 대학 종류 선택 */}
+            <InputLayout title="Type Of Name" isEssential>
+              <div className="w-full relative body-3 text-[#bdbdbd] text-left">
+                University is an education office accredited school.
+              </div>
+              <div className="w-full relative flex flex-col items-start justify-center px-1 py-1.5 gap-3 text-left text-[#656565]">
                 <RadioButton
-                  value={gender}
-                  setValue={(value: string) =>
+                  value="Accredited by Eduvation Office"
+                  setValue={() =>
                     setNewDocumentData({
                       ...newDocumentData,
-                      gender: value.toUpperCase() as Gender,
+                      is_accredited: true,
                     })
                   }
-                  isOn={gender.toUpperCase() === newDocumentData.gender}
+                  isOn={newDocumentData.is_accredited}
                 />
-              ))}
-            </div>
-          </InputLayout>
-          {/* 국적 입력 */}
-          <InputLayout title="Nationality" isEssential>
-            <Dropdown
-              value={propertyToString(newDocumentData.nationality)}
-              placeholder="Select Nationality"
-              options={country} // TODO: 국가명 데이터 받으면 교체해야 함.
-              setValue={(value: string) =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  nationality: value,
-                })
-              }
-            />
-          </InputLayout>
-          {/* 서류 출력 후 작성 정보 입력 안내 */}
-          <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-            <Notice
-              title="Foreign Resident Registration No."
-              content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-            />
-            <Notice
-              title="Passport number, passport issuance date, passport expiration date"
-              content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-            />
-          </div>
-          <div className="w-full flex flex-col gap-[1.125rem]">
-            {/* 주소 검색 입력 input */}
-            <InputLayout title="Address in Korea" isEssential>
-              <Input
-                inputType={InputType.SEARCH}
-                placeholder="Search Your Address"
-                value={addressInput}
-                onChange={(value) => handleAddressSearch(value)}
-                canDelete={false}
-              />
-              {/* 주소 검색 결과 보여주는 dropdown modal */}
-              {addressSearchResult && addressSearchResult.length !== 0 && (
-                <DropdownModal
-                  value={newDocumentData.address.address_name}
-                  options={Array.from(
-                    addressSearchResult.map((address) => address.address_name),
-                  )}
-                  onSelect={handleAddressSelection}
+                <RadioButton
+                  value="Non-accredited, Alternative School"
+                  setValue={() =>
+                    setNewDocumentData({
+                      ...newDocumentData,
+                      is_accredited: false,
+                    })
+                  }
+                  isOn={!newDocumentData.is_accredited}
                 />
-              )}
+              </div>
             </InputLayout>
-            {/* 검색한 위치를 보여주는 지도 */}
-            <div className="w-full rounded-xl">
-              <Map
-                center={{ lat: currentGeoInfo.lat, lng: currentGeoInfo.lon }}
-                style={{ width: '100%', height: '200px' }}
-                className="rounded-xl"
-              >
-                <MapMarker
-                  position={{
-                    lat: currentGeoInfo.lat,
-                    lng: currentGeoInfo.lon,
-                  }}
-                ></MapMarker>
-              </Map>
+            {/* 학교 이름 입력 */}
+            <InputLayout title="Name Of School" isEssential>
+              <div onClick={() => setIsModalOpen(true)}>
+                <Input
+                  inputType={InputType.SEARCH}
+                  placeholder="Name of School"
+                  value={newDocumentData.school_name}
+                  onChange={() => {}}
+                  canDelete={false}
+                />
+              </div>
+            </InputLayout>
+            {/* 대학 번호 입력 */}
+            <InputLayout title="Phone Number of School" isEssential>
+              <div className="w-full flex flex-row gap-2 justify-between">
+                <div className="w-full h-[2.75rem]">
+                  <Dropdown
+                    value={schoolPhoneNum.start}
+                    placeholder="+82"
+                    options={phone}
+                    setValue={(value) =>
+                      setSchoolPhoneNum({ ...schoolPhoneNum, start: value })
+                    }
+                  />
+                </div>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={schoolPhoneNum.middle}
+                  onChange={(value) =>
+                    setSchoolPhoneNum({ ...schoolPhoneNum, middle: value })
+                  }
+                  canDelete={false}
+                />
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={schoolPhoneNum.end}
+                  onChange={(value) =>
+                    setSchoolPhoneNum({ ...schoolPhoneNum, end: value })
+                  }
+                  canDelete={false}
+                />
+              </div>
+            </InputLayout>
+            {/* 서류 출력 후 작성 정보 입력 안내 */}
+            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
+              <Notice
+                title="Current Workplace Of Name, Business Registration No, Phone Number"
+                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
+              />
             </div>
-            <InputLayout title="Detailed Address" isEssential>
+            {/* 근무 장소 이름 입력 */}
+            <InputLayout title="New Workplace" isEssential>
               <Input
                 inputType={InputType.TEXT}
-                placeholder="ex) 101-dong"
-                value={newDocumentData.address.address_detail}
+                placeholder="New Workplace Name"
+                value={newDocumentData.new_work_place_name}
                 onChange={(value) =>
-                  value &&
-                  value.trim().length < 100 &&
                   setNewDocumentData({
                     ...newDocumentData,
-                    address: {
-                      ...newDocumentData.address,
-                      address_detail: value,
-                    },
+                    new_work_place_name: value,
                   })
                 }
                 canDelete={false}
               />
             </InputLayout>
-          </div>
-          {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
-          <InputLayout title="Telephone No." isEssential>
-            <div className="w-full flex flex-row gap-2 justify-between">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={phoneNum.start}
-                  placeholder="+82"
-                  options={phone}
-                  setValue={(value) =>
-                    setPhoneNum({ ...phoneNum, start: value })
-                  }
-                />
-              </div>
+            {/* 사업자등록번호 입력 */}
+            <InputLayout
+              title="Business Registration No. Of New Workplace"
+              isEssential
+            >
               <Input
                 inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.middle}
+                placeholder="X X X / X X / X X X X X"
+                value={newDocumentData.new_work_place_registration_number}
                 onChange={(value) =>
-                  setPhoneNum({ ...phoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.end}
-                onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
-                canDelete={false}
-              />
-            </div>
-          </InputLayout>
-          {/* 개인 휴대폰 번호 입력 */}
-          <InputLayout title="Cell Phone No." isEssential>
-            <div className="w-full flex flex-row gap-2 justify-between">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={cellPhoneNum.start}
-                  placeholder="+82"
-                  options={phone}
-                  setValue={(value) =>
-                    setCellPhoneNum({ ...cellPhoneNum, start: value })
-                  }
-                />
-              </div>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={cellPhoneNum.middle}
-                onChange={(value) =>
-                  setCellPhoneNum({ ...cellPhoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={cellPhoneNum.end}
-                onChange={(value) =>
-                  setCellPhoneNum({ ...cellPhoneNum, end: value })
-                }
-                canDelete={false}
-              />
-            </div>
-          </InputLayout>
-          {/* 서류 출력 후 작성 정보 입력 안내 */}
-          <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-            <Notice
-              title="Address, Phone Number, in Home Country"
-              content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-            />
-          </div>
-          {/* 대학 종류 선택 */}
-          <InputLayout title="Type Of Name" isEssential>
-            <div className="w-full relative body-3 text-[#bdbdbd] text-left">
-              University is an education office accredited school.
-            </div>
-            <div className="w-full relative flex flex-col items-start justify-center px-1 py-1.5 gap-3 text-left text-[#656565]">
-              <RadioButton
-                value="Accredited by Eduvation Office"
-                setValue={() =>
                   setNewDocumentData({
                     ...newDocumentData,
-                    is_accredited: true,
+                    new_work_place_registration_number:
+                      formatCompanyRegistrationNumber(value),
                   })
                 }
-                isOn={newDocumentData.is_accredited}
-              />
-              <RadioButton
-                value="Non-accredited, Alternative School"
-                setValue={() =>
-                  setNewDocumentData({
-                    ...newDocumentData,
-                    is_accredited: false,
-                  })
-                }
-                isOn={!newDocumentData.is_accredited}
-              />
-            </div>
-          </InputLayout>
-          {/* 학교 이름 입력 */}
-          <InputLayout title="Name Of School" isEssential>
-            <div onClick={() => setIsModalOpen(true)}>
-              <Input
-                inputType={InputType.SEARCH}
-                placeholder="Name of School"
-                value={newDocumentData.school_name}
-                onChange={() => {}}
                 canDelete={false}
               />
-            </div>
-          </InputLayout>
-          {/* 대학 번호 입력 */}
-          <InputLayout title="Phone Number of School" isEssential>
-            <div className="w-full flex flex-row gap-2 justify-between">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={schoolPhoneNum.start}
-                  placeholder="+82"
-                  options={phone}
-                  setValue={(value) =>
-                    setSchoolPhoneNum({ ...schoolPhoneNum, start: value })
+            </InputLayout>
+            {/* 근무 장소 전화번호 입력 */}
+            <InputLayout title="Phone Number Of New Workplace" isEssential>
+              <div className="w-full flex flex-row gap-2 justify-between">
+                <div className="w-full h-[2.75rem]">
+                  <Dropdown
+                    value={workPlacePhoneNum.start}
+                    placeholder="+82"
+                    options={phone}
+                    setValue={(value) =>
+                      setWorkPlacePhoneNum({
+                        ...workPlacePhoneNum,
+                        start: value,
+                      })
+                    }
+                  />
+                </div>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={workPlacePhoneNum.middle}
+                  onChange={(value) =>
+                    setWorkPlacePhoneNum({
+                      ...workPlacePhoneNum,
+                      middle: value,
+                    })
                   }
+                  canDelete={false}
+                />
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="0000"
+                  value={workPlacePhoneNum.end}
+                  onChange={(value) =>
+                    setWorkPlacePhoneNum({ ...workPlacePhoneNum, end: value })
+                  }
+                  canDelete={false}
                 />
               </div>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={schoolPhoneNum.middle}
-                onChange={(value) =>
-                  setSchoolPhoneNum({ ...schoolPhoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={schoolPhoneNum.end}
-                onChange={(value) =>
-                  setSchoolPhoneNum({ ...schoolPhoneNum, end: value })
-                }
-                canDelete={false}
-              />
-            </div>
-          </InputLayout>
-          {/* 서류 출력 후 작성 정보 입력 안내 */}
-          <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-            <Notice
-              title="Current Workplace Of Name, Business Registration No, Phone Number"
-              content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-            />
-          </div>
-          {/* 근무 장소 이름 입력 */}
-          <InputLayout title="New Workplace" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="New Workplace Name"
-              value={newDocumentData.new_work_place_name}
-              onChange={(value) =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  new_work_place_name: value,
-                })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 사업자등록번호 입력 */}
-          <InputLayout
-            title="Business Registration No. Of New Workplace"
-            isEssential
-          >
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="X X X / X X / X X X X X"
-              value={newDocumentData.new_work_place_registration_number}
-              onChange={(value) =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  new_work_place_registration_number:
-                    formatCompanyRegistrationNumber(value),
-                })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 근무 장소 전화번호 입력 */}
-          <InputLayout title="Phone Number Of New Workplace" isEssential>
-            <div className="w-full flex flex-row gap-2 justify-between">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={workPlacePhoneNum.start}
-                  placeholder="+82"
-                  options={phone}
-                  setValue={(value) =>
-                    setWorkPlacePhoneNum({ ...workPlacePhoneNum, start: value })
-                  }
-                />
-              </div>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={workPlacePhoneNum.middle}
-                onChange={(value) =>
-                  setWorkPlacePhoneNum({ ...workPlacePhoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={workPlacePhoneNum.end}
-                onChange={(value) =>
-                  setWorkPlacePhoneNum({ ...workPlacePhoneNum, end: value })
-                }
-                canDelete={false}
-              />
-            </div>
-          </InputLayout>
+            </InputLayout>
 
-          {/* 연봉 입력 */}
-          <InputLayout title="Annual Income Amount" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="0"
-              value={String(newDocumentData.annual_income_amount)}
-              onChange={(value) => {
-                if (typeof value === 'string' && !isNaN(Number(value))) {
+            {/* 연봉 입력 */}
+            <InputLayout title="Annual Income Amount" isEssential>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="0"
+                value={String(newDocumentData.annual_income_amount)}
+                onChange={(value) => {
+                  if (typeof value === 'string' && !isNaN(Number(value))) {
+                    setNewDocumentData({
+                      ...newDocumentData,
+                      annual_income_amount: Number(value),
+                    });
+                  }
+                }}
+                canDelete={false}
+              />
+            </InputLayout>
+            {/* 직업 입력 */}
+            <InputLayout title="Occupation" isEssential>
+              <div className="w-full relative body-3 text-[#bdbdbd] text-left">
+                If you are a college student, please write 'student'.
+              </div>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="Occupation"
+                value={newDocumentData.occupation}
+                onChange={(value) =>
                   setNewDocumentData({
                     ...newDocumentData,
-                    annual_income_amount: Number(value),
-                  });
+                    occupation: value,
+                  })
                 }
-              }}
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 직업 입력 */}
-          <InputLayout title="Occupation" isEssential>
-            <div className="w-full relative body-3 text-[#bdbdbd] text-left">
-              If you are a college student, please write 'student'.
+                canDelete={false}
+              />
+            </InputLayout>
+            {/* 이메일 입력 */}
+            <InputLayout title="Email" isEssential>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="Email"
+                value={newDocumentData.email}
+                onChange={(value) =>
+                  setNewDocumentData({ ...newDocumentData, email: value })
+                }
+                canDelete={false}
+              />
+            </InputLayout>
+            {/* 하이코리아 작성 정보 입력 안내 */}
+            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
+              <Notice
+                title="Date of apllication"
+                content="Please fill it out on the application date for Hi Korea documents."
+                notWarning
+              />
             </div>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Occupation"
-              value={newDocumentData.occupation}
-              onChange={(value) =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  occupation: value,
-                })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 이메일 입력 */}
-          <InputLayout title="Email" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Email"
-              value={newDocumentData.email}
-              onChange={(value) =>
-                setNewDocumentData({ ...newDocumentData, email: value })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 하이코리아 작성 정보 입력 안내 */}
-          <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-            <Notice
-              title="Date of apllication"
-              content="Please fill it out on the application date for Hi Korea documents."
-              notWarning
-            />
+            {/* 서명 입력 */}
+            <InputLayout title="Applicant Signature" isEssential>
+              <SignaturePad
+                onSave={(signature: string) =>
+                  setNewDocumentData({
+                    ...newDocumentData,
+                    signature_base64: signature,
+                  })
+                }
+                onReset={() =>
+                  setNewDocumentData({
+                    ...newDocumentData,
+                    signature_base64: '',
+                  })
+                }
+              />
+            </InputLayout>
+            {/* 서류 출력 후 작성 정보(부모님) 입력 안내 */}
+            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
+              <Notice
+                title="Spouse of applicant Signature"
+                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
+              />
+              <Notice
+                title="Father/Mother of applicant"
+                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
+              />
+            </div>
           </div>
-          {/* 서명 입력 */}
-          <InputLayout title="Applicant Signature" isEssential>
-            <SignaturePad
-              onSave={(signature: string) =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  signature_base64: signature,
-                })
-              }
-              onReset={() =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  signature_base64: '',
-                })
-              }
-            />
-          </InputLayout>
-          {/* 서류 출력 후 작성 정보(부모님) 입력 안내 */}
-          <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-            <Notice
-              title="Spouse of applicant Signature"
-              content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-            />
-            <Notice
-              title="Father/Mother of applicant"
-              content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-            />
-          </div>
-        </div>
+        )}
         {isModalOpen && (
           <BottomSheetLayout
             hasHandlebar
