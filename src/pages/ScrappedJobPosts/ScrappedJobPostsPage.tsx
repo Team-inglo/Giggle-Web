@@ -29,11 +29,11 @@ const ScrappedJobPostList = ({
   }
 
   return (
-    <>
+    <div>
       {jobPostingData.map((post) => (
         <JobPostingCard key={post.id} jobPostingData={post} />
       ))}
-    </>
+    </div>
   );
 };
 

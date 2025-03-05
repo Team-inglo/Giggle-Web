@@ -64,7 +64,7 @@ const JobPostingCard = ({ jobPostingData }: JobPostingCardProps) => {
                 }}
               ></div>
             ) : (
-              <div className="w-[2rem] h-[2rem] rounded-[0.5rem] bg-[#F4F4F9]"></div>
+              <div className="w-[2rem] h-[2rem] rounded-[0.5rem] bg-surface-secondary"></div>
             )}
             <h3 className="head-2 text-[#1E1926]">{jobPostingData.title}</h3>
           </div>
@@ -137,7 +137,7 @@ const JobPostingCard = ({ jobPostingData }: JobPostingCardProps) => {
           fontStyle="caption"
         />
         <Tag
-          value={jobPostingData.tags.visa.replace(/_/g, '-')}
+          value={jobPostingData.tags.visa.join(', ').replace(/_/g, '-')}
           padding="0.375rem 0.75rem"
           isRounded={false}
           hasCheckIcon={false}

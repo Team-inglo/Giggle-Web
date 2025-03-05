@@ -3,15 +3,10 @@ import {
   EducationLevelInfo,
   genderInfo,
   JobCategoryInfo,
-  VisaInfo,
 } from '@/constants/post';
 import { DayOfWeek, WorkDayTime, WorkPeriod } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
-import {
-  EducationLevel,
-  JobCategory,
-  VisaGroup,
-} from '@/types/postCreate/postCreate';
+import { EducationLevel, JobCategory } from '@/types/postCreate/postCreate';
 
 // 입력 데이터에서 한글을 제거, 숫자만 남겨 반환하는 함수
 export const extractNumbersAsNumber = (str: string): number => {
@@ -47,24 +42,8 @@ export const findEducationLevelByNameStrict = (
   return entry ? (entry[1].key as EducationLevel) : null;
 };
 
-// 비자 map에서 name으로 key를 찾는 함수
-export type VisaCategoryNames =
-  (typeof VisaInfo)[keyof typeof VisaInfo]['name'];
-
-export const findVisaByNameStrict = (
-  name: VisaCategoryNames,
-): VisaGroup | null => {
-  const entry = Object.entries(VisaInfo).find(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_, value]) => value.name === name,
-  );
-  return entry ? (entry[1].key as VisaGroup) : null;
-};
-
 // 근무 기간 map에서 name으로 key를 찾는 함수
-export const getWorkPeriodKeyByName = (
-  name: string,
-): WorkPeriod | null => {
+export const getWorkPeriodKeyByName = (name: string): WorkPeriod | null => {
   const entry = Object.entries(WorkPeriodInfo).find(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ([_, value]) => value.name === name,

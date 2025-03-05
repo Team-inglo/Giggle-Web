@@ -13,19 +13,6 @@ export const enum Nationality {
   UZBEKISTAN = 'UZBEKISTAN',
 }
 
-export const enum Visa {
-  'D-2-1' = 'D-2-1',
-  'D-2-2' = 'D-2-2',
-  'D-2-3' = 'D-2-3',
-  'D-2-4' = 'D-2-4',
-  'D-2-6' = 'D-2-6',
-  'D-2-7' = 'D-2-7',
-  'D-2-8' = 'D-2-8',
-  'D-4-1' = 'D-4-1',
-  'D-4-7' = 'D-4-7',
-  'F-2' = 'F-2',
-}
-
 export const enum Language {
   KOREAN = 'KOREAN',
   VIETNAMESE = 'VIETNAMESE',
