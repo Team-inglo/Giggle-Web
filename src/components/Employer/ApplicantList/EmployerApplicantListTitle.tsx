@@ -54,7 +54,7 @@ const EmployerApplicantListTitle = ({
           fontStyle="caption"
         />
         <Tag
-          value={postData.tags.visa.replace(/_/g, '-')}
+          value={postData.tags.visa.join(', ').replace(/_/g, '-')}
           padding="0.375rem 0.75rem"
           isRounded={true}
           hasCheckIcon={false}
