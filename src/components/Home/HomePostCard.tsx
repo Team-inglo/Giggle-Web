@@ -74,8 +74,10 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
               ? postTranslation.dDay[isEmployerByAccountType(account_type)]
               : calculateDDay(jobPostingData.recruitment_dead_line)}
           </p>
-          <p className="caption text-text-normal">
-            <span className="mr-[0.125rem] text-text-alternative">Hr</span>
+          <p className="body-2 text-text-normal">
+            <span className="mr-[0.125rem] caption text-text-alternative">
+              Hr
+            </span>
             {formatMoney(jobPostingData.hourly_rate)}KRW
           </p>
         </div>

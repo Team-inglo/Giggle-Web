@@ -114,8 +114,8 @@ const PostSearchPage = () => {
         filterList={searchOption.filterList}
         updateFilterList={updateFilterList}
       />
-      <section className="flex-1 flex flex-col items-center gap-4 w-full mt-4 px-4 pb-24">
-        <div className="w-full flex justify-between items-center">
+      <section className="flex-1 flex flex-col items-center w-full mt-4 pb-24">
+        <div className="w-full px-4 pb-4 flex justify-between items-center">
           <h3 className="head-3 text-black">Search Result</h3>
           <SearchSortDropdown
             options={Object.values(POST_SORTING).map((value) =>

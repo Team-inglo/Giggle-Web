@@ -9,13 +9,23 @@ import { useUserStore } from '@/store/user';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { useEffect, useState } from 'react';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
-import JobPostingCard from '@/components/Common/JobPostingCard';
+import { JobPostingCard } from '@/components/Common/JobPostingCard';
+import { useCurrentPostIdStore } from '@/store/url';
+import { useNavigate } from 'react-router-dom';
 
 const ScrappedJobPostList = ({
   jobPostingData,
 }: {
   jobPostingData: JobPostingItemType[];
 }) => {
+  const { updateCurrentPostId } = useCurrentPostIdStore();
+  const navigate = useNavigate();
+
+  const goToPostDetailPage = (data: JobPostingItemType) => {
+    updateCurrentPostId(Number(data.id));
+    navigate(`/post/${data.id}`);
+  };
+
   if (jobPostingData?.length === 0) {
     return (
       <div className="flex-1 flex flex-col justify-center items-center gap-1">
@@ -31,7 +41,27 @@ const ScrappedJobPostList = ({
   return (
     <div>
       {jobPostingData.map((post) => (
-        <JobPostingCard key={post.id} jobPostingData={post} />
+        <article
+          className="w-full border-t border-b border-[#f8f8f8]"
+          key={post.id}
+          onClick={() => goToPostDetailPage(post)}
+        >
+          <JobPostingCard {...post}>
+            <JobPostingCard.Box>
+              <JobPostingCard.Header />
+              <div className="w-full flex flex-col gap-2">
+                <JobPostingCard.Title isTwoLine={true} />
+                <div className="w-full flex flex-col gap-[0.125rem]">
+                  <JobPostingCard.Address />
+                  <JobPostingCard.WorkPeriod />
+                  <JobPostingCard.WorkDaysPerWeek />
+                </div>
+                <JobPostingCard.TagList />
+                <JobPostingCard.Footer />
+              </div>
+            </JobPostingCard.Box>
+          </JobPostingCard>
+        </article>
       ))}
     </div>
   );
@@ -88,7 +118,7 @@ const ScrappedJobPostsPage = () => {
           <LoadingPostItem />
         </div>
       ) : (
-        <div className="flex-1 p-6 flex flex-row gap-4">
+        <div className="flex-1 py-6 flex flex-row gap-4">
           <ScrappedJobPostList jobPostingData={jobPostingData} />
           {isLoading && <LoadingItem />}
         </div>
