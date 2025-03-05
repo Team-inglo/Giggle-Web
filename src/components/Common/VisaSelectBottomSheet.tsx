@@ -56,7 +56,7 @@ const VisaSelectBottomSheet = ({
     >
       <div className="w-full flex-col">
         <div className="w-full h-[60vh] overflow-y-scroll">
-          <h3 className="pb-4 head-3 text-[#252525]">
+          <h3 className="pb-4 head-3 text-text-normal">
             {account_type === UserType.OWNER
               ? '비자를 선택해주세요.'
               : 'Please select visas'}
@@ -65,13 +65,13 @@ const VisaSelectBottomSheet = ({
             {Object.entries(VisaInfo).map(([key, visa]) => (
               <div
                 key={key}
-                className="w-full flex justify-between items-center gap-2 border-b border-[#EBEEF1] py-3"
+                className="w-full flex justify-between items-center gap-2 border-b border-border-disabled py-3"
               >
-                <p className="body-2 text-[#252525]">
+                <p className="body-2 text-text-normal">
                   {visa[isEmployerByAccountType(account_type)]}
                 </p>
                 <div
-                  className={`min-w-6 w-6 h-6 relative flex items-center justify-center border ${currentSelectVisas.includes(key as VisaGroup) ? 'bg-[#1e1926]' : 'bg-white'} border-[#F4F4F9]`}
+                  className={`min-w-6 w-6 h-6 relative flex items-center justify-center border ${currentSelectVisas.includes(key as VisaGroup) ? 'bg-[#1e1926]' : 'bg-white'} border-primary-neutral`}
                   onClick={() => handleSelectVisa(key as VisaGroup)}
                 >
                   <CheckIcon />
@@ -80,7 +80,7 @@ const VisaSelectBottomSheet = ({
             ))}
           </div>
         </div>
-        <div className="bg-white flex items-center justify-center pt-3 box-border text-center button-1 text-[#1e1926] z-10">
+        <div className="bg-white flex items-center justify-center pt-3 box-border text-center button-1 z-10">
           <div className="w-full flex gap-2">
             <Button
               type={buttonTypeKeys.BACK}
