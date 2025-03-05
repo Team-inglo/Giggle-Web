@@ -7,16 +7,15 @@ export const country = [
 ];
 
 export const visa: Array<string> = [
-  'D-2-1',
-  'D-2-2',
-  'D-2-3',
-  'D-2-4',
-  'D-2-6',
-  'D-2-7',
-  'D-2-8',
-  'D-4-1',
-  'D-4-7',
+  'D-2',
+  'D-4',
+  'D-10',
+  'C-4',
   'F-2',
+  'F-4',
+  'F-5',
+  'F-6',
+  'H-1',
 ];
 
 export const phone = ['010'];

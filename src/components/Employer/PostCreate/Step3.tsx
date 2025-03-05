@@ -9,27 +9,20 @@ import {
   EducationLevelInfo,
   EducationList,
   GenderList,
-  VisaInfo,
-  VisaList,
 } from '@/constants/post';
 import { Gender } from '@/types/api/users';
 import { InputType } from '@/types/common/input';
-import {
-  EducationLevel,
-  JobPostingForm,
-  VisaGroup,
-} from '@/types/postCreate/postCreate';
+import { EducationLevel, JobPostingForm } from '@/types/postCreate/postCreate';
 import {
   EducationCategoryNames,
   findEducationLevelByNameStrict,
   findGenderByNameStrict,
-  findVisaByNameStrict,
   GenderCategoryNames,
-  VisaCategoryNames,
 } from '@/utils/post';
 import { useEffect, useState } from 'react';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import { parseStringToSafeNumber } from '@/utils/document';
+import VisaDropdown from '@/components/Common/VisaDropdown';
 
 const Step3 = ({
   postInfo,
@@ -54,7 +47,7 @@ const Step3 = ({
       recruitment_number >= 0 &&
       age_restriction !== 0 &&
       education_level !== '' &&
-      newPostInfo.body.visa !== '';
+      newPostInfo.body.visa.length > 0;
     setIsInvalid(!isFormValid);
   }, [newPostInfo]);
 
@@ -179,22 +172,15 @@ const Step3 = ({
         </InputLayout>
         {/* 비자 입력 */}
         <InputLayout title="비자" isEssential>
-          <Dropdown
-            value={
-              newPostInfo.body.visa === ''
-                ? newPostInfo.body.visa
-                : VisaInfo[newPostInfo.body.visa as VisaGroup].name
-            }
-            placeholder="비자를 선택해 주세요"
-            options={VisaList}
+          <VisaDropdown
+            value={newPostInfo.body.visa}
+            placeholder={'비자를 선택해 주세요'}
             setValue={(value) => {
               setNewPostInfo({
                 ...newPostInfo,
                 body: {
                   ...newPostInfo.body,
-                  visa: findVisaByNameStrict(
-                    value as VisaCategoryNames,
-                  ) as string,
+                  visa: [...value],
                 },
               });
             }}
