@@ -43,14 +43,17 @@ const CardBox = ({ children }: { children: ReactNode }) => {
   return <div className="p-4 bg-surface-base">{children}</div>;
 };
 
-const CardHeader = () => {
+const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
   const { id, company_name, is_book_marked } = useCard();
   const { account_type } = useUserStore();
   const { mutate } = usePutPostBookmark();
 
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
-  const onClickBookmark = () => {
+  const onClickBookmark = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.stopPropagation();
     if (account_type === UserType.USER) {
       mutate(id);
       setIsBookmark(!isBookmark);
@@ -65,13 +68,9 @@ const CardHeader = () => {
     <div className="w-full flex justify-between items-end">
       <h4 className="button-2 text-text-normal">{company_name}</h4>
       <div>
-        {account_type === UserType.USER && (
-          <button onClick={onClickBookmark}>
-            (isBookmark ? (
-            <BookmarkCheckedIcon />
-            ) : (
-            <BookmarkIcon />
-            ))
+        {account_type === UserType.USER && isBookMarkButton && (
+          <button onClick={(e) => onClickBookmark(e)}>
+            {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
           </button>
         )}
       </div>

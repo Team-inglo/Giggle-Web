@@ -6,15 +6,15 @@ import PostDetailCompanyImageList from '@/components/PostDetail/PostDetailCompan
 import PostDetailContent from '@/components/PostDetail/PostDetailContent';
 import { UserType } from '@/constants/user';
 import { useGetPostDetail } from '@/hooks/api/usePost';
+import useNavigateBack from '@/hooks/useNavigateBack';
 import { useCurrentPostIdStore } from '@/store/url';
 import { useUserStore } from '@/store/user';
-import { transformToJobPostingItemType } from '@/utils/post';
-import { useNavigate } from 'react-router-dom';
+import { transformDetailToJobPostingItemType } from '@/utils/post';
 
 const EmployerPostDetailPage = () => {
   const { account_type } = useUserStore();
-  const navigate = useNavigate();
   const { currentPostId } = useCurrentPostIdStore();
+  const handleBackButtonClick = useNavigateBack();
 
   const { data, isLoading } = useGetPostDetail(
     Number(currentPostId),
@@ -36,7 +36,7 @@ const EmployerPostDetailPage = () => {
     <>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={() => navigate('/search')}
+        onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
         title="Detail"
       />
@@ -45,7 +45,7 @@ const EmployerPostDetailPage = () => {
       />
       <JobPostingCard
         key={data.data.id}
-        {...transformToJobPostingItemType(data.data)}
+        {...transformDetailToJobPostingItemType(data.data)}
       >
         <JobPostingCard.Box>
           <JobPostingCard.Header />

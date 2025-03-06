@@ -7,7 +7,7 @@ import PostDetailContent from '@/components/PostDetail/PostDetailContent';
 import { UserType } from '@/constants/user';
 import { useGetPostDetail, useGetPostDetailGuest } from '@/hooks/api/usePost';
 import { useUserStore } from '@/store/user';
-import { transformToJobPostingItemType } from '@/utils/post';
+import { transformDetailToJobPostingItemType } from '@/utils/post';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -56,7 +56,7 @@ const PostDetailPage = () => {
       />
       <JobPostingCard
         key={postDetailData.data.id}
-        {...transformToJobPostingItemType(postDetailData.data)}
+        {...transformDetailToJobPostingItemType(postDetailData.data)}
       >
         <JobPostingCard.Box>
           <JobPostingCard.Header />

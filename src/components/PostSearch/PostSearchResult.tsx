@@ -69,7 +69,7 @@ const PostSearchResult = ({
         >
           <JobPostingCard {...value}>
             <JobPostingCard.Box>
-              <JobPostingCard.Header />
+              <JobPostingCard.Header isBookMarkButton={true} />
               <div className="w-full flex flex-col gap-2">
                 <JobPostingCard.Title isTwoLine={true} />
                 <div className="w-full flex flex-col gap-[0.125rem]">
