@@ -10,7 +10,7 @@ const DocumentSubHeader = ({ type }: { type: DocumentType }) => {
         <div className="self-stretch relative head-2 text-primary-dark">
           {DocumentSubTitleContent[type].name}
         </div>
-        <div className="self-stretch relative justify-center body-3 text-text-alternative">
+        <div className="self-stretch relative justify-center body-3 text-primary-dark">
           {DocumentSubTitleContent[type].content}
         </div>
       </div>
