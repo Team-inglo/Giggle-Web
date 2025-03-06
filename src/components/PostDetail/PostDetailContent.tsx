@@ -48,8 +48,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 Recruitment Period
               </h5>
               <p className="text-[#656565] caption">
-                {postDetailData.recruitment_conditions?.recruitment_dead_line ??
-                  'Open recruitment'}
+                {postDetailData.recruitment_conditions?.recruitment_deadline}
               </p>
             </div>
             <div>

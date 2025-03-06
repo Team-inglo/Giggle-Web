@@ -132,14 +132,16 @@ const CardDeadLine = () => {
   const { account_type } = useUserStore();
 
   if (recruitment_dead_line === '상시모집') {
-    <p className="button-1 text-text-normal">
-      {postTranslation.dDay[isEmployerByAccountType(account_type)]}
-    </p>;
+    return (
+      <p className="py-4 button-1 text-text-normal">
+        {postTranslation.dDay[isEmployerByAccountType(account_type)]}
+      </p>
+    );
   }
 
   return (
     <div className="flex gap-1 py-4">
-      <p className="button-1 text-text-normal">{}</p>
+      <p className="button-1 text-text-normal">{recruitment_dead_line}</p>
       <p className="button-2 text-text-normal">days until the deadline</p>
     </div>
   );
@@ -186,7 +188,7 @@ const CardHourlyRate = () => {
   return (
     <div className="flex items-center gap-2">
       <MoneyIcon />
-      <p className="caption text-text-normal">{hourly_rate}</p>
+      <p className="caption text-text-normal">${hourly_rate}</p>
     </div>
   );
 };
