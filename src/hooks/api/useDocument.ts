@@ -261,9 +261,6 @@ export const usePatchStatusSubmission = (
 ) => {
   return useMutation({
     mutationFn: patchStatusSubmission,
-    onSuccess: () => {
-      window.location.reload();
-    },
     onError: (error) => {
       console.error('유학생의 서류 제출 실패', error);
     },
@@ -323,14 +320,19 @@ export const useSearchSchool = ({
 };
 
 // 8.9 (유학생) 서류 재검토 요청 api 통신 커스텀 훅
-export const usePostRequest = (id: number) => {
+export const usePostRequest = (
+  id: number,
+  options?: UseMutationOptions<
+    RESTYPE<{ id: number }>,
+    Error,
+    { id: number; reason: string }
+  >,
+) => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: postRequest,
-    onSuccess: () => {
-      navigate(`/application-documents/${id}`);
-    },
     onError: () => navigate(`/request-modify/${id}`),
+    ...options,
   });
 };
 

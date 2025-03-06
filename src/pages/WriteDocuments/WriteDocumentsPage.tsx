@@ -9,7 +9,6 @@ const WriteDocumentsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { type, isEdit } = location.state || {};
-
   const { id } = useParams();
 
   return (
@@ -21,7 +20,11 @@ const WriteDocumentsPage = () => {
         onClickBackButton={() => navigate(`/application-documents/${id}`)}
       />
       <DocumentSubHeader type={type as DocumentType} />
-      <DocumentFormDispenser type={type as DocumentType} isEdit={isEdit} applicant_id={Number(id)} />
+      <DocumentFormDispenser
+        type={type as DocumentType}
+        isEdit={isEdit}
+        applicant_id={Number(id)}
+      />
     </div>
   );
 };

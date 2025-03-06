@@ -9,6 +9,7 @@ import {
 } from '@/hooks/api/useDocument';
 import { useCurrentDocumentIdStore } from '@/store/url';
 import { ReactNode } from 'react';
+import { SuccessModalContent } from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
 
 const enum DocumentStatus {
   TEMPORARY_SAVE = 'TEMPORARY_SAVE',
@@ -56,6 +57,7 @@ type DocumentCardDispenserProps = {
   title: string;
   type: string;
   setIsLoading: (value: boolean) => void;
+  setSuccessModalContent: (content: SuccessModalContent) => void;
 };
 
 const DocumentCardDispenser = ({
@@ -63,20 +65,26 @@ const DocumentCardDispenser = ({
   title,
   type,
   setIsLoading,
+  setSuccessModalContent,
 }: DocumentCardDispenserProps) => {
   const { mutate: submitDocument } = usePatchStatusSubmission({
     onMutate: () => {
       setIsLoading(true);
     },
-    onSettled: () => {
+    onSuccess: () => {
       setIsLoading(false);
+      setSuccessModalContent({
+        title: 'Registration has been\nsuccessfully completed',
+        content: `The employer will check the documents\nsoon and fill them out together.\nWe will send you a notification when I'm\ndone writing it!`,
+        onNext: () => window.location.reload(),
+      });
     },
   });
   const { mutate: confirmDocument } = usePatchDocumentsStatusConfirmation({
     onMutate: () => {
       setIsLoading(true);
     },
-    onSettled: () => {
+    onSuccess: () => {
       setIsLoading(false);
     },
   });
@@ -171,7 +179,7 @@ const DocumentCardDispenser = ({
           title={title}
           tagStyle="bg-primary-neutral text-primary-dark"
           tagText="Pending ... 🔄"
-          content="If you are sure of the content, click Submit to send it to your employer."
+          content="The employer is in the process of completing the form."
         >
           <div className="flex flex-col w-full items-start justify-start text-text-normal">
             <div className="w-full rounded-lg bg-surface-secondary flex items-center justify-start border border-surface-disabled px-4 py-2 pl-2.5">
@@ -193,7 +201,7 @@ const DocumentCardDispenser = ({
           title={title}
           tagStyle="bg-surface-primary text-primary-dark"
           tagText="Check my Work Permit Form 📝"
-          content={`The employer has completed the ${title}.
+          content={`The employer has completed the document.
               Please review the content and if there are any issues, submit a
               Request. If everything is fine, complete the process by selecting
               Confirm.`}
@@ -215,7 +223,7 @@ const DocumentCardDispenser = ({
             className="bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2"
             onClick={() => confirmDocument(Number(documentInfo.id))}
           >
-            Submit
+            Confirm
           </button>
         </DocumentCardLayout>
       );
@@ -225,7 +233,7 @@ const DocumentCardDispenser = ({
           title={title}
           tagStyle="bg-primary-neutral text-primary-dark"
           tagText="Pending ... 🔄"
-          content="If you are sure of the content, click Submit to send it to your employer."
+          content="The employer is in the process of completing the form."
         >
           <div className="flex flex-col w-full items-start justify-start text-text-normal">
             <div className="w-full rounded-lg bg-surface-secondary flex items-center justify-start border border-surface-disabled px-4 py-2 pl-2.5">
@@ -234,8 +242,7 @@ const DocumentCardDispenser = ({
                   <TalkBallonIconGrey />
                 </div>
                 <div className="relative body-3 opacity-75">
-                  The employer is revising the document according to the
-                  requested changes.
+                  The employer is currently writing it.
                 </div>
               </div>
             </div>
