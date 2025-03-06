@@ -21,11 +21,11 @@ const ApplicationDocumentsPage = () => {
       <BaseHeader
         hasBackButton={true}
         onClickBackButton={() => navigate(`/application/${currentPostId}`)}
-        hasMenuButton={true}
+        hasMenuButton={false}
         title="Application Documents"
       />
       {!isPending && (
-        <section className='w-full bg-surface-secondary'>
+        <section className="w-full bg-surface-secondary">
           <PageTitle
             title={`Your Resume,\nYour Next Opportunity 🚀`}
             content={`Keep your resume updated and\ntrack your job applications in one place!`}

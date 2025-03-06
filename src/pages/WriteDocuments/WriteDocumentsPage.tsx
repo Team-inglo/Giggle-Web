@@ -16,7 +16,7 @@ const WriteDocumentsPage = () => {
     <div>
       <BaseHeader
         hasBackButton={true}
-        hasMenuButton={true}
+        hasMenuButton={false}
         title="Fill in document"
         onClickBackButton={() => navigate(`/application-documents/${id}`)}
       />
