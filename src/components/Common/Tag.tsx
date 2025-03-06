@@ -28,7 +28,7 @@ const Tag = ({
 }: TagProps) => {
   return (
     <div
-      className={`w-fit h-fit flex items-center gap-[0.5rem] ${fontStyle} ${isRounded ? 'rounded-[1.125rem]' : 'rounded-sm'}`}
+      className={`w-fit h-fit flex items-center gap-[0.5rem] ${fontStyle} ${isRounded ? 'rounded' : 'rounded-sm'}`}
       style={{
         padding: padding,
         backgroundColor: backgroundColor,

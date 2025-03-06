@@ -11,7 +11,10 @@ import { usePostSearch } from '@/hooks/usePostSearch';
 import { useUserStore } from '@/store/user';
 import { GetPostListReqType } from '@/types/api/post';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
-import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
+import {
+  PostSearchFilterItemType,
+  PostSortingType,
+} from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { formatSearchFilter } from '@/utils/formatSearchFilter';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -74,6 +77,16 @@ const PostSearchPage = () => {
     setSearchParams(newSearchParams);
   };
 
+  const handleUpdateFilterList = (newFilterList: PostSearchFilterItemType) => {
+    updateFilterList(newFilterList);
+    const newSearchParams = formatSearchFilter(
+      searchOption.searchText,
+      searchOption.sortType,
+      newFilterList,
+    );
+    setSearchParams(newSearchParams);
+  };
+
   const onChangeSortType = (selectedSortType: PostSortingType) => {
     updateSortType(selectedSortType);
     setSearchParams((prev) => ({ ...prev, sorting: selectedSortType }));
@@ -100,23 +113,24 @@ const PostSearchPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <TextFieldHeader
-        onClickBackButton={() => navigate('/')}
-        onClickSearchButton={onClickSearch}
+        handleSearch={onClickSearch}
         placeholder={
           account_type === UserType.OWNER
             ? '이름으로 검색'
             : 'Search for job posting name'
         }
         initialValue={searchOption.searchText}
+        handleClickFilter={goToPostSearchFilterPage}
       />
       <PostSearchFilterList
-        openFilter={goToPostSearchFilterPage}
         filterList={searchOption.filterList}
-        updateFilterList={updateFilterList}
+        handleUpdateFilterList={handleUpdateFilterList}
       />
-      <section className="flex-1 flex flex-col items-center w-full mt-4 pb-24">
-        <div className="w-full px-4 pb-4 flex justify-between items-center">
-          <h3 className="head-3 text-black">Search Result</h3>
+      <section className="flex-1 flex flex-col items-center w-full pb-24">
+        <div className="w-full py-4 px-6 flex justify-between items-center">
+          <h3 className=" caption text-text-alternative">
+            {postData.length} search results
+          </h3>
           <SearchSortDropdown
             options={Object.values(POST_SORTING).map((value) =>
               value.toLowerCase(),
