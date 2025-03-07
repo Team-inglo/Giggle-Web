@@ -7,6 +7,7 @@ import { formatMoney } from '@/utils/formatMoney';
 import { useUserStore } from '@/store/user';
 import { postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
+import { UserType } from '@/constants/user';
 
 type HomePostCardProps = {
   jobPostingData: JobPostingItemType;
@@ -20,7 +21,9 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
 
   const goToPostDetailPage = () => {
     updateCurrentPostId(Number(jobPostingData.id));
-    navigate(`/post/${jobPostingData.id}`);
+    if (account_type === UserType.OWNER)
+      navigate(`/employer/post/${jobPostingData.id}`);
+    else navigate(`/post/${jobPostingData.id}`);
   };
 
   return (

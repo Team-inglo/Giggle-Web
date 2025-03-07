@@ -8,6 +8,7 @@ import { isEmployerByAccountType } from '@/utils/signup';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
 import { useCurrentPostIdStore } from '@/store/url';
 import { useNavigate } from 'react-router-dom';
+import { UserType } from '@/constants/user';
 
 type PostSearchResultProps = {
   postData: JobPostingItemType[];
@@ -26,7 +27,8 @@ const PostSearchResult = ({
 
   const goToPostDetailPage = (data: JobPostingItemType) => {
     updateCurrentPostId(Number(data.id));
-    navigate(`/post/${data.id}`);
+    if (account_type === UserType.OWNER) navigate(`/employer/post/${data.id}`);
+    else navigate(`/post/${data.id}`);
   };
 
   if (isInitialLoading) {

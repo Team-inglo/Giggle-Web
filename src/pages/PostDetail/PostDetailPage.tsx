@@ -75,6 +75,7 @@ const PostDetailPage = () => {
       {account_type !== UserType.OWNER && (
         <PostDetailApplyButton
           isBookmarked={postDetailData.data?.is_book_marked ?? false}
+          isRecruiting={postDetailData.data?.tags?.is_recruiting}
         />
       )}
     </>

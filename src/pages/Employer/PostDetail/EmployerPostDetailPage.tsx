@@ -61,7 +61,7 @@ const EmployerPostDetailPage = () => {
         </JobPostingCard.Box>
       </JobPostingCard>
       <PostDetailContent postDetailData={data.data} />
-      <EmployerPostDetailButton />
+      {data.data?.is_my_post && <EmployerPostDetailButton />}
     </>
   );
 };
