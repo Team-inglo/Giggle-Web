@@ -44,7 +44,7 @@ const ScrappedJobPostList = ({
     <div className="w-full">
       {jobPostingData.map((post) => (
         <article
-          className="w-full border-t border-b border-[#f8f8f8]"
+          className="w-full border-t border-b border-border-alternative"
           key={post.id}
           onClick={() => goToPostDetailPage(post)}
         >
