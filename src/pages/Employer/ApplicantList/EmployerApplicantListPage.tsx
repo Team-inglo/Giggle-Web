@@ -20,10 +20,6 @@ const EmployerApplicantListPage = () => {
     navigate(`/employer/post/${currentPostId}`);
   };
 
-  if (isLoading) {
-    return <div></div>;
-  }
-
   return (
     <>
       <BaseHeader
