@@ -3,6 +3,7 @@ import { useUserStore } from '@/store/user';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import {
   createContext,
+  MouseEvent,
   ReactNode,
   useContext,
   useEffect,
@@ -50,9 +51,7 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
 
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
-  const onClickBookmark = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const onClickBookmark = (e: MouseEvent) => {
     e.stopPropagation();
     if (account_type === UserType.USER) {
       mutate(id);
