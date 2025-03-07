@@ -703,7 +703,7 @@ export const InsuranceInfo = {
 
 export const personalInfoList = [
   'Applicant Signature',
-  'Passport number, passpot issuance date, passport expiration date',
+  'Passport number, passport issuance date, passport expiration date',
   'Address, Phone Number, in Home Country',
   'Current Workplace Of Name, Business Registration no., Phone Number',
   'Spouse of applicant Signature',
