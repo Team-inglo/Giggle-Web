@@ -120,11 +120,11 @@ const EmployerInfoSection = ({
                   <div className="w-full flex-1 relative">
                     <Tag
                       value={workDayTimeToString(value as WorkDayTime[])}
-                      padding="4px 12px"
+                      padding="py-[4px] px-[12px]"
                       isRounded
                       hasCheckIcon={false}
-                      backgroundColor="#FEF387"
-                      color="#1E1926"
+                      backgroundColor="bg-surface-primary"
+                      color="text-text-strong"
                       fontStyle="button-2"
                     />
                   </div>

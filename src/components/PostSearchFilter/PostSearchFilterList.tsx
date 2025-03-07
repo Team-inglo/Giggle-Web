@@ -41,7 +41,7 @@ const PostSearchFilterList = ({
     <>
       {showCategories.map(([category, options], index) => (
         <PostSearchFilterToggle title={category} key={`${index}_${category}`}>
-          <div className="flex flex-wrap gap-[0.5rem] mb-[0.5rem] px-[0.5rem] w-full">
+          <div className="flex flex-wrap gap-2 w-full">
             {options.map((option, index) => (
               <button
                 key={`${index}_${option}`}
@@ -51,18 +51,21 @@ const PostSearchFilterList = ({
               >
                 <Tag
                   value={option}
-                  padding="0.375rem 0.875rem"
+                  padding="py-[0.375rem] px-[0.675rem]"
                   isRounded={true}
                   hasCheckIcon={false}
+                  color={
+                    isSelectedFilter(category as FILTER_CATEGORY, option)
+                      ? 'text-text-normal'
+                      : 'text-text-alternative'
+                  }
                   backgroundColor={
                     isSelectedFilter(category as FILTER_CATEGORY, option)
-                      ? '#FEF387'
-                      : 'white'
+                      ? 'bg-surface-secondary'
+                      : 'bg-surface-base'
                   }
-                  color="#1E1926"
-                  borderColor="#EFEFEF"
-                  borderWidth="1px"
-                  fontStyle="body-3"
+                  borderColor="border-border-alternative"
+                  fontStyle="body-2"
                 />
               </button>
             ))}

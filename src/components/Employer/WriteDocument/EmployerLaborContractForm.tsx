@@ -402,7 +402,7 @@ const EmployerLaborContractForm = ({
               <div className="flex flex-wrap gap-[0.5rem] w-full">
                 {Object.keys(DAYS).map((value, index) => (
                   <button
-                    className={`py-[0.375rem] px-[0.875rem] body-3 border border-[#EFEFEF] rounded-[1.125rem] ${newDocumentData.weekly_last_days.includes(Object.values(DAYS)[index] as DayOfWeek) ? 'bg-[#FEF387]' : 'bg-white'}`}
+                    className={`py-[0.375rem] px-[0.875rem] body-3 border-border-alternative rounded-[1.125rem] ${newDocumentData.weekly_last_days.includes(Object.values(DAYS)[index] as DayOfWeek) ? 'bg-[#FEF387]' : 'bg-white'}`}
                     key={`${value}_${index}`}
                     onClick={() =>
                       handleClickDayOfWeek(
