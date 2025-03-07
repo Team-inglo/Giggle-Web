@@ -41,12 +41,12 @@ const PostSearchFilterBottomSheet = ({
             <Tag
               key={`${region}_${index}`}
               value={formatRegionArrayToString(index)}
-              padding="0.375rem 0.5rem 0.375rem 0.675rem"
+              padding="py-[0.375rem] pr-[0.5rem] pl-[0.675rem]"
               isRounded={true}
               hasCheckIcon={false}
-              borderColor={'#E2E5EB'}
-              backgroundColor={'#fff'}
-              color="#252525"
+              borderColor={'border-border-alternative'}
+              backgroundColor={'bg-surface-base'}
+              color="text-text-normal"
               fontStyle="body-2"
               onDelete={() => onClickDelete(index)}
             />

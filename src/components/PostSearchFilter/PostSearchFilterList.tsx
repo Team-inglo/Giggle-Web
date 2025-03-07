@@ -51,20 +51,20 @@ const PostSearchFilterList = ({
               >
                 <Tag
                   value={option}
-                  padding="0.375rem 0.675rem"
+                  padding="py-[0.375rem] px-[0.675rem]"
                   isRounded={true}
                   hasCheckIcon={false}
                   color={
                     isSelectedFilter(category as FILTER_CATEGORY, option)
-                      ? '#252525'
-                      : '#9397A1'
+                      ? 'text-text-normal'
+                      : 'text-text-alternative'
                   }
                   backgroundColor={
                     isSelectedFilter(category as FILTER_CATEGORY, option)
-                      ? '#F4F4F9'
-                      : '#fff'
+                      ? 'bg-surface-secondary'
+                      : 'bg-surface-base'
                   }
-                  borderColor="#E2E5EB"
+                  borderColor="border-border-alternative"
                   fontStyle="body-2"
                 />
               </button>

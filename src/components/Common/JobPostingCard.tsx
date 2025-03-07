@@ -97,29 +97,29 @@ const CardTagList = ({ className }: { className?: string }) => {
     <div className={`flex items-center flex-wrap gap-1 ${className}`}>
       <Tag
         value={tags.employment_type?.toLowerCase()}
-        padding="0.188rem 0.25rem"
+        padding="py-[0.188rem] px-[0.25rem]"
         isRounded={false}
         hasCheckIcon={false}
-        backgroundColor="#F4F4F9"
-        color="#252525"
+        backgroundColor="bg-surface-secondary"
+        color="text-text-normal"
         fontStyle="caption"
       />
       <Tag
         value={tags.job_category.replace(/_/g, ' ').toLowerCase()}
-        padding="0.188rem 0.25rem"
+        padding="py-[0.188rem] px-[0.25rem]"
         isRounded={false}
         hasCheckIcon={false}
-        backgroundColor="#0066FF1F"
-        color="#0066FF"
+        backgroundColor="bg-[#0066FF1F]"
+        color="text-text-success"
         fontStyle="caption"
       />
       <Tag
         value={tags.visa.join(', ').replace(/_/g, '-')}
-        padding="0.188rem 0.25rem"
+        padding="py-[0.188rem] px-[0.25rem]"
         isRounded={false}
         hasCheckIcon={false}
-        backgroundColor="#191919"
-        color="#F4F4F9"
+        backgroundColor="bg-primary-dark"
+        color="text-primary-neutral"
         fontStyle="caption"
       />
     </div>

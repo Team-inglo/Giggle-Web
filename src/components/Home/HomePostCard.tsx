@@ -51,11 +51,11 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         <div className="py-2 flex items-center flex-wrap gap-1">
           <Tag
             value={jobPostingData.tags.employment_type.toLowerCase()}
-            padding="0.188rem 0.25rem"
+            padding="py-[0.188rem] px-[0.25rem]"
             isRounded={false}
             hasCheckIcon={false}
-            backgroundColor="#0066FF1F"
-            color="#0066FF"
+            backgroundColor="bg-[#0066FF1F]"
+            color="text-text-success"
             fontStyle="caption"
           />
           <Tag
@@ -63,11 +63,11 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
               .join(',')
               .replace(/_/g, '-')
               .toLowerCase()}
-            padding="0.188rem 0.25rem"
+            padding="py-[0.188rem] px-[0.25rem]"
             isRounded={false}
             hasCheckIcon={false}
-            backgroundColor="#191919"
-            color="#F4F4F9"
+            backgroundColor="bg-surface-invert"
+            color="text-primary-neutral"
             fontStyle="caption"
           />
         </div>
