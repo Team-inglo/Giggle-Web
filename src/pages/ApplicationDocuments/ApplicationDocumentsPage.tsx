@@ -25,6 +25,14 @@ const ApplicationDocumentsPage = () => {
   const { mutate: submitDocuments } = usePatchWritingDocumentFinish(
     Number(currentPostId),
   );
+  const isDocumentComplete = (data: DocumentsSummaryResponse | undefined) => {
+    return (
+      data?.part_time_employment_permits?.status === 'CONFIRMATION' &&
+      data?.standard_labor_contract?.status === 'CONFIRMATION' &&
+      data?.integrated_application?.word_url &&
+      data?.is_completed === false
+    );
+  };
   const [successModalContent, setSuccessModalContent] = useState({
     title: '',
     content: '',
@@ -32,13 +40,14 @@ const ApplicationDocumentsPage = () => {
   });
   return (
     <div>
-      {successModalContent.title ? (
+      {successModalContent.title && (
         <CompleteModal
           title={successModalContent.title}
           content={successModalContent.content}
           onNext={successModalContent.onNext}
         />
-      ) : (
+      )}
+      {!successModalContent.title && (
         <>
           <BaseHeader
             hasBackButton={true}
@@ -51,12 +60,11 @@ const ApplicationDocumentsPage = () => {
               title={`Your Resume,\nYour Next Opportunity 🚀`}
               content={`Keep your resume updated and\ntrack your job applications in one place!`}
             />
-            {isPending && (
+            {isPending ? (
               <div className="w-full h-[65vh] flex items-center justify-center">
                 <LoadingPostItem />
               </div>
-            )}
-            {!isPending && (
+            ) : (
               <>
                 <DocumentCardList
                   documents={data?.data as DocumentsSummaryResponse}
@@ -65,29 +73,24 @@ const ApplicationDocumentsPage = () => {
                   }
                 />
                 <BottomButtonPanel>
-                  {data?.data.part_time_employment_permits?.status ===
-                    'CONFIRMATION' &&
-                  data?.data.standard_labor_contract?.status ===
-                    'CONFIRMATION' &&
-                  data?.data.integrated_application?.word_url &&
-                  data?.data.is_completed === false ? (
-                    <Button
-                      type="large"
-                      bgColor={'bg-[#FEF387]'}
-                      fontColor="text-[#1E1926]"
-                      title="Next"
-                      isBorder={false}
-                      onClick={() => submitDocuments(Number(currentPostId))}
-                    />
-                  ) : (
-                    <Button
-                      type="large"
-                      bgColor="bg-[#F4F4F9]"
-                      fontColor="text-[#bdbdbd]"
-                      isBorder={false}
-                      title="Next"
-                    />
-                  )}
+                  <Button
+                    type="large"
+                    bgColor={
+                      isDocumentComplete(data?.data)
+                        ? 'bg-surface-primary'
+                        : 'bg-surface-secondary'
+                    }
+                    fontColor={
+                      isDocumentComplete(data?.data)
+                        ? 'text-text-normal'
+                        : 'text-text-disabled'
+                    }
+                    title="Next"
+                    isBorder={false}
+                    {...(isDocumentComplete(data?.data) && {
+                      onClick: () => submitDocuments(Number(currentPostId)),
+                    })}
+                  />
                 </BottomButtonPanel>
               </>
             )}
