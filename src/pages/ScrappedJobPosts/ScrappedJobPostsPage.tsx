@@ -117,7 +117,7 @@ const ScrappedJobPostsPage = () => {
         hasBackButton
         onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
-        title="Scrap Job Posting"
+        title="Scrapped Job Posts"
       />
       <div className="w-full pt-6 pb-2 px-4 flex justify-between items-center">
         <h3 className=" caption text-text-alternative">
