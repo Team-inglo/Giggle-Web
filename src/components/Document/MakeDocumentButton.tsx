@@ -1,27 +1,33 @@
-import AddIcon from '@/assets/icons/AddButton.svg?react';
+import AddIcon from '@/assets/icons/Plus-Lg.svg?react';
+import YellowDocumentIcon from '@/assets/icons/YellowDocumentIcon.svg?react';
 import { DocumentTypeInfo } from '@/constants/documents';
 import { DocumentType } from '@/types/api/document';
 import { useNavigate } from 'react-router-dom';
+import InfoCardLayout from '../Common/InfoCardLayout';
 
 const MakeDocumentButton = ({ type }: { type: DocumentType }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-start justify-start py-6 cursor-pointer text-left text-[#1e1926]">
-      <div className="self-stretch flex flex-col items-start justify-start px-4">
-        <div className="self-stretch flex flex-row items-center justify-center pl-2 gap-4">
-          <div className="flex-1 flex items-center justify-start">
-            <div className="relative head-3">{DocumentTypeInfo[type].name}</div>
-          </div>
-          <div onClick={() => navigate('/write-documents', {
-            state: {
-              type: type
+    <div className="w-full relative rounded-[1.125rem] flex flex-col items-start justify-start cursor-pointer">
+      <InfoCardLayout
+        icon={<YellowDocumentIcon />}
+        title={DocumentTypeInfo[type].name}
+        rightTopElement={
+          <div
+            className="flex items-center justify-center w-8 h-8 rounded-md bg-primary-neutral"
+            onClick={() =>
+              navigate('/write-documents', {
+                state: {
+                  type: type,
+                },
+              })
             }
-          })}>
+          >
             <AddIcon />
           </div>
-        </div>
-      </div>
+        }
+      />
     </div>
   );
 };
