@@ -29,7 +29,7 @@ const TextFieldHeader = ({
     <section className="w-full mt-2 py-2 px-4 flex justify-between items-center gap-2 bg-white sticky top-0 z-40">
       <div className="flex-1 flex items-center p-3 rounded bg-surface-secondary border border-border-alternative">
         <input
-          className="flex-1 body-2 text-text-strong rounded bg-transparent"
+          className="flex-1 body-2 text-text-strong rounded bg-transparent focus:outline-none"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder={placeholder}
