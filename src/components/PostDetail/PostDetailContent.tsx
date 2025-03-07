@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import PostDetailContentMenuBar from '@/components/PostDetail/PostDetailContentMenuBar';
 import { PostDetailContentMenu } from '@/constants/postDetail';
-import Tag from '@/components/Common/Tag';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { PostDetailItemType } from '@/types/postDetail/postDetailItem';
 import { formatMoney } from '@/utils/formatMoney';
@@ -130,16 +129,11 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                     : postDetailData.detailed_overview.slice(0, 255) + '...'}
                 </p>
                 {!showDetailOverview && (
-                  <button onClick={() => setShowDetailOverview(true)}>
-                    <Tag
-                      value={'Read more'}
-                      padding="0.375rem 0.875rem"
-                      isRounded={true}
-                      hasCheckIcon={false}
-                      backgroundColor="#FEF387"
-                      color="#1E1926"
-                      fontStyle="body-3"
-                    />
+                  <button
+                    onClick={() => setShowDetailOverview(true)}
+                    className="self-end text-text-alternative caption"
+                  >
+                    See more
                   </button>
                 )}
               </>
