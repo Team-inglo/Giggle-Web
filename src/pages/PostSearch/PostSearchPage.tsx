@@ -110,6 +110,23 @@ const PostSearchPage = () => {
     }
   }, [data]);
 
+  // 새로 고침 시에 검색필터를 모두 초기화 위해 사용
+  useEffect(() => {
+    const isReload =
+      (
+        performance.getEntriesByType(
+          'navigation',
+        )[0] as PerformanceNavigationTiming
+      )?.type === 'reload';
+
+    if (isReload) {
+      navigate('/search', {
+        state: {},
+        replace: true,
+      });
+    }
+  }, [navigate]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <TextFieldHeader
