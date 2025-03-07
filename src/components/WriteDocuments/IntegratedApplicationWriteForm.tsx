@@ -618,8 +618,8 @@ const IntegratedApplicationWriteForm = ({
                 </p>
               </section>
               <section className="pt-4 flex flex-col gap-4 button-2">
-                {personalInfoList.map((info) => (
-                  <div>{'📌 ' + info}</div>
+                {personalInfoList.map((info, index) => (
+                  <div key={index}>{'📌 ' + info}</div>
                 ))}
               </section>
             </div>
