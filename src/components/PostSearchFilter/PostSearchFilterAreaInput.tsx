@@ -52,18 +52,16 @@ const PostSearchFilterAreaInput = ({
 
   return (
     <PostSearchFilterToggle title={'Select Areas'}>
-      <div className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-2 text-text-assistive">
+      <div
+        className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-2 text-text-assistive cursor-pointer"
+        onClick={() => setIsOpenAreaFilter(true)}
+      >
         <div className="flex-1 h-5 flex flex-row items-center justify-between">
-          <input
-            className="w-full relative leading-5 outline-none bg-white"
-            placeholder={'Select Areas'}
-            disabled
-          />
+          <p className="w-full relative leading-5 outline-none bg-white">
+            Select Areas
+          </p>
           {/* 드롭다운 토글 버튼 */}
-          <button
-            onClick={() => setIsOpenAreaFilter(true)}
-            className="p-0 rounded-full transition-colors"
-          >
+          <button className="p-0 rounded-full transition-colors">
             <div
               className={`flex items-center justify-center w-5 h-6 transition-transform duration-300 rotate-180`}
             >

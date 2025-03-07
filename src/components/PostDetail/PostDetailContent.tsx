@@ -209,8 +209,8 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </h5>
               <div className="flex flex-col gap-[0.125rem] text-text-alternative caption">
                 {postDetailData.working_conditions.work_day_times.map(
-                  (value) => (
-                    <p>
+                  (value, index) => (
+                    <p key={`${value}_${index}`}>
                       {value.day_of_week !== 'NEGOTIABLE' && (
                         <span className="button-2 pr-2">
                           {value.day_of_week.toLowerCase()}
