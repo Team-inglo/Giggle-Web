@@ -700,3 +700,12 @@ export const InsuranceInfo = {
     key: 'HEALTH_INSURANCE',
   },
 } as const;
+
+export const personalInfoList = [
+  'Applicant Signature',
+  'Passport number, passport issuance date, passport expiration date',
+  'Address, Phone Number, in Home Country',
+  'Current Workplace Of Name, Business Registration no., Phone Number',
+  'Spouse of applicant Signature',
+  'Parents of applicant',
+];
