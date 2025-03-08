@@ -35,11 +35,11 @@ export const DocumentTypeInfo = {
 
 export const EmployerDocumentTypeInfo = {
   [DocumentType.PART_TIME_PERMIT]: {
-    name: '시간제취업허가서',
+    name: '시간제 취업 허가서',
     key: 'part_time_employment_permits',
   },
   [DocumentType.LABOR_CONTRACT]: {
-    name: '표준근로계약서',
+    name: '표준 근로 계약서',
     key: 'standard_labor_contract',
   },
   [DocumentType.INTEGRATED_APPLICATION]: {

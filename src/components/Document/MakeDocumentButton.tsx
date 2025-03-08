@@ -3,7 +3,7 @@ import YellowDocumentIcon from '@/assets/icons/YellowDocumentIcon.svg?react';
 import { DocumentTypeInfo } from '@/constants/documents';
 import { DocumentType } from '@/types/api/document';
 import { useNavigate } from 'react-router-dom';
-import InfoCardLayout from '../Common/InfoCardLayout';
+import InfoCardLayout from '@/components/Common/InfoCardLayout';
 
 const MakeDocumentButton = ({ type }: { type: DocumentType }) => {
   const navigate = useNavigate();

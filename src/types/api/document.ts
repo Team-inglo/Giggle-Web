@@ -49,6 +49,11 @@ export enum DocumentType {
   INTEGRATED_APPLICATION = 'integrated_application',
 }
 
+export enum EmployDocumentType {
+  PART_TIME_PERMIT = 'part_time_employment_permits',
+  LABOR_CONTRACT = 'standard_labor_contract',
+}
+
 // 시간제취업 허가서 유학생 정보 타입
 export type EmployeeInformation = {
   first_name: string;
