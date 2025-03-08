@@ -71,16 +71,16 @@ export const DocumentSubTitleContent = {
 
 export const EmployerDocumentSubTitleContent = {
   [DocumentType.PART_TIME_PERMIT]: {
-    name: '시간제 취업허가서',
+    name: '취업허가서를 작성해주세요 ✍',
     key: 'part_time_employment_permits',
     content:
-      '유학생이 아르바이트나 시간제 근무를 하기 위해서는 반드시 해당 허가서를 소지해야 합니다. 허가를 받지 않은 유학생을 고용할 경우, 고용주에게 불이익이 발생할 수 있습니다.',
+      '시간제 근무를 하려면 유학생은 취업허가서를 소지해야 해요. 만약 허가 없이 근무할 경우, 고용주에게도 불이익이 발생할 수 있어요. 안전한 채용을 위해 꼭 확인해 주세요!',
   },
   [DocumentType.LABOR_CONTRACT]: {
-    name: '단시간근로자 표준근로계약서',
+    name: '표준근로계약서를 작성해주세요 ✍',
     key: 'standard_labor_contract',
     content:
-      '고용 형태와 관계없이 모든 근로자는 근로계약서를 작성해야하며, 이를 통해 합법적이고 투명한 고용 관계를 유지할 수 있습니다.',
+      '고용 형태와 관계없이 모든 근로자는 근로계약서를 작성해야 해요. 이는 법적으로 필수 사항이며, 근로계약서를 작성하지 않으면 500만원 이하 벌금이 부과될 수 있어요.',
   },
   [DocumentType.INTEGRATED_APPLICATION]: {
     name: 'Application Form',
