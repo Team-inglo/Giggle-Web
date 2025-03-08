@@ -10,12 +10,8 @@ import {
   LaborContractEmployeeInfo,
 } from '@/types/api/document';
 import { GiggleAddress } from '@/types/api/users';
-import {
-  getDetailAddress,
-  propertyToString,
-} from '@/utils/document';
+import { getDetailAddress } from '@/utils/document';
 import { renderMap } from '@/utils/map';
-import InputLayout from './InputLayout';
 
 const EmployeeInfoSection = ({
   employee,
@@ -25,67 +21,65 @@ const EmployeeInfoSection = ({
   type: DocumentType;
 }) => {
   return (
-    <div className="w-full relative rounded-3xl flex flex-col items center justify-center px-6 py-3 text-left body-3 text-[#1e1926]">
-      <div className="w-full self-stretch flex flex-col items-center jusitfy-center">
-        <div className="w-full self-stretch flex flex-col items-center justify-start gap-4">
+    <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left body-3 bg-white">
+      <div className="w-full self-stretch flex flex-col items-start jusitfy-center">
+        <section className="w-full flex flex-col gap-1 pb-4 border-b border-border-alternative">
+          <p className="w-full head-3 text-text-strong">
+            Employee Information 📋
+          </p>
+          <p className="w-full body-3 text-text-alternative">
+            Before drafting the hiring documents,
+            <br />
+            please verify that the employer's information is correct.
+          </p>
+        </section>
+        <div className="w-full self-stretch flex flex-col items-center justify-start text-left pt-4 gap-3">
           {/* 추후 UI 재사용 위한 고용주 정보 property를 반복문으로 ui 나열 */}
           {Object.entries(employee).map(([key, value]) => (
-            <>
-              <InputLayout
-                isEssential
-                title={
-                  type === DocumentType.PART_TIME_PERMIT
-                    ? PartTimePermitFormInfo[key as PartTimePermitFormProperty]
-                        .name
-                    : LaborContractEmployeeFormInfo[
-                        key as LaborContractEmployeeInfoProperty
-                      ].name
-                }
-              >
-                {!['address', 'signature_base64'].includes(key) && (
-                  <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4 body-2">
-                    <div className="w-full flex-1 relative">
-                      {propertyToString(String(value))}
-                    </div>
-                  </div>
-                )}
-              </InputLayout>
+            <div className="w-full flex flex-col gap-1">
+              <p className="button-2 text-text-alternative">
+                {type === DocumentType.PART_TIME_PERMIT
+                  ? PartTimePermitFormInfo[key as PartTimePermitFormProperty]
+                      .name
+                  : LaborContractEmployeeFormInfo[
+                      key as LaborContractEmployeeInfoProperty
+                    ].name}
+              </p>
+              {!['address', 'signature_base64'].includes(key) && (
+                <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
+                  {value}
+                </div>
+              )}
 
               {key === LaborContractEmployeeInfoProperty.ADDRESS &&
                 renderMap(value as GiggleAddress)}
 
               {/* 별도 property가 없는 detailed address 예외 처리 */}
               {key === LaborContractEmployeeInfoProperty.ADDRESS && (
-                <div className="w-full self-stretch flex flex-col text-left items-center justify-start px-1 py-1.5">
-                  <div className="w-full flex-1 flex flex-col items-start justify-start">
-                    <div className="w-full self-stretch flex items-center justify-start">
-                      <div className="w-full relative">
-                        Detailed Address in Korea
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex items-center justify-start py-2.5 pr-3.5 pl-4">
-                    <div className="w-full flex-1 relative body-2">
-                      {getDetailAddress(value as GiggleAddress)}
-                    </div>
+                <div className="w-full flex flex-col gap-1">
+                  <p className="button-2 text-text-alternative">
+                    Detailed Address in korea
+                  </p>
+                  <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
+                    {getDetailAddress(value as GiggleAddress)}
                   </div>
                 </div>
               )}
-              {/* 대표 서명 */}
+              {/* 유학생 서명 */}
               {key === LaborContractEmployeeInfoProperty.SIGNATURE_BASE64 && (
                 <div className="flex flex-col gap-4">
-                  <div className="border border-gray-200 rounded-xl bg-white">
+                  <div className="border border-border-alternative rounded-lg">
                     {value !== '' && (
                       <img
-                      src={`data:image/svg+xml;base64,${value}`}
-                        className="w-full h-full object-cover"
+                        src={`data:image/svg+xml;base64,${value}`}
+                        className="w-full h-full object-cover bg-white rounded-lg"
                         alt="signature preview"
                       />
                     )}
                   </div>
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
       </div>
