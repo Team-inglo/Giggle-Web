@@ -14,11 +14,10 @@ export const enum APPLICATION_STEP {
 }
 
 export const APPLICATION_STATUS_TYPE = {
-  TOTAL: 'Total',
-  APPLICATION_IN_PROGRESS: 'Application in progress',
-  APPLICATION_SUCCESS: 'Application success',
-  APPLICATION_REJECTED: 'Application rejected',
-  RESUME_REJECTED: 'resume rejected',
+  APPLICATION_IN_PROGRESS: 'In Progress',
+  APPLICATION_SUCCESS: 'Success',
+  APPLICATION_REJECTED: 'Resubmit',
+  RESUME_REJECTED: 'Rejected',
   //PENDING: 'pending',
 } as const;
 

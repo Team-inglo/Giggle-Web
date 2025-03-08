@@ -1,7 +1,6 @@
 import { MatchKoEnAscendingSortType } from '@/types/common/sort';
 import { api } from '.';
 import { GetApplyPostListReqType, GetPostListReqType } from '@/types/api/post';
-import { APPLICATION_STATUS_TYPE } from '@/constants/application';
 import { filterNullParams } from '@/utils/filterNullParams';
 
 // 4.1 (게스트) 공고 리스트 조회
@@ -107,7 +106,7 @@ export const getApplyPostList = async ({
   status,
 }: GetApplyPostListReqType) => {
   const response = await api.get(
-    `/users/user-owner-job-postings/overviews?page=${page}&size=${size}&sorting=${sorting.toUpperCase()}${status === APPLICATION_STATUS_TYPE.TOTAL ? '' : `&status=${status.replace(/\s/g, '_').toUpperCase()}`}`,
+    `/users/user-owner-job-postings/overviews?page=${page}&size=${size}&sorting=${sorting.toUpperCase()}${!!status && `&status=${status}`}`,
   );
   return response.data;
 };
