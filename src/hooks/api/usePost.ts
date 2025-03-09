@@ -138,7 +138,7 @@ export const useGetRecommendPostList = () => {
 export const useGetApplicantList = (
   id: number,
   sorting: string,
-  status: string,
+  status: string | null,
   isEnabled: boolean,
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =

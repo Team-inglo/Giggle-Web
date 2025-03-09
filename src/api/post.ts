@@ -48,11 +48,11 @@ export const getApplicantList = async (
   page: number,
   id: number,
   sorting: string,
-  status: string,
+  status: string | null,
 ) => {
   const size = 10;
   const response = await api.get(
-    `/owners/job-postings/${id}/user-owner-job-postings/users/overviews?page=${page}&size=${size}&sorting=${sorting}${status !== 'TOTAL' ? `&status=${status}` : ''}`,
+    `/owners/job-postings/${id}/user-owner-job-postings/users/overviews?page=${page}&size=${size}&sorting=${sorting}${!!status && `&status=${status}`}`,
   );
   return response.data;
 };
