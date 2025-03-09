@@ -200,20 +200,16 @@ const DocumentCardDispenser = ({
           tagStyle="bg-primary-neutral text-primary-dark"
           tagText="Pending ... 🔄"
           content="The employer is in the process of completing the form."
-        >
-          <div className="flex flex-col w-full items-start justify-start text-text-normal">
-            <div className="w-full rounded-lg bg-surface-secondary flex items-center justify-start border border-surface-disabled px-4 py-2 pl-2.5">
-              <div className="flex items-center justify-start gap-2">
-                <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
-                  <TalkBallonIconGrey />
-                </div>
-                <div className="relative body-3 opacity-75">
-                  The employer is currently writing ...
-                </div>
-              </div>
-            </div>
-          </div>
-        </DocumentCardLayout>
+          preview="Check my Document"
+          onPreview={() => {
+            updateCurrentDocumentId(documentInfo.id);
+            navigate(`/document-preview/${documentInfo.id}`, {
+              state: {
+                type: type,
+              },
+            });
+          }}
+        />
       );
     case DocumentStatus.BEFORE_CONFIRMATION:
       return (

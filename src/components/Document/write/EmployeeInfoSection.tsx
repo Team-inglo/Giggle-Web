@@ -4,6 +4,8 @@ import {
   PartTimePermitFormInfo,
   PartTimePermitFormProperty,
 } from '@/constants/documents';
+import { UserType } from '@/constants/user';
+import { useUserStore } from '@/store/user';
 import {
   DocumentType,
   EmployeeInformation,
@@ -20,17 +22,15 @@ const EmployeeInfoSection = ({
   employee: EmployeeInformation | LaborContractEmployeeInfo;
   type: DocumentType;
 }) => {
+  const { account_type } = useUserStore();
+  const isEmployer = account_type === UserType.OWNER;
+  const language = isEmployer ? 'ko' : 'name';
   return (
     <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left body-3 bg-white">
       <div className="w-full self-stretch flex flex-col items-start jusitfy-center">
         <section className="w-full flex flex-col gap-1 pb-4 border-b border-border-alternative">
           <p className="w-full head-3 text-text-strong">
-            Employee Information 📋
-          </p>
-          <p className="w-full body-3 text-text-alternative">
-            Before drafting the hiring documents,
-            <br />
-            please verify that the employer's information is correct.
+            {isEmployer ? '유학생 정보 📋' : 'Employee Information 📋'}
           </p>
         </section>
         <div className="w-full self-stretch flex flex-col items-center justify-start text-left pt-4 gap-3">
@@ -39,11 +39,12 @@ const EmployeeInfoSection = ({
             <div className="w-full flex flex-col gap-1">
               <p className="button-2 text-text-alternative">
                 {type === DocumentType.PART_TIME_PERMIT
-                  ? PartTimePermitFormInfo[key as PartTimePermitFormProperty]
-                      .name
+                  ? PartTimePermitFormInfo[key as PartTimePermitFormProperty][
+                      language
+                    ]
                   : LaborContractEmployeeFormInfo[
                       key as LaborContractEmployeeInfoProperty
-                    ].name}
+                    ][language]}
               </p>
               {!['address', 'signature_base64'].includes(key) && (
                 <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">

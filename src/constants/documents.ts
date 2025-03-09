@@ -111,26 +111,32 @@ export const enum DocumentStatusEmployer {
 export const PartTimePermitFormInfo = {
   [PartTimePermitFormProperty.FIRST_NAME]: {
     name: 'First name',
+    ko: '이름',
     key: 'first_name',
   },
   [PartTimePermitFormProperty.LAST_NAME]: {
     name: 'Last name',
+    ko: '성',
     key: 'last_name',
   },
   [PartTimePermitFormProperty.MAJOR]: {
     name: 'Major',
+    ko: '전공',
     key: 'major',
   },
   [PartTimePermitFormProperty.TERM_OF_COMPLETION]: {
     name: 'Term of completion',
+    ko: '이수학기',
     key: 'term_of_completion',
   },
   [PartTimePermitFormProperty.PHONE_NUMBER]: {
     name: 'Phone number',
+    ko: '전화번호',
     key: 'phone_number',
   },
   [PartTimePermitFormProperty.EMAIL]: {
     name: 'Email',
+    ko: '이메일',
     key: 'email',
   },
 } as const;
@@ -158,46 +164,57 @@ export const mockPartTimePermitForm: PartTimePermitFormRequest = {
 export const PartTimeEmployPermitEmployerInfo = {
   [EmployerInfoProperty.COMPANY_NAME]: {
     name: 'Company name',
+    ko: '업체명',
     key: 'company_name',
   },
   [EmployerInfoProperty.COMPANY_REGISTRATION_NUMBER]: {
     name: 'Business registration number',
+    ko: '사업자등록번호',
     key: 'company_registration_number',
   },
   [EmployerInfoProperty.JOB_TYPE]: {
     name: 'Industry',
+    ko: '업종',
     key: 'job_type',
   },
   [EmployerInfoProperty.NAME]: {
     name: 'Representative',
+    ko: '대표자 이름',
     key: 'name',
   },
   [EmployerInfoProperty.PHONE_NUMBER]: {
     name: 'Phone number',
+    ko: '전화번호',
     key: 'phone_number',
   },
   [EmployerInfoProperty.SIGNATURE_BASE64]: {
     name: "Representative's signature",
+    ko: '서명',
     key: 'signature_base64',
   },
   [EmployerInfoProperty.WORK_PERIOD]: {
     name: 'Work period',
+    ko: '근무 기간',
     key: 'work_period',
   },
   [EmployerInfoProperty.HOURLY_RATE]: {
     name: 'Hourly rate',
+    ko: '시급',
     key: 'hourly_rate',
   },
   [EmployerInfoProperty.WORK_DAYS_WEEKDAYS]: {
     name: 'Weekday work hours',
+    ko: '평일 근무일시',
     key: 'work_days_weekdays',
   },
   [EmployerInfoProperty.WORK_DAYS_WEEKENDS]: {
     name: 'Weekend work hours',
+    ko: '주말 근무일시',
     key: 'work_days_weekends',
   },
   [EmployerInfoProperty.ADDRESS]: {
     name: 'Address in Korea',
+    ko: '주소',
     key: 'address',
   },
 } as const;
@@ -206,74 +223,92 @@ export const PartTimeEmployPermitEmployerInfo = {
 export const LaborContractEmployerInfoNameMap = {
   [LaborContractEmployerInfoProperty.COMPANY_NAME]: {
     name: 'Company name',
+    ko: '업체명',
     key: 'company_name',
   },
   [LaborContractEmployerInfoProperty.COMPANY_REGISTRATION_NUMBER]: {
     name: 'Company Registration Number',
+    ko: '사업자등록번호',
     key: 'company_registration_number',
   },
   [LaborContractEmployerInfoProperty.PHONE_NUMBER]: {
     name: 'Company Phone Number',
+    ko: '',
     key: 'phone_number',
   },
   [LaborContractEmployerInfoProperty.NAME]: {
     name: 'Representative name',
+    ko: '대표자 이름',
     key: 'name',
   },
   [LaborContractEmployerInfoProperty.START_DATE]: {
     name: 'Work start date',
+    ko: '근무 시작일',
     key: 'start_date',
   },
   [LaborContractEmployerInfoProperty.END_DATE]: {
     name: 'Work end date',
+    ko: '근무 종료일',
     key: 'end_date',
   },
   [LaborContractEmployerInfoProperty.ADDRESS]: {
     name: 'Work place address',
+    ko: '근무지 주소',
     key: 'address',
   },
   [LaborContractEmployerInfoProperty.DESCRIPTION]: {
     name: 'Work details',
+    ko: '상세 업무 내용',
     key: 'description',
   },
   [LaborContractEmployerInfoProperty.WORK_DAY_TIME_LIST]: {
     name: 'Working days and working hours by working days',
+    ko: '근무일시',
     key: 'work_day_time_list',
   },
   [LaborContractEmployerInfoProperty.WEEKLY_LAST_DAYS]: {
     name: 'Weekly holidays',
+    ko: '주휴일',
     key: 'weekly_last_days',
   },
   [LaborContractEmployerInfoProperty.HOURLY_RATE]: {
     name: 'Hourly pay',
+    ko: '시급',
     key: 'hourly_rate',
   },
   [LaborContractEmployerInfoProperty.BONUS]: {
     name: 'Bonuses',
+    ko: '보너스',
     key: 'bonus',
   },
   [LaborContractEmployerInfoProperty.ADDITIONAL_SALARY]: {
     name: 'Other benefits (such as allowances)',
+    ko: '기타 복지',
     key: 'additional_salary',
   },
   [LaborContractEmployerInfoProperty.WAGE_RATE]: {
     name: 'Additional wage rate for overtime work',
+    ko: '초과근무수당',
     key: 'wage_rate',
   },
   [LaborContractEmployerInfoProperty.PAYMENT_DAY]: {
     name: 'Wage payment date',
+    ko: '급여지급일',
     key: 'payment_day',
   },
   [LaborContractEmployerInfoProperty.PAYMENT_METHOD]: {
     name: 'Wage payment method',
+    ko: '급여지급방식',
     key: 'payment_method',
   },
   [LaborContractEmployerInfoProperty.INSURANCE]: {
     name: 'Social insurance coverage',
+    ko: '보험',
     key: 'insurance',
   },
   [LaborContractEmployerInfoProperty.SIGNATURE_BASE64]: {
     name: "Representative's signature",
+    ko: '대표자 서명',
     key: 'signature_base64',
   },
 } as const;
@@ -346,22 +381,27 @@ export enum LaborContractEmployeeInfoProperty {
 export const LaborContractEmployeeFormInfo = {
   [LaborContractEmployeeInfoProperty.FIRST_NAME]: {
     name: 'First name',
+    ko: '이름',
     key: 'first_name',
   },
   [LaborContractEmployeeInfoProperty.LAST_NAME]: {
     name: 'Last name',
+    ko: '성',
     key: 'last_name',
   },
   [LaborContractEmployeeInfoProperty.PHONE_NUMBER]: {
     name: 'Phone number',
+    ko: '전화번호',
     key: 'phone_number',
   },
   [LaborContractEmployeeInfoProperty.SIGNATURE_BASE64]: {
     name: 'Signature',
+    ko: '서명',
     key: 'signature_base64',
   },
   [LaborContractEmployeeInfoProperty.ADDRESS]: {
     name: 'Address',
+    ko: '주소',
     key: 'address',
   },
 } as const;

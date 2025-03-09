@@ -1,7 +1,8 @@
 import { DocumentType, EmployDocumentInfo } from '@/types/api/document';
-import TalkBallonIconGrey from '@/assets/icons/TalkBalloonGrey.svg?react';
 import FolderIcon from '@/assets/icons/FolderIcon.svg?react';
 import DownloadIcon from '@/assets/icons/DownloadIcon.svg?react';
+import BlackFolderIcon from '@/assets/icons/BlackFolder.svg?react';
+import ArrowrightIcon from '@/assets/icons/Chevron.svg?react';
 import { useNavigate } from 'react-router-dom';
 import { DocumentStatusEmployer } from '@/constants/documents';
 import {
@@ -20,6 +21,8 @@ type DocumentCardProps = {
   title: string;
   content: string;
   reason?: string;
+  preview?: string;
+  onPreview?: () => void;
 };
 
 const DocumentCardLayout = ({
@@ -29,6 +32,8 @@ const DocumentCardLayout = ({
   title,
   content,
   reason,
+  preview,
+  onPreview,
 }: DocumentCardProps) => {
   return (
     <div className="w-full p-4 flex flex-col rounded-lg bg-white border border-border-disabled">
@@ -46,6 +51,18 @@ const DocumentCardLayout = ({
       {reason && (
         <div className="w-full pb-2 body-3 text-text-strong">
           <p className="py-2">{'사유 : ' + reason}</p>
+        </div>
+      )}
+      {preview && (
+        <div
+          className="relative w-full button-2 bg-surface-secondary rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-1"
+          onClick={onPreview}
+        >
+          <BlackFolderIcon />
+          <p>{preview}</p>
+          <div className="absolute right-3">
+            <ArrowrightIcon />
+          </div>
         </div>
       )}
       <div className="w-full flex flex-row gap-2">{children}</div>
@@ -180,27 +197,21 @@ const DocumentCardDispenserEmployer = ({
       );
     case DocumentStatusEmployer.SUBMITTED:
       return (
-        <>
-          <DocumentCardLayout
-            title={title}
-            tagStyle="bg-primary-neutral text-primary-dark"
-            tagText="조금만 기다려주세요 ... 🔄"
-            content="유학생이 문서를 확인 중이에요. 조금만 기다려 주세요!"
-          >
-            <div className="flex flex-col w-full items-start justify-start text-text-normal">
-              <div className="w-full rounded-lg bg-surface-secondary flex items-center justify-start border border-surface-disabled px-4 py-2 pl-2.5">
-                <div className="flex items-center justify-start gap-2">
-                  <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
-                    <TalkBallonIconGrey />
-                  </div>
-                  <div className="relative body-3 opacity-75">
-                    유학생이 서류를 확인 중이에요
-                  </div>
-                </div>
-              </div>
-            </div>
-          </DocumentCardLayout>
-        </>
+        <DocumentCardLayout
+          title={title}
+          tagStyle="bg-primary-neutral text-primary-dark"
+          tagText="조금만 기다려주세요 ... 🔄"
+          content="유학생이 문서를 확인 중이에요. 조금만 기다려 주세요!"
+          preview="서류 확인하기"
+          onPreview={() => {
+            updateCurrentDocumentId(documentInfo.id);
+            navigate(`/document-preview/${documentInfo.id}`, {
+              state: {
+                type: type,
+              },
+            });
+          }}
+        />
       );
     case DocumentStatusEmployer.REWRITING:
       if (reason)

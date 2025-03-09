@@ -1,6 +1,6 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import EmployeeInfoSection from '@/components/Document/write/EmployeeInfoSection';
 import DocumentSubHeaderEmployer from '@/components/Employer/ApplicantDocumentsDetail/DocumentSubHeaderEmployer';
-import EmployeeInfoSectionKOR from '@/components/Employer/WriteDocument/EmployeeInfoSectionKOR';
 import EmployerLaborContractForm from '@/components/Employer/WriteDocument/EmployerLaborContractForm';
 import EmployerPartTimePermitForm from '@/components/Employer/WriteDocument/EmployerPartTimePermitForm';
 import {
@@ -64,7 +64,7 @@ const EmployerWriteDocumentsPage = () => {
         <DocumentSubHeaderEmployer type={type as DocumentType} />
         <div className="flex flex-col items-center justify-start gap-6 p-4 bg-surface-secondary">
           {type !== DocumentType.INTEGRATED_APPLICATION && document && (
-            <EmployeeInfoSectionKOR
+            <EmployeeInfoSection
               employee={
                 (document as PartTimePermitData | LaborContractDataResponse)
                   .employee_information
