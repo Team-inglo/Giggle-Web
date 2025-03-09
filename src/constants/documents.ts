@@ -48,43 +48,46 @@ export const EmployerDocumentTypeInfo = {
 
 export const DocumentSubTitleContent = {
   [DocumentType.PART_TIME_PERMIT]: {
-    name: 'Part-Time Employment Permit',
-    key: 'part_time_employment_permits',
-    content:
-      "International students must have the applicable permit to work part-time or part-time. If you don't get permission, you can become an illegal resident.",
+    student: {
+      name: 'Part-Time Employment Permit',
+      key: 'part_time_employment_permits',
+      content:
+        "International students must have the applicable permit to work part-time or part-time. If you don't get permission, you can become an illegal resident.",
+    },
+    employer: {
+      name: '취업허가서를 작성해주세요 ✍',
+      key: 'part_time_employment_permits',
+      content:
+        '시간제 근무를 하려면 유학생은 취업허가서를 소지해야 해요. 만약 허가 없이 근무할 경우, 고용주에게도 불이익이 발생할 수 있어요. 안전한 채용을 위해 꼭 확인해 주세요!',
+    }
   },
   [DocumentType.LABOR_CONTRACT]: {
-    name: 'Standard labor contract for short-time workers',
-    key: 'standard_labor_contract',
-    content:
-      'Regardless of the type of employment, all workers are required to write an employment contract, which allows them to maintain a legal and transparent employment relationship.',
+    student: {
+      name: 'Standard labor contract for short-time workers',
+      key: 'standard_labor_contract',
+      content:
+        'Regardless of the type of employment, all workers are required to write an employment contract, which allows them to maintain a legal and transparent employment relationship.',
+    },
+    employer: {
+      name: '표준근로계약서를 작성해주세요 ✍',
+      key: 'standard_labor_contract',
+      content:
+        '고용 형태와 관계없이 모든 근로자는 근로계약서를 작성해야 해요. 이는 법적으로 필수 사항이며, 근로계약서를 작성하지 않으면 500만원 이하 벌금이 부과될 수 있어요.',
+    }
   },
   [DocumentType.INTEGRATED_APPLICATION]: {
-    name: 'Application Form',
-    key: 'integrated_application',
-    content:
-      'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
-  },
-} as const;
-
-export const EmployerDocumentSubTitleContent = {
-  [DocumentType.PART_TIME_PERMIT]: {
-    name: '취업허가서를 작성해주세요 ✍',
-    key: 'part_time_employment_permits',
-    content:
-      '시간제 근무를 하려면 유학생은 취업허가서를 소지해야 해요. 만약 허가 없이 근무할 경우, 고용주에게도 불이익이 발생할 수 있어요. 안전한 채용을 위해 꼭 확인해 주세요!',
-  },
-  [DocumentType.LABOR_CONTRACT]: {
-    name: '표준근로계약서를 작성해주세요 ✍',
-    key: 'standard_labor_contract',
-    content:
-      '고용 형태와 관계없이 모든 근로자는 근로계약서를 작성해야 해요. 이는 법적으로 필수 사항이며, 근로계약서를 작성하지 않으면 500만원 이하 벌금이 부과될 수 있어요.',
-  },
-  [DocumentType.INTEGRATED_APPLICATION]: {
-    name: 'Application Form',
-    key: 'integrated_application',
-    content:
-      'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
+    student: {
+      name: 'Application Form',
+      key: 'integrated_application',
+      content:
+        'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
+    },
+    employer: {
+      name: 'Application Form',
+      key: 'integrated_application',
+      content:
+        'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
+    }
   },
 } as const;
 

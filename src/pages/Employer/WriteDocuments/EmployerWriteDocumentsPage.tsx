@@ -1,6 +1,6 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import DocumentSubHeader from '@/components/Document/write/DocumentSubHeader';
 import EmployeeInfoSection from '@/components/Document/write/EmployeeInfoSection';
-import DocumentSubHeaderEmployer from '@/components/Employer/ApplicantDocumentsDetail/DocumentSubHeaderEmployer';
 import EmployerLaborContractForm from '@/components/Employer/WriteDocument/EmployerLaborContractForm';
 import EmployerPartTimePermitForm from '@/components/Employer/WriteDocument/EmployerPartTimePermitForm';
 import {
@@ -61,7 +61,7 @@ const EmployerWriteDocumentsPage = () => {
             navigate(`/employer/applicant/document-detail/${currentDocumentId}`)
           } // 서류관리 페이지로 이동 요망
         />
-        <DocumentSubHeaderEmployer type={type as DocumentType} />
+        <DocumentSubHeader type={type as DocumentType} />
         <div className="flex flex-col items-center justify-start gap-6 p-4 bg-surface-secondary">
           {type !== DocumentType.INTEGRATED_APPLICATION && document && (
             <EmployeeInfoSection
