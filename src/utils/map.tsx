@@ -26,19 +26,19 @@ export const pick = <T extends object, K extends keyof T>(
 export const renderMap = (address: GiggleAddress) => {
   return (
     <>
-      <div className="w-full self-stretch drop-shadow-[0_1px_2px_rgba(107,110,116,0.04)] rounded-xl flex flex-col items-center justify-start py-2.5 pr-3.5 pl-4">
+      <div className="w-full self-stretch flex flex-col items-start justify-start">
         <div className="w-full flex-1 relative body-2">
           {address.address_name}
         </div>
       </div>
-      <div className="w-full rounded-xl">
+      <div className="w-full rounded-lg">
         <Map
           center={{
             lat: Number(address.latitude),
             lng: Number(address.longitude),
           }}
           style={{ width: '100%', height: '200px' }}
-          className="rounded-xl"
+          className="rounded-lg"
         >
           <MapMarker
             position={{
@@ -75,7 +75,6 @@ export const convertToAddress = (addressData: Address): GiggleAddress => {
     latitude: null,
   };
 };
-
 
 interface KakaoAddressResult {
   x: string;

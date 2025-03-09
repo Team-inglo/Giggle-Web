@@ -25,20 +25,20 @@ const PostDetailCompanyImageList = ({
     };
   }, [isOpen]);
 
-  // TODO: 대표 사진 1개만 보여주고 클릭하면 사진 리스트 보여주기
   return (
     <>
       {companyImageData?.length ? (
         <section
-          className="w-full h-[8.75rem] bg-cover bg-center"
+          className="w-full h-[10.5rem] bg-cover bg-center"
           style={{
             backgroundImage: `url(${companyImageData[0].img_url})`,
           }}
           onClick={() => setIsOpen(true)}
         ></section>
       ) : (
-        <section className="w-full h-[8.75rem] bg-cover bg-center bg-[#F4F4F9]"></section>
+        <section className="w-full h-[10.5rem] bg-cover bg-center bg-surface-secondary"></section>
       )}
+      {/* 모든 회사 사진 목록을 보여주는 리스트 */}
       {isOpen && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center bg-black bg-opacity-90 z-50 overflow-x-scroll no-scrollbar whitespace-nowrap">
           <button

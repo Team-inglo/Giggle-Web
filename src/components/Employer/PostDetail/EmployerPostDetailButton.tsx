@@ -13,7 +13,7 @@ const EmployerPostDetailButton = () => {
   return (
     <>
       <BottomButtonPanel>
-        <div className="w-full flex gap-2 z-20">
+        <div className="w-full flex justify-center gap-2 z-20">
           <Button
             type={buttonTypeKeys.BACK}
             bgColor="bg-[#F4F4F9]"

@@ -25,7 +25,7 @@ const PostSearchFilterToggle = ({
           <DownArrowIcon />
         </button>
       </div>
-      {isOpen && <div className="pt-[1rem]">{children}</div>}
+      {isOpen && <div className="pt-4">{children}</div>}
     </div>
   );
 };

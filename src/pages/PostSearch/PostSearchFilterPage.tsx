@@ -45,9 +45,9 @@ const PostSearchFilterPage = () => {
             hasBackButton={true}
             onClickBackButton={goToPostSearchPage}
             hasMenuButton={false}
-            title="Filter"
+            title={'Filtering'}
           />
-          <section className="flex flex-col gap-[3.125rem] w-full p-[1.5rem]">
+          <section className="flex flex-col gap-8 w-full p-4">
             <PostSearchFilterAreaInput
               setIsOpenAreaFilter={setIsOpenAreaFilter}
               filterList={filterList}

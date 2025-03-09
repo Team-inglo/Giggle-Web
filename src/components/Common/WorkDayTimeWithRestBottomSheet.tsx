@@ -81,7 +81,7 @@ const WorkDayTimeWithRestBottomSheet = ({
             <div className="flex flex-wrap gap-[0.5rem] w-full">
               {Object.keys(DAYS).map((value, index) => (
                 <button
-                  className={`py-[0.375rem] px-[0.875rem] body-3 border border-[#EFEFEF] rounded-[1.125rem] ${dayOfWeek.includes(value as DayType) ? 'bg-[#FEF387]' : 'bg-white'}`}
+                  className={`py-[0.375rem] px-[0.875rem] body-3 border border-border-alternative rounded-[1.125rem] ${dayOfWeek.includes(value as DayType) ? 'bg-[#FEF387]' : 'bg-white'}`}
                   key={`${value}_${index}`}
                   onClick={() => onClickDayOfWeek(value as DayType)}
                 >

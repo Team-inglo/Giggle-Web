@@ -145,19 +145,21 @@ const EmployerPartTimePermitForm = ({
         className={`w-full flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <DaumPostcodeEmbed
-            style={{
-              position: 'fixed',
-              top: '50px',
-              width: '100%',
-              height: 'calc(100vh - 100px)',
-              marginTop: '3.125rem',
-              paddingBottom: '6.25rem',
-            }}
-            theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
-            onComplete={handleAddressSelection}
-            onClose={() => setIsAddressSearch(false)}
-          />
+          <div className="w-full h-screen fixed inset-0 bg-white">
+            <DaumPostcodeEmbed
+              style={{
+                position: 'fixed',
+                top: '50px',
+                width: '100%',
+                height: 'calc(100vh - 100px)',
+                marginTop: '3.125rem',
+                paddingBottom: '6.25rem',
+              }}
+              theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
+              onComplete={handleAddressSelection}
+              onClose={() => setIsAddressSearch(false)}
+            />
+          </div>
         ) : (
           <div className="p-6 [&>*:last-child]:mb-40 flex flex-col gap-4">
             {/* 업체명 입력 */}

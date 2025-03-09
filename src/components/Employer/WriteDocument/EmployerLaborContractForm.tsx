@@ -158,19 +158,21 @@ const EmployerLaborContractForm = ({
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <DaumPostcodeEmbed
-            style={{
-              position: 'fixed',
-              top: '50px',
-              width: '100%',
-              height: 'calc(100vh - 100px)',
-              marginTop: '3.125rem',
-              paddingBottom: '6.25rem',
-            }}
-            theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
-            onComplete={handleAddressSelection}
-            onClose={() => setIsAddressSearch(false)}
-          />
+          <div className="w-full h-screen fixed inset-0 bg-white">
+            <DaumPostcodeEmbed
+              style={{
+                position: 'fixed',
+                top: '50px',
+                width: '100%',
+                height: 'calc(100vh - 100px)',
+                marginTop: '3.125rem',
+                paddingBottom: '6.25rem',
+              }}
+              theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
+              onComplete={handleAddressSelection}
+              onClose={() => setIsAddressSearch(false)}
+            />
+          </div>
         ) : (
           <div className="p-6 [&>*:last-child]:mb-40 flex flex-col gap-4">
             {/* 회사/점포명 입력 */}
@@ -400,7 +402,7 @@ const EmployerLaborContractForm = ({
               <div className="flex flex-wrap gap-[0.5rem] w-full">
                 {Object.keys(DAYS).map((value, index) => (
                   <button
-                    className={`py-[0.375rem] px-[0.875rem] body-3 border border-[#EFEFEF] rounded-[1.125rem] ${newDocumentData.weekly_last_days.includes(Object.values(DAYS)[index] as DayOfWeek) ? 'bg-[#FEF387]' : 'bg-white'}`}
+                    className={`py-[0.375rem] px-[0.875rem] body-3 border-border-alternative rounded-[1.125rem] ${newDocumentData.weekly_last_days.includes(Object.values(DAYS)[index] as DayOfWeek) ? 'bg-[#FEF387]' : 'bg-white'}`}
                     key={`${value}_${index}`}
                     onClick={() =>
                       handleClickDayOfWeek(

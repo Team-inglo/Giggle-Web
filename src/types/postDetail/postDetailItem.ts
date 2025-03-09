@@ -65,7 +65,7 @@ export type SummariesType = {
 };
 
 type RecruitmentConditionsType = {
-  recruitment_dead_line?: string; //'yyyy-MM-dd'
+  recruitment_deadline: string;
   education: EducationType;
   number_of_recruits: number;
   visa: VisaType[];

@@ -1,9 +1,6 @@
-<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Iconography">
-<ellipse id="Oval" cx="3.99693" cy="4.64879" rx="2.96568" ry="2.96568" stroke="#464646" stroke-width="0.6" stroke-linejoin="round"/>
-<path id="Path" d="M5.66452 0.756453C5.16771 0.519937 4.59947 0.385742 3.99581 0.385742C3.39256 0.385742 2.82469 0.519752 2.32812 0.755964" stroke="#464646" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Path 11" d="M3.99893 0.570801V1.49758" stroke="#464646" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Path 10" d="M3.99893 4.64886V3.16602" stroke="#464646" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Path 10_2" d="M4.00153 4.64883H5.48438" stroke="#464646" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group">
+<path id="Vector" opacity="0.3" fill-rule="evenodd" clip-rule="evenodd" d="M10 18.3331C5.85786 18.3331 2.5 14.9752 2.5 10.8331C2.5 6.69093 5.85786 3.33307 10 3.33307C14.1421 3.33307 17.5 6.69093 17.5 10.8331C17.5 14.9752 14.1421 18.3331 10 18.3331Z" fill="#FFD817"/>
+<path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M9.96924 6.25H10.0396C10.2537 6.25 10.4329 6.41221 10.4542 6.62521L10.8334 10.4167L13.5401 11.9634C13.6699 12.0376 13.7501 12.1756 13.7501 12.3251V12.5C13.7501 12.6758 13.6076 12.8182 13.4318 12.8182C13.4035 12.8182 13.3754 12.8145 13.3481 12.807L9.49894 11.7573C9.30613 11.7047 9.17781 11.5226 9.19313 11.3233L9.5538 6.63471C9.5705 6.41763 9.75151 6.25 9.96924 6.25Z" fill="#FFD817"/>
 </g>
 </svg>

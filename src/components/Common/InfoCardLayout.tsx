@@ -25,7 +25,7 @@ const InfoCardLayout = ({
         )}
       </div>
       {children && (
-        <div className="mt-4 pt-4 border-t border-[#F8F8F8]">{children}</div>
+        <div className="mt-3 pt-3 border-t border-[#F8F8F8]">{children}</div>
       )}
     </section>
   );

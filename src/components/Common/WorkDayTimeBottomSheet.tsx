@@ -114,7 +114,7 @@ const WorkDayTimeBottomSheet = ({
             <div className="flex flex-wrap gap-[0.5rem] w-full">
               {Object.keys(DAYS).map((value, index) => (
                 <button
-                  className={`py-[0.375rem] px-[0.875rem] body-3 border border-[#EFEFEF] rounded-[1.125rem] ${isCheckAllWeek ? 'bg-[#F4F4F9] text-[#BDBDBD]' : dayOfWeek.includes(value as DayType) ? 'bg-[#FEF387] text-[#1E1926]' : 'bg-white text-[#656565]'}`}
+                  className={`py-[0.375rem] px-[0.875rem] body-3 border border-border-alternative rounded-[1.125rem] ${isCheckAllWeek ? 'bg-[#F4F4F9] text-[#BDBDBD]' : dayOfWeek.includes(value as DayType) ? 'bg-[#FEF387] text-[#1E1926]' : 'bg-white text-[#656565]'}`}
                   key={`${value}_${index}`}
                   onClick={() => onClickDayOfWeek(value as DayType)}
                   disabled={isCheckAllWeek}
