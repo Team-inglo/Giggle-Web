@@ -1,6 +1,11 @@
 export const ASCENDING_SORT_TYPE = {
-  ASCENDING: 'Ascending',
-  DESCENDING: 'Descending',
+  ASCENDING: 'Oldest',
+  DESCENDING: 'Recent',
+} as const;
+
+export const MATCH_ASCENDING_SORT_TYPE = {
+  Oldest: 'ASCENDING',
+  Recent: 'DESCENDING',
 } as const;
 
 export const KO_ASCENDING_SORT_TYPE = {

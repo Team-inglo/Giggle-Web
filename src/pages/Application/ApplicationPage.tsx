@@ -4,7 +4,10 @@ import LoadingItem from '@/components/Common/LoadingItem';
 import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
 import Tag from '@/components/Common/Tag';
 import { APPLICATION_STATUS_TYPE } from '@/constants/application';
-import { ASCENDING_SORT_TYPE } from '@/constants/sort';
+import {
+  ASCENDING_SORT_TYPE,
+  MATCH_ASCENDING_SORT_TYPE,
+} from '@/constants/sort';
 import { useGetApplyPostList } from '@/hooks/api/usePost';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { AppicationItemType } from '@/types/application/applicationItem';
@@ -14,14 +17,14 @@ import { useEffect, useState } from 'react';
 
 const ApplicationPage = () => {
   const [selectedSort, setSelectedSort] = useState<AscendingSortType>(
-    ASCENDING_SORT_TYPE.ASCENDING,
+    ASCENDING_SORT_TYPE.DESCENDING,
   );
   const [selectedStatus, setSelectedStatus] =
     useState<ApplicationStatusType | null>(null);
 
   const [requestParams, setRequestParams] = useState({
     size: 10,
-    sorting: selectedSort,
+    sorting: MATCH_ASCENDING_SORT_TYPE[selectedSort],
     status: selectedStatus,
   });
 
@@ -38,7 +41,10 @@ const ApplicationPage = () => {
 
   const selectSort = (sort: AscendingSortType) => {
     setSelectedSort(sort);
-    setRequestParams({ ...requestParams, sorting: sort });
+    setRequestParams({
+      ...requestParams,
+      sorting: MATCH_ASCENDING_SORT_TYPE[sort],
+    });
   };
 
   const selectStatus = (status: ApplicationStatusType) => {

@@ -1,6 +1,9 @@
 import { POST_SEARCH_MENU } from '@/constants/postSearch';
 import { ApplicationStatusType } from '../application/applicationStatus';
-import { AscendingSortType, MatchKoEnAscendingSortType } from '../common/sort';
+import {
+  MatchAscendingSortType,
+  MatchKoEnAscendingSortType,
+} from '../common/sort';
 
 export type GetPostListReqType = {
   size: number;
@@ -23,7 +26,7 @@ export type GetPostListReqType = {
 export type GetApplyPostListReqType = {
   page?: number;
   size: number;
-  sorting: AscendingSortType;
+  sorting: MatchAscendingSortType;
   status: ApplicationStatusType | null;
 };
 
