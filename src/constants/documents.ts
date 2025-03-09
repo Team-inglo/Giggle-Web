@@ -6,6 +6,7 @@ import {
   LaborContractEmployerInfoProperty,
   PaymentMethod,
   WorkPeriod,
+  IntegratedApplicationField,
 } from '@/types/api/document';
 import {
   DocumentType,
@@ -59,7 +60,7 @@ export const DocumentSubTitleContent = {
       key: 'part_time_employment_permits',
       content:
         '시간제 근무를 하려면 유학생은 취업허가서를 소지해야 해요. 만약 허가 없이 근무할 경우, 고용주에게도 불이익이 발생할 수 있어요. 안전한 채용을 위해 꼭 확인해 주세요!',
-    }
+    },
   },
   [DocumentType.LABOR_CONTRACT]: {
     student: {
@@ -73,7 +74,7 @@ export const DocumentSubTitleContent = {
       key: 'standard_labor_contract',
       content:
         '고용 형태와 관계없이 모든 근로자는 근로계약서를 작성해야 해요. 이는 법적으로 필수 사항이며, 근로계약서를 작성하지 않으면 500만원 이하 벌금이 부과될 수 있어요.',
-    }
+    },
   },
   [DocumentType.INTEGRATED_APPLICATION]: {
     student: {
@@ -87,7 +88,7 @@ export const DocumentSubTitleContent = {
       key: 'integrated_application',
       content:
         'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
-    }
+    },
   },
 } as const;
 
@@ -461,6 +462,82 @@ export const LaborContractEmployeePropertyInfo = {
   },
   [LaborContractEmployeeInfoProperty.SIGNATURE_BASE64]: {
     name: '서명',
+  },
+} as const;
+
+// 통합신청서 작성 시 정보와 이름 매핑
+export const IntegratedApplicationPropertyInfo = {
+  [IntegratedApplicationField.FIRST_NAME]: {
+    name: 'First Name',
+    ko: '이름',
+  },
+  [IntegratedApplicationField.LAST_NAME]: {
+    name: 'Last Name',
+    ko: '성',
+  },
+  [IntegratedApplicationField.BIRTH]: {
+    name: 'Date of Birth',
+    ko: '생년월일',
+  },
+  [IntegratedApplicationField.GENDER]: {
+    name: 'Gender',
+    ko: '성별',
+  },
+  [IntegratedApplicationField.NATIONALITY]: {
+    name: 'Nationality',
+    ko: '국적',
+  },
+  [IntegratedApplicationField.ADDRESS]: {
+    name: 'Address in Korea',
+    ko: '한국 주소',
+  },
+  [IntegratedApplicationField.TELE_PHONE_NUMBER]: {
+    name: 'Telephone Number',
+    ko: '전화번호',
+  },
+  [IntegratedApplicationField.CELL_PHONE_NUMBER]: {
+    name: 'Cell Phone Number',
+    ko: '휴대전화',
+  },
+  [IntegratedApplicationField.IS_ACCREDITED]: {
+    name: 'Type Of Name',
+    ko: '인증 여부',
+  },
+  [IntegratedApplicationField.SCHOOL_NAME]: {
+    name: 'School Name',
+    ko: '학교명',
+  },
+  [IntegratedApplicationField.SCHOOL_PHONE_NUMBER]: {
+    name: 'Phone Number Of School',
+    ko: '학교 전화번호',
+  },
+  [IntegratedApplicationField.NEW_WORK_PLACE_NAME]: {
+    name: 'New Workplace',
+    ko: '근무처명',
+  },
+  [IntegratedApplicationField.NEW_WORK_PLACE_REGISTRATION_NUMBER]: {
+    name: 'Business Registration Number No. Of New Workplace',
+    ko: '사업자등록번호',
+  },
+  [IntegratedApplicationField.NEW_WORK_PLACE_PHONE_NUMBER]: {
+    name: 'Phone Number Of New Workplace',
+    ko: '근무처 전화번호',
+  },
+  [IntegratedApplicationField.ANNUAL_INCOME_AMOUNT]: {
+    name: 'Annual Income Amount',
+    ko: '연간 소득액',
+  },
+  [IntegratedApplicationField.OCCUPATION]: {
+    name: 'Occupation',
+    ko: '직종',
+  },
+  [IntegratedApplicationField.EMAIL]: {
+    name: 'Email',
+    ko: '이메일',
+  },
+  [IntegratedApplicationField.SIGNATURE_BASE64]: {
+    name: 'Applicant Signature',
+    ko: '서명',
   },
 } as const;
 

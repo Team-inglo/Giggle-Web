@@ -254,6 +254,27 @@ export type IntegratedApplicationData = {
   address: GiggleAddress;
 };
 
+export enum IntegratedApplicationField {
+  FIRST_NAME = 'first_name',
+  LAST_NAME = 'last_name',
+  BIRTH = 'birth',
+  GENDER = 'gender',
+  NATIONALITY = 'nationality',
+  TELE_PHONE_NUMBER = 'tele_phone_number',
+  CELL_PHONE_NUMBER = 'cell_phone_number',
+  IS_ACCREDITED = 'is_accredited',
+  SCHOOL_NAME = 'school_name',
+  SCHOOL_PHONE_NUMBER = 'school_phone_number',
+  NEW_WORK_PLACE_NAME = 'new_work_place_name',
+  NEW_WORK_PLACE_REGISTRATION_NUMBER = 'new_work_place_registration_number',
+  NEW_WORK_PLACE_PHONE_NUMBER = 'new_work_place_phone_number',
+  ANNUAL_INCOME_AMOUNT = 'annual_income_amount',
+  OCCUPATION = 'occupation',
+  EMAIL = 'email',
+  SIGNATURE_BASE64 = 'signature_base64',
+  ADDRESS = 'address',
+}
+
 export type School = {
   id: number;
   name: string;
