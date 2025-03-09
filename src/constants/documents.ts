@@ -1,5 +1,4 @@
 import {
-  DayOfWeek,
   PartTimeEmployeeInfoProperty,
   Insurance,
   IntegratedApplicationData,
@@ -11,7 +10,6 @@ import {
 import {
   DocumentType,
   EmployerInfoProperty,
-  EmployerInformation,
   LaborContractEmployeeInfo,
   PartTimePermitFormRequest,
 } from '@/types/api/document';
@@ -149,15 +147,6 @@ export const initialPartTimePermitForm: PartTimePermitFormRequest = {
   term_of_completion: 0,
   phone_number: '',
   email: '',
-};
-// 시간제 근무 허가 신청서 mock data
-export const mockPartTimePermitForm: PartTimePermitFormRequest = {
-  first_name: '길동',
-  last_name: '홍',
-  major: '컴퓨터공학과',
-  term_of_completion: 4,
-  phone_number: '010-1234-5678',
-  email: 'gildong.hong@example.com',
 };
 
 // 시간제 근무 허가서 내 고용주 입력 정보 속성과 이름 mapping
@@ -313,30 +302,6 @@ export const LaborContractEmployerInfoNameMap = {
   },
 } as const;
 
-// 고용주 mock data
-export const mockEmployerInformation: EmployerInformation = {
-  company_name: '테크스타트 주식회사',
-  company_registration_number: '123-45-67890',
-  job_type: '정보통신업',
-  name: '홍길동',
-  phone_number: '010-1111-1111',
-  signature_base64: '',
-  work_period: WorkPeriod.ONE_MONTH_TO_THREE_MONTHS,
-  hourly_rate: 10000,
-  work_days_weekdays: null,
-  work_days_weekends: null,
-  address: {
-    address_name: '서울 강남구 테헤란로 401 팁스타운',
-    region_1depth_name: '서울',
-    region_2depth_name: '강남구',
-    region_3depth_name: '삼성동',
-    region_4depth_name: '테헤란로 401',
-    address_detail: '팁스타운 6층',
-    longitude: 127.0507355,
-    latitude: 37.5051374,
-  },
-};
-
 // 고용주 표준근로계약서 초기 state
 export const initialLaborContractEmployerInfo: LaborContractEmployerInfo = {
   company_name: '',
@@ -424,92 +389,6 @@ export const initialLaborContractEmployeeInfo: LaborContractEmployeeInfo = {
   signature_base64: '',
 };
 
-// 표준계약서 mock data
-export const mockLaborContractEmployeeInfo: LaborContractEmployeeInfo = {
-  first_name: '영희',
-  last_name: '박',
-  address: {
-    address_name: '경기도 성남시 분당구 판교역로 235',
-    region_1depth_name: '경기도',
-    region_2depth_name: '성남시',
-    region_3depth_name: '분당구 판교역로',
-    region_4depth_name: '235',
-    address_detail: '에이치스퀘어 N동 8층',
-    longitude: 127.1086228,
-    latitude: 37.4020909,
-  },
-  phone_number: '010-9876-5432',
-  signature_base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAA...',
-};
-
-// 근로계약서 고용주 mock data
-export const sampleLaborContract: LaborContractEmployerInfo = {
-  company_name: 'ABC Technology Co., Ltd.',
-  company_registration_number: null,
-  phone_number: '010-1111-1111',
-  name: 'John Smith',
-  start_date: '2024-01-01',
-  end_date: '2024-12-31',
-  address: {
-    address_name: '서울특별시 강남구 테헤란로 123',
-    region_1depth_name: '서울특별시',
-    region_2depth_name: '강남구',
-    region_3depth_name: '테헤란로',
-    region_4depth_name: null,
-    address_detail: 'ABC빌딩 5층',
-    longitude: 127.0495556,
-    latitude: 37.5048122,
-  },
-  description: 'Software development and maintenance for web applications',
-  work_day_time_list: [
-    {
-      day_of_week: DayOfWeek.MONDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.TUESDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.WEDNESDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.THURSDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.FRIDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-  ],
-  weekly_last_days: [DayOfWeek.SATURDAY, DayOfWeek.SUNDAY],
-  hourly_rate: 20000,
-  bonus: 2000000,
-  additional_salary: 500000,
-  wage_rate: 1.5,
-  payment_day: 10,
-  payment_method: PaymentMethod.BANK_TRANSFER,
-  insurance: [Insurance.HEALTH_INSURANCE],
-  signature_base64:
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==',
-};
-
 // 통합신청서 초기 state
 export const initialIntegratedApplication: IntegratedApplicationData = {
   first_name: '',
@@ -540,76 +419,6 @@ export const initialIntegratedApplication: IntegratedApplicationData = {
     latitude: 0,
   },
 };
-
-// 통합 신청서 mock data
-export const mockIntegratedApplication: IntegratedApplicationData = {
-  first_name: '길동',
-  last_name: '홍',
-  birth: '1990-01-01',
-  gender: Gender.MALE,
-  nationality: '대한민국',
-  tele_phone_number: '02-1234-5678',
-  cell_phone_number: '010-1234-5678',
-  is_accredited: true,
-  school_name: '서울대학교',
-  school_phone_number: '02-880-5114',
-  new_work_place_name: '(주)테크컴퍼니',
-  new_work_place_registration_number: '123-45-67890',
-  new_work_place_phone_number: '02-3456-7890',
-  annual_income_amount: 50000000,
-  occupation: '소프트웨어 엔지니어',
-  email: 'gildong.hong@example.com',
-  signature_base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
-  address: {
-    address_name: '서울특별시 강남구 테헤란로 123',
-    region_1depth_name: '서울특별시',
-    region_2depth_name: '강남구',
-    region_3depth_name: '테헤란로',
-    region_4depth_name: '123',
-    address_detail: '테크빌딩 15층',
-    longitude: 127.0495556,
-    latitude: 37.5063889,
-  },
-};
-
-// 학교 검색 api 연결 전 사용할 학교 mock data
-export const schoolMockData = [
-  {
-    id: 1,
-    name: '서울대학교',
-    phone_number: '02-880-5114',
-  },
-  {
-    id: 2,
-    name: '연세대학교',
-    phone_number: '02-2123-2114',
-  },
-  {
-    id: 3,
-    name: '고려대학교',
-    phone_number: '02-3290-1114',
-  },
-  {
-    id: 4,
-    name: '한양대학교',
-    phone_number: '02-2220-0114',
-  },
-  {
-    id: 5,
-    name: '성균관대학교',
-    phone_number: '02-760-1114',
-  },
-  {
-    id: 6,
-    name: '경희대학교',
-    phone_number: '02-961-0114',
-  },
-  {
-    id: 7,
-    name: '중앙대학교',
-    phone_number: '02-820-5114',
-  },
-];
 
 // 고용주 시간제 근무 허가서 작성 시 유학생 정보 name 매핑
 export const EmployeePropertyInfo = {
