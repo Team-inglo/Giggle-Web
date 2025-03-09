@@ -10,22 +10,22 @@ const PostDetailContentMenuBar = ({
   scrollToSelectedMenu,
 }: PostDetailContentMenuBarProps) => {
   return (
-    <nav className="flex w-full pb-[0.25rem]">
+    <nav className="flex w-full px-4 bg-white border-b border-border-alternative">
       <button
         onClick={() => scrollToSelectedMenu(PostDetailContentMenu.RECUITMENT)}
-        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.RECUITMENT ? 'text-[#1E1926] border-b-2 border-b-[#1E1926]' : 'text-[#BDBDBD] border-b border-b-[#BDBDBD]'}`}
+        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.RECUITMENT ? 'text-text-strong border-b-2 border-b-[#1E1926]' : 'text-[#BDBDBD]'}`}
       >
         Recruitment
       </button>
       <button
         onClick={() => scrollToSelectedMenu(PostDetailContentMenu.WORPLACE)}
-        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.WORPLACE ? 'text-[#1E1926] border-b-2 border-b-[#1E1926]' : 'text-[#BDBDBD] border-b border-b-[#BDBDBD]'}`}
+        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.WORPLACE ? 'text-text-strong border-b-2 border-b-[#1E1926]' : 'text-[#BDBDBD]'}`}
       >
         Workplace
       </button>
       <button
         onClick={() => scrollToSelectedMenu(PostDetailContentMenu.COMPANY)}
-        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.COMPANY ? 'text-[#1E1926] border-b-2 border-b-[#1E1926]' : 'text-[#BDBDBD] border-b border-b-[#BDBDBD]'}`}
+        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.COMPANY ? 'text-text-strong border-b-2 border-b-[#1E1926]' : 'text-[#BDBDBD]'}`}
       >
         Company
       </button>
