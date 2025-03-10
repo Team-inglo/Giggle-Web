@@ -1,18 +1,29 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import { DocumentTypeInfo } from '@/constants/documents';
-import { DocumentType, EmployDocumentInfo } from '@/types/api/document';
+import { EmployerDocumentTypeInfo } from '@/constants/documents';
+import { EmployDocumentInfo, EmployDocumentType } from '@/types/api/document';
 import DocumentCardDispenserEmployer from '@/components/Employer/ApplicantDocumentsDetail/DocumentCardDispenserEmployer';
 import { useNavigate } from 'react-router-dom';
 import { useGetDocumentsEmployer } from '@/hooks/api/useDocument';
 import { useCurrentApplicantIdStore } from '@/store/url';
 import { useState } from 'react';
 import LoadingItem from '@/components/Common/LoadingItem';
+import CompleteModal from '@/components/Common/CompleteModal';
+import PageTitle from '@/components/Common/PageTitle';
+import InfoCardLayout from '@/components/Common/InfoCardLayout';
+import YellowDocumentIcon from '@/assets/icons/YellowDocumentIcon.svg?react';
+import { SuccessModalContent } from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
 
 const ApplicantDocumentsDetailPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { currentApplicantId } = useCurrentApplicantIdStore();
   const { data } = useGetDocumentsEmployer(Number(currentApplicantId));
+  const documentTypes = Object.values(EmployDocumentType);
   const navigate = useNavigate();
+  const [successModalContent, setSuccessModalContent] = useState({
+    title: '',
+    content: '',
+    onNext: () => {},
+  });
 
   return (
     <>
@@ -25,6 +36,13 @@ const ApplicantDocumentsDetailPage = () => {
           <LoadingItem />
         </div>
       )}
+      {successModalContent.title && (
+        <CompleteModal
+          title={successModalContent.title}
+          content={successModalContent.content}
+          onNext={successModalContent.onNext}
+        />
+      )}
       <div>
         <BaseHeader
           hasBackButton={true}
@@ -34,54 +52,39 @@ const ApplicantDocumentsDetailPage = () => {
           }
           title="서류 관리"
         />
-        <div className="flex flex-col gap-2 p-6">
-          {data && data?.data[DocumentType.PART_TIME_PERMIT] ? (
-            <DocumentCardDispenserEmployer
-            documentInfo={
-                data.data[DocumentType.PART_TIME_PERMIT] as EmployDocumentInfo
-              }
-              title={DocumentTypeInfo[DocumentType.PART_TIME_PERMIT].name}
-              type={DocumentType.PART_TIME_PERMIT}
-              reason={
-                data?.data[DocumentType.PART_TIME_PERMIT].reason || undefined
-              }
-              setIsLoading={setIsLoading}
-            />
-          ) : (
-            <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-start justify-start py-6 cursor-pointer text-left text-[#1e1926]">
-              <div className="self-stretch flex flex-col items-start justify-start px-4">
-                <div className="self-stretch flex flex-row items-center justify-center pl-2 gap-4">
-                  <div className="flex-1 flex items-center justify-start head-3">
-                    {DocumentTypeInfo[DocumentType.PART_TIME_PERMIT].name}
-                  </div>
+        <section className="w-full h-[calc(100vh-60px)] bg-surface-secondary">
+          <PageTitle
+            title={`서류를 한 곳에서 관리하세요!`}
+            content={`시간제취업허가서부터 근로계약서까지\n한눈에 확인하고 관리하세요. 진행 상황을 확인하고\n필요한 단계를 빠르게 완료할 수 있어요.`}
+          />
+          <div className="flex flex-col gap-2 p-4">
+            {documentTypes.map((property, index) =>
+              data?.data[property] ? (
+                <DocumentCardDispenserEmployer
+                  key={`${index}_${property}`}
+                  documentInfo={data.data[property] as EmployDocumentInfo}
+                  title={EmployerDocumentTypeInfo[property].name}
+                  type={property}
+                  reason={data?.data[property]?.reason}
+                  setIsLoading={setIsLoading}
+                  setModalContent={(content: SuccessModalContent) =>
+                    setSuccessModalContent(content)
+                  }
+                />
+              ) : (
+                <div
+                  key={`${index}_${property}_empty`}
+                  className="w-full relative rounded-[1.125rem] flex flex-col items-start justify-start cursor-pointer"
+                >
+                  <InfoCardLayout
+                    icon={<YellowDocumentIcon />}
+                    title={EmployerDocumentTypeInfo[property].name}
+                  />
                 </div>
-              </div>
-            </div>
-          )}
-          {data && data?.data[DocumentType.LABOR_CONTRACT] ? (
-            <DocumentCardDispenserEmployer
-            documentInfo={
-                data.data[DocumentType.LABOR_CONTRACT] as EmployDocumentInfo
-              }
-              title={DocumentTypeInfo[DocumentType.LABOR_CONTRACT].name}
-              type={DocumentType.LABOR_CONTRACT}
-              reason={
-                data?.data[DocumentType.LABOR_CONTRACT].reason || undefined
-              }
-              setIsLoading={setIsLoading}
-            />
-          ) : (
-            <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-start justify-start py-6 cursor-pointer text-left text-[#1e1926]">
-              <div className="self-stretch flex flex-col items-start justify-start px-4">
-                <div className="self-stretch flex flex-row items-center justify-center pl-2 gap-4">
-                  <div className="flex-1 flex items-center justify-start head-3">
-                    {DocumentTypeInfo[DocumentType.LABOR_CONTRACT].name}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+              ),
+            )}
+          </div>
+        </section>
       </div>
     </>
   );

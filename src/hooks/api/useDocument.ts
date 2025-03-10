@@ -274,9 +274,6 @@ export const usePatchStatusSubmissionEmployer = (
 ) => {
   return useMutation({
     mutationFn: patchStatusSubmissionEmployer,
-    onSuccess: () => {
-      window.location.reload();
-    },
     onError: (error) => {
       console.error('고용주의 서류 제출 실패', error);
     },
