@@ -130,7 +130,7 @@ const EmployerInfoSection = ({
 
   return (
     <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left body-3 bg-white">
-      <div className="w-full self-stretch flex flex-col items-start jusitfy-center">
+      <div className="w-full self-stretch flex flex-col items-start justify-center">
         <section className="w-full flex flex-col gap-1 pb-4 border-b border-border-alternative">
           <p className="w-full head-3 text-text-strong">
             {isEmployer ? '고용주 정보 📋' : 'Employer Information 📋'}
