@@ -90,7 +90,7 @@ const IntegratedApplicationPreview = ({
 
   return (
     <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left body-3 bg-white">
-      <div className="w-full self-stretch flex flex-col items-start jusitfy-center">
+      <div className="w-full self-stretch flex flex-col items-start justify-center">
         <div className="w-full self-stretch flex flex-col items-center justify-start text-left pt-4 gap-3">
           {Object.entries(document).map(([key, value]) => (
             <Fragment key={key}>

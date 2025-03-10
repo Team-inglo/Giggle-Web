@@ -110,7 +110,7 @@ const EmployerInfoSection = ({
   };
 
   // 특수 케이스에 대한 추가 컴포넌트 렌더링
-  const renderAdditionalContent = (key: string, value: GiggleAddress) => {
+  const renderAdditionalContent = (key: string, value: unknown) => {
     switch (key) {
       case LaborContractEmployerInfoProperty.ADDRESS:
         return (
@@ -143,7 +143,7 @@ const EmployerInfoSection = ({
                 {renderTitle(key)}
                 {renderFieldContent(key, value)}
               </div>
-              {renderAdditionalContent(key, value as GiggleAddress)}
+              {renderAdditionalContent(key, value)}
             </Fragment>
           ))}
         </div>
