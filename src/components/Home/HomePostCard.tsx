@@ -7,7 +7,6 @@ import { formatMoney } from '@/utils/formatMoney';
 import { useUserStore } from '@/store/user';
 import { postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
-import { UserType } from '@/constants/user';
 
 type HomePostCardProps = {
   jobPostingData: JobPostingItemType;
@@ -21,9 +20,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
 
   const goToPostDetailPage = () => {
     updateCurrentPostId(Number(jobPostingData.id));
-    if (account_type === UserType.OWNER)
-      navigate(`/employer/post/${jobPostingData.id}`);
-    else navigate(`/post/${jobPostingData.id}`);
+    navigate(`/post/${jobPostingData.id}`);
   };
 
   return (
@@ -51,11 +48,11 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         <div className="py-2 flex items-center flex-wrap gap-1">
           <Tag
             value={jobPostingData.tags.employment_type.toLowerCase()}
-            padding="py-[0.188rem] px-[0.25rem]"
+            padding="0.188rem 0.25rem"
             isRounded={false}
             hasCheckIcon={false}
-            backgroundColor="bg-[#0066FF1F]"
-            color="text-text-success"
+            backgroundColor="#0066FF1F"
+            color="#0066FF"
             fontStyle="caption"
           />
           <Tag
@@ -63,11 +60,11 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
               .join(',')
               .replace(/_/g, '-')
               .toLowerCase()}
-            padding="py-[0.188rem] px-[0.25rem]"
+            padding="0.188rem 0.25rem"
             isRounded={false}
             hasCheckIcon={false}
-            backgroundColor="bg-surface-invert"
-            color="text-primary-neutral"
+            backgroundColor="#191919"
+            color="#F4F4F9"
             fontStyle="caption"
           />
         </div>
@@ -77,10 +74,8 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
               ? postTranslation.dDay[isEmployerByAccountType(account_type)]
               : calculateDDay(jobPostingData.recruitment_dead_line)}
           </p>
-          <p className="body-2 text-text-normal">
-            <span className="mr-[0.125rem] caption text-text-alternative">
-              Hr
-            </span>
+          <p className="caption text-text-normal">
+            <span className="mr-[0.125rem] text-text-alternative">Hr</span>
             {formatMoney(jobPostingData.hourly_rate)}KRW
           </p>
         </div>

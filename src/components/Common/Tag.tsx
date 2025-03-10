@@ -8,6 +8,7 @@ type TagProps = {
   onDelete?: (value?: string) => void; // 삭제 버튼 클릭 시 호출될 함수
   hasCheckIcon: boolean; // 왼쪽에 체크 아이콘 표시 여부
   borderColor?: string;
+  borderWidth?: string;
   backgroundColor: string;
   color: string;
   fontStyle: string; // typography type
@@ -20,13 +21,22 @@ const Tag = ({
   onDelete,
   hasCheckIcon,
   borderColor,
+  borderWidth = '0.5px',
   backgroundColor,
   color,
   fontStyle,
 }: TagProps) => {
   return (
     <div
-      className={`w-fit h-fit flex items-center gap-[0.5rem] ${padding} ${backgroundColor} ${color} ${borderColor} ${borderColor ? 'border' : ''} ${fontStyle} ${isRounded ? 'rounded' : 'rounded-sm'}`}
+      className={`w-fit h-fit flex items-center gap-[0.5rem] ${fontStyle} ${isRounded ? 'rounded-[1.125rem]' : 'rounded-sm'}`}
+      style={{
+        padding: padding,
+        backgroundColor: backgroundColor,
+        color: color,
+        borderColor: borderColor,
+        borderStyle: borderColor ? 'solid' : 'none',
+        borderWidth: borderWidth,
+      }}
     >
       {hasCheckIcon && <TagCheckIcon color={color} />}
       {value}

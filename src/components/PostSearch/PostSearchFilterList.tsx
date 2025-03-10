@@ -1,4 +1,5 @@
 import Tag from '@/components/Common/Tag';
+import FilterIcon from '@/assets/icons/FilterIcon.svg?react';
 import { FILTER_CATEGORY } from '@/constants/postSearch';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 
@@ -8,13 +9,15 @@ type TagType = {
 };
 
 type PostSearchFilterListProps = {
+  openFilter: () => void;
   filterList: PostSearchFilterItemType;
-  handleUpdateFilterList: (value: PostSearchFilterItemType) => void;
+  updateFilterList: (value: PostSearchFilterItemType) => void;
 };
 
 const PostSearchFilterList = ({
+  openFilter,
   filterList,
-  handleUpdateFilterList,
+  updateFilterList,
 }: PostSearchFilterListProps) => {
   const formatFilterListToTag = () => {
     const excludedCategories = [
@@ -98,7 +101,7 @@ const PostSearchFilterList = ({
           regionIndex,
         ),
       };
-      handleUpdateFilterList(newFilterList);
+      updateFilterList(newFilterList);
     } else {
       const newFilterList = {
         ...filterList,
@@ -106,30 +109,33 @@ const PostSearchFilterList = ({
           (value) => value !== tag.value,
         ),
       };
-      handleUpdateFilterList(newFilterList);
+      updateFilterList(newFilterList);
     }
   };
 
-  if (formatFilterListToTag().length === 0) return <></>;
-
   return (
-    <section className="w-full py-2">
-      <div className="w-full min-h-6 px-4 flex items-center gap-1 overflow-x-scroll whitespace-nowrap no-scrollbar">
+    <section className="relative w-full pt-3 pb-2 pr-10">
+      <div className="w-full min-h-6 pr-6 pl-6 flex items-center gap-2 overflow-x-scroll whitespace-nowrap no-scrollbar">
         {formatFilterListToTag().map((value, index) => (
           <Tag
             key={`${index}_${value.category}`}
             value={value.value}
             onDelete={() => onDeleteFilter(value)}
-            padding="py-[0.375rem] pr-[0.5rem] pl-[0.675rem]"
+            padding="0.313rem 0.5rem 0.313rem 0.75rem"
             isRounded={true}
             hasCheckIcon={false}
-            borderColor={'border-border-alternative'}
-            backgroundColor={'bg-surface-base'}
-            color="text-text-normal"
-            fontStyle="body-2"
+            backgroundColor={'#FEF387'}
+            color="#1E1926"
+            fontStyle="body-3"
           />
         ))}
       </div>
+      <button
+        className="absolute top-0 right-0 px-2 pr-6 py-3 bg-white"
+        onClick={openFilter}
+      >
+        <FilterIcon />
+      </button>
     </section>
   );
 };

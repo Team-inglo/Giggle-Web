@@ -53,7 +53,7 @@ const PostApplyButton = () => {
           <Button
             type={buttonTypeKeys.APPLY}
             bgColor={'bg-[#FEF387]'}
-            fontColor="text-text-strong"
+            fontColor="text-[#0d0d0d]"
             title="Apply Now"
             isBorder={false}
             onClick={onClickApply}

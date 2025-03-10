@@ -1,17 +1,21 @@
+import LeftArrowIcon from '@/assets/icons/LeftArrowIcon.svg?react';
+import SearchIcon from '@/assets/icons/SearchIcon.svg?react';
 import FilterIcon from '@/assets/icons/FilterIcon.svg?react';
 import CircleDeleteIcon from '@/assets/icons/CircleDeleteIcon.svg?react';
 import { useState } from 'react';
 
 type HeaderProps = {
-  handleSearch: (value: string) => void;
-  handleClickFilter?: () => void;
+  onClickBackButton: () => void;
+  onClickSearchButton: (value: string) => void;
+  onClickFilterButton?: () => void;
   initialValue?: string;
   placeholder: string;
 };
 
 const TextFieldHeader = ({
-  handleSearch,
-  handleClickFilter,
+  onClickBackButton,
+  onClickSearchButton,
+  onClickFilterButton,
   initialValue,
   placeholder,
 }: HeaderProps) => {
@@ -21,32 +25,37 @@ const TextFieldHeader = ({
     setValue('');
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleSearch(value);
-  };
-
   return (
-    <section className="w-full mt-2 py-2 px-4 flex justify-between items-center gap-2 bg-white sticky top-0 z-40">
-      <div className="flex-1 flex items-center p-3 rounded bg-surface-secondary border border-border-alternative">
+    <section className="w-full h-16 px-2 flex justify-between items-center bg-white border-b border-solid border-[#1E1926] sticky top-0 z-40">
+      <button className="p-[0.5rem]" onClick={onClickBackButton}>
+        <LeftArrowIcon />
+      </button>
+      <div className="flex-1 flex items-center">
         <input
-          className="flex-1 body-2 text-text-strong rounded bg-transparent focus:outline-none"
+          className="flex-1 p-[0.5rem] body-2 text-[#1E1926]"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder={placeholder}
-          onKeyDown={(e) => handleKeyDown(e)}
         />
         {value && (
-          <button onClick={onClickDeleteButton}>
+          <button onClick={onClickDeleteButton} className="ml-2">
             <CircleDeleteIcon />
           </button>
         )}
       </div>
-      <button
-        className="w-[2.875rem] h-[2.875rem] flex justify-center items-center rounded bg-surface-secondary border border-border-alternative"
-        onClick={handleClickFilter}
-      >
-        <FilterIcon />
-      </button>
+      <div className="flex items-center">
+        {onClickFilterButton && (
+          <button className="px-[0.5rem]" onClick={onClickFilterButton}>
+            <FilterIcon />
+          </button>
+        )}
+        <button
+          className="px-[0.5rem]"
+          onClick={() => onClickSearchButton(value)}
+        >
+          <SearchIcon />
+        </button>
+      </div>
     </section>
   );
 };
