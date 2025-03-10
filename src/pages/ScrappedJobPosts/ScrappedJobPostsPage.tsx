@@ -1,7 +1,7 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import LoadingItem from '@/components/Common/LoadingItem';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
-import { POST_SEARCH_MENU } from '@/constants/postSearch';
+import { POST_SEARCH_MENU, POST_SORTING } from '@/constants/postSearch';
 import { useInfiniteGetPostList } from '@/hooks/api/usePost';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useNavigateBack from '@/hooks/useNavigateBack';
@@ -9,13 +9,25 @@ import { useUserStore } from '@/store/user';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { useEffect, useState } from 'react';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
-import JobPostingCard from '@/components/Common/JobPostingCard';
+import { JobPostingCard } from '@/components/Common/JobPostingCard';
+import { useCurrentPostIdStore } from '@/store/url';
+import { useNavigate } from 'react-router-dom';
+import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
+import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 
 const ScrappedJobPostList = ({
   jobPostingData,
 }: {
   jobPostingData: JobPostingItemType[];
 }) => {
+  const { updateCurrentPostId } = useCurrentPostIdStore();
+  const navigate = useNavigate();
+
+  const goToPostDetailPage = (data: JobPostingItemType) => {
+    updateCurrentPostId(Number(data.id));
+    navigate(`/post/${data.id}`);
+  };
+
   if (jobPostingData?.length === 0) {
     return (
       <div className="flex-1 flex flex-col justify-center items-center gap-1">
@@ -29,9 +41,29 @@ const ScrappedJobPostList = ({
   }
 
   return (
-    <div>
+    <div className="w-full">
       {jobPostingData.map((post) => (
-        <JobPostingCard key={post.id} jobPostingData={post} />
+        <article
+          className="w-full border-t border-b border-border-alternative"
+          key={post.id}
+          onClick={() => goToPostDetailPage(post)}
+        >
+          <JobPostingCard {...post}>
+            <JobPostingCard.Box>
+              <JobPostingCard.Header isBookMarkButton={true} />
+              <div className="w-full flex flex-col gap-2">
+                <JobPostingCard.Title isTwoLine={true} />
+                <div className="w-full flex flex-col gap-[0.125rem]">
+                  <JobPostingCard.Address />
+                  <JobPostingCard.WorkPeriod />
+                  <JobPostingCard.WorkDaysPerWeek />
+                </div>
+                <JobPostingCard.TagList />
+                <JobPostingCard.Footer />
+              </div>
+            </JobPostingCard.Box>
+          </JobPostingCard>
+        </article>
       ))}
     </div>
   );
@@ -46,12 +78,9 @@ const ScrappedJobPostsPage = () => {
     [],
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // 관심 공고
-  const bookmarkedDataRequest = {
-    size: 10,
-    type: POST_SEARCH_MENU.BOOKMARKED,
-  };
+  const [selectedSorting, setSelectedSorting] = useState<PostSortingType>(
+    POST_SORTING.RECENT,
+  );
 
   const {
     data,
@@ -59,7 +88,10 @@ const ScrappedJobPostsPage = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading: isInitialLoading,
-  } = useInfiniteGetPostList(bookmarkedDataRequest, isLogin);
+  } = useInfiniteGetPostList(
+    { size: 5, type: POST_SEARCH_MENU.BOOKMARKED, sorting: selectedSorting },
+    isLogin,
+  );
 
   const targetRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -75,20 +107,36 @@ const ScrappedJobPostsPage = () => {
     }
   }, [data]);
 
+  const onChangeSortType = (selectedSorting: PostSortingType) => {
+    setSelectedSorting(selectedSorting);
+  };
+
   return (
     <div className="w-full min-h-screen flex flex-col">
       <BaseHeader
         hasBackButton
         onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
-        title="Scrap Job Posting"
+        title="Scrapped Job Posts"
       />
+      <div className="w-full pt-6 pb-2 px-4 flex justify-between items-center">
+        <h3 className=" caption text-text-alternative">
+          {jobPostingData.length} scrapped Job Posts
+        </h3>
+        <SearchSortDropdown
+          options={Object.values(POST_SORTING).map((value) =>
+            value.toLowerCase(),
+          )}
+          value={selectedSorting.toLowerCase()}
+          onSelect={(value) => onChangeSortType(value as PostSortingType)}
+        />
+      </div>
       {isInitialLoading ? (
         <div className="flex-1 flex flex-col justify-center items-center">
           <LoadingPostItem />
         </div>
       ) : (
-        <div className="flex-1 p-6 flex flex-row gap-4">
+        <div className="flex-1 pb-6 flex flex-row gap-4">
           <ScrappedJobPostList jobPostingData={jobPostingData} />
           {isLoading && <LoadingItem />}
         </div>

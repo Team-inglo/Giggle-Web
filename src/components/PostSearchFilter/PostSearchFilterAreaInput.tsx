@@ -1,6 +1,6 @@
 import PostSearchFilterToggle from '@/components/PostSearchFilter/PostSearchFilterToggle';
 import Tag from '@/components/Common/Tag';
-import SearchIcon from '@/assets/icons/MagnifyGlassIcon.svg?react';
+import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { useEffect, useState } from 'react';
 import { FILTER_CATEGORY } from '@/constants/postSearch';
@@ -53,33 +53,42 @@ const PostSearchFilterAreaInput = ({
   return (
     <PostSearchFilterToggle title={'Select Areas'}>
       <div
-        className={`w-full flex gap-2 items-center justify-between text-left text-sm font-[Pretendard] border rounded-xl border-[#BDBDBD] bg-white py-[0.625rem] pl-4 pr-[14px] mb-[0.5rem]`}
+        className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-2 text-text-assistive cursor-pointer"
         onClick={() => setIsOpenAreaFilter(true)}
       >
-        <SearchIcon />
-        <input
-          placeholder={'Select Area'}
-          className={
-            'w-full outline-none placeholder:text-[var(--input-color)]'
-          }
-          readOnly
-        />
+        <div className="flex-1 h-5 flex flex-row items-center justify-between">
+          <p className="w-full relative leading-5 outline-none bg-white">
+            Select Areas
+          </p>
+          {/* 드롭다운 토글 버튼 */}
+          <button className="p-0 rounded-full transition-colors">
+            <div
+              className={`flex items-center justify-center w-5 h-6 transition-transform duration-300 rotate-180`}
+            >
+              <ArrowIcon isMarked={false} />
+            </div>
+          </button>
+        </div>
       </div>
-      <div className="flex flex-wrap gap-[0.5rem] px-[0.5rem] w-full">
+      <div className="flex flex-wrap gap-1 py-2 w-full">
         {region1Depth.map((region, index) => (
           <Tag
             key={`${region}_${index}`}
             value={formatRegionArrayToString(index)}
-            padding="0.313rem 0.625rem 0.313rem 0.75rem"
+            padding="py-[0.375rem] pr-[0.5rem] pl-[0.675rem]"
             isRounded={true}
             hasCheckIcon={false}
-            backgroundColor={'#FEF387'}
-            color="#1E1926"
-            fontStyle="body-3"
+            borderColor={'border-border-alternative'}
+            backgroundColor={'bg-surface-base'}
+            color="text-text-normal"
+            fontStyle="body-2"
             onDelete={() => onClickDelete(index)}
           />
         ))}
       </div>
+      <p className="caption text-text-assistive">
+        Multiple selection is available.
+      </p>
     </PostSearchFilterToggle>
   );
 };
