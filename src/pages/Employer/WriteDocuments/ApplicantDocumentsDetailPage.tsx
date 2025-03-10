@@ -72,7 +72,10 @@ const ApplicantDocumentsDetailPage = () => {
                   }
                 />
               ) : (
-                <div className="w-full relative rounded-[1.125rem] flex flex-col items-start justify-start cursor-pointer">
+                <div
+                  key={`${index}_${property}_empty`}
+                  className="w-full relative rounded-[1.125rem] flex flex-col items-start justify-start cursor-pointer"
+                >
                   <InfoCardLayout
                     icon={<YellowDocumentIcon />}
                     title={EmployerDocumentTypeInfo[property].name}

@@ -41,7 +41,7 @@ const DocumentCardLayout = ({
   onPreview,
 }: DocumentCardProps) => {
   return (
-    <div className="w-full p-4 flex flex-col rounded-lg bg-white border border-border-disabled $>">
+    <div className="w-full p-4 flex flex-col rounded-lg bg-white border border-border-disabled">
       <div
         className={`w-fit body-3 px-1 py-1 mb-1 ${tagStyle} rounded-sm justify-center items-center inline-flex`}
       >
@@ -52,7 +52,7 @@ const DocumentCardLayout = ({
       </div>
       <section className="w-full flex flex-col gap-2">
         <div className="w-full pt-2 body-3 text-text-alternative">
-          <p className="">{content}</p>
+          <p>{content}</p>
         </div>
         {preview && (
           <div
