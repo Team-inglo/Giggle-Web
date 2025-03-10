@@ -4,31 +4,27 @@ import ApplicationDetailStep3 from '@/components/ApplicationDetail/ApplicationDe
 import ApplicationDetailStep4 from '@/components/ApplicationDetail/ApplicationDetailStep4';
 import ApplicationDetailStep5 from '@/components/ApplicationDetail/ApplicationDetailStep5';
 import ApplicationDetailStep6 from '@/components/ApplicationDetail/ApplicationDetailStep6';
+import ApplicationDetailCard from '@/components/ApplicationDetail/ApplicationDetailCard';
+import ApplicationDetailInfo from '@/components/ApplicationDetail/ApplicationDetailInfo';
 import ApplicationDetailSteps from '@/components/ApplicationDetail/ApplicationDetailSteps';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import { useNavigate } from 'react-router-dom';
 import ApplicationDetailStep7 from '@/components/ApplicationDetail/ApplicationDetailStep7';
 import { findCurrentStep } from '@/utils/application';
 import ApplicationDetailStepEtc from '@/components/ApplicationDetail/ApplicationDetailStepEtc';
 import { useGetApplicationDetail } from '@/hooks/api/useApplication';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
-import useNavigateBack from '@/hooks/useNavigateBack';
-import { useGetPostSummary } from '@/hooks/api/usePost';
-import { JobPostingCard } from '@/components/Common/JobPostingCard';
-import { transformSummaryToJobPostingItemType } from '@/utils/post';
-import LoadingPostItem from '@/components/Common/LoadingPostItem';
 
 const ApplicationDetailPage = () => {
-  const handleBackButtonClick = useNavigateBack();
+  const navigate = useNavigate();
   const { currentPostId } = useCurrentPostIdEmployeeStore();
-  const { data: postData, isLoading: postDataLoading } = useGetPostSummary(
+  const { data } = useGetApplicationDetail(
     Number(currentPostId),
     !isNaN(Number(currentPostId)) ? true : false,
   );
-  const { data: applicationData, isLoading: applicationDataLoading } =
-    useGetApplicationDetail(
-      Number(currentPostId),
-      !isNaN(Number(currentPostId)) ? true : false,
-    );
+  console.log(`현재 ${currentPostId}`); // 지원자 조회 - 지원자 상세 - 서류 상세 간 뒤로가기 문제 관련
+
+  if (!data?.success) return <></>;
 
   const showCurrentStepButton = (step: number) => {
     switch (step) {
@@ -45,52 +41,31 @@ const ApplicationDetailPage = () => {
       case 6:
         return <ApplicationDetailStep6 />;
       case 7:
-        return <ApplicationDetailStep7 result={applicationData?.data?.step} />;
+        return <ApplicationDetailStep7 result={data?.data?.step} />;
       default:
-        return (
-          <ApplicationDetailStepEtc result={applicationData?.data?.step} />
-        );
+        return <ApplicationDetailStepEtc result={data?.data?.step} />;
     }
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={handleBackButtonClick}
+        onClickBackButton={() => navigate('/application')}
         hasMenuButton={false}
-        title="Check Status"
+        title="Applicants"
       />
-      {postDataLoading || applicationDataLoading ? (
-        <div className="w-full h-56 flex justify-center items-center">
-          <LoadingPostItem />
-        </div>
-      ) : (
+      {data && (
         <>
-          <JobPostingCard
-            {...transformSummaryToJobPostingItemType(postData?.data)}
-          >
-            <JobPostingCard.Box>
-              <JobPostingCard.Header />
-              <JobPostingCard.Title isTwoLine={true} />
-              <div className="w-full py-2 flex flex-col gap-[0.125rem]">
-                <JobPostingCard.Address />
-                <JobPostingCard.WorkPeriod />
-                <JobPostingCard.WorkDaysPerWeek />
-              </div>
-              <JobPostingCard.Footer />
-            </JobPostingCard.Box>
-          </JobPostingCard>
-          <div className="w-full h-4 bg-surface-secondary"></div>
           <div className="w-full flex flex-col gap-[2.25rem] p-[1.5rem]">
-            <ApplicationDetailSteps
-              step={findCurrentStep(applicationData?.data?.step)}
-            />
+            <ApplicationDetailCard applicationData={data?.data} />
+            <ApplicationDetailInfo applicationData={data?.data} />
+            <ApplicationDetailSteps step={findCurrentStep(data?.data?.step)} />
           </div>
-          {showCurrentStepButton(findCurrentStep(applicationData?.data?.step))}
+          {showCurrentStepButton(findCurrentStep(data?.data?.step))}
         </>
       )}
-    </div>
+    </>
   );
 };
 

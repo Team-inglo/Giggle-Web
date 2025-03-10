@@ -31,28 +31,26 @@ const PostSearchFilterBottomSheet = ({
       isShowBottomsheet={true}
       isFixedBackground={false}
     >
-      <div className="w-full flex flex-col gap-6">
-        <h3 className="w-full head-3 text-black">
+      <div className="w-full flex flex-col gap-[1.5rem] pb-[2rem]">
+        <h3 className="w-full px-[0.75rem] head-3 text-black">
           Selected Areas
-          <span className="pl-2 text-[#FFD817]">{currentRegion1.length}</span>
         </h3>
-        <div className="w-full flex flex-wrap gap-2">
+        <div className="w-full px-[0.5rem] flex flex-wrap gap-[0.5rem]">
           {currentRegion1.map((region, index) => (
             <Tag
               key={`${region}_${index}`}
               value={formatRegionArrayToString(index)}
-              padding="py-[0.375rem] pr-[0.5rem] pl-[0.675rem]"
+              padding="0.313rem 0.625rem 0.313rem 0.75rem"
               isRounded={true}
               hasCheckIcon={false}
-              borderColor={'border-border-alternative'}
-              backgroundColor={'bg-surface-base'}
-              color="text-text-normal"
-              fontStyle="body-2"
+              backgroundColor={'#FEF387'}
+              color="#1E1926"
+              fontStyle="body-3"
               onDelete={() => onClickDelete(index)}
             />
           ))}
         </div>
-        <div className="w-full flex justify-center items-center gap-2">
+        <div className="w-full flex justify-center items-center gap-[0.5rem]">
           <Button
             type={buttonTypeKeys.BACK}
             bgColor={'bg-[#F4F4F9]'}
@@ -65,7 +63,7 @@ const PostSearchFilterBottomSheet = ({
             type={buttonTypeKeys.CONTINUE}
             bgColor={'bg-[#FEF387]'}
             fontColor="text-[#1E1926] button-1"
-            title="Apply"
+            title="Continue"
             isBorder={false}
             onClick={onClickSubmit}
           />

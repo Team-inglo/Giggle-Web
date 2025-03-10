@@ -19,8 +19,7 @@ import {
   usePutPartTimeEmployPermit,
 } from '@/hooks/api/useDocument';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
-import LoadingItem from '@/components/Common/LoadingItem';
-import InputLayout from '@/components/WorkExperience/InputLayout';
+import LoadingItem from '../Common/LoadingItem';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -59,7 +58,7 @@ const PartTimePermitWriteForm = ({
   ); // 수정된 문서 제출 훅
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
-    start: '010',
+    start: '',
     middle: '',
     end: '',
   });
@@ -111,11 +110,19 @@ const PartTimePermitWriteForm = ({
         </div>
       )}
       <div
-        className={`w-full p-4 flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full p-6 flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
           {/* 이름 입력 */}
-          <InputLayout title="First Name" isEssential>
+          <div className="w-full">
+            <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+              <div className="relative">
+                First Name
+                <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                  *
+                </div>
+              </div>
+            </div>
             <Input
               inputType={InputType.TEXT}
               placeholder="First Name"
@@ -125,9 +132,17 @@ const PartTimePermitWriteForm = ({
               }
               canDelete={false}
             />
-          </InputLayout>
+          </div>
           {/* 성 입력 */}
-          <InputLayout title="Last Name" isEssential>
+          <div className="w-full">
+            <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+              <div className="relative">
+                Last Name
+                <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                  *
+                </div>
+              </div>
+            </div>
             <Input
               inputType={InputType.TEXT}
               placeholder="Last Name"
@@ -137,9 +152,57 @@ const PartTimePermitWriteForm = ({
               }
               canDelete={false}
             />
-          </InputLayout>
+          </div>
+          {/* 전공 입력 */}
+          <div className="w-full">
+            <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+              <div className="relative">
+                Department (major)
+                <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                  *
+                </div>
+              </div>
+            </div>
+            <Input
+              inputType={InputType.TEXT}
+              placeholder="Major"
+              value={newDocumentData.major}
+              onChange={(value) =>
+                setNewDocumentData({ ...newDocumentData, major: value })
+              }
+              canDelete={false}
+            />
+          </div>
+          {/* 이수 학기 입력 */}
+          <div className="w-full">
+            <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+              <div className="relative">
+                Term of completion
+                <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                  *
+                </div>
+              </div>
+            </div>
+            <Input
+              inputType={InputType.TEXT}
+              placeholder="Term of completion"
+              value={String(newDocumentData.term_of_completion)}
+              onChange={(value) => {
+                if (typeof value === 'string' && !isNaN(Number(value))) {
+                  setNewDocumentData({
+                    ...newDocumentData,
+                    term_of_completion: Number(value),
+                  });
+                }
+              }}
+              canDelete={false}
+            />
+          </div>
           {/* 전화번호 입력 */}
-          <InputLayout title="Cell phone No." isEssential>
+          <div className="w-full">
+            <div className="w-full flex flex-row items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+              Telephone No.
+            </div>
             <div className="w-full flex flex-row gap-2 justify-between mb-[0rem]">
               <div className="w-full h-[2.75rem]">
                 <Dropdown
@@ -168,38 +231,17 @@ const PartTimePermitWriteForm = ({
                 canDelete={false}
               />
             </div>
-          </InputLayout>
-          {/* 전공 입력 */}
-          <InputLayout title="Department (major)" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Major"
-              value={newDocumentData.major}
-              onChange={(value) =>
-                setNewDocumentData({ ...newDocumentData, major: value })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 이수 학기 입력 */}
-          <InputLayout title="Term of completion" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Term of completion"
-              value={String(newDocumentData.term_of_completion)}
-              onChange={(value) => {
-                if (typeof value === 'string' && !isNaN(Number(value))) {
-                  setNewDocumentData({
-                    ...newDocumentData,
-                    term_of_completion: Number(value),
-                  });
-                }
-              }}
-              canDelete={false}
-            />
-          </InputLayout>
+          </div>
           {/* 이메일 입력 */}
-          <InputLayout title="Email" isEssential>
+          <div className="w-full">
+            <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+              <div className="relative">
+                Email
+                <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                  *
+                </div>
+              </div>
+            </div>
             <Input
               inputType={InputType.TEXT}
               placeholder="email@email.com"
@@ -212,7 +254,7 @@ const PartTimePermitWriteForm = ({
               }
               canDelete={false}
             />
-          </InputLayout>
+          </div>
           {/* 고용주 정보가 있다면 표시 */}
           {document?.employer_information && (
             <EmployerInfoSection

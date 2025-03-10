@@ -40,7 +40,7 @@ export default {
           disabled: '#c5c8ce',
           invert: '#ffffff',
           error: '#ff5252',
-          success: '#0066ff',
+          success: '#2196f3',
           priamry: '#FEF387',
         },
         border: {
@@ -48,7 +48,7 @@ export default {
           alternative: '#e2e5eb',
           disabled: '#ebeef1',
           error: '#ff5252',
-          success: '#0066ff',
+          success: '#2196f3',
           primary: '#FEF387',
         },
         surfaceDim: {

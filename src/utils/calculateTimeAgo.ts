@@ -1,8 +1,5 @@
 export const calculateTimeAgo = (date: string): string => {
   const startTime = new Date(date).getTime();
-
-  if (isNaN(startTime)) return '';
-
   const currentTime = new Date().getTime();
 
   const MILLISECONDS_IN_MINUTE = 1000 * 60;

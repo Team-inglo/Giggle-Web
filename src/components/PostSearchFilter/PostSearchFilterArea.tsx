@@ -17,6 +17,7 @@ const PostSearchFilterArea = ({
   filterList,
   setFilterList,
 }: PostSearchFilterAreaType) => {
+  // TODO: 전체 옵션인 경우 region3 선택 안해도 가능하도록 조건 추가하기
   const [currentRegion1, setCurrentRegion1] = useState<string[]>([]);
   const [currentRegion2, setCurrentRegion2] = useState<string[]>([]);
   const [currentRegion3, setCurrentRegion3] = useState<string[]>([]);
@@ -161,9 +162,9 @@ const PostSearchFilterArea = ({
           hasBackButton={true}
           onClickBackButton={onClickBackButton}
           hasMenuButton={false}
-          title={'Select Areas'}
+          title="Area"
         />
-        <section className="flex-1 flex w-full pt-4 pb-[15rem]">
+        <section className="flex-1 flex w-full pb-[15rem]">
           <PostSearchFilterSelect
             selectedRegion={region1Depth}
             onSelect={onSelectRegion1Depth}

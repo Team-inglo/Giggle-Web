@@ -20,6 +20,7 @@ const SearchSchoolBottomSheet = ({
   setNewDocumentData,
   onClose,
 }: SearchSchoolBottomSheetProps) => {
+  // TODO: 학교 검색 API와 연결 후 mock data 제거, 함수는 작성완료된 상태
   const [searchResult, setSearchResult] = useState<School[]>();
   const { searchSchool } = useSearchSchool({
     onSuccess: (data: RESTYPE<SearchSchoolResponse>) =>

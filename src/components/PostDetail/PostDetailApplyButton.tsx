@@ -14,12 +14,10 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 type PostDetailApplyButtonProps = {
   isBookmarked: boolean;
-  isRecruiting: boolean;
 };
 
 const PostDetailApplyButton = ({
   isBookmarked,
-  isRecruiting,
 }: PostDetailApplyButtonProps) => {
   const { account_type } = useUserStore();
   const { id } = useParams();
@@ -66,7 +64,7 @@ const PostDetailApplyButton = ({
         <footer className="w-full flex gap-2 z-20">
           {account_type && (
             <button
-              className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-lg bg-[#F4F4F980]"
+              className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-full bg-[#F4F4F980]"
               onClick={onClickBookmark}
             >
               {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
@@ -74,13 +72,11 @@ const PostDetailApplyButton = ({
           )}
           <Button
             type={buttonTypeKeys.APPLY}
-            bgColor={
-              isRecruiting ? 'bg-primary-normal' : 'bg-surface-secondary'
-            }
-            fontColor={isRecruiting ? 'text-text-strong' : 'text-text-disabled'}
+            bgColor=""
+            fontColor="text-white"
             isBorder={false}
             title="Apply Now"
-            {...(isRecruiting && { onClick: onClickApply })}
+            onClick={onClickApply}
           />
         </footer>
       </BottomButtonPanel>

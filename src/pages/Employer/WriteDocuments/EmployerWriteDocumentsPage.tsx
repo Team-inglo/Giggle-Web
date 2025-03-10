@@ -1,6 +1,7 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import DocumentSubHeader from '@/components/Document/write/DocumentSubHeader';
-import EmployeeInfoSection from '@/components/Document/write/EmployeeInfoSection';
+import InfoAlert from '@/components/Document/write/InfoAlert';
+import DocumentSubHeaderEmployer from '@/components/Employer/ApplicantDocumentsDetail/DocumentSubHeaderEmployer';
+import EmployeeInfoSectionKOR from '@/components/Employer/WriteDocument/EmployeeInfoSectionKOR';
 import EmployerLaborContractForm from '@/components/Employer/WriteDocument/EmployerLaborContractForm';
 import EmployerPartTimePermitForm from '@/components/Employer/WriteDocument/EmployerPartTimePermitForm';
 import {
@@ -61,10 +62,11 @@ const EmployerWriteDocumentsPage = () => {
             navigate(`/employer/applicant/document-detail/${currentDocumentId}`)
           } // 서류관리 페이지로 이동 요망
         />
-        <DocumentSubHeader type={type as DocumentType} />
-        <div className="flex flex-col items-center justify-start gap-6 p-4 bg-surface-secondary">
+        <DocumentSubHeaderEmployer type={type as DocumentType} />
+        <div className="flex flex-col items-center justify-start gap-6 px-6 pt-6">
+          <InfoAlert content="유학생의 정보가 알맞은지 확인하세요." />
           {type !== DocumentType.INTEGRATED_APPLICATION && document && (
-            <EmployeeInfoSection
+            <EmployeeInfoSectionKOR
               employee={
                 (document as PartTimePermitData | LaborContractDataResponse)
                   .employee_information

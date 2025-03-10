@@ -24,7 +24,6 @@ import { useCurrentPostIdEmployeeStore } from '@/store/url';
 import LoadingItem from '../Common/LoadingItem';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
-import InputLayout from '../WorkExperience/InputLayout';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -139,25 +138,31 @@ const LaborContractWriteForm = ({
         className={`w-full flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <div className="w-full h-screen fixed inset-0 bg-white">
-            <DaumPostcodeEmbed
-              style={{
-                position: 'fixed',
-                top: '50px',
-                width: '100%',
-                height: 'calc(100vh - 100px)',
-                marginTop: '3.125rem',
-                paddingBottom: '6.25rem',
-              }}
-              theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
-              onComplete={handleAddressSelection}
-              onClose={() => setIsAddressSearch(false)}
-            />
-          </div>
+          <DaumPostcodeEmbed
+            style={{
+              position: 'fixed',
+              top: '50px',
+              width: '100%',
+              height: 'calc(100vh - 100px)',
+              marginTop: '3.125rem',
+              paddingBottom: '6.25rem',
+            }}
+            theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
+            onComplete={handleAddressSelection}
+            onClose={() => setIsAddressSearch(false)}
+          />
         ) : (
-          <div className="p-4 [&>*:last-child]:mb-40 flex flex-col gap-4">
+          <div className="p-6 [&>*:last-child]:mb-40 flex flex-col gap-4">
             {/* 이름 입력 */}
-            <InputLayout title="First Name" isEssential>
+            <div className="w-full">
+              <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+                <div className="relative">
+                  First Name
+                  <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                    *
+                  </div>
+                </div>
+              </div>
               <Input
                 inputType={InputType.TEXT}
                 placeholder="First Name"
@@ -167,9 +172,17 @@ const LaborContractWriteForm = ({
                 }
                 canDelete={false}
               />
-            </InputLayout>
+            </div>
             {/* 성 입력 */}
-            <InputLayout title="Last Name" isEssential>
+            <div className="w-full">
+              <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+                <div className="relative">
+                  Last Name
+                  <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                    *
+                  </div>
+                </div>
+              </div>
               <Input
                 inputType={InputType.TEXT}
                 placeholder="Last Name"
@@ -179,11 +192,18 @@ const LaborContractWriteForm = ({
                 }
                 canDelete={false}
               />
-            </InputLayout>
-
+            </div>
             <div className="w-full flex flex-col gap-[1.125rem]">
               {/* 주소 검색 입력 input */}
-              <InputLayout title="Address in Korea" isEssential>
+              <div className="w-full">
+                <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+                  <div className="relative">
+                    Address in Korea
+                    <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                      *
+                    </div>
+                  </div>
+                </div>
                 <div onClick={() => setIsAddressSearch(true)}>
                   <Input
                     inputType={InputType.SEARCH}
@@ -193,7 +213,7 @@ const LaborContractWriteForm = ({
                     canDelete={false}
                   />
                 </div>
-              </InputLayout>
+              </div>
               {/* 검색한 위치를 보여주는 지도 */}
               {newDocumentData.address.address_detail !== '' && (
                 <>
@@ -214,7 +234,15 @@ const LaborContractWriteForm = ({
                       ></MapMarker>
                     </Map>
                   </div>
-                  <InputLayout title="Detailed Address" isEssential>
+                  <div className="w-full">
+                    <div className="w-full flex items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+                      <div className="relative">
+                        Detailed Address
+                        <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                          *
+                        </div>
+                      </div>
+                    </div>
                     <Input
                       inputType={InputType.TEXT}
                       placeholder="ex) 101-dong"
@@ -232,12 +260,20 @@ const LaborContractWriteForm = ({
                       }
                       canDelete={false}
                     />
-                  </InputLayout>
+                  </div>
                 </>
               )}
             </div>
             {/* 전화번호 입력 */}
-            <InputLayout title="Cell phone No." isEssential>
+            <div className="w-full">
+              <div className="w-full flex flex-row items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+                <div className="relative">
+                  Telephone No.
+                  <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                    *
+                  </div>
+                </div>
+              </div>
               <div className="w-full flex flex-row gap-2 justify-between mb-[0rem]">
                 <div className="w-full h-[2.75rem]">
                   <Dropdown
@@ -266,9 +302,17 @@ const LaborContractWriteForm = ({
                   canDelete={false}
                 />
               </div>
-            </InputLayout>
+            </div>
             {/* 서명 입력 */}
-            <InputLayout title="Applicant Signature" isEssential>
+            <div className="w-full">
+              <div className="w-full flex flex-row items-center justify-start body-3 color-[#222] px-[0.25rem] py-[0.375rem]">
+                <div className="relative">
+                  Applicant Signature
+                  <div className="w-1.5 absolute !m-0 top-[0rem] right-[-0.5rem] rounded-full text-[#ff6f61] h-1.5 z-[1]">
+                    *
+                  </div>
+                </div>
+              </div>
               <div className="w-full relative shadow rounded-xl box-border h-[120px] mb-16">
                 <SignaturePad
                   onSave={(signature: string) =>
@@ -286,7 +330,7 @@ const LaborContractWriteForm = ({
                   previewImg={newDocumentData.signature_base64}
                 />
               </div>
-            </InputLayout>
+            </div>
             {/* 고용주 정보가 있다면 표시 */}
             {document?.employer_information && (
               <EmployerInfoSection

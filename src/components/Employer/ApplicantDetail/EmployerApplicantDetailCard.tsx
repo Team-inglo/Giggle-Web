@@ -35,11 +35,11 @@ const EmployerApplicantDetailCard = ({
         </div>
         <Tag
           value={`${applicantData.duration_of_days} days After`}
-          padding="py-[0.25rem] px-[0.438rem]"
+          padding="0.25rem 0.438rem"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-surface-invert"
-          color="text-primary-neutral"
+          backgroundColor="#1E1926"
+          color="#F4F4F9"
           fontStyle="caption"
         />
       </div>
