@@ -20,7 +20,6 @@ export type AppicationItemType = {
   job_posting_id: number;
   user_owner_job_posting_id: number;
   icon_img_url: string;
-  company_name: string;
   title: string;
   address_name: string;
   step: ApplicationStepType;

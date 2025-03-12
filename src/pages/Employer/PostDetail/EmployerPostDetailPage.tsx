@@ -38,7 +38,7 @@ const EmployerPostDetailPage = () => {
         hasBackButton={true}
         onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
-        title="모집공고 상세"
+        title="Detail"
       />
       <PostDetailCompanyImageList
         companyImageData={data.data?.company_img_url_list}
