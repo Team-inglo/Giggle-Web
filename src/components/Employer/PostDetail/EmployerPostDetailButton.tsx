@@ -19,7 +19,7 @@ const EmployerPostDetailButton = () => {
             bgColor="bg-[#F4F4F9]"
             fontColor="text-[#BDBDBD]"
             isBorder={false}
-            title="삭제"
+            title="Delete"
             onClick={() => setIsOpenDeleteBottomSheet(true)}
           />
           <Button
@@ -27,7 +27,7 @@ const EmployerPostDetailButton = () => {
             bgColor="bg-[#FEF387]"
             fontColor="text-[#1E1926]"
             isBorder={false}
-            title="편집"
+            title="Edit"
             onClick={() =>
               navigate(`/employer/post/edit/${id}`, {
                 state: {

@@ -10,7 +10,7 @@ import RecruitmentConditionsIcon from '@/assets/icons/Post/RecruitmentConditions
 import WorkingConditionsIcon from '@/assets/icons/Post/WorkingConditionsIcon.svg?react';
 import WorkplaceInformationIcon from '@/assets/icons/Post/WorkplaceInformationIcon.svg?react';
 import InfoCardLayout from '@/components/Common/InfoCardLayout';
-import { infoTranslation, postTranslation } from '@/constants/translation';
+import { infoTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
 
@@ -51,20 +51,12 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
         <div ref={(e) => (scrollRef.current[0] = e)}>
           <InfoCardLayout
             icon={<RecruitmentConditionsIcon />}
-            title={
-              postTranslation.recruitmentConditions[
-                isEmployerByAccountType(account_type)
-              ]
-            }
+            title="Recruitment Conditions"
           >
             <div className="flex flex-col gap-4 w-full">
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.recruitmentPeriod[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Recruitment Period
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.recruitment_conditions?.recruitment_deadline}
@@ -72,11 +64,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.education[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Education
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.recruitment_conditions.education.toLowerCase()}{' '}
@@ -85,11 +73,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.numberOfRecruits[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Number of recruits
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.recruitment_conditions.number_of_recruits}{' '}
@@ -98,7 +82,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {postTranslation.visa[isEmployerByAccountType(account_type)]}
+                  Visa
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.recruitment_conditions.visa
@@ -108,11 +92,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.gender[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Gender
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.recruitment_conditions.gender.toLowerCase()}
@@ -120,11 +100,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.preferredConditions[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Preferred Conditions
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.recruitment_conditions
@@ -141,13 +117,10 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
         </div>
         <InfoCardLayout
           icon={<DetailedOverviewIcon />}
-          title={
-            postTranslation.detailedOverview[
-              isEmployerByAccountType(account_type)
-            ]
-          }
+          title="Detailed Overview"
         >
           <div className="flex flex-col gap-3 w-full">
+            <p className="text-text-normal button-2">Details</p>
             {postDetailData.detailed_overview.length > 255 ? (
               <>
                 <p className="text-text-alternative caption">
@@ -160,11 +133,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                     onClick={() => setShowDetailOverview(true)}
                     className="self-end text-text-alternative caption"
                   >
-                    {
-                      postTranslation.seeMore[
-                        isEmployerByAccountType(account_type)
-                      ]
-                    }
+                    See more
                   </button>
                 )}
               </>
@@ -178,11 +147,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
         <div ref={(e) => (scrollRef.current[1] = e)}>
           <InfoCardLayout
             icon={<WorkplaceInformationIcon />}
-            title={
-              postTranslation.workplaceInformation[
-                isEmployerByAccountType(account_type)
-              ]
-            }
+            title="Workplace Information"
           >
             <>
               <h5 className="pb-1 text-text-normal button-2">
@@ -211,43 +176,30 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
         </div>
         <InfoCardLayout
           icon={<WorkingConditionsIcon />}
-          title={
-            postTranslation.workplaceConditions[
-              isEmployerByAccountType(account_type)
-            ]
-          }
+          title="Working Conditions"
         >
           <div className="flex flex-col gap-4 w-full">
             <div>
               <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {postTranslation.salary[isEmployerByAccountType(account_type)]}
+                Salary
               </h5>
               <p className="text-text-alternative caption">
-                {formatMoney(postDetailData.working_conditions.hourly_rate)}{' '}
-                {postTranslation.KRW[isEmployerByAccountType(account_type)]}
+                {formatMoney(postDetailData.working_conditions.hourly_rate)} KRW
               </p>
             </div>
             <div>
               <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {
-                  postTranslation.workPeriod[
-                    isEmployerByAccountType(account_type)
-                  ]
-                }
+                Work Period
               </h5>
               <p className="text-text-alternative caption">
-                {postDetailData.working_conditions.work_period
+                {postDetailData.working_conditions.job_category
                   .replace(/_/g, ' ')
                   .toLowerCase()}
               </p>
             </div>
             <div>
               <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {
-                  postTranslation.workingDaysHours[
-                    isEmployerByAccountType(account_type)
-                  ]
-                }
+                Working Days & Hours
               </h5>
               <div className="flex flex-col gap-[0.125rem] text-text-alternative caption">
                 {postDetailData.working_conditions.work_day_times.map(
@@ -266,11 +218,28 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
             </div>
             <div>
               <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {
-                  postTranslation.jobCategory[
-                    isEmployerByAccountType(account_type)
-                  ]
-                }
+                Working Hours
+              </h5>
+              <p className="text-text-alternative caption">
+                {/* day_of_week이 요일무관인 경우, start time, end time에도 예외처리 */}
+                {postDetailData.working_conditions.work_day_times
+                  .filter(
+                    (value) =>
+                      !(
+                        value.work_start_time === '시간' &&
+                        value.work_end_time === '무관'
+                      ),
+                  )
+                  .map(
+                    (value) =>
+                      `${value.work_start_time} - ${value.work_end_time}`,
+                  )
+                  .join(', ')}
+              </p>
+            </div>
+            <div>
+              <h5 className="pb-[0.125rem] text-text-normal button-2">
+                Job Category
               </h5>
               <p className="text-text-alternative caption">
                 {postDetailData.working_conditions.job_category
@@ -280,11 +249,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
             </div>
             <div>
               <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {
-                  postTranslation.employmentType[
-                    isEmployerByAccountType(account_type)
-                  ]
-                }
+                Employment Type
               </h5>
               <p className="text-text-alternative caption">
                 {postDetailData.working_conditions.employment_type.toLowerCase()}
@@ -295,20 +260,12 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
         <div ref={(e) => (scrollRef.current[2] = e)}>
           <InfoCardLayout
             icon={<CompanyInformationIcon />}
-            title={
-              postTranslation.companyInformation[
-                isEmployerByAccountType(account_type)
-              ]
-            }
+            title="Company Information"
           >
             <div className="flex flex-col gap-4 w-full">
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.companyAddress[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Company Address
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.company_information.company_address}
@@ -316,11 +273,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.representativeName[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Representative Name
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.company_information.representative_name}
@@ -328,11 +281,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.recruiter[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Recruiter
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.company_information.recruiter}
@@ -340,11 +289,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.contact[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
+                  Contact
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.company_information.contact}
@@ -352,7 +297,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               </div>
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {postTranslation.email[isEmployerByAccountType(account_type)]}
+                  Email
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.company_information.email}

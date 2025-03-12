@@ -60,7 +60,7 @@ const EmployerApplicantListPage = () => {
         </>
       )}
       <div className="w-full h-4 bg-surface-secondary"></div>
-      <EmployerApplicantList />
+      <EmployerApplicantList title={data?.data?.title} />
     </>
   );
 };
