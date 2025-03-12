@@ -1,5 +1,10 @@
 import Tag from '@/components/Common/Tag';
-import { FILTER_CATEGORY } from '@/constants/postSearch';
+import {
+  EN_FILTER_CATEGORY_OPTIONS,
+  FILTER_CATEGORY,
+} from '@/constants/postSearch';
+import { UserType } from '@/constants/user';
+import { useUserStore } from '@/store/user';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 
 type TagType = {
@@ -16,6 +21,8 @@ const PostSearchFilterList = ({
   filterList,
   handleUpdateFilterList,
 }: PostSearchFilterListProps) => {
+  const { account_type } = useUserStore();
+
   const formatFilterListToTag = () => {
     const excludedCategories = [
       FILTER_CATEGORY.REGION_1DEPTH,
@@ -118,7 +125,11 @@ const PostSearchFilterList = ({
         {formatFilterListToTag().map((value, index) => (
           <Tag
             key={`${index}_${value.category}`}
-            value={value.value}
+            value={
+              account_type === UserType.OWNER
+                ? EN_FILTER_CATEGORY_OPTIONS[value.value] || value.value
+                : value.value
+            }
             onDelete={() => onDeleteFilter(value)}
             padding="py-[0.375rem] pr-[0.5rem] pl-[0.675rem]"
             isRounded={true}

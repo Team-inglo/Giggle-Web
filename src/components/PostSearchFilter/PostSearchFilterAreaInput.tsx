@@ -4,6 +4,9 @@ import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { useEffect, useState } from 'react';
 import { FILTER_CATEGORY } from '@/constants/postSearch';
+import { useUserStore } from '@/store/user';
+import { postSearchTranslation } from '@/constants/translation';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 type PostSearchFilterAreaInputProps = {
   setIsOpenAreaFilter: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +19,8 @@ const PostSearchFilterAreaInput = ({
   filterList,
   setFilterList,
 }: PostSearchFilterAreaInputProps) => {
+  const { account_type } = useUserStore();
+
   const [region1Depth, setRegion1Depth] = useState<string[]>([]);
   const [region2Depth, setRegion2Depth] = useState<string[]>([]);
   const [region3Depth, setRegion3Depth] = useState<string[]>([]);
@@ -51,14 +56,24 @@ const PostSearchFilterAreaInput = ({
   };
 
   return (
-    <PostSearchFilterToggle title={'Select Areas'}>
+    <PostSearchFilterToggle
+      title={
+        postSearchTranslation.areaInputTitle[
+          isEmployerByAccountType(account_type)
+        ]
+      }
+    >
       <div
         className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-2 text-text-assistive cursor-pointer"
         onClick={() => setIsOpenAreaFilter(true)}
       >
         <div className="flex-1 h-5 flex flex-row items-center justify-between">
           <p className="w-full relative leading-5 outline-none bg-white">
-            Select Areas
+            {
+              postSearchTranslation.areaInputPlaceholder[
+                isEmployerByAccountType(account_type)
+              ]
+            }
           </p>
           {/* 드롭다운 토글 버튼 */}
           <button className="p-0 rounded-full transition-colors">
@@ -86,9 +101,6 @@ const PostSearchFilterAreaInput = ({
           />
         ))}
       </div>
-      <p className="caption text-text-assistive">
-        Multiple selection is available.
-      </p>
     </PostSearchFilterToggle>
   );
 };

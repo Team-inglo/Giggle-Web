@@ -421,6 +421,21 @@ export const postTranslation = {
   },
 };
 
+export const postSearchTranslation = {
+  postSearchTitle: {
+    ko: '모집공고 조건설정',
+    en: 'Filtering',
+  },
+  areaInputTitle: {
+    ko: '희망 근무 지역을 선택해주세요',
+    en: 'Select Areas',
+  },
+  areaInputPlaceholder: {
+    ko: '지역 선택하기',
+    en: 'Select Areas',
+  },
+};
+
 export const infoTranslation = {
   notEntered: {
     ko: '미입력',
@@ -447,5 +462,9 @@ export const buttonTranslation = {
   reset: {
     ko: '초기화',
     en: 'Reset',
+  },
+  apply: {
+    ko: '적용하기',
+    en: 'Apply',
   },
 };

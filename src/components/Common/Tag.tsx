@@ -32,7 +32,7 @@ const Tag = ({
       {value}
       {onDelete && (
         <button onClick={() => onDelete(value)}>
-          <TagDeleteIcon color={color} />
+          <TagDeleteIcon color={'#252525'} />
         </button>
       )}
     </div>
