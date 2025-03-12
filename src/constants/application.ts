@@ -14,29 +14,26 @@ export const enum APPLICATION_STEP {
 }
 
 export const APPLICATION_STATUS_TYPE = {
-  TOTAL: 'Total',
-  APPLICATION_IN_PROGRESS: 'Application in progress',
-  APPLICATION_SUCCESS: 'Application success',
-  APPLICATION_REJECTED: 'Application rejected',
-  RESUME_REJECTED: 'resume rejected',
+  APPLICATION_IN_PROGRESS: 'In Progress',
+  APPLICATION_SUCCESS: 'Success',
+  APPLICATION_REJECTED: 'Resubmit',
+  RESUME_REJECTED: 'Rejected',
   //PENDING: 'pending',
 } as const;
 
 export const KO_APPLICATION_STATUS_TYPE = {
-  TOTAL: '전체',
-  APPLICATION_IN_PROGRESS: '진행중',
-  APPLICATION_SUCCESS: '계약 성공',
-  APPLICATION_REJECTED: '시간제취업허가 실패',
-  RESUME_REJECTED: '이력서 거절',
+  APPLICATION_IN_PROGRESS: '진행 중',
+  APPLICATION_SUCCESS: '채용 성공',
+  APPLICATION_REJECTED: '확인 필요',
+  RESUME_REJECTED: '서류 탈락',
   //PENDING: '대기',
 } as const;
 
 export const EN_APPLICATION_STATUS_TYPE = {
-  ['전체']: 'Total',
-  ['진행중']: 'Application in progress',
-  ['계약 성공']: 'Application success',
-  ['시간제취업허가 실패']: 'Application rejected',
-  ['이력서 거절']: 'resume rejected',
+  ['진행 중']: 'Application in progress',
+  ['채용 성공']: 'Application success',
+  ['확인 필요']: 'Application rejected',
+  ['서류 탈락']: 'resume rejected',
   //['대기']: 'pending',
 } as const;
 

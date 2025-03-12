@@ -145,7 +145,7 @@ const PostSearchPage = () => {
       />
       <section className="flex-1 flex flex-col items-center w-full pb-24">
         <div className="w-full py-4 px-6 flex justify-between items-center">
-          <h3 className=" caption text-text-alternative">
+          <h3 className="caption text-text-alternative">
             {postData.length} search results
           </h3>
           <SearchSortDropdown

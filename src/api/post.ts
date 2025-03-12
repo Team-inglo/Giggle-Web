@@ -1,7 +1,9 @@
-import { MatchKoEnAscendingSortType } from '@/types/common/sort';
 import { api } from '.';
-import { GetApplyPostListReqType, GetPostListReqType } from '@/types/api/post';
-import { APPLICATION_STATUS_TYPE } from '@/constants/application';
+import {
+  GetApplyPostListReqType,
+  GetEmployerPostListReqType,
+  GetPostListReqType,
+} from '@/types/api/post';
 import { filterNullParams } from '@/utils/filterNullParams';
 
 // 4.1 (게스트) 공고 리스트 조회
@@ -46,11 +48,11 @@ export const getApplicantList = async (
   page: number,
   id: number,
   sorting: string,
-  status: string,
+  status: string | null,
 ) => {
   const size = 10;
   const response = await api.get(
-    `/owners/job-postings/${id}/user-owner-job-postings/users/overviews?page=${page}&size=${size}&sorting=${sorting}${status !== 'TOTAL' ? `&status=${status}` : ''}`,
+    `/owners/job-postings/${id}/user-owner-job-postings/users/overviews?page=${page}&size=${size}&sorting=${sorting}${!!status && `&status=${status}`}`,
   );
   return response.data;
 };
@@ -107,7 +109,7 @@ export const getApplyPostList = async ({
   status,
 }: GetApplyPostListReqType) => {
   const response = await api.get(
-    `/users/user-owner-job-postings/overviews?page=${page}&size=${size}&sorting=${sorting.toUpperCase()}${status === APPLICATION_STATUS_TYPE.TOTAL ? '' : `&status=${status.replace(/\s/g, '_').toUpperCase()}`}`,
+    `/users/user-owner-job-postings/overviews?page=${page}&size=${size}&sorting=${sorting.toUpperCase()}${!!status && `&status=${status}`}`,
   );
   return response.data;
 };
@@ -121,12 +123,12 @@ export const getInterviewList = async (page: number, size: number) => {
 };
 
 // 6.6 (고용주) 등록한 공고 리스트 조회하기
-export const getEmployerPostList = async (
-  sorting: MatchKoEnAscendingSortType,
-) => {
+export const getEmployerPostList = async ({
+  page,
+  size,
+  sorting,
+}: GetEmployerPostListReqType) => {
   // TODO: 무한 스크롤 구현하기
-  const page = 1;
-  const size = 10;
   const response = await api.get(
     `/owners/job-postings/overviews?page=${page}&size=${size}&sorting=${sorting}`,
   );
