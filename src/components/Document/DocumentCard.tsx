@@ -2,6 +2,7 @@ import { DocumentInfo } from '@/types/api/document';
 import TalkBallonIconGrey from '@/assets/icons/TalkBalloonGrey.svg?react';
 import FolderIcon from '@/assets/icons/FolderIcon.svg?react';
 import DownloadIcon from '@/assets/icons/DownloadIcon.svg?react';
+import BlackFolderIcon from '@/assets/icons/BlackFolder.svg?react';
 import { useNavigate } from 'react-router-dom';
 import {
   usePatchDocumentsStatusConfirmation,
@@ -10,6 +11,7 @@ import {
 import { useCurrentDocumentIdStore } from '@/store/url';
 import { ReactNode } from 'react';
 import { SuccessModalContent } from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
+import ArrowrightIcon from '@/assets/icons/Chevron.svg?react';
 
 const enum DocumentStatus {
   TEMPORARY_SAVE = 'TEMPORARY_SAVE',
@@ -25,6 +27,8 @@ type DocumentCardProps = {
   children?: ReactNode;
   title: string;
   content: string;
+  preview?: string;
+  onPreview?: () => void;
 };
 
 const DocumentCardLayout = ({
@@ -33,6 +37,8 @@ const DocumentCardLayout = ({
   children,
   title,
   content,
+  preview,
+  onPreview,
 }: DocumentCardProps) => {
   return (
     <div className="w-full p-4 flex flex-col rounded-lg bg-white border border-border-disabled">
@@ -44,10 +50,24 @@ const DocumentCardLayout = ({
       <div className="w-full pb-2 border-b border-border-disabled">
         <p className="head-3 py-1">{title}</p>
       </div>
-      <div className="w-full pb-2 body-3 text-text-alternative">
-        <p className="py-2">{content}</p>
-      </div>
-      <div className="w-full flex flex-row gap-2">{children}</div>
+      <section className="w-full flex flex-col gap-2">
+        <div className="w-full pt-2 body-3 text-text-alternative">
+          <p>{content}</p>
+        </div>
+        {preview && (
+          <div
+            className="relative w-full button-2 bg-surface-secondary rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-1"
+            onClick={onPreview}
+          >
+            <BlackFolderIcon />
+            <p>{preview}</p>
+            <div className="absolute right-3">
+              <ArrowrightIcon />
+            </div>
+          </div>
+        )}
+        <div className="w-full flex flex-row gap-2">{children}</div>
+      </section>
     </div>
   );
 };
@@ -180,20 +200,16 @@ const DocumentCardDispenser = ({
           tagStyle="bg-primary-neutral text-primary-dark"
           tagText="Pending ... 🔄"
           content="The employer is in the process of completing the form."
-        >
-          <div className="flex flex-col w-full items-start justify-start text-text-normal">
-            <div className="w-full rounded-lg bg-surface-secondary flex items-center justify-start border border-surface-disabled px-4 py-2 pl-2.5">
-              <div className="flex items-center justify-start gap-2">
-                <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
-                  <TalkBallonIconGrey />
-                </div>
-                <div className="relative body-3 opacity-75">
-                  The employer is currently writing ...
-                </div>
-              </div>
-            </div>
-          </div>
-        </DocumentCardLayout>
+          preview="Check my Document"
+          onPreview={() => {
+            updateCurrentDocumentId(documentInfo.id);
+            navigate(`/document-preview/${documentInfo.id}`, {
+              state: {
+                type: type,
+              },
+            });
+          }}
+        />
       );
     case DocumentStatus.BEFORE_CONFIRMATION:
       return (
@@ -205,6 +221,15 @@ const DocumentCardDispenser = ({
               Please review the content and if there are any issues, submit a
               Request. If everything is fine, complete the process by selecting
               Confirm.`}
+          preview="Check my Document"
+          onPreview={() => {
+            updateCurrentDocumentId(documentInfo.id);
+            navigate(`/document-preview/${documentInfo.id}`, {
+              state: {
+                type: type,
+              },
+            });
+          }}
         >
           <button
             className="bg-primary-dark text-white w-full py-3 flex justify-center items-center rounded-lg button-2"

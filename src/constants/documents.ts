@@ -1,5 +1,4 @@
 import {
-  DayOfWeek,
   PartTimeEmployeeInfoProperty,
   Insurance,
   IntegratedApplicationData,
@@ -7,11 +6,11 @@ import {
   LaborContractEmployerInfoProperty,
   PaymentMethod,
   WorkPeriod,
+  IntegratedApplicationField,
 } from '@/types/api/document';
 import {
   DocumentType,
   EmployerInfoProperty,
-  EmployerInformation,
   LaborContractEmployeeInfo,
   PartTimePermitFormRequest,
 } from '@/types/api/document';
@@ -35,11 +34,11 @@ export const DocumentTypeInfo = {
 
 export const EmployerDocumentTypeInfo = {
   [DocumentType.PART_TIME_PERMIT]: {
-    name: '시간제취업허가서',
+    name: '시간제 취업 허가서',
     key: 'part_time_employment_permits',
   },
   [DocumentType.LABOR_CONTRACT]: {
-    name: '표준근로계약서',
+    name: '표준 근로 계약서',
     key: 'standard_labor_contract',
   },
   [DocumentType.INTEGRATED_APPLICATION]: {
@@ -50,43 +49,46 @@ export const EmployerDocumentTypeInfo = {
 
 export const DocumentSubTitleContent = {
   [DocumentType.PART_TIME_PERMIT]: {
-    name: 'Part-Time Employment Permit',
-    key: 'part_time_employment_permits',
-    content:
-      "International students must have the applicable permit to work part-time or part-time. If you don't get permission, you can become an illegal resident.",
+    student: {
+      name: 'Part-Time Employment Permit',
+      key: 'part_time_employment_permits',
+      content:
+        "International students must have the applicable permit to work part-time or part-time. If you don't get permission, you can become an illegal resident.",
+    },
+    employer: {
+      name: '취업허가서를 작성해주세요 ✍',
+      key: 'part_time_employment_permits',
+      content:
+        '시간제 근무를 하려면 유학생은 취업허가서를 소지해야 해요. 만약 허가 없이 근무할 경우, 고용주에게도 불이익이 발생할 수 있어요. 안전한 채용을 위해 꼭 확인해 주세요!',
+    },
   },
   [DocumentType.LABOR_CONTRACT]: {
-    name: 'Standard labor contract for short-time workers',
-    key: 'standard_labor_contract',
-    content:
-      'Regardless of the type of employment, all workers are required to write an employment contract, which allows them to maintain a legal and transparent employment relationship.',
+    student: {
+      name: 'Standard labor contract for short-time workers',
+      key: 'standard_labor_contract',
+      content:
+        'Regardless of the type of employment, all workers are required to write an employment contract, which allows them to maintain a legal and transparent employment relationship.',
+    },
+    employer: {
+      name: '표준근로계약서를 작성해주세요 ✍',
+      key: 'standard_labor_contract',
+      content:
+        '고용 형태와 관계없이 모든 근로자는 근로계약서를 작성해야 해요. 이는 법적으로 필수 사항이며, 근로계약서를 작성하지 않으면 500만원 이하 벌금이 부과될 수 있어요.',
+    },
   },
   [DocumentType.INTEGRATED_APPLICATION]: {
-    name: 'Application Form',
-    key: 'integrated_application',
-    content:
-      'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
-  },
-} as const;
-
-export const EmployerDocumentSubTitleContent = {
-  [DocumentType.PART_TIME_PERMIT]: {
-    name: '시간제 취업허가서',
-    key: 'part_time_employment_permits',
-    content:
-      '유학생이 아르바이트나 시간제 근무를 하기 위해서는 반드시 해당 허가서를 소지해야 합니다. 허가를 받지 않은 유학생을 고용할 경우, 고용주에게 불이익이 발생할 수 있습니다.',
-  },
-  [DocumentType.LABOR_CONTRACT]: {
-    name: '단시간근로자 표준근로계약서',
-    key: 'standard_labor_contract',
-    content:
-      '고용 형태와 관계없이 모든 근로자는 근로계약서를 작성해야하며, 이를 통해 합법적이고 투명한 고용 관계를 유지할 수 있습니다.',
-  },
-  [DocumentType.INTEGRATED_APPLICATION]: {
-    name: 'Application Form',
-    key: 'integrated_application',
-    content:
-      'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
+    student: {
+      name: 'Application Form',
+      key: 'integrated_application',
+      content:
+        'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
+    },
+    employer: {
+      name: 'Application Form',
+      key: 'integrated_application',
+      content:
+        'The Application Form is a required document that international students must submit to legally work part-time in Korea. This form reports the workplace and working conditions, allowing the student to obtain employment approval.',
+    },
   },
 } as const;
 
@@ -111,26 +113,32 @@ export const enum DocumentStatusEmployer {
 export const PartTimePermitFormInfo = {
   [PartTimePermitFormProperty.FIRST_NAME]: {
     name: 'First name',
+    ko: '이름',
     key: 'first_name',
   },
   [PartTimePermitFormProperty.LAST_NAME]: {
     name: 'Last name',
+    ko: '성',
     key: 'last_name',
   },
   [PartTimePermitFormProperty.MAJOR]: {
     name: 'Major',
+    ko: '전공',
     key: 'major',
   },
   [PartTimePermitFormProperty.TERM_OF_COMPLETION]: {
     name: 'Term of completion',
+    ko: '이수학기',
     key: 'term_of_completion',
   },
   [PartTimePermitFormProperty.PHONE_NUMBER]: {
     name: 'Phone number',
+    ko: '전화번호',
     key: 'phone_number',
   },
   [PartTimePermitFormProperty.EMAIL]: {
     name: 'Email',
+    ko: '이메일',
     key: 'email',
   },
 } as const;
@@ -144,60 +152,62 @@ export const initialPartTimePermitForm: PartTimePermitFormRequest = {
   phone_number: '',
   email: '',
 };
-// 시간제 근무 허가 신청서 mock data
-export const mockPartTimePermitForm: PartTimePermitFormRequest = {
-  first_name: '길동',
-  last_name: '홍',
-  major: '컴퓨터공학과',
-  term_of_completion: 4,
-  phone_number: '010-1234-5678',
-  email: 'gildong.hong@example.com',
-};
 
 // 시간제 근무 허가서 내 고용주 입력 정보 속성과 이름 mapping
 export const PartTimeEmployPermitEmployerInfo = {
   [EmployerInfoProperty.COMPANY_NAME]: {
     name: 'Company name',
+    ko: '업체명',
     key: 'company_name',
   },
   [EmployerInfoProperty.COMPANY_REGISTRATION_NUMBER]: {
     name: 'Business registration number',
+    ko: '사업자등록번호',
     key: 'company_registration_number',
   },
   [EmployerInfoProperty.JOB_TYPE]: {
     name: 'Industry',
+    ko: '업종',
     key: 'job_type',
   },
   [EmployerInfoProperty.NAME]: {
     name: 'Representative',
+    ko: '대표자 이름',
     key: 'name',
   },
   [EmployerInfoProperty.PHONE_NUMBER]: {
     name: 'Phone number',
+    ko: '전화번호',
     key: 'phone_number',
   },
   [EmployerInfoProperty.SIGNATURE_BASE64]: {
     name: "Representative's signature",
+    ko: '서명',
     key: 'signature_base64',
   },
   [EmployerInfoProperty.WORK_PERIOD]: {
     name: 'Work period',
+    ko: '근무 기간',
     key: 'work_period',
   },
   [EmployerInfoProperty.HOURLY_RATE]: {
     name: 'Hourly rate',
+    ko: '시급',
     key: 'hourly_rate',
   },
   [EmployerInfoProperty.WORK_DAYS_WEEKDAYS]: {
     name: 'Weekday work hours',
+    ko: '평일 근무일시',
     key: 'work_days_weekdays',
   },
   [EmployerInfoProperty.WORK_DAYS_WEEKENDS]: {
     name: 'Weekend work hours',
+    ko: '주말 근무일시',
     key: 'work_days_weekends',
   },
   [EmployerInfoProperty.ADDRESS]: {
     name: 'Address in Korea',
+    ko: '주소',
     key: 'address',
   },
 } as const;
@@ -206,101 +216,95 @@ export const PartTimeEmployPermitEmployerInfo = {
 export const LaborContractEmployerInfoNameMap = {
   [LaborContractEmployerInfoProperty.COMPANY_NAME]: {
     name: 'Company name',
+    ko: '업체명',
     key: 'company_name',
   },
   [LaborContractEmployerInfoProperty.COMPANY_REGISTRATION_NUMBER]: {
     name: 'Company Registration Number',
+    ko: '사업자등록번호',
     key: 'company_registration_number',
   },
   [LaborContractEmployerInfoProperty.PHONE_NUMBER]: {
     name: 'Company Phone Number',
+    ko: '',
     key: 'phone_number',
   },
   [LaborContractEmployerInfoProperty.NAME]: {
     name: 'Representative name',
+    ko: '대표자 이름',
     key: 'name',
   },
   [LaborContractEmployerInfoProperty.START_DATE]: {
     name: 'Work start date',
+    ko: '근무 시작일',
     key: 'start_date',
   },
   [LaborContractEmployerInfoProperty.END_DATE]: {
     name: 'Work end date',
+    ko: '근무 종료일',
     key: 'end_date',
   },
   [LaborContractEmployerInfoProperty.ADDRESS]: {
     name: 'Work place address',
+    ko: '근무지 주소',
     key: 'address',
   },
   [LaborContractEmployerInfoProperty.DESCRIPTION]: {
     name: 'Work details',
+    ko: '상세 업무 내용',
     key: 'description',
   },
   [LaborContractEmployerInfoProperty.WORK_DAY_TIME_LIST]: {
     name: 'Working days and working hours by working days',
+    ko: '근무일시',
     key: 'work_day_time_list',
   },
   [LaborContractEmployerInfoProperty.WEEKLY_LAST_DAYS]: {
     name: 'Weekly holidays',
+    ko: '주휴일',
     key: 'weekly_last_days',
   },
   [LaborContractEmployerInfoProperty.HOURLY_RATE]: {
     name: 'Hourly pay',
+    ko: '시급',
     key: 'hourly_rate',
   },
   [LaborContractEmployerInfoProperty.BONUS]: {
     name: 'Bonuses',
+    ko: '보너스',
     key: 'bonus',
   },
   [LaborContractEmployerInfoProperty.ADDITIONAL_SALARY]: {
     name: 'Other benefits (such as allowances)',
+    ko: '기타 복지',
     key: 'additional_salary',
   },
   [LaborContractEmployerInfoProperty.WAGE_RATE]: {
     name: 'Additional wage rate for overtime work',
+    ko: '초과근무수당',
     key: 'wage_rate',
   },
   [LaborContractEmployerInfoProperty.PAYMENT_DAY]: {
     name: 'Wage payment date',
+    ko: '급여지급일',
     key: 'payment_day',
   },
   [LaborContractEmployerInfoProperty.PAYMENT_METHOD]: {
     name: 'Wage payment method',
+    ko: '급여지급방식',
     key: 'payment_method',
   },
   [LaborContractEmployerInfoProperty.INSURANCE]: {
     name: 'Social insurance coverage',
+    ko: '보험',
     key: 'insurance',
   },
   [LaborContractEmployerInfoProperty.SIGNATURE_BASE64]: {
     name: "Representative's signature",
+    ko: '대표자 서명',
     key: 'signature_base64',
   },
 } as const;
-
-// 고용주 mock data
-export const mockEmployerInformation: EmployerInformation = {
-  company_name: '테크스타트 주식회사',
-  company_registration_number: '123-45-67890',
-  job_type: '정보통신업',
-  name: '홍길동',
-  phone_number: '010-1111-1111',
-  signature_base64: '',
-  work_period: WorkPeriod.ONE_MONTH_TO_THREE_MONTHS,
-  hourly_rate: 10000,
-  work_days_weekdays: null,
-  work_days_weekends: null,
-  address: {
-    address_name: '서울 강남구 테헤란로 401 팁스타운',
-    region_1depth_name: '서울',
-    region_2depth_name: '강남구',
-    region_3depth_name: '삼성동',
-    region_4depth_name: '테헤란로 401',
-    address_detail: '팁스타운 6층',
-    longitude: 127.0507355,
-    latitude: 37.5051374,
-  },
-};
 
 // 고용주 표준근로계약서 초기 state
 export const initialLaborContractEmployerInfo: LaborContractEmployerInfo = {
@@ -346,22 +350,27 @@ export enum LaborContractEmployeeInfoProperty {
 export const LaborContractEmployeeFormInfo = {
   [LaborContractEmployeeInfoProperty.FIRST_NAME]: {
     name: 'First name',
+    ko: '이름',
     key: 'first_name',
   },
   [LaborContractEmployeeInfoProperty.LAST_NAME]: {
     name: 'Last name',
+    ko: '성',
     key: 'last_name',
   },
   [LaborContractEmployeeInfoProperty.PHONE_NUMBER]: {
     name: 'Phone number',
+    ko: '전화번호',
     key: 'phone_number',
   },
   [LaborContractEmployeeInfoProperty.SIGNATURE_BASE64]: {
     name: 'Signature',
+    ko: '서명',
     key: 'signature_base64',
   },
   [LaborContractEmployeeInfoProperty.ADDRESS]: {
     name: 'Address',
+    ko: '주소',
     key: 'address',
   },
 } as const;
@@ -382,92 +391,6 @@ export const initialLaborContractEmployeeInfo: LaborContractEmployeeInfo = {
   },
   phone_number: '010-0000-0000',
   signature_base64: '',
-};
-
-// 표준계약서 mock data
-export const mockLaborContractEmployeeInfo: LaborContractEmployeeInfo = {
-  first_name: '영희',
-  last_name: '박',
-  address: {
-    address_name: '경기도 성남시 분당구 판교역로 235',
-    region_1depth_name: '경기도',
-    region_2depth_name: '성남시',
-    region_3depth_name: '분당구 판교역로',
-    region_4depth_name: '235',
-    address_detail: '에이치스퀘어 N동 8층',
-    longitude: 127.1086228,
-    latitude: 37.4020909,
-  },
-  phone_number: '010-9876-5432',
-  signature_base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAA...',
-};
-
-// 근로계약서 고용주 mock data
-export const sampleLaborContract: LaborContractEmployerInfo = {
-  company_name: 'ABC Technology Co., Ltd.',
-  company_registration_number: null,
-  phone_number: '010-1111-1111',
-  name: 'John Smith',
-  start_date: '2024-01-01',
-  end_date: '2024-12-31',
-  address: {
-    address_name: '서울특별시 강남구 테헤란로 123',
-    region_1depth_name: '서울특별시',
-    region_2depth_name: '강남구',
-    region_3depth_name: '테헤란로',
-    region_4depth_name: null,
-    address_detail: 'ABC빌딩 5층',
-    longitude: 127.0495556,
-    latitude: 37.5048122,
-  },
-  description: 'Software development and maintenance for web applications',
-  work_day_time_list: [
-    {
-      day_of_week: DayOfWeek.MONDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.TUESDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.WEDNESDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.THURSDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-    {
-      day_of_week: DayOfWeek.FRIDAY,
-      work_start_time: '09:00',
-      work_end_time: '18:00',
-      break_start_time: '12:00',
-      break_end_time: '13:00',
-    },
-  ],
-  weekly_last_days: [DayOfWeek.SATURDAY, DayOfWeek.SUNDAY],
-  hourly_rate: 20000,
-  bonus: 2000000,
-  additional_salary: 500000,
-  wage_rate: 1.5,
-  payment_day: 10,
-  payment_method: PaymentMethod.BANK_TRANSFER,
-  insurance: [Insurance.HEALTH_INSURANCE],
-  signature_base64:
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==',
 };
 
 // 통합신청서 초기 state
@@ -500,76 +423,6 @@ export const initialIntegratedApplication: IntegratedApplicationData = {
     latitude: 0,
   },
 };
-
-// 통합 신청서 mock data
-export const mockIntegratedApplication: IntegratedApplicationData = {
-  first_name: '길동',
-  last_name: '홍',
-  birth: '1990-01-01',
-  gender: Gender.MALE,
-  nationality: '대한민국',
-  tele_phone_number: '02-1234-5678',
-  cell_phone_number: '010-1234-5678',
-  is_accredited: true,
-  school_name: '서울대학교',
-  school_phone_number: '02-880-5114',
-  new_work_place_name: '(주)테크컴퍼니',
-  new_work_place_registration_number: '123-45-67890',
-  new_work_place_phone_number: '02-3456-7890',
-  annual_income_amount: 50000000,
-  occupation: '소프트웨어 엔지니어',
-  email: 'gildong.hong@example.com',
-  signature_base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
-  address: {
-    address_name: '서울특별시 강남구 테헤란로 123',
-    region_1depth_name: '서울특별시',
-    region_2depth_name: '강남구',
-    region_3depth_name: '테헤란로',
-    region_4depth_name: '123',
-    address_detail: '테크빌딩 15층',
-    longitude: 127.0495556,
-    latitude: 37.5063889,
-  },
-};
-
-// 학교 검색 api 연결 전 사용할 학교 mock data
-export const schoolMockData = [
-  {
-    id: 1,
-    name: '서울대학교',
-    phone_number: '02-880-5114',
-  },
-  {
-    id: 2,
-    name: '연세대학교',
-    phone_number: '02-2123-2114',
-  },
-  {
-    id: 3,
-    name: '고려대학교',
-    phone_number: '02-3290-1114',
-  },
-  {
-    id: 4,
-    name: '한양대학교',
-    phone_number: '02-2220-0114',
-  },
-  {
-    id: 5,
-    name: '성균관대학교',
-    phone_number: '02-760-1114',
-  },
-  {
-    id: 6,
-    name: '경희대학교',
-    phone_number: '02-961-0114',
-  },
-  {
-    id: 7,
-    name: '중앙대학교',
-    phone_number: '02-820-5114',
-  },
-];
 
 // 고용주 시간제 근무 허가서 작성 시 유학생 정보 name 매핑
 export const EmployeePropertyInfo = {
@@ -609,6 +462,82 @@ export const LaborContractEmployeePropertyInfo = {
   },
   [LaborContractEmployeeInfoProperty.SIGNATURE_BASE64]: {
     name: '서명',
+  },
+} as const;
+
+// 통합신청서 작성 시 정보와 이름 매핑
+export const IntegratedApplicationPropertyInfo = {
+  [IntegratedApplicationField.FIRST_NAME]: {
+    name: 'First Name',
+    ko: '이름',
+  },
+  [IntegratedApplicationField.LAST_NAME]: {
+    name: 'Last Name',
+    ko: '성',
+  },
+  [IntegratedApplicationField.BIRTH]: {
+    name: 'Date of Birth',
+    ko: '생년월일',
+  },
+  [IntegratedApplicationField.GENDER]: {
+    name: 'Gender',
+    ko: '성별',
+  },
+  [IntegratedApplicationField.NATIONALITY]: {
+    name: 'Nationality',
+    ko: '국적',
+  },
+  [IntegratedApplicationField.ADDRESS]: {
+    name: 'Address in Korea',
+    ko: '한국 주소',
+  },
+  [IntegratedApplicationField.TELE_PHONE_NUMBER]: {
+    name: 'Telephone Number',
+    ko: '전화번호',
+  },
+  [IntegratedApplicationField.CELL_PHONE_NUMBER]: {
+    name: 'Cell Phone Number',
+    ko: '휴대전화',
+  },
+  [IntegratedApplicationField.IS_ACCREDITED]: {
+    name: 'Type Of Name',
+    ko: '인증 여부',
+  },
+  [IntegratedApplicationField.SCHOOL_NAME]: {
+    name: 'School Name',
+    ko: '학교명',
+  },
+  [IntegratedApplicationField.SCHOOL_PHONE_NUMBER]: {
+    name: 'Phone Number Of School',
+    ko: '학교 전화번호',
+  },
+  [IntegratedApplicationField.NEW_WORK_PLACE_NAME]: {
+    name: 'New Workplace',
+    ko: '근무처명',
+  },
+  [IntegratedApplicationField.NEW_WORK_PLACE_REGISTRATION_NUMBER]: {
+    name: 'Business Registration Number No. Of New Workplace',
+    ko: '사업자등록번호',
+  },
+  [IntegratedApplicationField.NEW_WORK_PLACE_PHONE_NUMBER]: {
+    name: 'Phone Number Of New Workplace',
+    ko: '근무처 전화번호',
+  },
+  [IntegratedApplicationField.ANNUAL_INCOME_AMOUNT]: {
+    name: 'Annual Income Amount',
+    ko: '연간 소득액',
+  },
+  [IntegratedApplicationField.OCCUPATION]: {
+    name: 'Occupation',
+    ko: '직종',
+  },
+  [IntegratedApplicationField.EMAIL]: {
+    name: 'Email',
+    ko: '이메일',
+  },
+  [IntegratedApplicationField.SIGNATURE_BASE64]: {
+    name: 'Applicant Signature',
+    ko: '서명',
   },
 } as const;
 
