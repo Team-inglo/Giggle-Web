@@ -140,7 +140,9 @@ const CardDeadLine = () => {
   return (
     <div className="flex gap-1 py-4">
       <p className="button-1 text-text-normal">{recruitment_dead_line}</p>
-      <p className="button-2 text-text-normal">days until the deadline</p>
+      <p className="button-2 text-text-normal">
+        {postTranslation.deadline[isEmployerByAccountType(account_type)]}
+      </p>
     </div>
   );
 };
