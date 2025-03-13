@@ -468,3 +468,14 @@ export const buttonTranslation = {
     en: 'Apply',
   },
 };
+
+export const alarmTranslation = {
+  alarmTitle: {
+    ko: '알림',
+    en: 'Notification',
+  },
+  emptyAlarm: {
+    ko: '알람이 없습니다.',
+    en: 'There is no notifications',
+  },
+};
