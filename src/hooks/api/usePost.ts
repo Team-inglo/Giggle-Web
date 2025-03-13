@@ -15,8 +15,11 @@ import {
   getRecommendPostList,
   putPostBookmark,
 } from '@/api/post';
-import { GetApplyPostListReqType, GetPostListReqType } from '@/types/api/post';
-import { MatchKoEnAscendingSortType } from '@/types/common/sort';
+import {
+  GetApplyPostListReqType,
+  GetEmployerPostListReqType,
+  GetPostListReqType,
+} from '@/types/api/post';
 import {
   useInfiniteQuery,
   useMutation,
@@ -135,7 +138,7 @@ export const useGetRecommendPostList = () => {
 export const useGetApplicantList = (
   id: number,
   sorting: string,
-  status: string,
+  status: string | null,
   isEnabled: boolean,
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
@@ -285,9 +288,27 @@ export const useGetInterviewList = (page: number, size: number) => {
 };
 
 // 6.6 (고용주) 등록한 공고 리스트 조회하기 훅
-export const useGetEmployerPostList = (sorting: MatchKoEnAscendingSortType) => {
-  return useQuery({
-    queryKey: ['post', 'owner', sorting],
-    queryFn: () => getEmployerPostList(sorting),
-  });
+export const useGetEmployerPostList = ({
+  size,
+  sorting,
+}: GetEmployerPostListReqType) => {
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['post', 'owner', sorting],
+      queryFn: ({ pageParam = 1 }) =>
+        getEmployerPostList({ page: pageParam, size, sorting }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPage) => {
+        return lastPage.data.has_next ? allPage.length + 1 : undefined;
+      },
+      retry: 1,
+    });
+
+  return {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage: data?.pages[data?.pages.length - 1].data.has_next,
+    isFetchingNextPage,
+  };
 };
