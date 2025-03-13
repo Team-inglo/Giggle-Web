@@ -59,7 +59,7 @@ const PostSearchFilterList = ({
                 <Tag
                   value={
                     account_type === UserType.OWNER
-                      ? EN_FILTER_CATEGORY_OPTIONS[option]
+                      ? EN_FILTER_CATEGORY_OPTIONS[option.toLowerCase()]
                       : option
                   }
                   padding="py-[0.375rem] px-[0.675rem]"

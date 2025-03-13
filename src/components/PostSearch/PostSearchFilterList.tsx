@@ -127,7 +127,8 @@ const PostSearchFilterList = ({
             key={`${index}_${value.category}`}
             value={
               account_type === UserType.OWNER
-                ? EN_FILTER_CATEGORY_OPTIONS[value.value] || value.value
+                ? EN_FILTER_CATEGORY_OPTIONS[value.value.toLowerCase()] ||
+                  value.value
                 : value.value
             }
             onDelete={() => onDeleteFilter(value)}

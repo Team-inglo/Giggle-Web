@@ -52,7 +52,7 @@ export const country = [
   'Niue',
   'Niger',
   'Nicaragua',
-  'Korea, Republic of',
+  'Republic of Korea',
   'Denmark',
   'Dominican Republic',
   'Dominica',

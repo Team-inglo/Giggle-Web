@@ -379,6 +379,10 @@ export const postTranslation = {
     ko: '근무 기간',
     en: 'Work Period',
   },
+  Hr: {
+    ko: '시간당',
+    en: 'Hr',
+  },
   KRW: {
     ko: '원',
     en: 'KRW',
@@ -418,6 +422,10 @@ export const postTranslation = {
   email: {
     ko: '담당자 이메일',
     en: 'Email',
+  },
+  daysAfter: {
+    ko: '일 전',
+    en: 'days After',
   },
 };
 
