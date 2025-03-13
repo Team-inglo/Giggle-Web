@@ -75,12 +75,12 @@ const ApplicationCard = ({ applicationData }: ApplicationCardPropsType) => {
         <div className="flex justify-between items-end pt-[0.25rem]">
           <Tag
             value={`${formatMoney(applicationData.hourly_rate)} KRW`}
-            padding="0.375rem 0.75rem"
+            padding="py-[0.375rem] px-[0.75rem]"
             isRounded={true}
             hasCheckIcon={false}
-            backgroundColor="white"
-            color="#1E1926"
-            borderColor="#1E1926"
+            backgroundColor="bg-surface-base"
+            color="text-text-strong"
+            borderColor="text-text-strong"
             fontStyle="caption"
           />
           <p className="body-3 text-[#656565]">

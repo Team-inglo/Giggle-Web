@@ -1,4 +1,7 @@
-import { initialIntegratedApplication } from '@/constants/documents';
+import {
+  initialIntegratedApplication,
+  personalInfoList,
+} from '@/constants/documents';
 import { IntegratedApplicationData } from '@/types/api/document';
 import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
@@ -8,12 +11,10 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { country, gender, phone } from '@/constants/information';
 import RadioButton from '@/components/Information/RadioButton';
 import { Gender } from '@/types/api/users';
-import InputLayout from '@/components/Document/write/InputLayout';
 import {
   propertyToString,
   validateIntegratedApplication,
 } from '@/utils/document';
-import Notice from '@/components/Document/write/Notice';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import SearchSchoolBottomSheet from '@/components/Document/write/SearchSchoolBottomSheet';
 import SignaturePad from '@/components/Document/write/SignaturePad';
@@ -32,6 +33,7 @@ import { useCurrentPostIdEmployeeStore } from '@/store/url';
 import LoadingItem from '../Common/LoadingItem';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
+import InputLayout from '../WorkExperience/InputLayout';
 
 type IntegratedApplicationFormProps = {
   document?: IntegratedApplicationData;
@@ -51,12 +53,12 @@ const IntegratedApplicationWriteForm = ({
 
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
-    start: '',
+    start: '010',
     middle: '',
     end: '',
   });
   const [cellPhoneNum, setCellPhoneNum] = useState({
-    start: '',
+    start: '010',
     middle: '',
     end: '',
   });
@@ -191,21 +193,23 @@ const IntegratedApplicationWriteForm = ({
         className={`w-full flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <DaumPostcodeEmbed
-            style={{
-              position: 'fixed',
-              top: '50px',
-              width: '100%',
-              height: 'calc(100vh - 100px)',
-              marginTop: '3.125rem',
-              paddingBottom: '6.25rem',
-            }}
-            theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
-            onComplete={handleAddressSelection}
-            onClose={() => setIsAddressSearch(false)}
-          />
+          <div className="w-full h-screen fixed inset-0 bg-white">
+            <DaumPostcodeEmbed
+              style={{
+                position: 'fixed',
+                top: '50px',
+                width: '100%',
+                height: 'calc(100vh - 100px)',
+                marginTop: '3.125rem',
+                paddingBottom: '6.25rem',
+              }}
+              theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
+              onComplete={handleAddressSelection}
+              onClose={() => setIsAddressSearch(false)}
+            />
+          </div>
         ) : (
-          <div className="p-6 [&>*:last-child]:mb-40 flex flex-col gap-4">
+          <div className="p-4 [&>*:last-child]:mb-40 flex flex-col gap-4">
             {/* 이름 입력 */}
             <InputLayout title="First Name" isEssential>
               <Input
@@ -273,17 +277,6 @@ const IntegratedApplicationWriteForm = ({
                 }
               />
             </InputLayout>
-            {/* 서류 출력 후 작성 정보 입력 안내 */}
-            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-              <Notice
-                title="Foreign Resident Registration No."
-                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-              />
-              <Notice
-                title="Passport number, passport issuance date, passport expiration date"
-                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-              />
-            </div>
             <div className="w-full flex flex-col gap-[1.125rem]">
               {/* 주소 검색 입력 input */}
               <InputLayout title="Address in Korea" isEssential>
@@ -403,13 +396,6 @@ const IntegratedApplicationWriteForm = ({
                 />
               </div>
             </InputLayout>
-            {/* 서류 출력 후 작성 정보 입력 안내 */}
-            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-              <Notice
-                title="Address, Phone Number, in Home Country"
-                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-              />
-            </div>
             {/* 대학 종류 선택 */}
             <InputLayout title="Type Of Name" isEssential>
               <div className="w-full relative body-3 text-[#bdbdbd] text-left">
@@ -483,13 +469,6 @@ const IntegratedApplicationWriteForm = ({
                 />
               </div>
             </InputLayout>
-            {/* 서류 출력 후 작성 정보 입력 안내 */}
-            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-              <Notice
-                title="Current Workplace Of Name, Business Registration No, Phone Number"
-                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-              />
-            </div>
             {/* 근무 장소 이름 입력 */}
             <InputLayout title="New Workplace" isEssential>
               <Input
@@ -563,7 +542,6 @@ const IntegratedApplicationWriteForm = ({
                 />
               </div>
             </InputLayout>
-
             {/* 연봉 입력 */}
             <InputLayout title="Annual Income Amount" isEssential>
               <Input
@@ -611,14 +589,6 @@ const IntegratedApplicationWriteForm = ({
                 canDelete={false}
               />
             </InputLayout>
-            {/* 하이코리아 작성 정보 입력 안내 */}
-            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-              <Notice
-                title="Date of apllication"
-                content="Please fill it out on the application date for Hi Korea documents."
-                notWarning
-              />
-            </div>
             {/* 서명 입력 */}
             <InputLayout title="Applicant Signature" isEssential>
               <SignaturePad
@@ -636,16 +606,22 @@ const IntegratedApplicationWriteForm = ({
                 }
               />
             </InputLayout>
-            {/* 서류 출력 후 작성 정보(부모님) 입력 안내 */}
-            <div className="w-full relative flex flex-col gap-7 items-start justify-center py-7 text-left body-3 text-[#1e1926]">
-              <Notice
-                title="Spouse of applicant Signature"
-                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-              />
-              <Notice
-                title="Father/Mother of applicant"
-                content="As personal identification information, please print out the file after completing the standard labor contract and write it."
-              />
+            {/* 서류 출력 후 작성 정보 입력 안내 */}
+            <div className="mt-4 p-4 rounded-md bg-surface-secondary">
+              <section className="flex flex-col gap-1 pb-4 border-b border-border-disabled">
+                <p className="button-1">
+                  Keep it safe! You'll need this later 👀
+                </p>
+                <p className="caption text-text-alternative">
+                  Since it contains personal information, we won't ask for it
+                  now. Just print it out and complete it when required.
+                </p>
+              </section>
+              <section className="pt-4 flex flex-col gap-4 button-2">
+                {personalInfoList.map((info, index) => (
+                  <div key={index}>{'📌 ' + info}</div>
+                ))}
+              </section>
             </div>
           </div>
         )}

@@ -49,14 +49,14 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
             <Tag
               key={`${value}_${index}`}
               value={value.replace(/_/g, '-')}
-              padding="0.375rem 0.5rem 0.375rem 0.625rem"
+              padding="py-[0.375rem] pr-[0.5rem] pl-[0.625rem]"
               isRounded={false}
               hasCheckIcon={false}
-              backgroundColor={'white'}
-              color="#252525"
+              backgroundColor={'bg-surface-base'}
+              color="text-text-normal"
               fontStyle="body-2"
               onDelete={() => handleDelete(value)}
-              borderColor={'#E2E5EB'}
+              borderColor={'border-border-alternative'}
             />
           ))}
         </div>

@@ -19,8 +19,10 @@ const CompleteModal = ({ title, content, onNext }: CompleteModalProps) => {
   return (
     <div className="w-screen h-screen px-4 flex flex-col gap-4 items-center justify-center text-center break-keep">
       <CheckIconLarge />
-      <div className="head-2">{title}</div>
-      <div className="body-2 text-text-alternative">{content}</div>
+      <div className="head-2 whitespace-pre-line">{title}</div>
+      <div className="body-2 text-text-alternative whitespace-pre-line">
+        {content}
+      </div>
     </div>
   );
 };

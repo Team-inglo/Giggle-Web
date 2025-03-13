@@ -1,17 +1,8 @@
-import {
-  DocumentType,
-  EmployDocumentInfo,
-  EmployerInformation,
-  LaborContractEmployerInfo,
-} from '@/types/api/document';
-import Button from '@/components/Common/Button';
-import ArrowrightIcon from '@/assets/icons/Chevron.svg?react';
-import TalkBallonIcon from '@/assets/icons/TalkBalloon.svg?react';
-import TalkBallonIconGrey from '@/assets/icons/TalkBalloonGrey.svg?react';
+import { DocumentType, EmployDocumentInfo } from '@/types/api/document';
 import FolderIcon from '@/assets/icons/FolderIcon.svg?react';
 import DownloadIcon from '@/assets/icons/DownloadIcon.svg?react';
-import CheckIconGreen from '@/assets/icons/CheckIconGreen.svg?react';
-import WriteIcon from '@/assets/icons/WriteIcon.svg?react';
+import BlackFolderIcon from '@/assets/icons/BlackFolder.svg?react';
+import ArrowrightIcon from '@/assets/icons/Chevron.svg?react';
 import { useNavigate } from 'react-router-dom';
 import { DocumentStatusEmployer } from '@/constants/documents';
 import {
@@ -20,319 +11,72 @@ import {
   usePatchStatusSubmissionEmployer,
 } from '@/hooks/api/useDocument';
 import { useCurrentDocumentIdStore } from '@/store/url';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+import { SuccessModalContent } from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
 
 type DocumentCardProps = {
+  tagText?: string;
+  tagStyle?: string;
+  children?: ReactNode;
+  title: string;
+  content: string;
+  reason?: string;
+  preview?: string;
+  onPreview?: () => void;
+};
+
+const DocumentCardLayout = ({
+  tagText,
+  tagStyle,
+  children,
+  title,
+  content,
+  reason,
+  preview,
+  onPreview,
+}: DocumentCardProps) => {
+  return (
+    <div className="w-full p-4 flex flex-col rounded-lg bg-white border border-border-disabled">
+      <div
+        className={`w-fit body-3 px-1 py-1 mb-1 ${tagStyle} rounded-sm justify-center items-center inline-flex`}
+      >
+        {tagText}
+      </div>
+      <div className="w-full pb-2 border-b border-border-disabled">
+        <p className="head-3 py-1">{title}</p>
+      </div>
+      <div className="w-full pb-2 body-3 text-text-alternative">
+        <p className="py-2">{content}</p>
+      </div>
+      {reason && (
+        <div className="w-full pb-2 body-3 text-text-strong">
+          <p className="py-2">{'사유 : ' + reason}</p>
+        </div>
+      )}
+      {preview && (
+        <div
+          className="relative w-full button-2 bg-surface-secondary rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-1"
+          onClick={onPreview}
+        >
+          <BlackFolderIcon />
+          <p>{preview}</p>
+          <div className="absolute right-3">
+            <ArrowrightIcon />
+          </div>
+        </div>
+      )}
+      <div className="w-full flex flex-row gap-2">{children}</div>
+    </div>
+  );
+};
+
+type DocumentCardDispenserProps = {
   documentInfo: EmployDocumentInfo;
   title: string;
   type: string;
-  reason?: string;
-  setIsLoading: (loadingStatus: boolean) => void;
-};
-
-const NullCard = ({ title }: { title: string }) => {
-  return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
-      <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
-        <div className="flex items-center justify-start relative text-[#f4f4f9]">
-          대기 ...
-        </div>
-      </div>
-      <div className="self-stretch flex flex-col items-start px-4 gap-4 body-1">
-        <div className="self-stretch border-b border-[#dcdcdc] h-10 flex items-center justify-center pl-2 pb-2 gap-4">
-          <div className="flex-1 flex items-center justify-start">
-            <div className="relative head-3">{title}</div>
-          </div>
-          <div className="overflow-hidden flex items-center justify-center p-2">
-            <TalkBallonIcon />
-          </div>
-        </div>
-
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
-          <div className="flex-1 relative">
-            <p className="m-0">유학생이 서류를 작성 중이에요.</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col w-full items-start justify-start py-2 px-4 text-[#464646]">
-        <div className="w-full rounded-3xl bg-[#f4f4f9] flex items-center justify-start border border-[#dcdcdc] px-4 py-2 pl-2.5">
-          <div className="flex items-center justify-start gap-2">
-            <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-[#1e1926]">
-              <TalkBallonIconGrey />
-            </div>
-            <div className="relative body-3 opacity-75">작성 중 ...</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const TemporarySaveCard = ({
-  title,
-  onCheck,
-  onSubmit,
-  onEdit,
-  onPreview,
-}: {
-  title: string;
-  onCheck: () => Promise<
-    EmployerInformation | LaborContractEmployerInfo | null
-  >;
-  onSubmit: () => void;
-  onEdit: () => void;
-  onPreview: () => void;
-}) => {
-  const [isEmployerWrote, setIsEmployerWrote] = useState<boolean | null>(null);
-  useEffect(() => {
-    const checkDocuments = async () => {
-      const result = await onCheck();
-      setIsEmployerWrote(result !== null);
-    };
-    checkDocuments();
-  }, []);
-  return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
-      <div className="self-stretch rounded-t-[1.125rem] bg-[#fef387] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
-        <div className="flex items-center justify-start relative ">
-          클릭해서 서류 내용을 확인해보세요.
-          <div className="w-1.5 absolute !m-0 top-[-0.3rem] right-[-0.5rem] rounded-full bg-[#ff6f61] h-1.5 z-[1]" />
-        </div>
-        <div
-          className="pl-1 w-[1.25rem] relative h-[1.25rem] z-[2]"
-          onClick={onPreview}
-        >
-          <ArrowrightIcon />
-        </div>
-      </div>
-      <div className="self-stretch flex flex-col items-start px-4 gap-4 body-1">
-        <div className="self-stretch border-b border-[#dcdcdc] h-10 flex items-center justify-center pl-2 pb-2 gap-4">
-          <div className="flex-1 flex items-center justify-start">
-            <div className="relative head-3">{title}</div>
-          </div>
-          <div className="overflow-hidden flex items-center justify-center p-2">
-            <TalkBallonIcon />
-          </div>
-        </div>
-
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
-          <div className="flex-1 relative">
-            <p className="m-0">
-              유학생이 서류 작성을 요청했어요. 유학생이 작성한 내용을 검토하고,
-              내용을 작성해주세요.
-            </p>
-            <div>&nbsp;</div>
-            <p className="m-0 text-[#FF6F61]">
-              * 제출 후에는 수정이 불가능해요. 내용을 정확하게 작성해주세요.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="flex self-stretch items-center justify-center p-4 gap-1 text-[#464646]">
-        <Button
-          type="large"
-          bgColor={isEmployerWrote ? 'bg-[#f4f4f9]' : 'bg-[#fef387]'}
-          fontColor="text-[#222]"
-          isBorder={false}
-          title={isEmployerWrote ? '수정' : '작성'}
-          onClick={onEdit}
-        />
-        <Button
-          type="large"
-          bgColor={isEmployerWrote ? 'bg-[#fef387]' : 'bg-[#f4f4f9]'}
-          fontColor="text-[#222]"
-          isBorder={false}
-          title="제출"
-          onClick={() => {
-            if (isEmployerWrote) {
-              onSubmit();
-            }
-          }}
-        />
-      </div>
-    </div>
-  );
-};
-
-const SubmittedCard = ({ title }: { title: string }) => {
-  return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
-      <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
-        <div className="flex items-center justify-start relative text-[#f4f4f9]">
-          대기 ...
-        </div>
-      </div>
-      <div className="self-stretch flex flex-col items-start px-4 gap-4 body-1">
-        <div className="self-stretch border-b border-[#dcdcdc] h-10 flex items-center justify-center pl-2 pb-2 gap-4">
-          <div className="flex-1 flex items-center justify-start">
-            <div className="relative head-3">{title}</div>
-          </div>
-          <div className="overflow-hidden flex items-center justify-center p-2">
-            <TalkBallonIcon />
-          </div>
-        </div>
-
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
-          <div className="flex-1 relative">
-            <p className="m-0">유학생이 서류를 검토 중이에요.</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col w-full items-start justify-start py-2 px-4 text-[#464646]">
-        <div className="w-full rounded-3xl bg-[#f4f4f9] flex items-center justify-start border border-[#dcdcdc] px-4 py-2 pl-2.5">
-          <div className="flex items-center justify-start gap-2">
-            <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-[#1e1926]">
-              <TalkBallonIconGrey />
-            </div>
-            <div className="relative body-3 opacity-75">검토 중 ...</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const RewritingCard = ({
-  title,
-  onCheck,
-  onSubmit,
-  onEdit,
-  onPreview,
-  reason,
-}: {
-  title: string;
-  onCheck: () => Promise<
-    EmployerInformation | LaborContractEmployerInfo | null
-  >;
-  onSubmit: () => void;
-  onEdit: () => void;
-  onPreview: () => void;
-  reason: string;
-}) => {
-  const [isEmployerWrote, setIsEmployerWrote] = useState<boolean | null>(null);
-  useEffect(() => {
-    const checkDocuments = async () => {
-      const result = await onCheck();
-      setIsEmployerWrote(result !== null);
-    };
-    checkDocuments();
-  }, []);
-  return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
-      <div className="self-stretch rounded-t-[1.125rem] bg-[#fef387] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
-        <div className="flex items-center justify-start relative ">
-          클릭해서 서류 내용을 확인해보세요.
-          <div className="w-1.5 absolute !m-0 top-[-0.3rem] right-[-0.5rem] rounded-full bg-[#ff6f61] h-1.5 z-[1]" />
-        </div>
-        <div
-          className="pl-1 w-[1.25rem] relative h-[1.25rem] z-[2]"
-          onClick={onPreview}
-        >
-          <ArrowrightIcon />
-        </div>
-      </div>
-      <div className="self-stretch flex flex-col items-start px-4 gap-4 body-1">
-        <div className="self-stretch border-b border-[#dcdcdc] h-10 flex items-center justify-center pl-2 pb-2 gap-4">
-          <div className="flex-1 flex items-center justify-start">
-            <div className="relative head-3">{title}</div>
-          </div>
-          <div className="overflow-hidden flex items-center justify-center p-2">
-            <TalkBallonIcon />
-          </div>
-        </div>
-
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
-          <div className="flex-1 relative">
-            <p className="m-0">
-              유학생이 아래 사유로 서류 수정을 요청했어요. 수정 후 다시
-              제출해주세요.
-            </p>
-            <div>&nbsp;</div>
-            <p className="m-0 text-[#1E1926]">{reason}</p>
-          </div>
-        </div>
-      </div>
-      <div className="flex self-stretch items-center justify-center p-4 gap-1 text-[#464646]">
-        <Button
-          type="large"
-          bgColor={isEmployerWrote ? 'bg-[#f4f4f9]' : 'bg-[#fef387]'}
-          fontColor="text-[#222]"
-          isBorder={false}
-          title={isEmployerWrote ? '수정' : '작성'}
-          onClick={onEdit}
-        />
-        <Button
-          type="large"
-          bgColor={isEmployerWrote ? 'bg-[#fef387]' : 'bg-[#f4f4f9]'}
-          fontColor="text-[#222]"
-          isBorder={false}
-          title="제출"
-          onClick={() => {
-            if (isEmployerWrote) {
-              onSubmit();
-            }
-          }}
-        />
-      </div>
-    </div>
-  );
-};
-
-const ConfirmationCard = ({
-  documentInfo,
-  title,
-  onDownload,
-}: {
-  title: string;
-  documentInfo: EmployDocumentInfo;
-
-  onDownload: (url: string) => void;
-}) => {
-  return (
-    <div className="w-full relative rounded-[1.125rem] bg-white border border-[#dcdcdc] flex flex-col items-center justify-center gap-2 caption text-left text-[#1e1926]">
-      <div className="self-stretch rounded-t-[1.125rem] bg-[#1e1926] h-7 flex items-center justify-between px-4 pl-6 py-2 relative">
-        <div className="flex items-center justify-start relative text-[#fef387]">
-          서류 작성이 완료되었습니다.
-        </div>
-      </div>
-      <div className="self-stretch flex flex-col items-start px-4 gap-4 body-1">
-        <div className="self-stretch border-b border-[#dcdcdc] h-10 flex items-center justify-center pl-2 pb-2 gap-4">
-          <div className="flex-1 flex items-center justify-start">
-            <div className="relative head-3">{title}</div>
-          </div>
-          <div className="overflow-hidden flex items-center justify-center p-2">
-            {!documentInfo.word_url ? <WriteIcon /> : <CheckIconGreen />}
-          </div>
-        </div>
-
-        <div className="self-stretch flex items-center justify-center px-3 text-[#656565] caption">
-          <div className="flex-1 relative">
-            <p className="m-0">
-              아래 버튼을 통해 원본 파일을 다운로드 할 수 있습니다.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2 w-full items-start justify-start py-2 px-4 text-[#464646]">
-        {documentInfo.word_url && (
-          <div className="w-full rounded-3xl bg-[#f4f4f9] flex items-center justify-between border border-[#dcdcdc] px-4 py-2 pl-2.5">
-            <div className="flex items-center justify-start gap-2">
-              <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-[#1e1926]">
-                <FolderIcon />
-              </div>
-              <div className="relative body-3 opacity-75">word로 다운로드</div>
-            </div>
-            <div onClick={() => onDownload(documentInfo.word_url as string)}>
-              <DownloadIcon />
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  reason: string | null;
+  setIsLoading: (value: boolean) => void;
+  setModalContent: (content: SuccessModalContent) => void;
 };
 
 const DocumentCardDispenserEmployer = ({
@@ -341,7 +85,8 @@ const DocumentCardDispenserEmployer = ({
   type,
   reason,
   setIsLoading,
-}: DocumentCardProps) => {
+  setModalContent,
+}: DocumentCardDispenserProps) => {
   const navigate = useNavigate();
   const handleDownload = (url: string) => {
     // 웹뷰 환경인지 체크
@@ -370,8 +115,14 @@ const DocumentCardDispenserEmployer = ({
     onMutate: () => {
       setIsLoading(true);
     },
-    onSettled: () => {
+    onSuccess: () => {
       setIsLoading(false);
+      setModalContent({
+        // TODO: 디자인 변경 되면 문구 수정 적용
+        title: 'Registration has been\nsuccessfully completed',
+        content: `The employer will check the documents\nsoon and fill them out together.\nWe will send you a notification when I'm\ndone writing it!`,
+        onNext: () => window.location.reload(),
+      });
     },
   });
   const { mutateAsync: getPartTimeDocument } = useGetPartTimeEmployPermit({
@@ -397,24 +148,61 @@ const DocumentCardDispenserEmployer = ({
     }
   };
 
-  if (!documentInfo.status) return <NullCard title={title} />;
+  const [isEmployerWrote, setIsEmployerWrote] = useState<boolean | null>(null);
+  useEffect(() => {
+    const checkDocuments = async () => {
+      const result = await checkEmployerWriteDocuments();
+      setIsEmployerWrote(result !== null);
+    };
+    checkDocuments();
+  }, []);
   switch (documentInfo.status) {
     case DocumentStatusEmployer.TEMPORARY_SAVE:
       return (
-        <TemporarySaveCard
+        <DocumentCardLayout
           title={title}
-          onCheck={checkEmployerWriteDocuments}
-          onSubmit={() => submitDocument(Number(documentInfo.id))} // 고용주가 서류 제출
-          onEdit={() => {
-            updateCurrentDocumentId(documentInfo.id);
-            navigate(`/employer/write-documents/${documentInfo.id}`, {
-              // EmployerWriteDocumentPage.tsx
-              state: {
-                type: type,
-                isEdit: true,
-              },
-            });
-          }}
+          tagText="진행 상황을 확인해보세요! 📝"
+          tagStyle="bg-surface-primary text-primary-dark"
+          content="유학생이 문서를 보냈어요. 유학생이 작성한 내용을 검토하고,
+              내용을 작성해주세요."
+        >
+          <div className="w-full flex self-stretch items-center justify-center gap-2 text-[#464646]">
+            <button
+              className={`${isEmployerWrote ? 'bg-surface-secondary' : 'bg-surface-primary'} text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
+              onClick={() => {
+                updateCurrentDocumentId(documentInfo.id);
+                navigate(`/employer/write-documents/${documentInfo.id}`, {
+                  // EmployerWriteDocumentPage.tsx
+                  state: {
+                    type: type,
+                    isEdit: true,
+                  },
+                });
+              }}
+            >
+              {isEmployerWrote ? '수정' : '작성'}
+            </button>
+            <button
+              className={`${isEmployerWrote ? 'bg-surface-primary text-primary-dark' : 'bg-surface-secondary text-text-disabled'} w-full py-3 flex justify-center items-center rounded-lg button-2`}
+              onClick={() => {
+                if (isEmployerWrote) {
+                  submitDocument(Number(documentInfo.id)); // 고용주가 서류 제출
+                }
+              }}
+            >
+              제출
+            </button>
+          </div>
+        </DocumentCardLayout>
+      );
+    case DocumentStatusEmployer.SUBMITTED:
+      return (
+        <DocumentCardLayout
+          title={title}
+          tagStyle="bg-primary-neutral text-primary-dark"
+          tagText="조금만 기다려주세요 ... 🔄"
+          content="유학생이 문서를 확인 중이에요. 조금만 기다려 주세요!"
+          preview="서류 확인하기"
           onPreview={() => {
             updateCurrentDocumentId(documentInfo.id);
             navigate(`/document-preview/${documentInfo.id}`, {
@@ -425,43 +213,79 @@ const DocumentCardDispenserEmployer = ({
           }}
         />
       );
-    case DocumentStatusEmployer.SUBMITTED:
-      return <SubmittedCard title={title} />;
     case DocumentStatusEmployer.REWRITING:
       if (reason)
         return (
-          <RewritingCard
+          <DocumentCardLayout
             title={title}
+            tagText="유학생이 서류 작성을 재요청했어요 ! 📋"
+            tagStyle="bg-surface-primary text-primary-dark"
+            content="유학생이 서류 작성을 요청했어요. 유학생이 작성한 내용을 검토하고,
+              내용을 작성해주세요."
             reason={reason}
-            onCheck={checkEmployerWriteDocuments}
-            onSubmit={() => submitDocument(Number(documentInfo.id))} // 고용주가 서류 제출
-            onEdit={() => {
-              updateCurrentDocumentId(documentInfo.id);
-              navigate(`/employer/write-documents/${documentInfo.id}`, {
-                state: {
-                  type: type,
-                  isEdit: true,
-                },
-              });
-            }}
-            onPreview={() => {
-              updateCurrentDocumentId(documentInfo.id);
-              navigate(`/document-preview/${documentInfo.id}`, {
-                state: {
-                  type: type,
-                },
-              });
-            }}
-          />
+          >
+            <div className="w-full flex self-stretch items-center justify-center gap-2 text-[#464646]">
+              <button
+                className={`bg-surface-secondary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
+                onClick={() => {
+                  updateCurrentDocumentId(documentInfo.id);
+                  navigate(`/employer/write-documents/${documentInfo.id}`, {
+                    // EmployerWriteDocumentPage.tsx
+                    state: {
+                      type: type,
+                      isEdit: true,
+                    },
+                  });
+                }}
+              >
+                수정
+              </button>
+              <button
+                className={`bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
+                onClick={() => {
+                  if (isEmployerWrote) {
+                    submitDocument(Number(documentInfo.id)); // 고용주가 서류 제출
+                  }
+                }}
+              >
+                재제출
+              </button>
+            </div>
+          </DocumentCardLayout>
         );
       break;
     case DocumentStatusEmployer.CONFIRMATION:
       return (
-        <ConfirmationCard
-          title={title}
-          documentInfo={documentInfo}
-          onDownload={handleDownload}
-        />
+        <>
+          <DocumentCardLayout
+            title={title}
+            tagStyle="bg-[#0066ff]/10 text-text-success"
+            tagText="서류 작성이 완료되었어요 ! 🎉"
+            content="서류가 최종 승인되었어요 ! 아래 버튼을 통해 다운로드 해보세요."
+          >
+            <div className="flex flex-col gap-2 w-full items-start justify-start text-text-normal]">
+              {documentInfo.word_url && (
+                <div className="w-full rounded-lg bg-surface-secondary  flex items-center justify-between border border-surface-disabled px-4 py-2 pl-2.5">
+                  <div className="flex items-center justify-start gap-2">
+                    <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
+                      <FolderIcon />
+                    </div>
+                    <div className="relative body-3 opacity-75">
+                      word로 다운로드
+                    </div>
+                  </div>
+                  <div
+                    onClick={() =>
+                      handleDownload(documentInfo.word_url as string)
+                    }
+                  >
+                    <DownloadIcon />
+                  </div>
+                </div>
+              )}
+            </div>
+          </DocumentCardLayout>
+        </>
       );
   }
 };

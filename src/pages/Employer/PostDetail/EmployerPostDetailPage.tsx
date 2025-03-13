@@ -1,23 +1,34 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import { JobPostingCard } from '@/components/Common/JobPostingCard';
+import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmployerPostDetailButton from '@/components/Employer/PostDetail/EmployerPostDetailButton';
 import PostDetailCompanyImageList from '@/components/PostDetail/PostDetailCompanyImageList';
 import PostDetailContent from '@/components/PostDetail/PostDetailContent';
-import PostDetailTitle from '@/components/PostDetail/PostDetailTitle';
 import { UserType } from '@/constants/user';
 import { useGetPostDetail } from '@/hooks/api/usePost';
+import useNavigateBack from '@/hooks/useNavigateBack';
 import { useCurrentPostIdStore } from '@/store/url';
 import { useUserStore } from '@/store/user';
-import { useNavigate } from 'react-router-dom';
+import { transformDetailToJobPostingItemType } from '@/utils/post';
 
 const EmployerPostDetailPage = () => {
   const { account_type } = useUserStore();
-  const navigate = useNavigate();
   const { currentPostId } = useCurrentPostIdStore();
+  const handleBackButtonClick = useNavigateBack();
 
-  const { data } = useGetPostDetail(
+  const { data, isLoading } = useGetPostDetail(
     Number(currentPostId),
-    account_type === UserType.OWNER && !isNaN(Number(currentPostId)) ? true : false,
+    account_type === UserType.OWNER && !isNaN(Number(currentPostId))
+      ? true
+      : false,
   );
+
+  if (isLoading)
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <LoadingPostItem />
+      </div>
+    );
 
   if (!data?.success) return <></>;
 
@@ -25,16 +36,32 @@ const EmployerPostDetailPage = () => {
     <>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={() => navigate('/search')}
+        onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
         title="Detail"
       />
       <PostDetailCompanyImageList
         companyImageData={data.data?.company_img_url_list}
       />
-      <PostDetailTitle postDetailData={data.data} />
+      <JobPostingCard
+        key={data.data.id}
+        {...transformDetailToJobPostingItemType(data.data)}
+      >
+        <JobPostingCard.Box>
+          <JobPostingCard.Header />
+          <JobPostingCard.Title isTwoLine={true} />
+          <JobPostingCard.TagList className="pt-2" />
+          <JobPostingCard.DeadLine />
+          <div className="w-full flex flex-col gap-[0.125rem]">
+            <JobPostingCard.Address />
+            <JobPostingCard.WorkPeriod />
+            <JobPostingCard.WorkDaysPerWeek />
+            <JobPostingCard.HourlyRate />
+          </div>
+        </JobPostingCard.Box>
+      </JobPostingCard>
       <PostDetailContent postDetailData={data.data} />
-      <EmployerPostDetailButton />
+      {data.data?.is_my_post && <EmployerPostDetailButton />}
     </>
   );
 };

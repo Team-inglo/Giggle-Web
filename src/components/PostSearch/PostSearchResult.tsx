@@ -1,11 +1,14 @@
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
-import JobPostingCard from '@/components/Common/JobPostingCard';
 import { useUserStore } from '@/store/user';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import LoadingItem from '@/components/Common/LoadingItem';
 import { postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
+import { JobPostingCard } from '@/components/Common/JobPostingCard';
+import { useCurrentPostIdStore } from '@/store/url';
+import { useNavigate } from 'react-router-dom';
+import { UserType } from '@/constants/user';
 
 type PostSearchResultProps = {
   postData: JobPostingItemType[];
@@ -19,6 +22,14 @@ const PostSearchResult = ({
   isInitialLoading,
 }: PostSearchResultProps) => {
   const { account_type } = useUserStore();
+  const { updateCurrentPostId } = useCurrentPostIdStore();
+  const navigate = useNavigate();
+
+  const goToPostDetailPage = (data: JobPostingItemType) => {
+    updateCurrentPostId(Number(data.id));
+    if (account_type === UserType.OWNER) navigate(`/employer/post/${data.id}`);
+    else navigate(`/post/${data.id}`);
+  };
 
   if (isInitialLoading) {
     return (
@@ -53,7 +64,27 @@ const PostSearchResult = ({
   return (
     <>
       {postData.map((value: JobPostingItemType) => (
-        <JobPostingCard key={value.id} jobPostingData={value} />
+        <article
+          className="w-full border-t border-b border-[#f8f8f8]"
+          key={value.id}
+          onClick={() => goToPostDetailPage(value)}
+        >
+          <JobPostingCard {...value}>
+            <JobPostingCard.Box>
+              <JobPostingCard.Header isBookMarkButton={true} />
+              <div className="w-full flex flex-col gap-2">
+                <JobPostingCard.Title isTwoLine={true} />
+                <div className="w-full flex flex-col gap-[0.125rem]">
+                  <JobPostingCard.Address />
+                  <JobPostingCard.WorkPeriod />
+                  <JobPostingCard.WorkDaysPerWeek />
+                </div>
+                <JobPostingCard.TagList />
+                <JobPostingCard.Footer />
+              </div>
+            </JobPostingCard.Box>
+          </JobPostingCard>
+        </article>
       ))}
       {isLoading && <LoadingItem />}
     </>

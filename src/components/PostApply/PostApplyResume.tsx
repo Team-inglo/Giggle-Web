@@ -59,7 +59,9 @@ const PostApplyResume = () => {
                 {data.data?.visa.visa.replace(/_/g, '-')}
               </span>
               <span className="body-3 text-text-alternative">
-                {data.data?.visa.description}
+                {data.data?.visa.description === '-'
+                  ? ''
+                  : data.data?.visa.description}
               </span>
             </p>
           }

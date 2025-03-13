@@ -215,13 +215,13 @@ export const usePutPostBookmark = () => {
 
   return useMutation({
     mutationFn: putPostBookmark,
-    onSuccess: async () => {
+    onError: (error) => {
+      console.error('북마크 추가/삭제 실패', error);
+    },
+    onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: ['post'],
       });
-    },
-    onError: (error) => {
-      console.error('북마크 추가/삭제 실패', error);
     },
   });
 };
