@@ -28,10 +28,7 @@ const EmployerApplicantDetailPage = () => {
       />
       <div className="w-full flex flex-col gap-[2.25rem] p-[1.5rem]">
         <EmployerApplicantDetailCard applicantData={data?.data} />
-        <ApplicationDetailSteps
-          step={findCurrentStep(data?.data.step)}
-          isKorean={true}
-        />
+        <ApplicationDetailSteps step={findCurrentStep(data?.data.step)} />
       </div>
       <EmployerApplicantDetailButton
         applicant_id={Number(currentApplicantId)}

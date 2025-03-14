@@ -104,6 +104,12 @@ export type ApplicantDetailItemType = {
 // 지원 상태 단계별 문구
 export type ApplicationStepExplainType = {
   step: number;
-  title: string;
-  explain: string;
+  title: {
+    ko: string;
+    en: string;
+  };
+  explain: {
+    ko: string;
+    en: string;
+  };
 };
