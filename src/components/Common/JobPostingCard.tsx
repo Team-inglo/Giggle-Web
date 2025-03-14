@@ -219,7 +219,7 @@ const CardFooter = () => {
         {postTranslation.KRW[isEmployerByAccountType(account_type)]}
       </p>
       <p className="caption text-text-alternative">
-        {calculateTimeAgo(created_at)}
+        {calculateTimeAgo(created_at, account_type)}
       </p>
     </div>
   );

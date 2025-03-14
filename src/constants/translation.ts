@@ -427,6 +427,30 @@ export const postTranslation = {
     ko: '일 전',
     en: 'days After',
   },
+  minsAgo: {
+    ko: '초 전',
+    en: 'mins ago',
+  },
+  hoursAgo: {
+    ko: '시간 전',
+    en: 'hours ago',
+  },
+  daysAgo: {
+    ko: '일 전',
+    en: 'days ago',
+  },
+  weeksAgo: {
+    ko: '주 전',
+    en: 'weeks ago',
+  },
+  monthsAgo: {
+    ko: '달 전',
+    en: 'months ago',
+  },
+  yearsAgo: {
+    ko: '년 전',
+    en: 'years ago',
+  },
 };
 
 export const postSearchTranslation = {
