@@ -122,16 +122,16 @@ const PostSearchFilterList = ({
   return (
     <section className="w-full py-2">
       <div className="w-full min-h-6 px-4 flex items-center gap-1 overflow-x-scroll whitespace-nowrap no-scrollbar">
-        {formatFilterListToTag().map((value, index) => (
+        {formatFilterListToTag().map((filter, index) => (
           <Tag
-            key={`${index}_${value.category}`}
+            key={`${index}_${filter.category}`}
             value={
               account_type === UserType.OWNER
-                ? EN_FILTER_CATEGORY_OPTIONS[value.value.toLowerCase()] ||
-                  value.value
-                : value.value
+                ? EN_FILTER_CATEGORY_OPTIONS[filter.value.toLowerCase()] ||
+                  filter.value
+                : filter.value
             }
-            onDelete={() => onDeleteFilter(value)}
+            onDelete={() => onDeleteFilter(filter)}
             padding="py-[0.375rem] pr-[0.5rem] pl-[0.675rem]"
             isRounded={true}
             hasCheckIcon={false}

@@ -428,7 +428,7 @@ export const postTranslation = {
     en: 'days After',
   },
   minsAgo: {
-    ko: '초 전',
+    ko: '분 전',
     en: 'mins ago',
   },
   hoursAgo: {
