@@ -1,7 +1,12 @@
 import PostSearchFilterToggle from '@/components/PostSearchFilter/PostSearchFilterToggle';
 import Tag from '@/components/Common/Tag';
-import { FILTER_CATEGORY } from '@/constants/postSearch';
+import {
+  EN_FILTER_CATEGORY_OPTIONS,
+  FILTER_CATEGORY,
+} from '@/constants/postSearch';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type PostSearchFilterListProps = {
   showCategories: [string, string[]][];
@@ -14,6 +19,8 @@ const PostSearchFilterList = ({
   filterList,
   setFilterList,
 }: PostSearchFilterListProps) => {
+  const { account_type } = useUserStore();
+
   const isSelectedFilter = (category: FILTER_CATEGORY, value: string) => {
     const foundFilter = filterList[category].find((filter) => filter === value);
 
@@ -50,7 +57,11 @@ const PostSearchFilterList = ({
                 }
               >
                 <Tag
-                  value={option}
+                  value={
+                    account_type === UserType.OWNER
+                      ? EN_FILTER_CATEGORY_OPTIONS[option.toLowerCase()]
+                      : option
+                  }
                   padding="py-[0.375rem] px-[0.675rem]"
                   isRounded={true}
                   hasCheckIcon={false}

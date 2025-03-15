@@ -1,5 +1,10 @@
 import Tag from '@/components/Common/Tag';
-import { FILTER_CATEGORY } from '@/constants/postSearch';
+import {
+  EN_FILTER_CATEGORY_OPTIONS,
+  FILTER_CATEGORY,
+} from '@/constants/postSearch';
+import { UserType } from '@/constants/user';
+import { useUserStore } from '@/store/user';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 
 type TagType = {
@@ -16,6 +21,8 @@ const PostSearchFilterList = ({
   filterList,
   handleUpdateFilterList,
 }: PostSearchFilterListProps) => {
+  const { account_type } = useUserStore();
+
   const formatFilterListToTag = () => {
     const excludedCategories = [
       FILTER_CATEGORY.REGION_1DEPTH,
@@ -115,11 +122,16 @@ const PostSearchFilterList = ({
   return (
     <section className="w-full py-2">
       <div className="w-full min-h-6 px-4 flex items-center gap-1 overflow-x-scroll whitespace-nowrap no-scrollbar">
-        {formatFilterListToTag().map((value, index) => (
+        {formatFilterListToTag().map((filter, index) => (
           <Tag
-            key={`${index}_${value.category}`}
-            value={value.value}
-            onDelete={() => onDeleteFilter(value)}
+            key={`${index}_${filter.category}`}
+            value={
+              account_type === UserType.OWNER
+                ? EN_FILTER_CATEGORY_OPTIONS[filter.value.toLowerCase()] ||
+                  filter.value
+                : filter.value
+            }
+            onDelete={() => onDeleteFilter(filter)}
             padding="py-[0.375rem] pr-[0.5rem] pl-[0.675rem]"
             isRounded={true}
             hasCheckIcon={false}

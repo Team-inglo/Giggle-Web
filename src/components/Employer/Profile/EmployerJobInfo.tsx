@@ -15,7 +15,7 @@ const EmployerJobInfo = () => {
   return (
     <>
       {jobData && (
-        <div className="flex gap-4 items-stretch justify-center p-4 bg-white rounded-lg">
+        <div className="flex gap-2 items-stretch justify-center p-4 bg-white rounded-lg">
           <div className="flex flex-col justify-between w-full p-3 bg-[#F4F4F9] rounded-lg">
             <div className="body-3 text-[#abb0b9] text-center">올린 공고</div>
             <div className="head-3 text-[#1E1926] text-center">

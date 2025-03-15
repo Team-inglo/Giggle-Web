@@ -8,6 +8,7 @@ import { useUserStore } from '@/store/user';
 import { postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { UserType } from '@/constants/user';
+import { EN_FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
 
 type HomePostCardProps = {
   jobPostingData: JobPostingItemType;
@@ -50,7 +51,13 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         </h3>
         <div className="py-2 flex items-center flex-wrap gap-1">
           <Tag
-            value={jobPostingData.tags.employment_type.toLowerCase()}
+            value={
+              account_type === UserType.OWNER
+                ? EN_FILTER_CATEGORY_OPTIONS[
+                    jobPostingData.tags.employment_type.toLowerCase()
+                  ]
+                : jobPostingData.tags.employment_type.toLowerCase()
+            }
             padding="py-[0.188rem] px-[0.25rem]"
             isRounded={false}
             hasCheckIcon={false}
@@ -79,9 +86,10 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
           </p>
           <p className="body-2 text-text-normal">
             <span className="mr-[0.125rem] caption text-text-alternative">
-              Hr
+              {postTranslation.Hr[isEmployerByAccountType(account_type)]}
             </span>
-            {formatMoney(jobPostingData.hourly_rate)}KRW
+            {formatMoney(jobPostingData.hourly_rate)}
+            {postTranslation.KRW[isEmployerByAccountType(account_type)]}
           </p>
         </div>
       </div>

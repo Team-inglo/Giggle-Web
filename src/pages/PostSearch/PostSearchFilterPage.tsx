@@ -8,11 +8,15 @@ import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFil
 import PostSearchFilterArea from '@/components/PostSearchFilter/PostSearchFilterArea';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { usePostSearch } from '@/hooks/usePostSearch';
+import { postSearchTranslation } from '@/constants/translation';
+import { isEmployerByAccountType } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
 
 const PostSearchFilterPage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  const { account_type } = useUserStore();
   const { searchOption, updateFilterList } = usePostSearch(state);
 
   const [filterList, setFilterList] = useState<PostSearchFilterItemType>(
@@ -45,7 +49,11 @@ const PostSearchFilterPage = () => {
             hasBackButton={true}
             onClickBackButton={goToPostSearchPage}
             hasMenuButton={false}
-            title={'Filtering'}
+            title={
+              postSearchTranslation.postSearchTitle[
+                isEmployerByAccountType(account_type)
+              ]
+            }
           />
           <section className="flex flex-col gap-8 w-full p-4">
             <PostSearchFilterAreaInput
