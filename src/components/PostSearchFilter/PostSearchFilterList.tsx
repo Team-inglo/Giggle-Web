@@ -3,6 +3,7 @@ import Tag from '@/components/Common/Tag';
 import {
   EN_FILTER_CATEGORY_OPTIONS,
   FILTER_CATEGORY,
+  FILTER_CATEGORY_KR,
 } from '@/constants/postSearch';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { useUserStore } from '@/store/user';
@@ -47,7 +48,14 @@ const PostSearchFilterList = ({
   return (
     <>
       {showCategories.map(([category, options], index) => (
-        <PostSearchFilterToggle title={category} key={`${index}_${category}`}>
+        <PostSearchFilterToggle
+          title={
+            account_type === UserType.OWNER
+              ? FILTER_CATEGORY_KR[category as FILTER_CATEGORY]
+              : category
+          }
+          key={`${index}_${category}`}
+        >
           <div className="flex flex-wrap gap-2 w-full">
             {options.map((option, index) => (
               <button

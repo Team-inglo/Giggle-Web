@@ -27,6 +27,20 @@ export const enum FILTER_CATEGORY {
   VISA = 'Visa',
 }
 
+export const FILTER_CATEGORY_KR = {
+  [FILTER_CATEGORY.REGION_1DEPTH]: '지역 1단계',
+  [FILTER_CATEGORY.REGION_2DEPTH]: '지역 2단계',
+  [FILTER_CATEGORY.REGION_3DEPTH]: '지역 3단계',
+  [FILTER_CATEGORY.INDUSTRY]: '희망 업직종을 선택해주세요',
+  [FILTER_CATEGORY.WORK_PERIOD]: '희망 근무 기간을 선택해주세요',
+  [FILTER_CATEGORY.WORK_DAYS_PER_WEEK]: '희망 주당 근무 일자를 선택해주세요',
+  [FILTER_CATEGORY.WORKING_DAY]: '희망 근무 요일을 선택해주세요',
+  [FILTER_CATEGORY.WORKING_HOURS]: '희망 근무 시간을 선택해주세요',
+  [FILTER_CATEGORY.RECRUITMENT_PERIOD]: '모집 상태를 선택해주세요',
+  [FILTER_CATEGORY.EMPLOYMENT_TYPE]: '근무 유형을 선택해주세요',
+  [FILTER_CATEGORY.VISA]: '비자를 선택해주세요',
+};
+
 export type FilterOptionsType = {
   [key in Exclude<
     FILTER_CATEGORY,
