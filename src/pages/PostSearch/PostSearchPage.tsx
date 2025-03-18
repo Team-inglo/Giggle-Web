@@ -148,7 +148,12 @@ const PostSearchPage = () => {
       <section className="flex-1 flex flex-col items-center w-full pb-24">
         <div className="w-full py-4 px-6 flex justify-between items-center">
           <h3 className="caption text-text-alternative">
-            {postData.length} {postSearchTranslation.searchResults[isEmployerByAccountType(account_type)]}
+            {postData.length}{' '}
+            {
+              postSearchTranslation.searchResults[
+                isEmployerByAccountType(account_type)
+              ]
+            }
           </h3>
           <SearchSortDropdown
             options={Object.values(POST_SORTING).map((value) =>
@@ -158,7 +163,7 @@ const PostSearchPage = () => {
             )}
             value={
               account_type === UserType.OWNER
-                ? searchOption.sortType
+                ? POST_SORTING_KR[searchOption.sortType as PostSortingType]
                 : searchOption.sortType.toLowerCase()
             }
             onSelect={(value) => onChangeSortType(value as PostSortingType)}

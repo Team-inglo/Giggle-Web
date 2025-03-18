@@ -16,6 +16,8 @@ export const POST_SORTING = {
 export const POST_SORTING_KR = {
   [POST_SORTING.POPULAR]: '인기순',
   [POST_SORTING.RECENT]: '최신순',
+  ['최신순']: '최신순',
+  ['인기순']: '인기순',
 }
 
 export const enum FILTER_CATEGORY {
