@@ -1,11 +1,11 @@
 import CompleteModal from '@/components/Common/CompleteModal';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import PageTitle from '@/components/Common/PageTitle';
 import Step1 from '@/components/Employer/PostCreate/Step1';
 import Step2 from '@/components/Employer/PostCreate/Step2';
 import Step3 from '@/components/Employer/PostCreate/Step3';
 import Step4 from '@/components/Employer/PostCreate/Step4';
 import Step5 from '@/components/Employer/PostCreate/Step5';
-import StepIndicator from '@/components/Information/StepIndicator';
 import { useEditPost, useGetPostDetail } from '@/hooks/api/usePost';
 import { useCurrentPostIdStore } from '@/store/url';
 import { WorkDayTime } from '@/types/api/document';
@@ -115,25 +115,28 @@ const EmployerEditPostPage = () => {
         hasMenuButton={false}
         title="공고수정"
       />
+      <div className="w-screen flex justify-center items-center sticky top-[3.75rem]">
+        {[...Array(5)].map((_, i) => (
+          <hr
+            key={i}
+            className={`w-[20%] h-1 border-0 ${
+              currentStep > i ? 'bg-surface-primary' : 'bg-surface-secondary'
+            }`}
+          />
+        ))}
+      </div>
       {devIsModal ? (
         <CompleteModal
-          title="공고 수정이 완료되었습니다."
+          title="공고 수정을 완료했어요!"
           onNext={() => {}} // 생성한 공고에 대한 공고 상세 페이지로 이동 요망
         />
       ) : (
         <>
-          <div className="w-full flex flex-row p-6 items-center justify-between">
-            <div className="relative w-full flex items-center justify-start title-1 text-[#1e1926] text-left">
-              {isEdit ? '공고수정' : '공고등록'}
-            </div>
-            <StepIndicator
-              length={5}
-              currentStep={currentStep}
-              mainColor="#1E1926"
-              textColor="#FFFFFF"
-            />
-          </div>
-          <div className="w-full flex justify-center px-6">
+          <PageTitle
+            title="공고를 수정해주세요 ✍"
+            content="필요한 정보만 빠르게 입력하고, 바로 시작하세요!"
+          />
+          <div className="w-full flex justify-center px-4">
             {!isPending && isDataMapped && currentStep === 1 && (
               <Step1
                 key={data?.data.id} // 또는 다른 유니크한 값
