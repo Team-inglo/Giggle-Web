@@ -8,6 +8,7 @@ import Step5 from '@/components/Employer/PostCreate/Step5';
 import StepIndicator from '@/components/Information/StepIndicator';
 import { useEditPost, useGetPostDetail } from '@/hooks/api/usePost';
 import { useCurrentPostIdStore } from '@/store/url';
+import { WorkDayTime } from '@/types/api/document';
 import {
   initialJobPostingState,
   JobPostingForm,
@@ -53,7 +54,19 @@ const EmployerEditPostPage = () => {
     body: {
       title: serverData.title,
       job_category: serverData.tags.job_category,
-      work_day_times: serverData.working_conditions.work_day_times,
+      work_day_times: serverData.working_conditions.work_day_times.map(
+        (workDayTime: WorkDayTime) => ({
+          ...workDayTime,
+          work_start_time:
+            workDayTime.work_start_time === '협의가능'
+              ? null
+              : workDayTime.work_start_time,
+          work_end_time:
+            workDayTime.work_end_time === '협의가능'
+              ? null
+              : workDayTime.work_end_time,
+        }),
+      ),
       work_period: serverData.working_conditions.work_period,
       hourly_rate: serverData.working_conditions.hourly_rate,
       employment_type: serverData.working_conditions.employment_type,
@@ -70,7 +83,7 @@ const EmployerEditPostPage = () => {
           : serverData.recruitment_conditions.recruitment_deadline,
       recruitment_number: serverData.recruitment_conditions.number_of_recruits,
       gender: serverData.recruitment_conditions.gender,
-      age_restriction: initialJobPostingState.body.age_restriction,
+      age_restriction: serverData.recruitment_conditions.age_restriction,
       education_level: serverData.recruitment_conditions.education,
       visa: serverData.recruitment_conditions.visa,
       recruiter_name: serverData.company_information.recruiter,
