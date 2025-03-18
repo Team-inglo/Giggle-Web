@@ -335,13 +335,33 @@ export const postTranslation = {
     ko: '모집 기간',
     en: 'Recruitment Period',
   },
+  ageRestriction: {
+    ko: '연령 제한',
+    en: 'Age Restriction',
+  },
+  ageRestrictionAdditional: {
+    ko: '세 이상',
+    en: 'years old or above',
+  },
+  none: {
+    ko: '무관',
+    en: 'None',
+  },
   education: {
     ko: '학력',
     en: 'Education',
   },
+  educationAdditional: {
+    ko: '이상',
+    en: 'or above',
+  },
   numberOfRecruits: {
     ko: '모집 인원',
     en: 'Number of recruits',
+  },
+  people: {
+    ko: '명',
+    en: 'people',
   },
   visa: {
     ko: '비자',

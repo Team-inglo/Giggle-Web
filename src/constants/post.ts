@@ -1,6 +1,7 @@
 import { Gender } from '@/types/api/users';
 import {
   EducationLevel,
+  EmploymentType,
   JobCategory,
   VisaGroup,
 } from '@/types/postCreate/postCreate';
@@ -142,3 +143,14 @@ export const genderInfo = {
     key: 'NONE',
   },
 } as const;
+
+export const WorkTypeInfo = {
+  [EmploymentType.INTERNSHIP]: {
+    name: '인턴십',
+    key: 'INTERNSHIP',
+  },
+  [EmploymentType.PARTTIME]: {
+    name: '아르바이트',
+    key: 'PARTTIME',
+  },
+};

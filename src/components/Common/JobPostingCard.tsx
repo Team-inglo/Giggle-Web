@@ -22,6 +22,8 @@ import { isEmployerByAccountType } from '@/utils/signup';
 import { formatMoney } from '@/utils/formatMoney';
 import { calculateTimeAgo } from '@/utils/calculateTimeAgo';
 import { EN_FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
+import { WorkPeriodInfo } from '@/constants/documents';
+import { WorkPeriod } from '@/types/api/document';
 
 const CardContext = createContext<JobPostingItemType | null>(null);
 
@@ -172,35 +174,68 @@ const CardAddress = () => {
 
 const CardWorkPeriod = () => {
   const { summaries } = useCard();
+  const { account_type } = useUserStore();
 
   return (
     <div className="flex items-center gap-2">
       <CalendarIcon />
       <p className="caption text-text-normal">
-        {summaries.work_period.replace(/_/g, ' ').toLowerCase()}
+        {account_type === UserType.OWNER
+          ? WorkPeriodInfo[summaries.work_period as WorkPeriod].name
+          : summaries.work_period.replace(/_/g, ' ').toLowerCase()}
       </p>
     </div>
   );
 };
 
+const workDaysPerWeekToText = (
+  workDaysPerWeek: string,
+  accountType: UserType | undefined,
+) => {
+  if (workDaysPerWeek === '협의 가능') {
+    return accountType !== UserType.OWNER ? 'Negotiable' : workDaysPerWeek;
+  }
+
+  if (accountType !== UserType.OWNER) {
+    return workDaysPerWeek;
+  }
+
+  return `주 ${workDaysPerWeek[0]}일 근무`;
+};
+
 const CardWorkDaysPerWeek = () => {
   const { summaries } = useCard();
+  const { account_type } = useUserStore();
 
   return (
     <div className="flex items-center gap-2">
       <ClockIcon />
-      <p className="caption text-text-normal">{summaries.work_days_per_week}</p>
+      <p className="caption text-text-normal">
+        {workDaysPerWeekToText(
+          summaries.work_days_per_week as string,
+          account_type,
+        )}
+      </p>
     </div>
   );
 };
 
+const hourlyRate = (hourlyRate: number, accountType: UserType | undefined) => {
+  return accountType === UserType.OWNER
+    ? `시간당 ${formatMoney(hourlyRate)}원`
+    : `Hr ${formatMoney(hourlyRate)}KRW`;
+};
+
 const CardHourlyRate = () => {
   const { hourly_rate } = useCard();
+  const { account_type } = useUserStore();
 
   return (
     <div className="flex items-center gap-2">
       <MoneyIcon />
-      <p className="caption text-text-normal">${hourly_rate}</p>
+      <p className="caption text-text-normal">
+        {hourlyRate(hourly_rate, account_type)}
+      </p>
     </div>
   );
 };
