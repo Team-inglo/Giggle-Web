@@ -24,28 +24,28 @@ const EmployerPostDeleteBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full flex flex-col items-center text-center">
-        <h3 className="px-[1.625rem] pb-[0.75rem] head-2 text-[#1E1926]">
-          Delete Post
+        <h3 className="px-[1.625rem] pb-[0.75rem] head-2 text-text-normal">
+          공고를 삭제하시겠습니까?
         </h3>
         <p className="px-[1.625rem] pb-[0.25rem] body-3 text-[#656565]">
-          Unable to recover after deletion.
+          공고를 삭제할 시 다시 복구할 수 없어요. 그래도 진행하시겠어요?
         </p>
       </div>
       <div className="w-full py-[3rem] flex flex-col gap-[0.5rem]">
         <Button
           type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
+          bgColor="bg-surface-primary"
+          fontColor="text-text-normal"
           isBorder={false}
-          title="Delete Post"
+          title="삭제"
           onClick={onClickDelete}
         />
         <Button
           type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#F4F4F9]"
-          fontColor="text-[#BDBDBD]"
+          bgColor="bg-surface-secondary"
+          fontColor="text-text-normal"
           isBorder={false}
-          title="Cancel"
+          title="아니요"
           onClick={() => setIsShowBottomSheet(false)}
         />
       </div>
