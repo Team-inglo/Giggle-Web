@@ -13,6 +13,11 @@ export const POST_SORTING = {
   RECENT: 'RECENT',
 } as const;
 
+export const POST_SORTING_KR = {
+  [POST_SORTING.POPULAR]: '인기순',
+  [POST_SORTING.RECENT]: '최신순',
+}
+
 export const enum FILTER_CATEGORY {
   REGION_1DEPTH = 'Region 1depth', // 시, 도
   REGION_2DEPTH = 'Region 2depth', // 구

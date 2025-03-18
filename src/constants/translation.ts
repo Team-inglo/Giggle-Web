@@ -474,6 +474,10 @@ export const postTranslation = {
 };
 
 export const postSearchTranslation = {
+  searchResults: {
+    ko: ' 개의 검색 결과',
+    en: ' search results',
+  },
   postSearchTitle: {
     ko: '모집공고 조건설정',
     en: 'Filtering',
@@ -486,6 +490,18 @@ export const postSearchTranslation = {
     ko: '지역 선택하기',
     en: 'Select Areas',
   },
+  selectedAreas: {
+    ko: '선택된 지역이에요',
+    en: 'Selected Areas',
+  },
+  reset: {
+    ko: '초기화',
+    en: 'Reset',
+  },
+  apply: {
+    ko: '적용하기',
+    en: 'Apply',
+  }
 };
 
 export const infoTranslation = {
