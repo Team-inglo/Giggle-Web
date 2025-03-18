@@ -97,16 +97,18 @@ const PatchEducationPage = () => {
             <div className="w-full flex gap-2">
               <Button
                 type={buttonTypeKeys.LARGE}
-                bgColor="bg-[#F4F4F9]"
-                fontColor="text-[#BDBDBD]"
+                bgColor="bg-surface-secondary"
+                fontColor="text-text-normal"
                 title="Reset"
                 isBorder={false}
                 onClick={isValid ? handleReset : undefined}
               />
               <Button
                 type={buttonTypeKeys.LARGE}
-                bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-                fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+                bgColor={
+                  isValid ? 'bg-surface-primary' : 'bg-surface-secondary'
+                }
+                fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
                 title="Save"
                 isBorder={false}
                 onClick={isValid ? handleSubmit : undefined}

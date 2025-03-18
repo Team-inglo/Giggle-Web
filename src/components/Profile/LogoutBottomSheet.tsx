@@ -27,7 +27,7 @@ const LogoutBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full flex flex-col py-10">
-        <div className="head-2 text-[#1E1926] py-3 px-12 text-center">
+        <div className="head-2 text-text-normal py-3 px-12 text-center">
           {profileTranslation.wantLogout[isEmployer(pathname)]}
         </div>
         <div className="flex flex-col gap-2">
@@ -36,8 +36,8 @@ const LogoutBottomSheet = ({
             type="large"
             title={profileTranslation.yes[isEmployer(pathname)]}
             isBorder={false}
-            bgColor="bg-[#FEF387]"
-            fontColor="text-[#1E1926]"
+            bgColor="bg-surface-primary"
+            fontColor="text-text-normal"
             onClick={handleLogout}
           />
           {/* 로그아웃 취소 버튼 */}
@@ -45,8 +45,8 @@ const LogoutBottomSheet = ({
             type="large"
             title={profileTranslation.no[isEmployer(pathname)]}
             isBorder={false}
-            bgColor="bg-[#F4F4F9]"
-            fontColor="text-[#BDBDBD]"
+            bgColor="bg-surface-secondary"
+            fontColor="text-text-normal"
             onClick={handleLogoutCancel}
           />
         </div>

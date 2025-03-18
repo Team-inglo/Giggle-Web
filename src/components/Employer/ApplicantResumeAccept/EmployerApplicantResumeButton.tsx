@@ -27,16 +27,16 @@ const EmployerApplicantResumeButton = () => {
       <div className="w-full flex gap-2">
         <Button
           type={buttonTypeKeys.BACK}
-          bgColor={'bg-[#F4F4F9]'}
-          fontColor="text-[#BDBDBD]"
+          bgColor="bg-surface-secondary"
+          fontColor="text-text-normal"
           title="거절"
           isBorder={false}
           onClick={() => onClickAcceptButton(false)}
         />
         <Button
           type={buttonTypeKeys.CONTINUE}
-          bgColor={'bg-[#FEF387]'}
-          fontColor="text-[#1E1926]"
+          bgColor="bg-surface-primary"
+          fontColor="text-text-normal"
           title="수락"
           isBorder={false}
           onClick={() => onClickAcceptButton(true)}

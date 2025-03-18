@@ -192,16 +192,16 @@ const Step3 = ({
         <div className="w-full flex gap-2">
           <Button
             type={buttonTypeKeys.BACK}
-            bgColor="bg-[#F4F4F9]"
-            fontColor="text-[#BDBDBD]"
+            bgColor="bg-surface-secondary"
+            fontColor="text-text-normal"
             isBorder={false}
             title="이전"
             onClick={() => onPrev()}
           />
           <Button
             type="large"
-            bgColor={isInvalid ? 'bg-[#F4F4F9]' : 'bg-[#fef387]'}
-            fontColor={isInvalid ? 'text-[#BDBDBD]' : 'text-[#222]'}
+            bgColor={isInvalid ? 'bg-surface-secondary' : 'bg-surface-primary'}
+            fontColor={isInvalid ? 'text-text-disabled' : 'text-text-normal'}
             isBorder={false}
             title="다음"
             onClick={

@@ -105,8 +105,8 @@ const PatchWorkExperiencePage = () => {
           {/* 리셋 버튼 */}
           <Button
             type={buttonTypeKeys.LARGE}
-            bgColor="bg-[#F4F4F9]"
-            fontColor="text-[#BDBDBD]"
+            bgColor="bg-surface-secondary"
+            fontColor="text-text-normal"
             title="Reset"
             isBorder={false}
             onClick={handleReset}
