@@ -12,9 +12,8 @@ const ApplicationDetailStep7 = ({ result }: ApplicationDetailStep7Props) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-
   return (
-    <section className="flex flex-col items-center gap-[0.75rem] w-full px-[1.5rem] pt-[0.75rem] pb-[3.125rem]">
+    <section className="flex flex-col items-center gap-3 w-full px-6 pt-3 pb-[3.125rem]">
       {result == APPLICATION_STEP.APPLICATION_SUCCESS ? (
         <p className="button-2 text-[#7872ED]">
           This application is successed.
@@ -25,8 +24,8 @@ const ApplicationDetailStep7 = ({ result }: ApplicationDetailStep7Props) => {
 
       <Button
         type={buttonTypeKeys.APPLY}
-        bgColor=""
-        fontColor="text-[#F4F4F9]"
+        bgColor={'bg-primary-normal'}
+        fontColor="text-surface-invert"
         isBorder={false}
         title="Check the application documents"
         onClick={() => navigate(`/application-documents/${id}`)}

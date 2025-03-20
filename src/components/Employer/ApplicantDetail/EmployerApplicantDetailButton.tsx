@@ -25,11 +25,13 @@ const EmployerApplicantDetailButton = ({
         return (
           <Button
             type={buttonTypeKeys.LARGE}
-            bgColor={'bg-[#FEF387]'}
-            fontColor="text-[#1E1926]"
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
             title="이력서 확인하기"
             isBorder={false}
-            onClick={() => navigate(`/employer/applicant/${applicant_id}/resume/accept`)}
+            onClick={() =>
+              navigate(`/employer/applicant/${applicant_id}/resume/accept`)
+            }
           />
         );
       case 2:
@@ -37,9 +39,9 @@ const EmployerApplicantDetailButton = ({
           <>
             <Button
               type={buttonTypeKeys.LARGE}
-              bgColor={'bg-[#FEF387]'}
-              fontColor="text-[#1E1926]"
-              title="다음"
+              bgColor={'bg-primary-normal'}
+              fontColor="text-surface-invert"
+              title="면접 일정 조율하기"
               isBorder={false}
               onClick={() => setIsShowBottomSheet(true)}
             />
@@ -53,33 +55,44 @@ const EmployerApplicantDetailButton = ({
         return (
           <Button
             type={buttonTypeKeys.APPLY}
-            bgColor={''}
-            fontColor="text-[#F4F4F9]"
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
             title="신청 서류 확인하기"
             isBorder={false}
-            onClick={() => navigate(`/employer/applicant/document-detail/${applicant_id}`)}
+            onClick={() =>
+              navigate(`/employer/applicant/document-detail/${applicant_id}`)
+            }
           />
         );
       case 4:
         return (
-          <button className="w-full p-[1rem] rounded-[2rem] bg-[#F4F4F9] text-[#BDBDBD] text-center button-1">
-            교내 유학생 담당자에게
-            <br /> 서류를 검토받고 있습니다.
-          </button>
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-surface-secondary'}
+            fontColor="text-text-disabled"
+            title="담당자에게 서류를 검토받고 있어요"
+            isBorder={false}
+          />
         );
       case 5:
         return (
-          <button className="w-full p-[1rem] rounded-[2rem] bg-[#F4F4F9] text-[#BDBDBD] text-center button-1">
-            하이코리아 시간제취업허가서
-            <br />
-            신청 중입니다.
-          </button>
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-surface-secondary'}
+            fontColor="text-text-disabled"
+            title="담당자에게 서류를 검토받고 있어요"
+            isBorder={false}
+          />
         );
       case 6:
         return (
-          <button className="w-full p-[1rem] rounded-[2rem] bg-[#F4F4F9] text-[#BDBDBD] text-center button-1">
-            신청 결과를 등록하고 있습니다.
-          </button>
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-surface-secondary'}
+            fontColor="text-text-disabled"
+            title="지원자 결과를 기다리고 있어요"
+            isBorder={false}
+          />
         );
       case 7:
         return (

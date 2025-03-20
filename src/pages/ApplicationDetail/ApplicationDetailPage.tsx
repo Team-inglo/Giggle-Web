@@ -82,11 +82,9 @@ const ApplicationDetailPage = () => {
             </JobPostingCard.Box>
           </JobPostingCard>
           <div className="w-full h-4 bg-surface-secondary"></div>
-          <div className="w-full flex flex-col gap-[2.25rem] p-4">
-            <ApplicationDetailSteps
-              step={findCurrentStep(applicationData?.data?.step)}
-            />
-          </div>
+          <ApplicationDetailSteps
+            step={findCurrentStep(applicationData?.data?.step)}
+          />
           {showCurrentStepButton(findCurrentStep(applicationData?.data?.step))}
         </>
       )}
