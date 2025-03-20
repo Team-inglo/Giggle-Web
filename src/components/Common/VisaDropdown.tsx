@@ -21,19 +21,18 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
   return (
     <>
       <div className="w-full flex flex-col gap-2">
-        <div className="w-full relative rounded-lg bg-white border border-[#eae9f6] box-border h-11 flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-2 text-[#656565]">
-          <div className="flex-1 h-5 flex flex-row items-center justify-between">
+        <div className="w-full relative rounded-lg bg-white border border-border-disabled box-border h-11 flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-2 text-text-normal">
+          <div className="flex-1 h-5 flex flex-row items-center justify-between"
+            onClick={() => setIsBottomSheetOpen(!isBottomSheetOpen)}
+          >
             <input
               className="w-full relative leading-5 outline-none bg-white"
               value={value.join(', ').replace(/_/g, '-')}
               placeholder={placeholder}
-              disabled
+              readOnly
             />
             {/* 드롭다운 토글 버튼 */}
-            <button
-              onClick={() => setIsBottomSheetOpen(true)}
-              className="p-0 rounded-full transition-colors"
-            >
+            <button className="p-0 rounded-full transition-colors">
               <div
                 className={`flex items-center justify-center w-5 h-6 transition-transform duration-300 ${
                   isBottomSheetOpen ? '' : 'rotate-180'

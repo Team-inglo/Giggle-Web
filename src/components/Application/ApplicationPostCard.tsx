@@ -4,6 +4,9 @@ import { ApplicationStepType } from '@/types/application/applicationItem';
 import { formatMoney } from '@/utils/formatMoney';
 import Tag from '@/components/Common/Tag';
 import { EmployerPostItemType } from '@/types/post/employerPostItem';
+import { postTranslation } from '@/constants/translation';
+import { isEmployerByAccountType } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
 
 const renderStatusBar = (status: ApplicationStepType) => {
   switch (status) {
@@ -78,6 +81,8 @@ const ApplicationPostCard = ({
   handleClickRightButton,
   rightButtonText,
 }: ApplicationPostCardPropsType) => {
+  const { account_type } = useUserStore();
+
   return (
     <article className="w-full p-4 rounded-lg bg-surface-base">
       {!!postData?.step && (
@@ -93,11 +98,15 @@ const ApplicationPostCard = ({
       </div>
       <div className="w-full flex justify-between items-center">
         <p className="body-2 text-text-normal">
-          <span className="mr-[0.125rem] text-text-alternative body-3">Hr</span>
-          {formatMoney(postData?.hourly_rate)}KRW
+          <span className="mr-[0.125rem] text-text-alternative body-3">
+            {postTranslation.Hr[isEmployerByAccountType(account_type)]}
+          </span>
+          {formatMoney(postData?.hourly_rate)}
+          {postTranslation.KRW[isEmployerByAccountType(account_type)]}
         </p>
         <p className="caption text-text-alternative">
-          {postData.duration_of_days} Days After
+          {postData.duration_of_days}{' '}
+          {postTranslation.daysAfter[isEmployerByAccountType(account_type)]}
         </p>
       </div>
       <div className="w-full flex gap-2 pt-5">

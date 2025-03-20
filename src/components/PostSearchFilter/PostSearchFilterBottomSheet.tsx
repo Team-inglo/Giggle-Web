@@ -2,6 +2,9 @@ import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import Tag from '@/components/Common/Tag';
 import { buttonTypeKeys } from '@/constants/components';
+import { postSearchTranslation } from '@/constants/translation';
+import { useUserStore } from '@/store/user';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 type PostSearchFilterBottomSheetType = {
   currentRegion1: string[];
@@ -23,6 +26,7 @@ const PostSearchFilterBottomSheet = ({
   const formatRegionArrayToString = (index: number) => {
     return `${currentRegion1[index]} ${currentRegion2[index]} ${currentRegion3[index] === 'none' ? '' : currentRegion3[index]}`;
   };
+  const { account_type } = useUserStore();
 
   return (
     <BottomSheetLayout
@@ -32,9 +36,15 @@ const PostSearchFilterBottomSheet = ({
       isFixedBackground={false}
     >
       <div className="w-full flex flex-col gap-6">
-        <h3 className="w-full head-3 text-black">
-          Selected Areas
-          <span className="pl-2 text-[#FFD817]">{currentRegion1.length}</span>
+        <h3 className="w-full head-3 text-text-normal">
+          {
+            postSearchTranslation.selectedAreas[
+              isEmployerByAccountType(account_type)
+            ]
+          }
+          <span className="pl-2 text-primary-normal">
+            {currentRegion1.length}
+          </span>
         </h3>
         <div className="w-full flex flex-wrap gap-2">
           {currentRegion1.map((region, index) => (
@@ -55,17 +65,21 @@ const PostSearchFilterBottomSheet = ({
         <div className="w-full flex justify-center items-center gap-2">
           <Button
             type={buttonTypeKeys.BACK}
-            bgColor={'bg-[#F4F4F9]'}
-            fontColor="text-[#BDBDBD] button-1"
-            title="Reset"
+            bgColor="bg-surface-secondary"
+            fontColor="text-text-normal button-1"
+            title={
+              postSearchTranslation.reset[isEmployerByAccountType(account_type)]
+            }
             isBorder={false}
             onClick={onClickReset}
           />
           <Button
             type={buttonTypeKeys.CONTINUE}
-            bgColor={'bg-[#FEF387]'}
-            fontColor="text-[#1E1926] button-1"
-            title="Apply"
+            bgColor="bg-surface-primary"
+            fontColor="text-text-normal button-1"
+            title={
+              postSearchTranslation.apply[isEmployerByAccountType(account_type)]
+            }
             isBorder={false}
             onClick={onClickSubmit}
           />

@@ -44,8 +44,8 @@ const PostApplyButton = () => {
         <section className="w-full flex gap-2">
           <Button
             type={buttonTypeKeys.BACK}
-            bgColor={'bg-[#F4F4F9]'}
-            fontColor="text-[#BDBDBD]"
+            bgColor="bg-surface-secondary"
+            fontColor="text-text-normal"
             title="Edit"
             isBorder={false}
             onClick={() => navigate('/profile/manage-resume')}

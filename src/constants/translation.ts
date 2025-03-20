@@ -335,13 +335,33 @@ export const postTranslation = {
     ko: '모집 기간',
     en: 'Recruitment Period',
   },
+  ageRestriction: {
+    ko: '연령 제한',
+    en: 'Age Restriction',
+  },
+  ageRestrictionAdditional: {
+    ko: '세 이상',
+    en: 'years old or above',
+  },
+  none: {
+    ko: '무관',
+    en: 'None',
+  },
   education: {
     ko: '학력',
     en: 'Education',
   },
+  educationAdditional: {
+    ko: '이상',
+    en: 'or above',
+  },
   numberOfRecruits: {
     ko: '모집 인원',
     en: 'Number of recruits',
+  },
+  people: {
+    ko: '명',
+    en: 'people',
   },
   visa: {
     ko: '비자',
@@ -378,6 +398,10 @@ export const postTranslation = {
   workPeriod: {
     ko: '근무 기간',
     en: 'Work Period',
+  },
+  Hr: {
+    ko: '시간당',
+    en: 'Hr',
   },
   KRW: {
     ko: '원',
@@ -419,6 +443,65 @@ export const postTranslation = {
     ko: '담당자 이메일',
     en: 'Email',
   },
+  daysAfter: {
+    ko: '일 전',
+    en: 'days After',
+  },
+  minsAgo: {
+    ko: '분 전',
+    en: 'mins ago',
+  },
+  hoursAgo: {
+    ko: '시간 전',
+    en: 'hours ago',
+  },
+  daysAgo: {
+    ko: '일 전',
+    en: 'days ago',
+  },
+  weeksAgo: {
+    ko: '주 전',
+    en: 'weeks ago',
+  },
+  monthsAgo: {
+    ko: '달 전',
+    en: 'months ago',
+  },
+  yearsAgo: {
+    ko: '년 전',
+    en: 'years ago',
+  },
+};
+
+export const postSearchTranslation = {
+  searchResults: {
+    ko: ' 개의 검색 결과',
+    en: ' search results',
+  },
+  postSearchTitle: {
+    ko: '모집공고 조건설정',
+    en: 'Filtering',
+  },
+  areaInputTitle: {
+    ko: '희망 근무 지역을 선택해주세요',
+    en: 'Select Areas',
+  },
+  areaInputPlaceholder: {
+    ko: '지역 선택하기',
+    en: 'Select Areas',
+  },
+  selectedAreas: {
+    ko: '선택된 지역이에요',
+    en: 'Selected Areas',
+  },
+  reset: {
+    ko: '초기화',
+    en: 'Reset',
+  },
+  apply: {
+    ko: '적용하기',
+    en: 'Apply',
+  }
 };
 
 export const infoTranslation = {
@@ -447,5 +530,20 @@ export const buttonTranslation = {
   reset: {
     ko: '초기화',
     en: 'Reset',
+  },
+  apply: {
+    ko: '적용하기',
+    en: 'Apply',
+  },
+};
+
+export const alarmTranslation = {
+  alarmTitle: {
+    ko: '알림',
+    en: 'Notification',
+  },
+  emptyAlarm: {
+    ko: '알람이 없습니다.',
+    en: 'There is no notifications',
   },
 };

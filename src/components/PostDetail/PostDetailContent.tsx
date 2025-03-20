@@ -13,6 +13,22 @@ import InfoCardLayout from '@/components/Common/InfoCardLayout';
 import { infoTranslation, postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
+import {
+  EducationLevelInfo,
+  genderInfo,
+  JobCategoryInfo,
+  WorkTypeInfo,
+} from '@/constants/post';
+import {
+  EducationLevel,
+  EmploymentType,
+  JobCategory,
+} from '@/types/postCreate/postCreate';
+import { WorkPeriodInfo } from '@/constants/documents';
+import { DayOfWeek, WorkPeriod } from '@/types/api/document';
+import { Gender } from '@/types/api/users';
+import { UserType } from '@/constants/user';
+import { dayOfWeekToKorean } from '@/utils/post';
 
 type PostDetailContentProps = {
   postDetailData: PostDetailItemType;
@@ -73,14 +89,40 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               <div>
                 <h5 className="pb-[0.125rem] text-text-normal button-2">
                   {
+                    postTranslation.ageRestriction[
+                      isEmployerByAccountType(account_type)
+                    ]
+                  }
+                </h5>
+                <p className="text-text-alternative caption">
+                  {postDetailData.recruitment_conditions.age_restriction ===
+                  null
+                    ? postTranslation.none[
+                        isEmployerByAccountType(account_type)
+                      ]
+                    : `${postDetailData.recruitment_conditions.age_restriction}${postTranslation.ageRestrictionAdditional[isEmployerByAccountType(account_type)]}`}
+                </p>
+              </div>
+              <div>
+                <h5 className="pb-[0.125rem] text-text-normal button-2">
+                  {
                     postTranslation.education[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
                 <p className="text-text-alternative caption">
-                  {postDetailData.recruitment_conditions.education.toLowerCase()}{' '}
-                  requirement
+                  {account_type === UserType.OWNER
+                    ? EducationLevelInfo[
+                        postDetailData.recruitment_conditions
+                          .education as EducationLevel
+                      ].name
+                    : postDetailData.recruitment_conditions.education.toLowerCase()}{' '}
+                  {
+                    postTranslation.educationAdditional[
+                      isEmployerByAccountType(account_type)
+                    ]
+                  }
                 </p>
               </div>
               <div>
@@ -93,7 +135,11 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 </h5>
                 <p className="text-text-alternative caption">
                   {postDetailData.recruitment_conditions.number_of_recruits}{' '}
-                  people
+                  {
+                    postTranslation.people[
+                      isEmployerByAccountType(account_type)
+                    ]
+                  }
                 </p>
               </div>
               <div>
@@ -115,7 +161,11 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                   }
                 </h5>
                 <p className="text-text-alternative caption">
-                  {postDetailData.recruitment_conditions.gender.toLowerCase()}
+                  {account_type === UserType.OWNER
+                    ? genderInfo[
+                        postDetailData.recruitment_conditions.gender as Gender
+                      ].name
+                    : postDetailData.recruitment_conditions.gender.toLowerCase()}
                 </p>
               </div>
               <div>
@@ -236,9 +286,14 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 }
               </h5>
               <p className="text-text-alternative caption">
-                {postDetailData.working_conditions.work_period
-                  .replace(/_/g, ' ')
-                  .toLowerCase()}
+                {account_type === UserType.OWNER
+                  ? WorkPeriodInfo[
+                      postDetailData.working_conditions
+                        .work_period as WorkPeriod
+                    ].name
+                  : postDetailData.working_conditions.work_period
+                      .replace(/_/g, ' ')
+                      .toLowerCase()}
               </p>
             </div>
             <div>
@@ -255,7 +310,9 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                     <p key={`${value}_${index}`}>
                       {value.day_of_week !== 'NEGOTIABLE' && (
                         <span className="button-2 pr-2">
-                          {value.day_of_week.toLowerCase()}
+                          {account_type === UserType.OWNER
+                            ? dayOfWeekToKorean(value.day_of_week as DayOfWeek)
+                            : value.day_of_week.toLowerCase()}
                         </span>
                       )}
                       {value.work_start_time} - {value.work_end_time}
@@ -273,9 +330,14 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 }
               </h5>
               <p className="text-text-alternative caption">
-                {postDetailData.working_conditions.job_category
-                  .replace(/_/g, ' ')
-                  .toLowerCase()}
+                {account_type === UserType.OWNER
+                  ? JobCategoryInfo[
+                      postDetailData.working_conditions
+                        .job_category as JobCategory
+                    ].name
+                  : postDetailData.working_conditions.job_category
+                      .replace(/_/g, ' ')
+                      .toLowerCase()}
               </p>
             </div>
             <div>
@@ -287,7 +349,12 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 }
               </h5>
               <p className="text-text-alternative caption">
-                {postDetailData.working_conditions.employment_type.toLowerCase()}
+                {account_type === UserType.OWNER
+                  ? WorkTypeInfo[
+                      postDetailData.working_conditions
+                        .employment_type as EmploymentType
+                    ].name
+                  : postDetailData.working_conditions.employment_type.toLowerCase()}
               </p>
             </div>
           </div>

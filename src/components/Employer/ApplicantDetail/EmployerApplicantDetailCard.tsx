@@ -1,7 +1,10 @@
 import ClockIcon from '@/assets/icons/ClockIcon.svg?react';
 import MoneyIcon from '@/assets/icons/MoneyIcon.svg?react';
 import Tag from '@/components/Common/Tag';
+import { postTranslation } from '@/constants/translation';
+import { useUserStore } from '@/store/user';
 import { ApplicantDetailItemType } from '@/types/application/applicationItem';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 type EmployerApplicantDetailCardPropsType = {
   applicantData: ApplicantDetailItemType;
@@ -10,6 +13,8 @@ type EmployerApplicantDetailCardPropsType = {
 const EmployerApplicantDetailCard = ({
   applicantData,
 }: EmployerApplicantDetailCardPropsType) => {
+  const { account_type } = useUserStore();
+
   return (
     <article className="w-full pb-[0.5rem] border-[0.031rem] border-[#1E19263D] rounded-[1.125rem] ">
       <div className="flex justify-between w-full px-[1.5rem] pt-[1.5rem] pb-[0.75rem]">
@@ -34,7 +39,7 @@ const EmployerApplicantDetailCard = ({
           </div>
         </div>
         <Tag
-          value={`${applicantData.duration_of_days} days After`}
+          value={`${applicantData.duration_of_days} ${postTranslation.daysAfter[isEmployerByAccountType(account_type)]}`}
           padding="py-[0.25rem] px-[0.438rem]"
           isRounded={false}
           hasCheckIcon={false}
