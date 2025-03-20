@@ -72,18 +72,18 @@ const Dropdown = ({
       {/* 드롭다운 입력 영역 */}
       <div className="w-full flex flex-col gap-2">
         <div className="w-full h-[3.125rem] relative rounded-lg bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-2 text-primary-dark">
-          <div className="flex-1 h-5 flex flex-row items-center justify-between">
+          <div
+            className="flex-1 h-5 flex flex-row items-center justify-between"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             <input
               className="w-full relative leading-5 outline-none bg-white"
               value={value ?? ''}
               placeholder={placeholder}
-              disabled
+              readOnly
             />
             {/* 드롭다운 토글 버튼 */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-0 rounded-full transition-colors"
-            >
+            <button className="p-0 rounded-full transition-colors">
               <div
                 className={`flex items-center justify-center w-5 h-6 transition-transform duration-300 ${
                   isOpen ? '' : 'rotate-180'

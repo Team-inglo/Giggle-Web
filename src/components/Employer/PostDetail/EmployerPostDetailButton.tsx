@@ -16,16 +16,16 @@ const EmployerPostDetailButton = () => {
         <div className="w-full flex justify-center gap-2 z-20">
           <Button
             type={buttonTypeKeys.BACK}
-            bgColor="bg-[#F4F4F9]"
-            fontColor="text-[#BDBDBD]"
+            bgColor="bg-surface-secondary"
+            fontColor="text-text-normal"
             isBorder={false}
             title="삭제"
             onClick={() => setIsOpenDeleteBottomSheet(true)}
           />
           <Button
             type={buttonTypeKeys.CONTINUE}
-            bgColor="bg-[#FEF387]"
-            fontColor="text-[#1E1926]"
+            bgColor="bg-surface-primary"
+            fontColor="text-text-normal"
             isBorder={false}
             title="편집"
             onClick={() =>

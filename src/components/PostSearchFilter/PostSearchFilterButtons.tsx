@@ -25,15 +25,15 @@ const PostSearchFilterButtons = ({
     <section className="w-full flex justify-center items-center gap-[0.5rem] pt-[0.75rem] pb-[2.5rem] px-[1.5rem]">
       <Button
         type={buttonTypeKeys.BACK}
-        bgColor={'bg-[#F4F4F9]'}
-        fontColor="text-[#BDBDBD] button-1"
+        bgColor='bg-surface-secondary'
+        fontColor="text-text-normal button-1"
         title={buttonTranslation.reset[isEmployerByAccountType(account_type)]}
         isBorder={false}
         onClick={onClickReset}
       />
       <Button
         type={buttonTypeKeys.CONTINUE}
-        bgColor={'bg-[#FEF387]'}
+        bgColor='bg-surface-primary'
         fontColor="text-[#1E1926] button-1"
         title={buttonTranslation.apply[isEmployerByAccountType(account_type)]}
         isBorder={false}

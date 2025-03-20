@@ -68,7 +68,7 @@ export const findGenderByNameStrict = (
   return entry ? (entry[1].key as Gender) : null;
 };
 
-const dayOfWeekToKorean = (day: DayOfWeek): string => {
+export const dayOfWeekToKorean = (day: DayOfWeek): string => {
   switch (day) {
     case DayOfWeek.MONDAY:
       return '월';
