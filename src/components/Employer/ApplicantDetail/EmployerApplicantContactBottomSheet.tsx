@@ -1,7 +1,7 @@
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
-import PhoneIcon from '@/assets/icons/PhoneIcon.svg?react';
+import RecruiterIcon from '@/assets/icons/ApplicationDetail/RecruiterIcon.svg?react';
 import {
   useGetEmployerApplicationSummary,
   usePatchInterviewFinish,
@@ -36,8 +36,6 @@ const EmployerApplicantContactBottomSheet = ({
     if (!isNaN(Number(id))) mutate(Number(id));
   };
 
-  if (!data?.success) return <></>;
-
   return (
     <BottomSheetLayout
       hasHandlebar={true}
@@ -45,47 +43,50 @@ const EmployerApplicantContactBottomSheet = ({
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full flex flex-col items-center text-center">
-        <h3 className="px-[1.625rem] pb-[0.75rem] head-2 text-[#1E1926]">
-          지원자에게 연락하여
-          <br />
-          면접을 진행해보세요.
+      <main className="p-3 w-full flex flex-col items-center text-center">
+        <h3 className="pb-6 head-3 text-text-normal">
+          지원자에 먼저 연락할 수 있어요 💬📞
         </h3>
-        <p className="mb-[1.25rem] body-3 text-[#656565]">
-          지원자와 지원 조건을 확인해보세요
+        <p className="pb-4 body-2 text-text-normal">
+          지원자에게 연락 후 면접을 진행해보세요.
+          <br />
+          면접을 마쳤다면, 다음 단계로 넘어갈 수 있어요.
         </p>
-        <div
-          className="mt-[0.5rem] mb-[1.5rem] max-w-[15.438rem] w-full px-[1rem] flex items-center gap-[0.75rem] py-[0.75rem] rounded-[1rem] bg-[#F4F4F9]"
+        <button
+          className="w-full p-4 flex items-center gap-4 bg-surface-secondary rounded-lg text-start"
           onClick={() =>
             sendPhoneNumberToApp(data?.data?.applicant_phone_number)
           }
         >
-          <div className="p-[0.375rem] bg-white rounded-[0.5rem]">
-            <PhoneIcon />
-          </div>
+          <RecruiterIcon />
           <div>
-            <h5 className="button-2 text-black text-start">
+            <p className="pb-1 button-1 text-text-strong">
               {data?.data?.applicant_name}
-            </h5>
-            <p className="caption text-[#656565] text-start">
+            </p>
+            <p className="body-2 text-text-alternative">
               {data?.data?.applicant_phone_number}
             </p>
           </div>
-        </div>
-        <p className="body-3 text-[#7872ED]">
-          면접을 완료했다면 버튼을 클릭해 다음 단계로 넘어가세요.
-        </p>
-      </div>
-      <div className="w-full py-[1.5rem]">
+        </button>
+      </main>
+      <footer className="w-full pt-6 flex flex-col gap-2">
         <Button
           type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
+          bgColor={'bg-primary-normal'}
+          fontColor="text-surface-invert"
+          title={'이미 면접을 완료했어요'}
           isBorder={false}
-          title={'면접 완료'}
           onClick={onClickComplete}
         />
-      </div>
+        <Button
+          type={buttonTypeKeys.LARGE}
+          bgColor={'bg-primary-neutral'}
+          fontColor="text-surface-invert"
+          title={'나중에 할게요'}
+          isBorder={false}
+          onClick={() => setIsShowBottomSheet(false)}
+        />
+      </footer>
     </BottomSheetLayout>
   );
 };

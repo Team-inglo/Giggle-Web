@@ -6,6 +6,8 @@ import EmployerApplicantContactBottomSheet from './EmployerApplicantContactBotto
 import { findCurrentStep } from '@/utils/application';
 import { ApplicationStepType } from '@/types/application/applicationItem';
 import { APPLICATION_STEP } from '@/constants/application';
+import SuccessIcon from '@/assets/icons/ApplicationDetail/SuccessIcon.svg?react';
+import RejectIcon from '@/assets/icons/ApplicationDetail/RejectIcon.svg?react';
 
 type EmployerApplicantDetailButtonPropsType = {
   applicant_id: number;
@@ -98,27 +100,32 @@ const EmployerApplicantDetailButton = ({
         return (
           <>
             {step === APPLICATION_STEP.APPLICATION_SUCCESS ? (
-              <p className="w-full button-2 text-[#7872ED] text-center">
-                시간제취업허가 성공
-                <br />
-                지원자와 이후 일정을 이야기해보세요.
-              </p>
+              <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#0066FF]/10 rounded">
+                <SuccessIcon />
+                <p className="caption text-text-success">
+                  시간제취업허가 성공, 지원자와 이후 일정을 이야기해보세요.
+                </p>
+              </div>
             ) : (
-              <p className="w-full button-2 text-[#FF6F61] text-center">
-                시간제취업허가 실패
-                <br />
-                원인을 찾고 재신청 할 수 있습니다.
-              </p>
+              <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
+                <RejectIcon />
+                <p className="caption text-text-error">
+                  시간제취업허가 실패, 원인을 찾고 재신청 할 수 있습니다.
+                </p>
+              </div>
             )}
           </>
         );
       default:
         return (
-          <p className="w-full button-2 text-[#FF6F61] text-center">
-            {step === APPLICATION_STEP.PENDING
-              ? '2주 이상 대기 중입니다.'
-              : '이력서를 거절했습니다.'}
-          </p>
+          <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
+            <RejectIcon />
+            <p className="caption text-text-error">
+              {step === APPLICATION_STEP.PENDING
+                ? '2주 이상 대기 중입니다.'
+                : '이력서를 거절했습니다.'}
+            </p>
+          </div>
         );
     }
   };

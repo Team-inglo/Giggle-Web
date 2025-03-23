@@ -7,7 +7,7 @@ const ApplicationDetailStep6 = () => {
   const { id } = useParams();
 
   return (
-    <section className="flex flex-col gap-2 w-full">
+    <section className="flex flex-col gap-2 w-full px-4 pt-3 pb-[3.125rem]">
       <Button
         type={buttonTypeKeys.LARGE}
         bgColor={'bg-primary-normal'}

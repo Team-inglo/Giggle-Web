@@ -13,7 +13,7 @@ const EmployerApplicantDetailCard = ({
   return (
     <section className="w-full py-7 px-4">
       <div className="w-full flex justify-between items-center pb-2">
-        <div>
+        <div className="flex items-center">
           <h3 className="head-3 text-text-strong">{applicantData?.name}</h3>
           <p className="pl-2 button-2 text-text-alternative">
             {applicantData.nationality.replace(/_/g, ' ').toLowerCase()}

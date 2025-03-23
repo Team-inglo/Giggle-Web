@@ -8,11 +8,11 @@ const ApplicationDetailStep2 = () => {
 
   return (
     <>
-      <section className="w-full px-6 pb-[3.125rem]">
+      <section className="w-full px-4 pb-[3.125rem]">
         <Button
           type={buttonTypeKeys.LARGE}
-          bgColor={'bg-[#F4F4F9]'}
-          fontColor="text-[#BDBDBD]"
+          bgColor={'bg-primary-neutral'}
+          fontColor="text-text-disabled"
           title="Check the application documents"
           isBorder={false}
           onClick={() => setIsShowBottomSheet(true)}

@@ -45,11 +45,10 @@ export const useGetApplicationDetail = (id: number, isEnabled: boolean) => {
 };
 
 // 6.5 (유학생) 공고 담당자 정보 조회하기 훅
-export const useGetRecruiterInfo = (id: number, isEnabled: boolean) => {
+export const useGetRecruiterInfo = (id: number) => {
   return useQuery({
     queryKey: ['application', 'recruiter', id],
     queryFn: () => getRecruiterInfo(id),
-    enabled: isEnabled,
   });
 };
 
@@ -115,11 +114,13 @@ export const usePatchWritingDocumentFinish = (id: number) => {
 };
 
 // 6.13 (유학생) 유학생 담당자 검토 완료 훅
-export const usePatchContactCoordinator = () => {
+export const usePatchContactCoordinator = (id: number) => {
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: patchContactCoordinator,
     onSuccess: () => {
-      window.location.reload();
+      navigate(`/application/${id}`);
     },
     onError: (error) => {
       console.error('유학생 담당자 검토 완료 실패', error);
@@ -156,10 +157,9 @@ export const usePatchHiKoreaResult = (id: number) => {
 };
 
 // 9.2 (유학생) 학교 정보 상세조회하기 훅
-export const useGetSchoolInfo = (isEnabled: boolean) => {
+export const useGetSchoolInfo = () => {
   return useQuery({
     queryKey: ['application'],
     queryFn: () => getSchoolInfo(),
-    enabled: isEnabled,
   });
 };

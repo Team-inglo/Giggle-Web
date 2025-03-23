@@ -17,7 +17,7 @@ const ContactRecruiterBottomSheet = ({
 }: ContactRecruiterBottomSheetProps) => {
   const { id } = useParams();
 
-  const { data } = useGetRecruiterInfo(Number(id), false);
+  const { data } = useGetRecruiterInfo(Number(id));
 
   const sendPhoneNumberToApp = (phoneNumber: number) => {
     const message = {
@@ -43,7 +43,7 @@ const ContactRecruiterBottomSheet = ({
           <br />
           you can follow up directly.
         </p>
-        <button className="w-full p-4 flex items-center gap-4 bg-surface-secondary rounded">
+        <button className="w-full p-4 flex items-center gap-4 bg-surface-secondary rounded-lg text-start">
           <RecruiterIcon />
           <div>
             <p className="pb-1 button-1 text-text-strong">
