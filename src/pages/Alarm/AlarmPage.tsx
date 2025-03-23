@@ -1,9 +1,12 @@
 import AlarmCard from '@/components/Alarm/AlarmCard';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import LoadingItem from '@/components/Common/LoadingItem';
+import { alarmTranslation } from '@/constants/translation';
 import { useInfiniteGetAlarms, usePatchReadAlarm } from '@/hooks/api/useAlarm';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useUserStore } from '@/store/user';
 import { AlarmItemType } from '@/types/api/alarm';
+import { isEmployerByAccountType } from '@/utils/signup';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +15,7 @@ const AlarmPage = () => {
     useInfiniteGetAlarms(10);
 
   const { mutateAsync } = usePatchReadAlarm();
+  const { account_type } = useUserStore();
 
   const navigate = useNavigate();
 
@@ -46,7 +50,9 @@ const AlarmPage = () => {
         hasBackButton={true}
         onClickBackButton={() => navigate('/')}
         hasMenuButton={false}
-        title="Notification"
+        title={
+          alarmTranslation.alarmTitle[isEmployerByAccountType(account_type)]
+        }
       />
       <section className="flex flex-col gap-[1rem] w-full p-[1rem] pb-[5rem]">
         {alarmList?.length > 0 ? (
@@ -54,7 +60,9 @@ const AlarmPage = () => {
             <AlarmCard key={data.id} alarmData={data} readAlarm={readAlarm} />
           ))
         ) : (
-          <div className="mt-8 w-full text-center body-2">알람이 없습니다.</div>
+          <div className="mt-8 w-full text-center body-2">
+            {alarmTranslation.emptyAlarm[isEmployerByAccountType(account_type)]}
+          </div>
         )}
         {isFetchingNextPage && <LoadingItem />}
       </section>

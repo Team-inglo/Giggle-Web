@@ -1,10 +1,9 @@
+import loadingSpinnerGif from '@/assets/images/loadingSpinnerGif.gif';
+
 const LoadingItem = () => {
   return (
-    <div className="w-full p-[0.5rem] flex flex-col justify-center items-center">
-      <div className="animate-spin">
-        <div className="w-[2rem] h-[1rem] bg-[#1E1926]"></div>
-        <div className="w-[2rem] h-[1rem] bg-[#FEF387]"></div>
-      </div>
+    <div className="w-full p-[0.5rem] flex flex-col justify-center items-center ">
+      <img src={loadingSpinnerGif} alt="로딩 이미지" className="w-40" />
     </div>
   );
 };

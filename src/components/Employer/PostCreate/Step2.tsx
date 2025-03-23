@@ -179,10 +179,10 @@ const Step2 = ({
                 }
               />
             </InputLayout>
-            <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left body-3 text-[#656565]">
+            <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left body-3 text-text-alternative">
               <div className="w-6 h-6 relative">
                 <div
-                  className={`w-full h-full border border-[#f4f4f9] flex items-center justify-center ${newPostInfo.body.recruitment_dead_line === null ? 'bg-[#1E1926]' : 'bg-white'}`}
+                  className={`w-full h-full border border-border-alternative rounded-sm flex items-center justify-center ${newPostInfo.body.recruitment_dead_line === null ? 'bg-primary-dark' : 'bg-white'}`}
                   onClick={
                     newPostInfo.body.recruitment_dead_line !== null
                       ? () =>
@@ -206,7 +206,9 @@ const Step2 = ({
                   <CheckIcon />
                 </div>
               </div>
-              <div className="flex items-start justify-start">상시모집</div>
+              <div className="flex items-start justify-start">
+                상시모집 할래요
+              </div>
             </div>
           </div>
           <BottomButtonPanel>
@@ -215,7 +217,7 @@ const Step2 = ({
               <Button
                 type={buttonTypeKeys.BACK}
                 bgColor="bg-surface-secondary"
-                fontColor="text-text-disabled"
+                fontColor="text-text-normal"
                 isBorder={false}
                 title="이전"
                 onClick={() => onPrev()}

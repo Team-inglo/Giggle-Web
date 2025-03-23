@@ -21,6 +21,9 @@ import { postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { formatMoney } from '@/utils/formatMoney';
 import { calculateTimeAgo } from '@/utils/calculateTimeAgo';
+import { EN_FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
+import { WorkPeriodInfo } from '@/constants/documents';
+import { WorkPeriod } from '@/types/api/document';
 
 const CardContext = createContext<JobPostingItemType | null>(null);
 
@@ -91,11 +94,16 @@ const CardTitle = ({ isTwoLine }: { isTwoLine: boolean }) => {
 
 const CardTagList = ({ className }: { className?: string }) => {
   const { tags } = useCard();
+  const { account_type } = useUserStore();
 
   return (
     <div className={`flex items-center flex-wrap gap-1 ${className}`}>
       <Tag
-        value={tags.employment_type?.toLowerCase()}
+        value={
+          account_type === UserType.OWNER
+            ? EN_FILTER_CATEGORY_OPTIONS[tags.employment_type?.toLowerCase()]
+            : tags.employment_type?.toLowerCase()
+        }
         padding="py-[0.188rem] px-[0.25rem]"
         isRounded={false}
         hasCheckIcon={false}
@@ -104,7 +112,13 @@ const CardTagList = ({ className }: { className?: string }) => {
         fontStyle="caption"
       />
       <Tag
-        value={tags.job_category.replace(/_/g, ' ').toLowerCase()}
+        value={
+          account_type === UserType.OWNER
+            ? EN_FILTER_CATEGORY_OPTIONS[
+                tags.job_category.replace(/_/g, ' ').toLowerCase()
+              ]
+            : tags.job_category.replace(/_/g, ' ').toLowerCase()
+        }
         padding="py-[0.188rem] px-[0.25rem]"
         isRounded={false}
         hasCheckIcon={false}
@@ -160,49 +174,87 @@ const CardAddress = () => {
 
 const CardWorkPeriod = () => {
   const { summaries } = useCard();
+  const { account_type } = useUserStore();
 
   return (
     <div className="flex items-center gap-2">
       <CalendarIcon />
       <p className="caption text-text-normal">
-        {summaries.work_period.replace(/_/g, ' ').toLowerCase()}
+        {account_type === UserType.OWNER
+          ? WorkPeriodInfo[summaries.work_period as WorkPeriod].name
+          : summaries.work_period.replace(/_/g, ' ').toLowerCase()}
       </p>
     </div>
   );
 };
 
+const workDaysPerWeekToText = (
+  workDaysPerWeek: string,
+  accountType: UserType | undefined,
+) => {
+  if (workDaysPerWeek === '협의 가능') {
+    return accountType !== UserType.OWNER ? 'Negotiable' : workDaysPerWeek;
+  }
+
+  if (accountType !== UserType.OWNER) {
+    return workDaysPerWeek;
+  }
+
+  return `주 ${workDaysPerWeek[0]}일 근무`;
+};
+
 const CardWorkDaysPerWeek = () => {
   const { summaries } = useCard();
+  const { account_type } = useUserStore();
 
   return (
     <div className="flex items-center gap-2">
       <ClockIcon />
-      <p className="caption text-text-normal">{summaries.work_days_per_week}</p>
+      <p className="caption text-text-normal">
+        {workDaysPerWeekToText(
+          summaries.work_days_per_week as string,
+          account_type,
+        )}
+      </p>
     </div>
   );
 };
 
+const hourlyRate = (hourlyRate: number, accountType: UserType | undefined) => {
+  return accountType === UserType.OWNER
+    ? `시간당 ${formatMoney(hourlyRate)}원`
+    : `Hr ${formatMoney(hourlyRate)}KRW`;
+};
+
 const CardHourlyRate = () => {
   const { hourly_rate } = useCard();
+  const { account_type } = useUserStore();
 
   return (
     <div className="flex items-center gap-2">
       <MoneyIcon />
-      <p className="caption text-text-normal">${hourly_rate}</p>
+      <p className="caption text-text-normal">
+        {hourlyRate(hourly_rate, account_type)}
+      </p>
     </div>
   );
 };
 
 const CardFooter = () => {
+  const { account_type } = useUserStore();
   const { hourly_rate, created_at } = useCard();
+
   return (
     <div className="w-full flex justify-between items-center">
       <p className="body-2 text-text-normal">
-        <span className="mr-[0.125rem] text-text-alternative body-3">Hr</span>
-        {formatMoney(hourly_rate)}KRW
+        <span className="mr-[0.125rem] text-text-alternative body-3">
+          {postTranslation.Hr[isEmployerByAccountType(account_type)]}
+        </span>
+        {formatMoney(hourly_rate)}
+        {postTranslation.KRW[isEmployerByAccountType(account_type)]}
       </p>
       <p className="caption text-text-alternative">
-        {calculateTimeAgo(created_at)}
+        {calculateTimeAgo(created_at, account_type)}
       </p>
     </div>
   );

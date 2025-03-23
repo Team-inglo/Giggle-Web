@@ -19,7 +19,9 @@ import { formatSearchFilter } from '@/utils/formatSearchFilter';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
-import { POST_SORTING } from '@/constants/postSearch';
+import { POST_SORTING, POST_SORTING_KR } from '@/constants/postSearch';
+import { postSearchTranslation } from '../../constants/translation';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 const PostSearchPage = () => {
   const navigate = useNavigate();
@@ -146,13 +148,24 @@ const PostSearchPage = () => {
       <section className="flex-1 flex flex-col items-center w-full pb-24">
         <div className="w-full py-4 px-6 flex justify-between items-center">
           <h3 className="caption text-text-alternative">
-            {postData.length} search results
+            {postData.length}{' '}
+            {
+              postSearchTranslation.searchResults[
+                isEmployerByAccountType(account_type)
+              ]
+            }
           </h3>
           <SearchSortDropdown
             options={Object.values(POST_SORTING).map((value) =>
-              value.toLowerCase(),
+              account_type === UserType.OWNER
+                ? POST_SORTING_KR[value]
+                : value.toLowerCase(),
             )}
-            value={searchOption.sortType.toLowerCase()}
+            value={
+              account_type === UserType.OWNER
+                ? POST_SORTING_KR[searchOption.sortType as PostSortingType]
+                : searchOption.sortType.toLowerCase()
+            }
             onSelect={(value) => onChangeSortType(value as PostSortingType)}
           />
         </div>
