@@ -73,9 +73,10 @@ const EmployerSignupInfoPage = () => {
   useEffect(() => {
     setIsValid(
       isValidEmployerRegistration(newEmployData) &&
-        registrationNumberValidStatus === 'verified',
+        registrationNumberValidStatus === 'verified' &&
+        logoFile !== undefined,
     );
-  }, [newEmployData, registrationNumberValidStatus]);
+  }, [newEmployData, registrationNumberValidStatus, logoFile]);
 
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
   const handleSubmit = () => {

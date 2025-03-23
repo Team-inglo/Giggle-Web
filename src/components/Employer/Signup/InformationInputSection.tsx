@@ -341,7 +341,7 @@ const InformationInputSection = ({
               </InputLayout>
 
               {/* 회사 로고 입력 */}
-              <InputLayout title="회사 로고" isEssential={false}>
+              <InputLayout title="회사 로고" isEssential>
                 <div className="w-full flex flex-col items-center justify-start">
                   <div className="w-full flex items-center justify-start">
                     <label
