@@ -185,3 +185,11 @@ export const apiWithoutAuth = createInstanceWithoutAuth();
  * @const {AxiosInstance}
  */
 export const apiKaKao = createInstance('kakao');
+
+/**
+ * Kakao API 요청에 사용할 Axios 인스턴스
+ * @const {AxiosInstance}
+ */
+export const externalAPI = axios.create({
+  baseURL: import.meta.env.VITE_APP_EXTERNAL_API_BASE_URL,
+});
