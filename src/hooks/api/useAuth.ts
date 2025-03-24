@@ -14,6 +14,7 @@ import {
   getPolicy,
   reIssuePassword,
   patchPassword,
+  postRegistrationNumberValidation,
 } from '@/api/auth';
 import {
   AuthenticationResponse,
@@ -39,7 +40,7 @@ import {
 } from '@tanstack/react-query';
 import { useUserInfoforSigninStore } from '@/store/signup';
 import { useEmailTryCountStore } from '@/store/signup';
-import { RESTYPE } from '@/types/api/common';
+import { ExternalRESTYPE, RESTYPE } from '@/types/api/common';
 import { clearAllStore } from '@/utils/clearAllStore';
 import { TermType } from '@/types/api/users';
 import { AxiosError } from 'axios';
@@ -333,6 +334,16 @@ export const useGetPolicy = (
       console.error('약관 조회 중 에러 발생:', error);
       options?.onError?.(error, variables, context);
     },
+    ...options,
+  });
+};
+
+export const usePostRegistrationNumberValidation = (
+  options?: UseMutationOptions<ExternalRESTYPE, Error, string>,
+) => {
+  return useMutation({
+    mutationFn: (registrationNum: string) =>
+      postRegistrationNumberValidation(registrationNum),
     ...options,
   });
 };

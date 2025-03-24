@@ -24,15 +24,11 @@ const EmployerApplicantDetailPage = () => {
         hasBackButton={true}
         onClickBackButton={() => navigate('/employer/post')}
         hasMenuButton={false}
-        title="서류 신청 관리하기"
+        title="서류 신청 관리"
       />
-      <div className="w-full flex flex-col gap-[2.25rem] p-[1.5rem]">
-        <EmployerApplicantDetailCard applicantData={data?.data} />
-        <ApplicationDetailSteps
-          step={findCurrentStep(data?.data.step)}
-          isKorean={true}
-        />
-      </div>
+      <EmployerApplicantDetailCard applicantData={data?.data} />
+      <div className="w-full h-4 bg-surface-secondary"></div>
+      <ApplicationDetailSteps step={findCurrentStep(data?.data.step)} />
       <EmployerApplicantDetailButton
         applicant_id={Number(currentApplicantId)}
         step={data?.data.step}

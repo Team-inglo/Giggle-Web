@@ -60,8 +60,10 @@ const InformationPage = () => {
       TermType.LOCATION_BASED_TERMS,
       TermType.PRIVACY_POLICY,
     ];
+    
     mutate({
       ...userInfo,
+      address: userInfo.address.address_name ? userInfo.address : null,
       marketing_allowed: marketingAllowed,
       notification_allowed: false,
       temporary_token: String(getTemporaryToken()),

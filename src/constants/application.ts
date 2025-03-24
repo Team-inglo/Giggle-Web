@@ -41,67 +41,68 @@ export const EN_APPLICATION_STATUS_TYPE = {
 export const APPLICATION_STEP_EXPLAIN_DATA: ApplicationStepExplainType[] = [
   {
     step: 1,
-    title: 'Resume Verification',
-    explain: 'The employer is currently reviewing your resume.',
+    title: {
+      ko: '지원자의 이력서가 도착했어요! ✏️',
+      en: 'Resume under review ✏️',
+    },
+    explain: {
+      ko: '지원자의 이력서를 살펴보고, 채용 가능 여부를 결정해 주세요!',
+      en: 'The employer is reviewing your resume. We’ll let you know!',
+    },
   },
   {
     step: 2,
-    title: 'Interview Preparation',
-    explain: 'Please check the employment contract and work conditions.',
+    title: {
+      ko: '면접 일정 조율하기 💬',
+      en: 'Get ready for your interview 💬',
+    },
+    explain: {
+      ko: '지원자와 면접 날짜를 잡고, 근무 조건도 확인해 보세요.',
+      en: 'Check your contract and work details before the interview.',
+    },
   },
   {
     step: 3,
-    title: 'Document Preparation',
-    explain:
-      'Please prepare the documents required for a part-time work permit.',
+    title: {
+      ko: '지원자가 근로계약서를 작성했어요 📝',
+      en: 'Preparing your documents 📝',
+    },
+    explain: {
+      ko: '지원자의 근로계약서를 확인하고, 취업허가서도 준비해 주세요.',
+      en: 'Gather all required documents for your work permit.',
+    },
   },
   {
     step: 4,
-    title: 'Document Review by the International Student Coordinator',
-    explain:
-      'Get the documents reviewed by the international student coordinator at your school.',
+    title: {
+      ko: '학교에서 서류 검토 중이에요 🔍',
+      en: 'School review in progress 🔍',
+    },
+    explain: {
+      ko: '지원자의 학교 담당자가 서류를 확인하고 있어요. 검토가 끝나면 다음 단계로 넘어갑니다!',
+      en: 'Your school’s international student coordinator will review your documents.',
+    },
   },
   {
     step: 5,
-    title: 'HiKorea e-Government Applica',
-    explain: 'Apply for a part-time work permit through HiKorea.',
+    title: {
+      ko: '취업허가 승인을 기다리고 있어요 🇰🇷',
+      en: 'Work permit in progress 🇰🇷',
+    },
+    explain: {
+      ko: '지원자가 작성된 서류를 기반으로 민원을 신청하였어요. 승인이 허가될 때까지 잠시 기다려주세요!',
+      en: 'Your application is being processed through HiKorea',
+    },
   },
   {
     step: 6,
-    title: 'Result Registration',
-    explain: 'Please register the results.',
-  },
-];
-
-export const KO_APPLICATION_STEP_EXPLAIN_DATA: ApplicationStepExplainType[] = [
-  {
-    step: 1,
-    title: '이력서 확인',
-    explain: '이력서를 확인하고 승인해주세요.',
-  },
-  {
-    step: 2,
-    title: '면접 진행',
-    explain: '면접을 동해 지원자를 확인하고 근무 조건에 대해 이야기하세요.',
-  },
-  {
-    step: 3,
-    title: '서류 작성',
-    explain: '유학생의 시간제 취업허가를 위해 필요한 서류를 준비해주세요.',
-  },
-  {
-    step: 4,
-    title: '유학생의 서류 검토',
-    explain: '유학생이 서류를 검토받고 있어요.',
-  },
-  {
-    step: 5,
-    title: '유학생의 하이코리아 전자민원 신청',
-    explain: '유학생이 하이코리아에 시간제 취업허가를 신청했어요.',
-  },
-  {
-    step: 6,
-    title: '결과 확인',
-    explain: '결과를 확인하세요.',
+    title: {
+      ko: '취업허가 결과를 확인해 주세요 🎉',
+      en: 'Last step! Register now 🎉',
+    },
+    explain: {
+      ko: '취업허가가 승인되었는지 확인하고, 최종 결과를 등록해주세요.',
+      en: 'Submit your work permit status from HiKorea',
+    },
   },
 ];

@@ -16,24 +16,24 @@ const ApplicationDetailStepBarLayout = ({
   isLastStep = false,
 }: ApplicationDetailStepBarLayoutProps) => {
   return (
-    <div className={`flex gap-[1.125rem] ${isLastStep && 'pb-[2.75rem]'}`}>
+    <div className={`flex gap-[1.125rem] ${isLastStep && 'pb-4'}`}>
       {isLastStep ? (
         <>{stepIcon}</>
       ) : (
         <div className="flex flex-col items-center">
           {stepIcon}
           <div
-            className={`w-[0.125rem] h-[3.5rem] ${step > currentStep ? 'bg-[#1E1926]' : 'bg-[#F2F2F2]'}`}
+            className={`w-[0.125rem] h-[3.5rem] ${step > currentStep ? 'bg-primary-dark' : 'bg-surface-tertiary'}`}
           ></div>
         </div>
       )}
       <div>
         <h5
-          className={`${step >= currentStep ? 'head-3' : 'body-1'} text-[#464646]`}
+          className={`${step >= currentStep ? 'text-text-normal' : 'text-text-alternative'} head-3`}
         >
           {title}
         </h5>
-        <p className="caption text-[#656565]">{explain}</p>
+        <p className="body-3 text-text-alternative">{explain}</p>
       </div>
     </div>
   );

@@ -54,7 +54,7 @@ const ApplicationDetailPage = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex flex-col w-full min-h-screen">
       <BaseHeader
         hasBackButton={true}
         onClickBackButton={handleBackButtonClick}
@@ -82,11 +82,9 @@ const ApplicationDetailPage = () => {
             </JobPostingCard.Box>
           </JobPostingCard>
           <div className="w-full h-4 bg-surface-secondary"></div>
-          <div className="w-full flex flex-col gap-[2.25rem] p-[1.5rem]">
-            <ApplicationDetailSteps
-              step={findCurrentStep(applicationData?.data?.step)}
-            />
-          </div>
+          <ApplicationDetailSteps
+            step={findCurrentStep(applicationData?.data?.step)}
+          />
           {showCurrentStepButton(findCurrentStep(applicationData?.data?.step))}
         </>
       )}
