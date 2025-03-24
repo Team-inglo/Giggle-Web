@@ -501,7 +501,7 @@ export const postSearchTranslation = {
   apply: {
     ko: '적용하기',
     en: 'Apply',
-  }
+  },
 };
 
 export const infoTranslation = {
@@ -545,5 +545,16 @@ export const alarmTranslation = {
   emptyAlarm: {
     ko: '알람이 없습니다.',
     en: 'There is no notifications',
+  },
+};
+
+export const bannerTranslation = {
+  emptyTitle: {
+    ko: '아직 새로운 소식이 없어요 👀',
+    en: "Giggle doesn't have any news yet 👀",
+  },
+  emptyContent: {
+    ko: '지금은 보여드릴 배너가 없지만, 곧 유용한 정보로 찾아올게요!',
+    en: 'Giggle will be back with some useful information soon!',
   },
 };

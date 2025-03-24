@@ -1,9 +1,88 @@
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
-import HomeBannerImg from '@/assets/images/HomeBanner.png';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  useGetGuestBannerOverview,
+  useGetUserBannerOverview,
+} from '@/hooks/api/useBanner';
+import LoadingPostItem from '../Common/LoadingPostItem';
+import { BannerListType } from '@/types/api/banner';
+import { isEmployerByAccountType } from '@/utils/signup';
+import { bannerTranslation } from '@/constants/translation';
+import { useNavigate } from 'react-router-dom';
+
+const RenderBannerList = ({
+  data,
+  isLoading,
+  currentIndex,
+  language,
+}: {
+  data: BannerListType[];
+  isLoading: boolean;
+  currentIndex: number;
+  language: 'ko' | 'en';
+}) => {
+  const navigate = useNavigate();
+
+  const handleClickBannerDetail = (id: number) => {
+    navigate(`/banner/${id}`);
+  };
+
+  if (isLoading)
+    return (
+      <div className="w-full h-[10.5rem] rounded-lg flex justify-center items-center">
+        <LoadingPostItem />
+      </div>
+    );
+
+  if (!data?.length)
+    return (
+      <div className="w-full h-[10.5rem] rounded-lg flex flex-col justify-center items-center bg-primary-neutral text-center">
+        <p className="button-2 text-text-alternative">
+          {bannerTranslation.emptyTitle[language]}
+        </p>
+        <p className="caption text-text-alternative">
+          {bannerTranslation.emptyContent[language]}
+        </p>
+      </div>
+    );
+
+  return (
+    <>
+      {data.map((value: BannerListType) => (
+        <img
+          key={value.id}
+          src={value.img_url}
+          alt="banner image"
+          className="w-full h-[10.5rem] rounded-lg object-cover object-center"
+          onClick={() => handleClickBannerDetail(value.id)}
+        />
+      ))}
+      <div className="absolute right-3 bottom-3 py-1 px-2 caption text-text-invert bg-[#121212B2] rounded-3xl">
+        {currentIndex + 1}/{data.length}
+      </div>
+    </>
+  );
+};
 
 const HomeBanner = () => {
   const { account_type, name } = useUserStore();
+
+  const { data: guestData, isLoading: guestLoading } =
+    useGetGuestBannerOverview(!account_type);
+  const { data: userData, isLoading: userLoading } =
+    useGetUserBannerOverview(!!account_type);
+
+  const bannerData = account_type ? userData : guestData;
+  const isLoading = account_type ? userLoading : guestLoading;
+
+  const [emblaRef, embla] = useEmblaCarousel({ dragFree: true, loop: false }, [
+    Autoplay({ delay: 3000, stopOnInteraction: false }),
+  ]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const getGreetingMessage = (accountType?: UserType) => {
     switch (accountType) {
@@ -15,6 +94,18 @@ const HomeBanner = () => {
         return 'Welcome!';
     }
   };
+
+  // 페이지 변경 감지
+  const onSelect = useCallback(() => {
+    if (!embla) return;
+    setCurrentIndex(embla.selectedScrollSnap());
+  }, [embla]);
+
+  useEffect(() => {
+    if (!embla) return;
+    embla.on('select', onSelect);
+    onSelect();
+  }, [embla, onSelect]);
 
   return (
     <div className="px-4">
@@ -28,12 +119,12 @@ const HomeBanner = () => {
             : 'Find your perfect job'}
         </h2>
       </div>
-      {/* TODO: 캐러셀로 만들어서 가로 슬라이드 가능하도록! */}
-      <section className="mt-4">
-        <img
-          src={HomeBannerImg}
-          alt="banner image"
-          className="w-full h-[10.5rem] rounded-lg object-cover object-center"
+      <section className="mt-4 overflow-hidden relative" ref={emblaRef}>
+        <RenderBannerList
+          data={bannerData?.data?.banner_list}
+          isLoading={isLoading}
+          currentIndex={currentIndex}
+          language={isEmployerByAccountType(account_type)}
         />
       </section>
     </div>
