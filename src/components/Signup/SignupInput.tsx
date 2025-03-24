@@ -121,7 +121,12 @@ const SignupInput = ({
 
     // 전체 폼 유효성 상태 업데이트
     const isEmailValid = !!debouncedEmail && !emailError;
-    setIsValid(isEmailValid && isPasswordValid && isConfirmValid);
+    setIsValid(
+      isEmailValid &&
+        isPasswordValid &&
+        isConfirmValid &&
+        emailVerifyStatus === 'verified',
+    );
   }, [
     debouncedEmail,
     emailError,

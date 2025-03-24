@@ -26,7 +26,7 @@ export type TempSignUpResponse = {
 export type SignUpRequest = {
   temporary_token: string;
   user_info: UserInfo;
-  address: GiggleAddress;
+  address: GiggleAddress | null;
   marketing_allowed: boolean;
   notification_allowed: boolean;
   language: Language;

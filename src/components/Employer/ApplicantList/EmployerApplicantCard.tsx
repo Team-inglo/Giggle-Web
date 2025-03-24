@@ -19,7 +19,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           padding="px-1 py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#0066FF]/8"
+          backgroundColor="bg-[#0066FF]/10"
           color="text-text-success"
           fontStyle="caption"
         />
@@ -31,7 +31,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           padding="px-1 py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/8"
+          backgroundColor="bg-[#FF5252]/10"
           color="text-text-error"
           fontStyle="caption"
         />
@@ -43,7 +43,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           padding="px-1 py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/8"
+          backgroundColor="bg-[#FF5252]/10"
           color="text-text-error"
           fontStyle="caption"
         />
@@ -76,8 +76,10 @@ const EmployerApplicantCard = ({
     <article className="w-full p-4 rounded-lg bg-surface-base">
       <div className="pb-2">{renderStatusBar(applicantData?.step)}</div>
       <div className="w-full flex justify-between items-center pb-2">
-        <div>
-          <h3 className="head-3 text-text-strong">{applicantData?.name}</h3>
+        <div className="flex items-center">
+          <h3 className="head-3 text-text-strong">
+            {applicantData?.name.replace(/-/g, ' ')}
+          </h3>
           <p className="pl-2 button-2 text-text-alternative">
             {applicantData.nationality.replace(/_/g, ' ').toLowerCase()}
           </p>

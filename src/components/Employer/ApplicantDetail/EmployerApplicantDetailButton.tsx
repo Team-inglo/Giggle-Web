@@ -6,6 +6,8 @@ import EmployerApplicantContactBottomSheet from './EmployerApplicantContactBotto
 import { findCurrentStep } from '@/utils/application';
 import { ApplicationStepType } from '@/types/application/applicationItem';
 import { APPLICATION_STEP } from '@/constants/application';
+import SuccessIcon from '@/assets/icons/ApplicationDetail/SuccessIcon.svg?react';
+import RejectIcon from '@/assets/icons/ApplicationDetail/RejectIcon.svg?react';
 
 type EmployerApplicantDetailButtonPropsType = {
   applicant_id: number;
@@ -25,11 +27,13 @@ const EmployerApplicantDetailButton = ({
         return (
           <Button
             type={buttonTypeKeys.LARGE}
-            bgColor={'bg-[#FEF387]'}
-            fontColor="text-[#1E1926]"
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
             title="이력서 확인하기"
             isBorder={false}
-            onClick={() => navigate(`/employer/applicant/${applicant_id}/resume/accept`)}
+            onClick={() =>
+              navigate(`/employer/applicant/${applicant_id}/resume/accept`)
+            }
           />
         );
       case 2:
@@ -37,9 +41,9 @@ const EmployerApplicantDetailButton = ({
           <>
             <Button
               type={buttonTypeKeys.LARGE}
-              bgColor={'bg-[#FEF387]'}
-              fontColor="text-[#1E1926]"
-              title="다음"
+              bgColor={'bg-primary-normal'}
+              fontColor="text-surface-invert"
+              title="면접 일정 조율하기"
               isBorder={false}
               onClick={() => setIsShowBottomSheet(true)}
             />
@@ -53,59 +57,75 @@ const EmployerApplicantDetailButton = ({
         return (
           <Button
             type={buttonTypeKeys.APPLY}
-            bgColor={''}
-            fontColor="text-[#F4F4F9]"
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
             title="신청 서류 확인하기"
             isBorder={false}
-            onClick={() => navigate(`/employer/applicant/document-detail/${applicant_id}`)}
+            onClick={() =>
+              navigate(`/employer/applicant/document-detail/${applicant_id}`)
+            }
           />
         );
       case 4:
         return (
-          <button className="w-full p-[1rem] rounded-[2rem] bg-[#F4F4F9] text-[#BDBDBD] text-center button-1">
-            교내 유학생 담당자에게
-            <br /> 서류를 검토받고 있습니다.
-          </button>
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-surface-secondary'}
+            fontColor="text-text-disabled"
+            title="담당자에게 서류를 검토받고 있어요"
+            isBorder={false}
+          />
         );
       case 5:
         return (
-          <button className="w-full p-[1rem] rounded-[2rem] bg-[#F4F4F9] text-[#BDBDBD] text-center button-1">
-            하이코리아 시간제취업허가서
-            <br />
-            신청 중입니다.
-          </button>
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-surface-secondary'}
+            fontColor="text-text-disabled"
+            title="담당자에게 서류를 검토받고 있어요"
+            isBorder={false}
+          />
         );
       case 6:
         return (
-          <button className="w-full p-[1rem] rounded-[2rem] bg-[#F4F4F9] text-[#BDBDBD] text-center button-1">
-            신청 결과를 등록하고 있습니다.
-          </button>
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-surface-secondary'}
+            fontColor="text-text-disabled"
+            title="지원자 결과를 기다리고 있어요"
+            isBorder={false}
+          />
         );
       case 7:
         return (
           <>
             {step === APPLICATION_STEP.APPLICATION_SUCCESS ? (
-              <p className="w-full button-2 text-[#7872ED] text-center">
-                시간제취업허가 성공
-                <br />
-                지원자와 이후 일정을 이야기해보세요.
-              </p>
+              <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#0066FF]/10 rounded">
+                <SuccessIcon />
+                <p className="caption text-text-success">
+                  시간제취업허가 성공, 지원자와 이후 일정을 이야기해보세요.
+                </p>
+              </div>
             ) : (
-              <p className="w-full button-2 text-[#FF6F61] text-center">
-                시간제취업허가 실패
-                <br />
-                원인을 찾고 재신청 할 수 있습니다.
-              </p>
+              <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
+                <RejectIcon />
+                <p className="caption text-text-error">
+                  시간제취업허가 실패, 원인을 찾고 재신청 할 수 있습니다.
+                </p>
+              </div>
             )}
           </>
         );
       default:
         return (
-          <p className="w-full button-2 text-[#FF6F61] text-center">
-            {step === APPLICATION_STEP.PENDING
-              ? '2주 이상 대기 중입니다.'
-              : '이력서를 거절했습니다.'}
-          </p>
+          <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
+            <RejectIcon />
+            <p className="caption text-text-error">
+              {step === APPLICATION_STEP.PENDING
+                ? '2주 이상 대기 중입니다.'
+                : '이력서를 거절했습니다.'}
+            </p>
+          </div>
         );
     }
   };

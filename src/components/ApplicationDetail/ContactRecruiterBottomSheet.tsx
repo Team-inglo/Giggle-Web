@@ -1,29 +1,23 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
-import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
+import Button from '@/components/Common/Button';
+import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
+import { useGetRecruiterInfo } from '@/hooks/api/useApplication';
 import RecruiterIcon from '@/assets/icons/ApplicationDetail/RecruiterIcon.svg?react';
-import {
-  useGetEmployerApplicationSummary,
-  usePatchInterviewFinish,
-} from '@/hooks/api/useApplication';
 import { useParams } from 'react-router-dom';
 import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
 
-type EmployerApplicantContactBottomSheetType = {
+type ContactRecruiterBottomSheetProps = {
   isShowBottomsheet: boolean;
-  setIsShowBottomSheet: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowBottomSheet: (isShowBottomsheet: boolean) => void;
 };
 
-const EmployerApplicantContactBottomSheet = ({
+const ContactRecruiterBottomSheet = ({
   isShowBottomsheet,
   setIsShowBottomSheet,
-}: EmployerApplicantContactBottomSheetType) => {
+}: ContactRecruiterBottomSheetProps) => {
   const { id } = useParams();
-  const { data } = useGetEmployerApplicationSummary(
-    Number(id),
-    !isNaN(Number(id)),
-  );
-  const { mutate } = usePatchInterviewFinish();
+
+  const { data } = useGetRecruiterInfo(Number(id));
 
   const sendPhoneNumberToApp = (phoneNumber: number) => {
     const message = {
@@ -32,39 +26,31 @@ const EmployerApplicantContactBottomSheet = ({
     };
     sendReactNativeMessage(message);
   };
-  const onClickComplete = () => {
-    if (!isNaN(Number(id))) mutate(Number(id));
-  };
 
   return (
     <BottomSheetLayout
-      hasHandlebar={true}
+      hasHandlebar={false}
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <main className="p-3 w-full flex flex-col items-center text-center">
         <h3 className="pb-6 head-3 text-text-normal">
-          지원자에 먼저 연락할 수 있어요 💬📞
+          Need to reach the recruiter? 📞
         </h3>
         <p className="pb-4 body-2 text-text-normal">
-          지원자에게 연락 후 면접을 진행해보세요.
+          If you haven’t received a response,
           <br />
-          면접을 마쳤다면, 다음 단계로 넘어갈 수 있어요.
+          you can follow up directly.
         </p>
-        <button
-          className="w-full p-4 flex items-center gap-4 bg-surface-secondary rounded-lg text-start"
-          onClick={() =>
-            sendPhoneNumberToApp(data?.data?.applicant_phone_number)
-          }
-        >
+        <button className="w-full p-4 flex items-center gap-4 bg-surface-secondary rounded-lg text-start">
           <RecruiterIcon />
           <div>
             <p className="pb-1 button-1 text-text-strong">
-              {data?.data?.applicant_name}
+              {data?.data?.recruiter_name}
             </p>
             <p className="body-2 text-text-alternative">
-              {data?.data?.applicant_phone_number}
+              {data?.data?.recruiter_phone_number}
             </p>
           </div>
         </button>
@@ -74,15 +60,17 @@ const EmployerApplicantContactBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor={'bg-primary-normal'}
           fontColor="text-surface-invert"
-          title={'이미 면접을 완료했어요'}
+          title={'Contact'}
           isBorder={false}
-          onClick={onClickComplete}
+          onClick={() =>
+            sendPhoneNumberToApp(data?.data?.recruiter_phone_number)
+          }
         />
         <Button
           type={buttonTypeKeys.LARGE}
           bgColor={'bg-primary-neutral'}
           fontColor="text-surface-invert"
-          title={'나중에 할게요'}
+          title={'Maybe later'}
           isBorder={false}
           onClick={() => setIsShowBottomSheet(false)}
         />
@@ -91,4 +79,4 @@ const EmployerApplicantContactBottomSheet = ({
   );
 };
 
-export default EmployerApplicantContactBottomSheet;
+export default ContactRecruiterBottomSheet;

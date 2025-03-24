@@ -10,7 +10,7 @@ type DropdownProps = {
 // DropdownModal 컴포넌트: 드롭다운 옵션을 표시하는 모달
 const DropdownModal = ({ options, value, onSelect }: DropdownProps) => {
   return (
-    <div className="min-w-28 absolute top-[1.7rem] right-0 shadow rounded-lg bg-white flex flex-row items-start justify-start py-2 text-left caption text-text-alternative">
+    <div className="min-w-28 absolute top-[1.7rem] right-0 shadow rounded-lg bg-white flex flex-row items-start justify-start py-2 text-left caption text-text-alternative z-40">
       <div className="flex-1 flex flex-col items-center justify-start gap-1">
         {options.map((option, index) => (
           <div
