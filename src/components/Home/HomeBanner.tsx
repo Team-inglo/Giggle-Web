@@ -51,15 +51,17 @@ const RenderBannerList = ({
 
   return (
     <>
-      {data.map((value: BannerListType) => (
-        <img
-          key={value.id}
-          src={value.img_url}
-          alt="banner image"
-          className="w-full h-[10.5rem] rounded-lg object-cover object-center"
-          onClick={() => handleClickBannerDetail(value.id)}
-        />
-      ))}
+      <div className="w-full flex gap-2">
+        {data.map((value: BannerListType) => (
+          <img
+            key={value.id}
+            src={value.img_url}
+            alt="banner image"
+            className="w-full min-w-full h-[10.5rem] rounded-lg object-cover object-center"
+            onClick={() => handleClickBannerDetail(value.id)}
+          />
+        ))}
+      </div>
       <div className="absolute right-3 bottom-3 py-1 px-2 caption text-text-invert bg-[#121212B2] rounded-3xl">
         {currentIndex + 1}/{data.length}
       </div>
@@ -108,7 +110,7 @@ const HomeBanner = () => {
   }, [embla, onSelect]);
 
   return (
-    <div className="px-4">
+    <div className="w-full px-4">
       <div className="pt-8">
         <p className="pb-1 body-2 text-[#9397A1]">
           {getGreetingMessage(account_type)}
@@ -119,7 +121,7 @@ const HomeBanner = () => {
             : 'Find your perfect job'}
         </h2>
       </div>
-      <section className="mt-4 overflow-hidden relative" ref={emblaRef}>
+      <section className="w-full mt-4 overflow-hidden relative" ref={emblaRef}>
         <RenderBannerList
           data={bannerData?.data?.banner_list}
           isLoading={isLoading}
