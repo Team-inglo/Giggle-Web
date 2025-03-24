@@ -1,6 +1,8 @@
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
+import { useDeletePost } from '@/hooks/api/usePost';
+import { useParams } from 'react-router-dom';
 
 type EmployerPostDeleteBottomSheetType = {
   isShowBottomsheet: boolean;
@@ -11,9 +13,13 @@ const EmployerPostDeleteBottomSheet = ({
   isShowBottomsheet,
   setIsShowBottomSheet,
 }: EmployerPostDeleteBottomSheetType) => {
+  const { mutate } = useDeletePost();
+  const { id } = useParams();
+
   const onClickDelete = () => {
-    // TODO: 4.13 호출
     // 고용주 공고 - 작성한 공고 조회 페이지로 이동하기
+    if (isNaN(Number(id))) return;
+    mutate(Number(id));
   };
 
   return (

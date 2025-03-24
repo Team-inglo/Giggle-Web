@@ -17,7 +17,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           padding="px-1 py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#0066FF]/8"
+          backgroundColor="bg-[#0066FF]/10"
           color="text-text-success"
           fontStyle="caption"
         />
@@ -29,7 +29,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           padding="px-1 py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/8"
+          backgroundColor="bg-[#FF5252]/10"
           color="text-text-error"
           fontStyle="caption"
         />
@@ -41,7 +41,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           padding="px-1 py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/8"
+          backgroundColor="bg-[#FF5252]/10"
           color="text-text-error"
           fontStyle="caption"
         />

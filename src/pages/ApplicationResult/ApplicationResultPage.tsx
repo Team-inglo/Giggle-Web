@@ -6,6 +6,7 @@ import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { usePatchHiKoreaResult } from '@/hooks/api/useApplication';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import PageTitle from '@/components/Common/PageTitle';
 
 const ApplicationResultPage = () => {
   const navigate = useNavigate();
@@ -29,45 +30,52 @@ const ApplicationResultPage = () => {
     <>
       <BaseHeader
         hasBackButton={true}
+        title="Register the result"
         onClickBackButton={() => navigate(`/application/${id}`)}
         hasMenuButton={false}
       />
-      <h1 className="w-full p-[1.5rem] head-1 text-[#1E1926]">
-        Register the result
-      </h1>
-      <section className="flex flex-col gap-[0.75rem] w-full px-[1.5rem]">
-        <h3 className="px-[0.25rem] py-[0.375rem] body-3 text-[#1E1926]">
-          HiKorea e-Government
-        </h3>
-        <div className="px-[0.25rem] py-[0.375rem] flex flex-col gap-[1rem]">
-          <RadioButton
-            value={'Approval'}
-            setValue={() => setIsApproval(true)}
-            isOn={isApproval === true}
+      <PageTitle
+        title={`How did it go? \nLet’s wrap this up! 📋`}
+        content={`Select your HiKorea application result \nand share your experience`}
+      />
+      <main className="flex flex-col gap-4 w-full px-4">
+        <section>
+          <h3 className="px-1 py-[0.375rem] button-2 text-primary-dark">
+            HiKorea e-Government
+            <span className="pl-1 body-1 text-text-error">*</span>
+          </h3>
+          <div className="px-1 py-[0.375rem] flex flex-col gap-4">
+            <RadioButton
+              value={'Approved! 🎉'}
+              setValue={() => setIsApproval(true)}
+              isOn={isApproval === true}
+            />
+            <RadioButton
+              value={'Not approved 😞'}
+              setValue={() => setIsApproval(false)}
+              isOn={isApproval === false}
+            />
+          </div>
+        </section>
+        <section className="w-full">
+          <h3 className="px-1 py-[0.375rem] button-2 text-primary-dark">
+            Share your experience
+          </h3>
+          <textarea
+            className="min-h-24 w-full px-4 py-3 border border-border-alternative rounded body-2 focus:outline-none resize-none"
+            placeholder="Was the process smooth? Any challenges? 💬"
+            maxLength={200}
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
           />
-          <RadioButton
-            value={'Rejection'}
-            setValue={() => setIsApproval(false)}
-            isOn={isApproval === false}
-          />
-        </div>
-        <h3 className="px-[0.25rem] py-[0.375rem] body-3 text-[#1E1926]">
-          Contract Feedback
-        </h3>
-        <textarea
-          className="px-[1rem] py-[0.75rem] border border-[#E2E5EB] rounded-[0.75rem] body-2 focus:outline-none"
-          placeholder="Write a contract review"
-          maxLength={200}
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-        />
-      </section>
+        </section>
+      </main>
       <BottomButtonPanel>
         <Button
           type={buttonTypeKeys.LARGE}
-          bgColor={'bg-[#FEF387]'}
-          fontColor="text-[#1E1926]"
-          title="Registration"
+          bgColor={'bg-primary-normal'}
+          fontColor="text-surface-invert"
+          title="Submit result"
           isBorder={false}
           onClick={onClickRegistration}
         />

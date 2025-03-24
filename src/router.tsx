@@ -56,6 +56,7 @@ import AboutPage from '@/pages/Profile/AboutPage';
 import ChangePasswordPage from '@/pages/Profile/ChangePasswordPage';
 import EditResumePage from '@/pages/ManageResumePage/EditResumePage';
 import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
+import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
 
 const Layout = () => {
@@ -153,6 +154,10 @@ const Router = () => {
 
           <Route path="/application" element={<ApplicationPage />} />
           <Route path="/application/:id" element={<ApplicationDetailPage />} />
+          <Route
+            path="/application/:id/school"
+            element={<ApplicationDetailSchoolPage />}
+          />
           <Route
             path="/application/result/:id"
             element={<ApplicationResultPage />}

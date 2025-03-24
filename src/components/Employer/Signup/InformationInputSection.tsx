@@ -25,6 +25,9 @@ type InformationInputSectionProps = {
   newEmployData: EmployerRegistrationRequestBody;
   setNewEmployData: (newData: EmployerRegistrationRequestBody) => void;
   setLogoFile: (file: File | undefined) => void;
+  registrationNumberValidStatus: string | null;
+  setRegistrationNumberValidStatus: (status: string | null) => void;
+  validateRegistrationNumber: (registrationNumber: string) => void;
 };
 
 const enum LogoType {
@@ -37,6 +40,9 @@ const InformationInputSection = ({
   newEmployData,
   setNewEmployData,
   setLogoFile,
+  registrationNumberValidStatus,
+  setRegistrationNumberValidStatus,
+  validateRegistrationNumber,
 }: InformationInputSectionProps) => {
   const { pathname } = useLocation();
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
@@ -129,6 +135,17 @@ const InformationInputSection = ({
         console.error('Error converting image to File:', error);
       }
     }
+  };
+
+  const handleRegistrationNumberChange = (value: string) => {
+    setRegistrationNumberValidStatus(null);
+    setNewEmployData({
+      ...newEmployData,
+      owner_info: {
+        ...newEmployData.owner_info,
+        company_registration_number: formatCompanyRegistrationNumber(value),
+      },
+    });
   };
   return (
     <>
@@ -227,7 +244,7 @@ const InformationInputSection = ({
                 </div>
               </InputLayout>
               {/* 주소 입력 */}
-              <div className="w-full flex flex-col gap-[1.125rem]">
+              <div className="w-full h-full flex flex-col gap-[1.125rem]">
                 {/* 주소 검색 입력 input */}
                 <InputLayout title="회사/점포주소" isEssential>
                   <div onClick={() => setIsAddressSearch(true)}>
@@ -278,26 +295,53 @@ const InformationInputSection = ({
               </div>
               {/* 사업자 등록번호 입력 */}
               <InputLayout title="사업자 등록번호" isEssential>
-                <Input
-                  inputType={InputType.TEXT}
-                  placeholder="X X X / X X / X X X X X"
-                  value={newEmployData.owner_info.company_registration_number}
-                  onChange={(value) =>
-                    setNewEmployData({
-                      ...newEmployData,
-                      owner_info: {
-                        ...newEmployData.owner_info,
-                        company_registration_number:
-                          formatCompanyRegistrationNumber(value),
-                      },
-                    })
-                  }
-                  canDelete={false}
-                />
+                <div className="flex gap-2">
+                  <div className="relative w-full">
+                    <Input
+                      inputType={InputType.TEXT}
+                      placeholder="X X X / X X / X X X X X"
+                      value={
+                        newEmployData.owner_info.company_registration_number
+                      }
+                      onChange={(value) =>
+                        handleRegistrationNumberChange(value)
+                      }
+                      canDelete={false}
+                    />
+                  </div>
+                  <button
+                    className={`flex items-center justify-center min-w-[4rem] button-2 px-5 rounded-lg ${
+                      registrationNumberValidStatus === 'verified'
+                        ? 'bg-surface-secondary text-text-disabled'
+                        : 'bg-surface-primary text-text-normal'
+                    }`}
+                    onClick={
+                      registrationNumberValidStatus === 'verified'
+                        ? undefined
+                        : () =>
+                            validateRegistrationNumber(
+                              newEmployData.owner_info
+                                .company_registration_number,
+                            )
+                    }
+                  >
+                    인증
+                  </button>
+                </div>
+                {registrationNumberValidStatus === 'verified' && (
+                  <p className="text-blue-600 text-xs p-2">
+                    사업자 인증이 완료되었습니다.
+                  </p>
+                )}
+                {registrationNumberValidStatus === 'error' && (
+                  <p className="text-[#FF6F61] text-xs p-2">
+                    존재하지 않는 사업자 등록번호입니다.
+                  </p>
+                )}
               </InputLayout>
 
               {/* 회사 로고 입력 */}
-              <InputLayout title="회사 로고" isEssential={false}>
+              <InputLayout title="회사 로고" isEssential>
                 <div className="w-full flex flex-col items-center justify-start">
                   <div className="w-full flex items-center justify-start">
                     <label

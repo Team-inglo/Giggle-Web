@@ -121,13 +121,19 @@ const SignupInput = ({
 
     // 전체 폼 유효성 상태 업데이트
     const isEmailValid = !!debouncedEmail && !emailError;
-    setIsValid(isEmailValid && isPasswordValid && isConfirmValid);
+    setIsValid(
+      isEmailValid &&
+        isPasswordValid &&
+        isConfirmValid &&
+        emailVerifyStatus === 'verified',
+    );
   }, [
     debouncedEmail,
     emailError,
     debouncedPassword,
     confirmPasswordValue,
     pathname,
+    emailVerifyStatus
   ]);
 
   // 부모 컴포넌트로 값 전달

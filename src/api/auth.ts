@@ -13,9 +13,9 @@ import {
   UserTypeResponse,
   ValidationResponse,
 } from '@/types/api/auth';
-import { api } from '@/api/index.ts';
+import { api, externalAPI } from '@/api/index.ts';
 import { apiWithoutAuth } from '@/api/index.ts';
-import { RESTYPE } from '@/types/api/common';
+import { ExternalRESTYPE, RESTYPE } from '@/types/api/common';
 import axios from 'axios';
 import { TermType } from '@/types/api/users';
 
@@ -182,5 +182,17 @@ export const getPolicy = async (
   termType: TermType,
 ): Promise<RESTYPE<PolicyResponse>> => {
   const response = await apiWithoutAuth.get(`/terms/${termType}/details`);
+  return response.data;
+};
+
+export const postRegistrationNumberValidation = async (
+  registrationNumber: string,
+): Promise<ExternalRESTYPE> => {
+  const response = await externalAPI.post(
+    `/status?serviceKey=${import.meta.env.VITE_APP_EXTERNAL_API_KEY}`,
+    {
+      b_no: [registrationNumber], // registrationNumber를 배열 형태로 b_no 속성에 담아 전송
+    },
+  );
   return response.data;
 };
