@@ -23,9 +23,13 @@ const BottomSheetLayout = ({
 }: BottomSheetLayoutProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { isOpen, setIsOpen, onDragEnd, controls, viewHeight } =
-    useBottomSheet(setIsShowBottomSheet);
   const [contentHeight, setContentHeight] = useState<number>(0);
+  const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
+
+  const { isOpen, setIsOpen, onDragEnd, controls } = useBottomSheet(
+    viewHeight,
+    setIsShowBottomSheet,
+  );
 
   useEffect(() => {
     setIsOpen(isShowBottomsheet);
@@ -37,7 +41,8 @@ const BottomSheetLayout = ({
       const height = contentRef.current.offsetHeight;
       setContentHeight(height);
     }
-  }, [children]);
+    setViewHeight(window?.innerHeight || document.documentElement.clientHeight);
+  }, [children, viewHeight, contentHeight]);
 
   useEffect(() => {
     if (isOpen && isFixedBackground) document.body.style.overflow = 'hidden';

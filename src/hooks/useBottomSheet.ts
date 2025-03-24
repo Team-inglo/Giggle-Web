@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import usePreviousValue from '@/hooks/usePreviousValue';
 
 const useBottomSheet = (
+  viewHeight: number,
   setIsShowBottomSheet?: (isShowBottomsheet: boolean) => void,
 ) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
 
   const controls = useAnimation();
   const prevIsOpen = usePreviousValue(isOpen);
@@ -25,18 +25,14 @@ const useBottomSheet = (
   };
 
   useEffect(() => {
-    setViewHeight(window?.innerHeight || document.documentElement.clientHeight);
-  }, []);
-
-  useEffect(() => {
-    if (prevIsOpen && !isOpen) {
+    if (viewHeight && prevIsOpen && !isOpen) {
       controls.start('hidden');
     } else if (!prevIsOpen && isOpen) {
       controls.start('visible');
     }
-  }, [controls, isOpen, prevIsOpen]);
+  }, [controls, isOpen, prevIsOpen, viewHeight]);
 
-  return { onDragEnd, controls, isOpen, setIsOpen, viewHeight };
+  return { onDragEnd, controls, isOpen, setIsOpen };
 };
 
 export default useBottomSheet;
