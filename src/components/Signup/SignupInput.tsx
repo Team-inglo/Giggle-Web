@@ -133,6 +133,7 @@ const SignupInput = ({
     debouncedPassword,
     confirmPasswordValue,
     pathname,
+    emailVerifyStatus
   ]);
 
   // 부모 컴포넌트로 값 전달

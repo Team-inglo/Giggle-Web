@@ -8,7 +8,11 @@ import InformationInputSection from '@/components/Employer/Signup/InformationInp
 import PolicyViewer from '@/components/Information/PolicyViewer';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
 import { signInputTranclation } from '@/constants/translation';
-import { useGetPolicy, useSignupEmployer } from '@/hooks/api/useAuth';
+import {
+  useGetPolicy,
+  usePostRegistrationNumberValidation,
+  useSignupEmployer,
+} from '@/hooks/api/useAuth';
 import {
   EmployerRegistrationRequestBody,
   initialEmployerRegistration,
@@ -29,6 +33,8 @@ const EmployerSignupInfoPage = () => {
   const [isPolicyPreview, setIsPolicyPreview] = useState(false);
   const [policy, setPolicy] = useState('');
   const [isValid, setIsValid] = useState(false);
+  const [registrationNumberValidStatus, setRegistrationNumberValidStatus] =
+    useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { mutate: getPolicy } = useGetPolicy({
     onSuccess: (data) => {
@@ -43,11 +49,34 @@ const EmployerSignupInfoPage = () => {
     },
   });
   const { mutate } = useSignupEmployer(() => setDevIsModal(true));
+  const { mutate: validateRegistrationNumber } =
+    usePostRegistrationNumberValidation({
+      onSuccess: (data) => {
+        if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
+          // tax_type이 존재하고 에러 메시지가 아닌지 확인
+          if (
+            data.data[0].tax_type &&
+            data.data[0].tax_type !==
+              '국세청에 등록되지 않은 사업자등록번호입니다.'
+          ) {
+            setRegistrationNumberValidStatus('verified');
+          }
+          // 에러 메시지인 경우
+          else {
+            setRegistrationNumberValidStatus('error');
+          }
+        }
+      },
+    });
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsValid(isValidEmployerRegistration(newEmployData));
-  }, [newEmployData]);
+    setIsValid(
+      isValidEmployerRegistration(newEmployData) &&
+        registrationNumberValidStatus === 'verified' &&
+        logoFile !== undefined,
+    );
+  }, [newEmployData, registrationNumberValidStatus, logoFile]);
 
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
   const handleSubmit = () => {
@@ -111,6 +140,13 @@ const EmployerSignupInfoPage = () => {
             newEmployData={newEmployData}
             setNewEmployData={setNewEmployData}
             setLogoFile={(file: File | undefined) => setLogoFile(file)}
+            registrationNumberValidStatus={registrationNumberValidStatus}
+            setRegistrationNumberValidStatus={(status: string | null) =>
+              setRegistrationNumberValidStatus(status)
+            }
+            validateRegistrationNumber={(value: string) =>
+              validateRegistrationNumber(value.replace(/\D/g, '').slice(0, 10))
+            }
           />
           <BottomButtonPanel>
             {isValid ? (
