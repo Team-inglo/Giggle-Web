@@ -1,5 +1,5 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import { POST_SEARCH_MENU, POST_SORTING } from '@/constants/postSearch';
 import { useInfiniteGetPostList } from '@/hooks/api/usePost';

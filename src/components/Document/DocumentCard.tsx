@@ -76,7 +76,6 @@ type DocumentCardDispenserProps = {
   documentInfo: DocumentInfo;
   title: string;
   type: string;
-  setIsLoading: (value: boolean) => void;
   setSuccessModalContent: (content: SuccessModalContent) => void;
 };
 
@@ -84,15 +83,10 @@ const DocumentCardDispenser = ({
   documentInfo,
   title,
   type,
-  setIsLoading,
   setSuccessModalContent,
 }: DocumentCardDispenserProps) => {
   const { mutate: submitDocument } = usePatchStatusSubmission({
-    onMutate: () => {
-      setIsLoading(true);
-    },
     onSuccess: () => {
-      setIsLoading(false);
       setSuccessModalContent({
         title: 'Registration has been\nsuccessfully completed',
         content: `The employer will check the documents\nsoon and fill them out together.\nWe will send you a notification when I'm\ndone writing it!`,
@@ -100,14 +94,7 @@ const DocumentCardDispenser = ({
       });
     },
   });
-  const { mutate: confirmDocument } = usePatchDocumentsStatusConfirmation({
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSuccess: () => {
-      setIsLoading(false);
-    },
-  });
+  const { mutate: confirmDocument } = usePatchDocumentsStatusConfirmation();
   const navigate = useNavigate();
   const { updateCurrentDocumentId } = useCurrentDocumentIdStore();
   const handleDownload = (url: string) => {

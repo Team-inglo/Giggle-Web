@@ -1,6 +1,6 @@
 import AlarmCard from '@/components/Alarm/AlarmCard';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import { alarmTranslation } from '@/constants/translation';
 import { useInfiniteGetAlarms, usePatchReadAlarm } from '@/hooks/api/useAlarm';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';

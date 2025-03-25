@@ -75,7 +75,6 @@ type DocumentCardDispenserProps = {
   title: string;
   type: string;
   reason: string | null;
-  setIsLoading: (value: boolean) => void;
   setModalContent: (content: SuccessModalContent) => void;
 };
 
@@ -84,7 +83,6 @@ const DocumentCardDispenserEmployer = ({
   title,
   type,
   reason,
-  setIsLoading,
   setModalContent,
 }: DocumentCardDispenserProps) => {
   const navigate = useNavigate();
@@ -112,11 +110,7 @@ const DocumentCardDispenserEmployer = ({
   };
   const { updateCurrentDocumentId } = useCurrentDocumentIdStore();
   const { mutate: submitDocument } = usePatchStatusSubmissionEmployer({
-    onMutate: () => {
-      setIsLoading(true);
-    },
     onSuccess: () => {
-      setIsLoading(false);
       setModalContent({
         // TODO: 디자인 변경 되면 문구 수정 적용
         title: 'Registration has been\nsuccessfully completed',

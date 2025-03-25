@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { useGetDocumentsEmployer } from '@/hooks/api/useDocument';
 import { useCurrentApplicantIdStore } from '@/store/url';
 import { useState } from 'react';
-import LoadingItem from '@/components/Common/LoadingItem';
 import CompleteModal from '@/components/Common/CompleteModal';
 import PageTitle from '@/components/Common/PageTitle';
 import InfoCardLayout from '@/components/Common/InfoCardLayout';
@@ -14,7 +13,6 @@ import YellowDocumentIcon from '@/assets/icons/YellowDocumentIcon.svg?react';
 import { SuccessModalContent } from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
 
 const ApplicantDocumentsDetailPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const { currentApplicantId } = useCurrentApplicantIdStore();
   const { data } = useGetDocumentsEmployer(Number(currentApplicantId));
   const documentTypes = Object.values(EmployDocumentType);
@@ -27,15 +25,6 @@ const ApplicantDocumentsDetailPage = () => {
 
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       {successModalContent.title && (
         <CompleteModal
           title={successModalContent.title}
@@ -66,7 +55,6 @@ const ApplicantDocumentsDetailPage = () => {
                   title={EmployerDocumentTypeInfo[property].name}
                   type={property}
                   reason={data?.data[property]?.reason}
-                  setIsLoading={setIsLoading}
                   setModalContent={(content: SuccessModalContent) =>
                     setSuccessModalContent(content)
                   }
