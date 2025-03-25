@@ -7,7 +7,7 @@ import {
   useGetGuestBannerOverview,
   useGetUserBannerOverview,
 } from '@/hooks/api/useBanner';
-import LoadingPostItem from '../Common/LoadingPostItem';
+import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import { BannerListType } from '@/types/api/banner';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { bannerTranslation } from '@/constants/translation';
@@ -71,14 +71,16 @@ const RenderBannerList = ({
 
 const HomeBanner = () => {
   const { account_type, name } = useUserStore();
+  const isGuest = account_type === undefined;
+  const isUser = account_type !== undefined;
 
   const { data: guestData, isLoading: guestLoading } =
-    useGetGuestBannerOverview(!account_type);
+    useGetGuestBannerOverview(isGuest);
   const { data: userData, isLoading: userLoading } =
-    useGetUserBannerOverview(!!account_type);
+    useGetUserBannerOverview(isUser);
 
-  const bannerData = account_type ? userData : guestData;
-  const isLoading = account_type ? userLoading : guestLoading;
+  const bannerData = isUser ? userData : guestData;
+  const isLoading = isUser ? userLoading : guestLoading;
 
   const [emblaRef, embla] = useEmblaCarousel({ dragFree: true, loop: false }, [
     Autoplay({ delay: 3000, stopOnInteraction: false }),
