@@ -2,8 +2,6 @@ import { DocumentsSummaryResponse, DocumentType } from '@/types/api/document';
 import DocumentCardDispenser from '@/components/Document/DocumentCard';
 import MakeDocumentButton from '@/components/Document/MakeDocumentButton';
 import { DocumentTypeInfo } from '@/constants/documents';
-import { useState } from 'react';
-import LoadingItem from '../Common/LoadingItem';
 import { SuccessModalContent } from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
 
 type DocumentCardListProps = {
@@ -16,19 +14,9 @@ const DocumentCardList = ({
   setModalContent,
 }: DocumentCardListProps) => {
   const documentTypes = Object.values(DocumentType);
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       <div className="flex flex-col w-full p-4 gap-3 pb-[8rem]">
         {documentTypes.map((property, index) =>
           documents[property] ? (
@@ -37,7 +25,6 @@ const DocumentCardList = ({
               documentInfo={documents[property]}
               title={DocumentTypeInfo[property].name}
               type={property}
-              setIsLoading={(value: boolean) => setIsLoading(value)}
               setSuccessModalContent={(content: SuccessModalContent) =>
                 setModalContent(content)
               }

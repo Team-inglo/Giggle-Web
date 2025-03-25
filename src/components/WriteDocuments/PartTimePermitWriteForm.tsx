@@ -19,7 +19,6 @@ import {
   usePutPartTimeEmployPermit,
 } from '@/hooks/api/useDocument';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
-import LoadingItem from '@/components/Common/LoadingItem';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 
 type PartTimePermitFormProps = {
@@ -31,32 +30,13 @@ const PartTimePermitWriteForm = ({
   document,
   isEdit,
 }: PartTimePermitFormProps) => {
-  const [isLoading, setIsLoading] = useState(false);
   const { currentPostId } = useCurrentPostIdEmployeeStore();
   const [newDocumentData, setNewDocumentData] =
     useState<PartTimePermitFormRequest>(initialPartTimePermitForm);
-  const { mutate: postDocument } = usePostPartTimeEmployPermit(
-    Number(currentPostId),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  ); // 작성된 문서 제출 훅
-  const { mutate: updateDocument } = usePutPartTimeEmployPermit(
-    Number(currentPostId),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  ); // 수정된 문서 제출 훅
+  const { mutate: postDocument, isPending: postPending } =
+    usePostPartTimeEmployPermit(Number(currentPostId)); // 작성된 문서 제출 훅
+  const { mutate: updateDocument, isPending: updatePending } =
+    usePutPartTimeEmployPermit(Number(currentPostId)); // 수정된 문서 제출 훅
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
@@ -101,17 +81,8 @@ const PartTimePermitWriteForm = ({
   };
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       <div
-        className={`w-full p-4 flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full p-4 flex flex-col ${postPending || updatePending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
           {/* 이름 입력 */}

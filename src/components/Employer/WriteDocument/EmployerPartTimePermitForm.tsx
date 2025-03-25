@@ -31,7 +31,6 @@ import {
   parsePhoneNumber,
 } from '@/utils/information';
 import { phone } from '@/constants/information';
-import LoadingItem from '@/components/Common/LoadingItem';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 
@@ -61,19 +60,10 @@ const EmployerPartTimePermitForm = ({
       ? parsePhoneNumber(newDocumentData.phone_number).end
       : '',
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
   // 입력 완료 시 제출
-  const { mutate: putDocument } = usePutPartTimeEmployPermitEmployer(
+  const { mutate: putDocument, isPending } = usePutPartTimeEmployPermitEmployer(
     Number(id),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
   );
 
   useEffect(() => {
@@ -132,17 +122,8 @@ const EmployerPartTimePermitForm = ({
 
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       <div
-        className={`w-full flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
           <div className="w-full h-screen fixed inset-0 bg-white">

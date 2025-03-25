@@ -1,6 +1,5 @@
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import LoadingItem from '@/components/Common/LoadingItem';
 import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
 import AddressStep from '@/components/Information/AddressStep';
 import InformationStep from '@/components/Information/InformationStep';
@@ -32,18 +31,11 @@ const InformationPage = () => {
   const [policy, setPolicy] = useState('');
   const [devIsModal, setDevIsModal] = useState(false);
   const marketingAllowed = false;
-  const [isLoading, setIsLoading] = useState(false);
   const { mutate } = useSignUp(() => setDevIsModal(true));
   const { mutate: getPolicy } = useGetPolicy({
     onSuccess: (data) => {
       setPolicy(data.data.content);
       setIsPolicyPreview(true);
-    },
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSettled: () => {
-      setIsLoading(false);
     },
   });
   const navigate = useNavigate();
@@ -60,7 +52,7 @@ const InformationPage = () => {
       TermType.LOCATION_BASED_TERMS,
       TermType.PRIVACY_POLICY,
     ];
-    
+
     mutate({
       ...userInfo,
       address: userInfo.address.address_name ? userInfo.address : null,
@@ -144,15 +136,6 @@ const InformationPage = () => {
           content={policy}
           onBack={() => setIsPolicyPreview(false)}
         />
-      )}
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
       )}
     </div>
   );

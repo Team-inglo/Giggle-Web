@@ -1,4 +1,4 @@
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
 import Tag from '@/components/Common/Tag';
 import EmployerApplicationCard from '@/components/Employer/ApplicantList/EmployerApplicantCard';

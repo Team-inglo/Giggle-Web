@@ -2,7 +2,7 @@ import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { useUserStore } from '@/store/user';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import { postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
