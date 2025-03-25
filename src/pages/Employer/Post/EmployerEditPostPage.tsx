@@ -29,7 +29,11 @@ const EmployerEditPostPage = () => {
   );
 
   const { data, isPending } = useGetPostDetail(Number(id), true);
-  const { mutate: editPost } = useEditPost(Number(currentPostId)); //  공고 수정 시 호출하는 훅
+  const { mutate: editPost } = useEditPost({
+    onSuccess: () => {
+      setDevIsModal(true);
+    },
+  }); //  공고 수정 시 호출하는 훅
   const [devIsModal, setDevIsModal] = useState(false);
   const [isDataMapped, setIsDataMapped] = useState(false);
   const navigate = useNavigate();
@@ -128,7 +132,7 @@ const EmployerEditPostPage = () => {
       {devIsModal ? (
         <CompleteModal
           title="공고 수정을 완료했어요!"
-          onNext={() => {}} // 생성한 공고에 대한 공고 상세 페이지로 이동 요망
+          onNext={() => navigate('/employer/post')}
         />
       ) : (
         <>

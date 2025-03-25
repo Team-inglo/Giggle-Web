@@ -26,9 +26,14 @@ const EmployerCreatePostPage = () => {
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
     initialJobPostingState,
   );
-
-  const { mutate } = useCreatePost(updateCurrentPostId); // 공고 생성 시 호출하느 ㄴ훅
   const [devIsModal, setDevIsModal] = useState(false);
+
+  const { mutate } = useCreatePost({
+    onSuccess: (response) => {
+      updateCurrentPostId(Number(response.data.id));
+      setDevIsModal(true);
+    },
+  }); // 공고 생성 시 호출하는 훅
 
   const navigate = useNavigate(); // navigate 변수를 정의합니다.
 
