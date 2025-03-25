@@ -218,6 +218,7 @@ export const usePutPostBookmark = () => {
         queryKey: ['post'],
       });
     },
+    meta: { skipGlobalLoading: true },
   });
 };
 

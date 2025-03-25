@@ -9,7 +9,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
-//import { useUserFcmTokenStore } from './store/user';
 
 function App() {
   const [isOpenErrorBottomSheet, setIsOpenErrorBottomSheet] = useState(false);
@@ -31,24 +30,17 @@ function App() {
         }),
         mutationCache: new MutationCache({
           onError: (error) => openErrorBottomSheet(error),
-          onMutate: () => setIsLoading(true),
-          onSettled: () => setIsLoading(false),
+          onMutate: (_, query) => {
+            if (query.meta?.skipGlobalLoading) return;
+            setIsLoading(true);
+          },
+          onSettled: (_, __, ___, ____, query) => {
+            if (query.meta?.skipGlobalLoading) return;
+            setIsLoading(false);
+          },
         }),
       }),
   );
-  {
-    /*   useEffect(() => {
-    const handleToken = (event: MessageEvent) => {
-      const parsedData = JSON.parse(event.data);
-      if (parsedData?.type === 'RECEIVE_TOKEN') {
-        updateToken(parsedData.payload);
-      }
-    };
-
-    window.addEventListener('message', handleToken);
-    return () => window.removeEventListener('message', handleToken);
-  }, [])  const { updateToken } = useUserFcmTokenStore();;*/
-  }
 
   return (
     <QueryClientProvider client={queryClient}>
