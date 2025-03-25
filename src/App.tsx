@@ -8,10 +8,12 @@ import {
 import axios from 'axios';
 import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
+import LoadingItem from '@/components/Common/LoadingItem';
 //import { useUserFcmTokenStore } from './store/user';
 
 function App() {
   const [isOpenErrorBottomSheet, setIsOpenErrorBottomSheet] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openErrorBottomSheet = (error: unknown) => {
     if (!axios.isAxiosError(error)) return;
@@ -29,6 +31,8 @@ function App() {
         }),
         mutationCache: new MutationCache({
           onError: (error) => openErrorBottomSheet(error),
+          onMutate: () => setIsLoading(true),
+          onSettled: () => setIsLoading(false),
         }),
       }),
   );
@@ -55,6 +59,7 @@ function App() {
           setIsShowBottomSheet={setIsOpenErrorBottomSheet}
         />
       )}
+      {isLoading && <LoadingItem />}
     </QueryClientProvider>
   );
 }
