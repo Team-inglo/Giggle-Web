@@ -7,7 +7,6 @@ import Step3 from '@/components/Employer/PostCreate/Step3';
 import Step4 from '@/components/Employer/PostCreate/Step4';
 import Step5 from '@/components/Employer/PostCreate/Step5';
 import { useEditPost, useGetPostDetail } from '@/hooks/api/usePost';
-import { useCurrentPostIdStore } from '@/store/url';
 import { WorkDayTime } from '@/types/api/document';
 import {
   initialJobPostingState,
@@ -20,8 +19,6 @@ const EmployerEditPostPage = () => {
   const location = useLocation();
   const { isEdit } = location.state || {};
   const { id } = useParams();
-  const { currentPostId } = useCurrentPostIdStore();
-  console.log(currentPostId);
   const [currentStep, setCurrentStep] = useState(1);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
@@ -131,7 +128,7 @@ const EmployerEditPostPage = () => {
       {devIsModal ? (
         <CompleteModal
           title="공고 수정을 완료했어요!"
-          onNext={() => navigate('/employer/post')}
+          onNext={() => navigate(`/employer/post/${id}`)}
         />
       ) : (
         <>

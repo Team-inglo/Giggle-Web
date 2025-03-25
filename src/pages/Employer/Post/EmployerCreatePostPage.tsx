@@ -32,6 +32,9 @@ const EmployerCreatePostPage = () => {
     onSuccess: (response) => {
       updateCurrentPostId(Number(response.data.id));
       setDevIsModal(true);
+      setTimeout(() => {
+        navigate(`/employer/post/${response.data.id}`);
+      }, 2000);
     },
   }); // 공고 생성 시 호출하는 훅
 
@@ -67,7 +70,6 @@ const EmployerCreatePostPage = () => {
       {devIsModal ? (
         <CompleteModal
           title={`${isEdit ? '공고 수정' : '공고 등록'}을 완료했어요!.`}
-          onNext={() => navigate('/employer/post')}
         />
       ) : (
         <>
