@@ -8,6 +8,15 @@ const useBottomSheet = (
   const [isOpen, setIsOpen] = useState(false);
   const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
 
+  // 웹뷰에서 window.innerHeight값이 변화하면 갱신
+  useEffect(() => {
+    const updateHeight = () => setViewHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
   const controls = useAnimation();
   const prevIsOpen = usePreviousValue(isOpen);
 
@@ -25,16 +34,12 @@ const useBottomSheet = (
   };
 
   useEffect(() => {
-    setViewHeight(window?.innerHeight || document.documentElement.clientHeight);
-  }, []);
-
-  useEffect(() => {
-    if (prevIsOpen && !isOpen) {
+    if (viewHeight && prevIsOpen && !isOpen) {
       controls.start('hidden');
     } else if (!prevIsOpen && isOpen) {
       controls.start('visible');
     }
-  }, [controls, isOpen, prevIsOpen]);
+  }, [controls, isOpen, prevIsOpen, viewHeight]);
 
   return { onDragEnd, controls, isOpen, setIsOpen, viewHeight };
 };
