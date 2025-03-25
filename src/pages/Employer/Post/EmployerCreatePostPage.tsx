@@ -45,7 +45,6 @@ const EmployerCreatePostPage = () => {
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
   const handleSubmit = (newPost: FormData) => {
     mutate(newPost);
-    setDevIsModal(true);
   };
   return (
     <div>

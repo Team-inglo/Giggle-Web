@@ -47,7 +47,6 @@ const EmployerEditPostPage = () => {
   const handleSubmit = (newPost: FormData) => {
     if (isEdit) {
       editPost({ newPost: newPost, id: Number(id) });
-      setDevIsModal(true);
     }
   };
 
