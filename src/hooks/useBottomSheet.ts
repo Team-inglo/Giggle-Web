@@ -3,10 +3,19 @@ import { useEffect, useState } from 'react';
 import usePreviousValue from '@/hooks/usePreviousValue';
 
 const useBottomSheet = (
-  viewHeight: number,
   setIsShowBottomSheet?: (isShowBottomsheet: boolean) => void,
 ) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
+
+  // 웹뷰에서 window.innerHeight값이 변화하면 갱신
+  useEffect(() => {
+    const updateHeight = () => setViewHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
 
   const controls = useAnimation();
   const prevIsOpen = usePreviousValue(isOpen);
@@ -32,7 +41,7 @@ const useBottomSheet = (
     }
   }, [controls, isOpen, prevIsOpen, viewHeight]);
 
-  return { onDragEnd, controls, isOpen, setIsOpen };
+  return { onDragEnd, controls, isOpen, setIsOpen, viewHeight };
 };
 
 export default useBottomSheet;

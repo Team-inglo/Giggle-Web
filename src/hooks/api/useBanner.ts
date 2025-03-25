@@ -36,7 +36,7 @@ export const useGetUserBannerOverview = (isEnabled: boolean) => {
 // 12.4 (유학생/고용주) 배너 상세 조회하기 훅
 export const useGetUserBannerDetail = (id: number, isEnabled: boolean) => {
   return useQuery({
-    queryKey: ['banner', 'user'],
+    queryKey: ['banner', 'user', id],
     queryFn: () => getUserBannerDetail(id),
     enabled: isEnabled,
   });
