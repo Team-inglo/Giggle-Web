@@ -41,7 +41,7 @@ const PostSearchResult = ({
 
   if (postData?.length === 0) {
     return (
-      <div className="flex-1 flex flex-col justify-center items-center gap-1">
+      <div className="w-full px-4 flex-1 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
         <h3 className="head-2 text-[#252525]">
           {

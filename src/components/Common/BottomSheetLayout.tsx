@@ -23,9 +23,10 @@ const BottomSheetLayout = ({
 }: BottomSheetLayoutProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const [contentHeight, setContentHeight] = useState<number>(0);
+
   const { isOpen, setIsOpen, onDragEnd, controls, viewHeight } =
     useBottomSheet(setIsShowBottomSheet);
-  const [contentHeight, setContentHeight] = useState<number>(0);
 
   useEffect(() => {
     setIsOpen(isShowBottomsheet);
