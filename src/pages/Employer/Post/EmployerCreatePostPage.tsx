@@ -107,7 +107,6 @@ const EmployerCreatePostPage = () => {
             {currentStep === 5 && (
               <Step5
                 postInfo={postInfo}
-                onNext={handleNext}
                 onSubmit={(newPost) => handleSubmit(newPost)}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />

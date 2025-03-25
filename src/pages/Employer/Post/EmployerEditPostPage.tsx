@@ -175,7 +175,6 @@ const EmployerEditPostPage = () => {
               <Step5
                 key={`${data?.data.id}5`} // 또는 다른 유니크한 값
                 postInfo={postInfo}
-                onNext={handleNext}
                 onSubmit={(newPost) => handleSubmit(newPost)}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />

@@ -5,17 +5,14 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import { buttonTypeKeys } from '@/constants/components';
 import { InputType } from '@/types/common/input';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
-import { findJobCategoryByNameStrict, JobCategoryNames } from '@/utils/post';
 import { useEffect, useState } from 'react';
 
 const Step5 = ({
   postInfo,
-  onNext,
   onSubmit,
   onPrev,
 }: {
   postInfo: JobPostingForm;
-  onNext: (postInfo: JobPostingForm) => void;
   onSubmit: (newPost: FormData) => void;
   onPrev: () => void;
 }) => {
@@ -77,17 +74,6 @@ const Step5 = ({
         },
       ),
     );
-    onNext({
-      ...postInfo,
-      body: {
-        ...newPostInfo.body,
-        job_category: String(
-          findJobCategoryByNameStrict(
-            newPostInfo.body.job_category as JobCategoryNames,
-          ),
-        ),
-      },
-    });
     onSubmit(formData);
   };
 
