@@ -8,7 +8,7 @@ import {
 import axios from 'axios';
 import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingOverLay } from '@/components/Common/LoadingItem';
 //import { useUserFcmTokenStore } from './store/user';
 
 function App() {
@@ -59,7 +59,7 @@ function App() {
           setIsShowBottomSheet={setIsOpenErrorBottomSheet}
         />
       )}
-      {isLoading && <LoadingItem />}
+      {isLoading && <LoadingOverLay />}
     </QueryClientProvider>
   );
 }
