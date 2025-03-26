@@ -6,7 +6,9 @@ const useBottomSheet = (
   setIsShowBottomSheet?: (isShowBottomsheet: boolean) => void,
 ) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [viewHeight, setViewHeight] = useState<number>(window.innerHeight);
+  const [viewHeight, setViewHeight] = useState<number>(
+    window?.innerHeight || 0,
+  );
 
   // 웹뷰에서 window.innerHeight값이 변화하면 갱신
   useEffect(() => {
@@ -34,9 +36,9 @@ const useBottomSheet = (
   };
 
   useEffect(() => {
-    if (viewHeight && prevIsOpen && !isOpen) {
+    if (prevIsOpen && !isOpen) {
       controls.start('hidden');
-    } else if (!prevIsOpen && isOpen) {
+    } else if (viewHeight && !prevIsOpen && isOpen) {
       controls.start('visible');
     }
   }, [controls, isOpen, prevIsOpen, viewHeight]);

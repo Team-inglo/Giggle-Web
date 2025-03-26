@@ -10,7 +10,10 @@ import ApplicationDetailStep7 from '@/components/ApplicationDetail/ApplicationDe
 import { findCurrentStep } from '@/utils/application';
 import ApplicationDetailStepEtc from '@/components/ApplicationDetail/ApplicationDetailStepEtc';
 import { useGetApplicationDetail } from '@/hooks/api/useApplication';
-import { useCurrentPostIdEmployeeStore } from '@/store/url';
+import {
+  useCurrentPostIdEmployeeStore,
+  useCurrentPostIdStore,
+} from '@/store/url';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useGetPostSummary } from '@/hooks/api/usePost';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
@@ -19,15 +22,18 @@ import LoadingPostItem from '@/components/Common/LoadingPostItem';
 
 const ApplicationDetailPage = () => {
   const handleBackButtonClick = useNavigateBack();
-  const { currentPostId } = useCurrentPostIdEmployeeStore();
+  const { currentPostId } = useCurrentPostIdStore();
+  const { currentPostId: currentEmployeePostId } =
+    useCurrentPostIdEmployeeStore();
+
   const { data: postData, isLoading: postDataLoading } = useGetPostSummary(
     Number(currentPostId),
     !isNaN(Number(currentPostId)) ? true : false,
   );
   const { data: applicationData, isLoading: applicationDataLoading } =
     useGetApplicationDetail(
-      Number(currentPostId),
-      !isNaN(Number(currentPostId)) ? true : false,
+      Number(currentEmployeePostId),
+      !isNaN(Number(currentEmployeePostId)) ? true : false,
     );
 
   const showCurrentStepButton = (step: number) => {
