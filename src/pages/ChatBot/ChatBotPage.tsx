@@ -2,7 +2,7 @@ import ChatBotChatBox from '@/components/ChatBot/ChatBotChatBox';
 import ChatBotInput from '@/components/ChatBot/ChatBotInput';
 import UserChatBox from '@/components/ChatBot/UserChatBox';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import { useGetChatHistory } from '@/hooks/api/useChatBot';
 import { ChatItemType } from '@/types/api/chatbot';
 import { getCurrentDayAndTime } from '@/utils/getCurrentDateTime';

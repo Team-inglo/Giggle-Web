@@ -26,9 +26,17 @@ const EmployerCreatePostPage = () => {
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
     initialJobPostingState,
   );
-
-  const { mutate } = useCreatePost(updateCurrentPostId); // 공고 생성 시 호출하느 ㄴ훅
   const [devIsModal, setDevIsModal] = useState(false);
+
+  const { mutate } = useCreatePost({
+    onSuccess: (response) => {
+      updateCurrentPostId(Number(response.data.id));
+      setDevIsModal(true);
+      setTimeout(() => {
+        navigate(`/employer/post/${response.data.id}`);
+      }, 2000);
+    },
+  }); // 공고 생성 시 호출하는 훅
 
   const navigate = useNavigate(); // navigate 변수를 정의합니다.
 
@@ -40,7 +48,6 @@ const EmployerCreatePostPage = () => {
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
   const handleSubmit = (newPost: FormData) => {
     mutate(newPost);
-    setDevIsModal(true);
   };
   return (
     <div>
@@ -63,7 +70,6 @@ const EmployerCreatePostPage = () => {
       {devIsModal ? (
         <CompleteModal
           title={`${isEdit ? '공고 수정' : '공고 등록'}을 완료했어요!.`}
-          onNext={() => navigate('/employer/post')}
         />
       ) : (
         <>
@@ -101,7 +107,6 @@ const EmployerCreatePostPage = () => {
             {currentStep === 5 && (
               <Step5
                 postInfo={postInfo}
-                onNext={handleNext}
                 onSubmit={(newPost) => handleSubmit(newPost)}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />

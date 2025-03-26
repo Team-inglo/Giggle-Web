@@ -9,7 +9,7 @@ import { useGetApplicantResume, useGetResume } from '@/hooks/api/useResume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import { useCurrentApplicantIdStore } from '@/store/url';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import YellowDocumentIcon from '@/assets/icons/YellowDocumentIcon.svg?react';
 import { infoTranslation, profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';

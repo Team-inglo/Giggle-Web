@@ -1,5 +1,5 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
 import EmployerPostCardList from '@/components/Employer/Post/EmployerPostCardList';
 import {

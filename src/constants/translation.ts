@@ -501,7 +501,7 @@ export const postSearchTranslation = {
   apply: {
     ko: '적용하기',
     en: 'Apply',
-  }
+  },
 };
 
 export const infoTranslation = {
@@ -556,5 +556,16 @@ export const applicationTranslation = {
   applicationSubTitle: {
     ko: '지원자가 지금 어떤 단계에 있는지 확인하고,\n채용 절차가 원활하게 진행되도록 다음 단계를 진행해 주세요.',
     en: 'Stay updated on your job applications\n and document status.',
+  },
+};
+
+export const bannerTranslation = {
+  emptyTitle: {
+    ko: '아직 새로운 소식이 없어요 👀',
+    en: "Giggle doesn't have any news yet 👀",
+  },
+  emptyContent: {
+    ko: '지금은 보여드릴 배너가 없지만, 곧 유용한 정보로 찾아올게요!',
+    en: 'Giggle will be back with some useful information soon!',
   },
 };

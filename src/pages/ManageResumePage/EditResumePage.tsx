@@ -4,7 +4,7 @@ import ProfilePicture from '@/components/ManageResume/ProfilePicture';
 import ResumeEditSection from '@/components/ManageResume/ResumeEditSection';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useGetResume } from '@/hooks/api/useResume';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import { infoTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 

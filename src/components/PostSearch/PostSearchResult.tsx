@@ -2,7 +2,7 @@ import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { useUserStore } from '@/store/user';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import { postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
@@ -41,7 +41,7 @@ const PostSearchResult = ({
 
   if (postData?.length === 0) {
     return (
-      <div className="flex-1 flex flex-col justify-center items-center gap-1">
+      <div className="w-full px-4 flex-1 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
         <h3 className="head-2 text-[#252525]">
           {

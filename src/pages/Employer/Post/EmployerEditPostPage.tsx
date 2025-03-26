@@ -7,7 +7,6 @@ import Step3 from '@/components/Employer/PostCreate/Step3';
 import Step4 from '@/components/Employer/PostCreate/Step4';
 import Step5 from '@/components/Employer/PostCreate/Step5';
 import { useEditPost, useGetPostDetail } from '@/hooks/api/usePost';
-import { useCurrentPostIdStore } from '@/store/url';
 import { WorkDayTime } from '@/types/api/document';
 import {
   initialJobPostingState,
@@ -20,8 +19,6 @@ const EmployerEditPostPage = () => {
   const location = useLocation();
   const { isEdit } = location.state || {};
   const { id } = useParams();
-  const { currentPostId } = useCurrentPostIdStore();
-  console.log(currentPostId);
   const [currentStep, setCurrentStep] = useState(1);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
@@ -29,7 +26,11 @@ const EmployerEditPostPage = () => {
   );
 
   const { data, isPending } = useGetPostDetail(Number(id), true);
-  const { mutate: editPost } = useEditPost(Number(currentPostId)); //  공고 수정 시 호출하는 훅
+  const { mutate: editPost } = useEditPost({
+    onSuccess: () => {
+      setDevIsModal(true);
+    },
+  }); //  공고 수정 시 호출하는 훅
   const [devIsModal, setDevIsModal] = useState(false);
   const [isDataMapped, setIsDataMapped] = useState(false);
   const navigate = useNavigate();
@@ -43,7 +44,6 @@ const EmployerEditPostPage = () => {
   const handleSubmit = (newPost: FormData) => {
     if (isEdit) {
       editPost({ newPost: newPost, id: Number(id) });
-      setDevIsModal(true);
     }
   };
 
@@ -128,7 +128,7 @@ const EmployerEditPostPage = () => {
       {devIsModal ? (
         <CompleteModal
           title="공고 수정을 완료했어요!"
-          onNext={() => {}} // 생성한 공고에 대한 공고 상세 페이지로 이동 요망
+          onNext={() => navigate(`/employer/post/${id}`)}
         />
       ) : (
         <>
@@ -175,7 +175,6 @@ const EmployerEditPostPage = () => {
               <Step5
                 key={`${data?.data.id}5`} // 또는 다른 유니크한 값
                 postInfo={postInfo}
-                onNext={handleNext}
                 onSubmit={(newPost) => handleSubmit(newPost)}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />

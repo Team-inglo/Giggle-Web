@@ -15,6 +15,7 @@ import {
   getRecommendPostList,
   putPostBookmark,
 } from '@/api/post';
+import { RESTYPE } from '@/types/api/common';
 import {
   GetApplyPostListReqType,
   GetEmployerPostListReqType,
@@ -23,6 +24,7 @@ import {
 import {
   useInfiniteQuery,
   useMutation,
+  UseMutationOptions,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -173,42 +175,32 @@ export const useGetPostSummary = (id: number, isEnabled: boolean) => {
 };
 
 // 4.10 (고용주) 공고 등록하기 훅
-export const useCreatePost = (updateCurrentPostId: (id: number) => void) => {
-  const navigate = useNavigate();
-
+export const useCreatePost = (
+  options?: UseMutationOptions<RESTYPE<{ id: number }>, Error, FormData>,
+) => {
   return useMutation({
     mutationFn: createPost,
-    onSuccess: (response) => {
-      // response는 API 응답 데이터
-      // { success: true, data: { id: Long }, error: null }
-      updateCurrentPostId(Number(response.data.id));
-
-      setTimeout(() => {
-        navigate(`/employer/post/${response.data.id}`);
-      }, 1000);
-    },
     onError: (error) => {
       console.error('공고 등록하기 실패', error);
     },
+    ...options,
   });
 };
 
 // 4.10 (고용주) 공고 수정하기 훅
-export const useEditPost = (id: number) => {
-  const navigate = useNavigate();
-
+export const useEditPost = (
+  options?: UseMutationOptions<
+    RESTYPE<{ id: number }>,
+    Error,
+    { newPost: FormData; id: number }
+  >,
+) => {
   return useMutation({
     mutationFn: editPost,
-    onSuccess: () => {
-      // response는 API 응답 데이터
-      // { success: true, data: { id: Long }, error: null }
-      setTimeout(() => {
-        navigate(`/employer/post/${id}`);
-      }, 1000);
-    },
     onError: (error) => {
       console.error('공고 수정하기 실패', error);
     },
+    ...options,
   });
 };
 
@@ -226,6 +218,7 @@ export const usePutPostBookmark = () => {
         queryKey: ['post'],
       });
     },
+    meta: { skipGlobalLoading: true },
   });
 };
 

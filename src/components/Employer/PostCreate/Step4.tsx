@@ -7,7 +7,7 @@ import { buttonTypeKeys } from '@/constants/components';
 import { phone } from '@/constants/information';
 import { InputType } from '@/types/common/input';
 import type { Image, JobPostingForm } from '@/types/postCreate/postCreate';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import AddFileIcon from '@/assets/icons/FileAddIcon.svg?react';
 import {
   formatPhoneNumber,
@@ -70,11 +70,28 @@ const Step4 = ({
   }, [newPostInfo, phoneNum]);
 
   // 이미지 선택
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const newFiles = newPostInfo.images as File[];
-      newFiles.push(file);
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    // 현재 이미지와 새 이미지의 총 개수가 10개를 초과하는지 확인
+    const currentImageCount = newPostInfo.images.length;
+    const newFilesCount = files.length;
+    const totalCount = currentImageCount + newFilesCount;
+
+    // 10개 제한 처리
+    if (totalCount > 10) {
+      alert('이미지는 최대 10개까지만 업로드할 수 있습니다.');
+      const availableSlots = 10 - currentImageCount;
+      const filesToAdd = Array.from(files).slice(0, availableSlots);
+
+      const newFiles = [...newPostInfo.images] as File[];
+      filesToAdd.forEach((file) => newFiles.push(file));
+      setNewPostInfo({ ...newPostInfo, images: newFiles });
+    } else {
+      // 모든 파일 추가
+      const newFiles = [...newPostInfo.images] as File[];
+      Array.from(files).forEach((file) => newFiles.push(file));
       setNewPostInfo({ ...newPostInfo, images: newFiles });
     }
   };
@@ -144,7 +161,7 @@ const Step4 = ({
           <div className="w-full relative body-3 px-1 pb-1.5 text-[#222] text-left">
             사진이 있으면 관심 확률이 올라가요 !
           </div>
-          <div className="w-full overflow-x-scroll flex gap-2 item-center justify-start">
+          <div className="w-full overflow-x-scroll no-scrollbar flex gap-2 item-center justify-start">
             {newPostInfo.images.length < 10 && (
               <label className="cursor-pointer" htmlFor="logo-upload">
                 <div className="w-[7.5rem] h-[7.5rem] rounded-lg flex items-center justify-center shadow-sm bg-white border border-[#eae9f6] px-4 py-2.5">
@@ -156,6 +173,7 @@ const Step4 = ({
                   accept="image/jpeg,image/png"
                   onChange={handleImageChange}
                   className="hidden"
+                  multiple
                 />
               </label>
             )}
