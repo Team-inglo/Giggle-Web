@@ -15,6 +15,7 @@ import {
   reIssuePassword,
   patchPassword,
   postRegistrationNumberValidation,
+  patchDeviceToken,
 } from '@/api/auth';
 import {
   AuthenticationResponse,
@@ -46,6 +47,7 @@ import { TermType } from '@/types/api/users';
 import { AxiosError } from 'axios';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
+import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
 
 /**
  * 로그인 프로세스를 처리하는 커스텀 훅
@@ -84,7 +86,8 @@ export const useSignIn = () => {
 
         updateId('');
         updatePassword('');
-
+        // 앱에서 FCM 토큰 요청
+        sendReactNativeMessage({ type: 'RECEIVE_TOKEN' });
         navigate('/splash');
         window.location.reload();
       }
@@ -127,12 +130,24 @@ export const useReIssueToken = () => {
       if (data.success) {
         setAccessToken(data.data.access_token);
         setRefreshToken(data.data.refresh_token);
-        navigate('/splash'); // 재발급 후 유형 확인
+        // 앱에서 FCM 토큰 요청
+        sendReactNativeMessage({ type: 'RECEIVE_TOKEN' });
+        navigate('/splash');
       }
     },
     onError: () => {
       alert('만료되었습니다. 다시 로그인해주세요.');
       navigate('/signin');
+    },
+  });
+};
+
+// 1.4 디바이스 토큰 갱신 훅
+export const usePatchDeviceToken = () => {
+  return useMutation({
+    mutationFn: patchDeviceToken,
+    onError: () => {
+      console.error('디바이스 토큰 갱신에 실패했습니다.');
     },
   });
 };
