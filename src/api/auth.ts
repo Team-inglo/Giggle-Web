@@ -75,6 +75,16 @@ export const reIssueToken = async (
   return response.data;
 };
 
+// 1.4 (유학생/고용주) 디바이스 토큰 갱신하기
+export const patchDeviceToken = async (
+  deviceToken: string,
+): Promise<RESTYPE<null>> => {
+  const response = await api.patch('/auth/device-token', {
+    device_token: deviceToken,
+  });
+  return response.data;
+};
+
 // 2.1 아이디 중복검사
 export const getIdValidation = async (
   userId: string,

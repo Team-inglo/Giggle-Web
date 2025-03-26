@@ -1,5 +1,3 @@
-import { isMobile, isAndroid, isIOS } from 'react-device-detect';
-
 // 메시지 데이터 인터페이스
 interface MessageData {
   type: string;
@@ -11,37 +9,45 @@ interface Message {
   payload?: string;
 }
 
-export const getReactNativeMessage = () => {
-  if (!isMobile) {
-    return;
+export const setupReactNativeMessageListener = (
+  messageHandler: (data: MessageData) => void,
+) => {
+  const isReactNativeWebView = !!window.ReactNativeWebView;
+
+  if (!isReactNativeWebView) {
+    return () => {};
   }
 
-  // MessageEvent로 타입 캐스팅을 사용
-  const listener: EventListener = ((event: Event) => {
-    // MessageEvent로 타입 캐스팅
+  const listener = (event: Event) => {
     const messageEvent = event as MessageEvent;
     try {
-      const parsedData: MessageData = JSON.parse(messageEvent.data);
-      if (parsedData?.type === "FCMTOKEN") { // parsedData.type은 메시지의 용도에 맞게 재정의 필요
-        console.log(parsedData.payload)
-      }
+      const data =
+        typeof messageEvent.data === 'string'
+          ? JSON.parse(messageEvent.data)
+          : messageEvent.data;
+      messageHandler(data);
     } catch (error) {
       console.error('Failed to parse message data:', error);
     }
-  });
+  };
 
+  // 플랫폼 감지와 관계없이 모든 리스너 등록
   if (window.ReactNativeWebView) {
-    if (isAndroid) {
-      document.addEventListener('message', listener);
-    }
-    if (isIOS) {
-      window.addEventListener('message', listener);
-    }
+    document.addEventListener('message', listener as EventListener);
+    window.addEventListener('message', listener as EventListener);
   }
+
+  return () => {
+    if (window.ReactNativeWebView) {
+      document.removeEventListener('message', listener as EventListener);
+      window.removeEventListener('message', listener as EventListener);
+    }
+  };
 };
 
 export const sendReactNativeMessage = ({ type, payload }: Message) => {
   if (window.ReactNativeWebView) {
-    window.ReactNativeWebView.postMessage(JSON.stringify({ type, payload }));
+    const message = JSON.stringify({ type, payload });
+    window.ReactNativeWebView.postMessage(message);
   }
 };
