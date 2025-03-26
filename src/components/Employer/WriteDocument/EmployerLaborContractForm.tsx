@@ -39,7 +39,6 @@ import WorkDayTimeWithRestBottomSheet from '@/components/Common/WorkDayTimeWithR
 import RadioButton from '@/components/Information/RadioButton';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import { useCurrentDocumentIdStore } from '@/store/url';
-import LoadingItem from '@/components/Common/LoadingItem';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 
@@ -145,15 +144,6 @@ const EmployerLaborContractForm = ({
 
   return (
     <>
-      {isPending && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       <div
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >

@@ -30,7 +30,6 @@ import {
   parsePhoneNumber,
 } from '@/utils/information';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
-import LoadingItem from '../Common/LoadingItem';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
@@ -45,7 +44,6 @@ const IntegratedApplicationWriteForm = ({
   isEdit,
 }: IntegratedApplicationFormProps) => {
   const [isInvalid, setIsInvalid] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const { currentPostId } = useCurrentPostIdEmployeeStore();
   const [newDocumentData, setNewDocumentData] =
@@ -74,28 +72,10 @@ const IntegratedApplicationWriteForm = ({
   });
   // 학교 선택 모달 출현 여부 관리 state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { mutate: postDocument } = usePostIntegratedApplicants(
-    Number(currentPostId),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  ); // 통합신청서 생성 훅
-  const { mutate: updateDocument } = usePutIntegratedApplicants(
-    Number(currentPostId),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  ); // 통합신청서 수정 훅
+  const { mutate: postDocument, isPending: postPending } =
+    usePostIntegratedApplicants(Number(currentPostId)); // 통합신청서 생성 훅
+  const { mutate: updateDocument, isPending: updatePending } =
+    usePutIntegratedApplicants(Number(currentPostId)); // 통합신청서 수정 훅
   // 문서 편집일 시 페이지 진입과 동시에 기존 내용 자동 입력
   useEffect(() => {
     if (isEdit && document) {
@@ -180,17 +160,8 @@ const IntegratedApplicationWriteForm = ({
   };
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       <div
-        className={`w-full flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full flex flex-col ${postPending || updatePending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
           <div className="w-full h-screen fixed inset-0 bg-white">

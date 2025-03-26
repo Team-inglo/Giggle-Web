@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import SplashIcon from '@/assets/icons/Splash.svg?react';
+import SplashIcon from '@/assets/icons/GiggleSplash.svg?react';
 import { getAccessToken, getRefreshToken } from '@/utils/auth';
 import {
   useGetUserType,

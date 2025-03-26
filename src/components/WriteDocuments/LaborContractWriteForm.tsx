@@ -21,7 +21,6 @@ import {
   usePutStandardLaborContracts,
 } from '@/hooks/api/useDocument';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
-import LoadingItem from '../Common/LoadingItem';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
@@ -35,7 +34,6 @@ const LaborContractWriteForm = ({
   document,
   isEdit,
 }: LaborContractFormProps) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [newDocumentData, setNewDocumentData] =
     useState<LaborContractEmployeeInfo>(initialLaborContractEmployeeInfo);
@@ -46,28 +44,10 @@ const LaborContractWriteForm = ({
     middle: '',
     end: '',
   });
-  const { mutate: postDocument } = usePostStandardLaborContracts(
-    Number(currentPostId),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  ); // 작성된 근로계약서 제출 훅
-  const { mutate: updateDocument } = usePutStandardLaborContracts(
-    Number(currentPostId),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSettled: () => {
-        setIsLoading(false);
-      },
-    },
-  ); // 수정된 근로계약서 제출 훅
+  const { mutate: postDocument, isPending: postPending } =
+    usePostStandardLaborContracts(Number(currentPostId)); // 작성된 근로계약서 제출 훅
+  const { mutate: updateDocument, isPending: updatePending } =
+    usePutStandardLaborContracts(Number(currentPostId)); // 수정된 근로계약서 제출 훅
   // 문서 편집일 시 페이지 진입과 동시에 기존 내용 자동 입력
   useEffect(() => {
     if (isEdit && document) {
@@ -125,18 +105,8 @@ const LaborContractWriteForm = ({
   };
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
-
       <div
-        className={`w-full flex flex-col ${isLoading ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full flex flex-col ${postPending || updatePending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
           <div className="w-full h-screen fixed inset-0 bg-white">

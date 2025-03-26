@@ -8,11 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { UserType } from '@/constants/user';
 import PolicyViewer from '@/components/Information/PolicyViewer';
 import { useGetPolicy } from '@/hooks/api/useAuth';
-import LoadingItem from '@/components/Common/LoadingItem';
 import { TermType } from '@/types/api/users';
 
 const AboutPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isPolicyPreview, setIsPolicyPreview] = useState(false);
   const [policy, setPolicy] = useState('');
   const { account_type } = useUserStore();
@@ -22,25 +20,10 @@ const AboutPage = () => {
       setPolicy(data.data.content);
       setIsPolicyPreview(true);
     },
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSettled: () => {
-      setIsLoading(false);
-    },
   });
 
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       {isPolicyPreview === true && (
         <PolicyViewer
           content={policy}

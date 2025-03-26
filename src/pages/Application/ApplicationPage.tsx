@@ -1,6 +1,6 @@
 import ApplicationCardList from '@/components/Application/ApplicationCardList';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import LoadingItem from '@/components/Common/LoadingItem';
+import { LoadingItem } from '@/components/Common/LoadingItem';
 import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
 import Tag from '@/components/Common/Tag';
 import { APPLICATION_STATUS_TYPE } from '@/constants/application';

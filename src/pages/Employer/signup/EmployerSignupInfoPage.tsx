@@ -2,7 +2,6 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import LoadingItem from '@/components/Common/LoadingItem';
 import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
 import InformationInputSection from '@/components/Employer/Signup/InformationInputSection';
 import PolicyViewer from '@/components/Information/PolicyViewer';
@@ -35,17 +34,10 @@ const EmployerSignupInfoPage = () => {
   const [isValid, setIsValid] = useState(false);
   const [registrationNumberValidStatus, setRegistrationNumberValidStatus] =
     useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { mutate: getPolicy } = useGetPolicy({
     onSuccess: (data) => {
       setPolicy(data.data.content);
       setIsPolicyPreview(true);
-    },
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSettled: () => {
-      setIsLoading(false);
     },
   });
   const { mutate } = useSignupEmployer(() => setDevIsModal(true));
@@ -193,15 +185,6 @@ const EmployerSignupInfoPage = () => {
           content={policy}
           onBack={() => setIsPolicyPreview(false)}
         />
-      )}
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
       )}
     </div>
   );

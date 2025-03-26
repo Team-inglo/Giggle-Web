@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { usePatchPassword } from '@/hooks/api/useAuth';
-import LoadingItem from '@/components/Common/LoadingItem';
 import CurrentPasswordStep from '@/components/Profile/Password/CurrentPasswordStep';
 import NewPasswordStep from '@/components/Profile/Password/NewPasswordStep';
 import SuccessStep from '@/components/Profile/Password/SuccessStep';
@@ -12,7 +11,6 @@ type PasswordFieldType = 'currentPassword' | 'newPassword' | 'confirmPassword';
 const ChangePasswordPage = () => {
   const { pathname } = useLocation();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [newPassword, setNewPassword] = useState('');
@@ -25,12 +23,6 @@ const ChangePasswordPage = () => {
   const { mutate: changePassword } = usePatchPassword({
     onSuccess: () => {
       setCurrentStep((prev) => prev + 1);
-    },
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSettled: () => {
-      setIsLoading(false);
     },
   });
 
@@ -134,15 +126,6 @@ const ChangePasswordPage = () => {
 
   return (
     <>
-      {isLoading && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 overflow-hidden"
-          style={{ touchAction: 'none' }}
-          onClick={(e) => e.preventDefault()}
-        >
-          <LoadingItem />
-        </div>
-      )}
       {renderStep()}
     </>
   );
