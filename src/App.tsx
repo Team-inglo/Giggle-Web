@@ -6,16 +6,14 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
-import { setupReactNativeMessageListener } from '@/utils/reactNativeMessage';
-import { usePatchDeviceToken } from '@/hooks/api/useAuth';
+import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessageListener';
 
 function App() {
   const [isOpenErrorBottomSheet, setIsOpenErrorBottomSheet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { mutate: patchDeviceToken } = usePatchDeviceToken();
 
   const openErrorBottomSheet = (error: unknown) => {
     if (!axios.isAxiosError(error)) return;
@@ -45,17 +43,9 @@ function App() {
       }),
   );
 
-  useEffect(() => {
-    const cleanup = setupReactNativeMessageListener((data) => {
-      if (data.type === 'FCMTOKEN' && data.payload !== undefined) {
-        patchDeviceToken(data.payload);
-      }
-    });
-
-    return cleanup;
-  }, []);
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactNativeMessageListener />
       <Router />
       {isOpenErrorBottomSheet && (
         <ServerErrorBottomSheet
