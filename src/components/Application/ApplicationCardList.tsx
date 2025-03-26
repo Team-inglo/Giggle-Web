@@ -3,7 +3,10 @@ import { AppicationItemType } from '@/types/application/applicationItem';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { useNavigate } from 'react-router-dom';
-import { useCurrentPostIdEmployeeStore } from '@/store/url';
+import {
+  useCurrentPostIdEmployeeStore,
+  useCurrentPostIdStore,
+} from '@/store/url';
 
 type ApplicationCardListType = {
   applicationListData: AppicationItemType[];
@@ -15,7 +18,9 @@ const ApplicationCardList = ({
   isInitialLoading,
 }: ApplicationCardListType) => {
   const navigate = useNavigate();
-  const { updateCurrentPostId } = useCurrentPostIdEmployeeStore();
+  const { updateCurrentPostId } = useCurrentPostIdStore();
+  const { updateCurrentPostId: updateCurrentEmployeePostId } =
+    useCurrentPostIdEmployeeStore();
 
   if (isInitialLoading) {
     return (
@@ -50,7 +55,7 @@ const ApplicationCardList = ({
           }}
           leftButtonText="View Details"
           handleClickRightButton={() => {
-            updateCurrentPostId(data.user_owner_job_posting_id);
+            updateCurrentEmployeePostId(data.user_owner_job_posting_id);
             navigate(`/application/${data.user_owner_job_posting_id}`);
           }}
           rightButtonText="Check Status"

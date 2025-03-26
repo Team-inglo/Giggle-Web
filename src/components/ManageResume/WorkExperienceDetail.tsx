@@ -52,7 +52,7 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
               <h5 className="pb-[0.125rem] button-2 text-[#252525]">
                 {work.title}
               </h5>
-              <p className="pb-2 caption text-[#252525]">
+              <p className="pb-2 caption text-[#252525] whitespace-pre">
                 {work.description !== '-'
                   ? work.description
                   : infoTranslation.notEntered[isEmployer(pathname)]}

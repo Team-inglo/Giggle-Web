@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
+import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessageListener';
 
 function App() {
   const [isOpenErrorBottomSheet, setIsOpenErrorBottomSheet] = useState(false);
@@ -44,6 +45,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactNativeMessageListener />
       <Router />
       {isOpenErrorBottomSheet && (
         <ServerErrorBottomSheet

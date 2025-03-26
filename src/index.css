@@ -29,6 +29,9 @@ body {
     'Segoe UI Symbol',
     sans-serif;
   font-synthesis: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @layer components {
