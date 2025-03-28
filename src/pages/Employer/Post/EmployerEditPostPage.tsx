@@ -71,7 +71,14 @@ const EmployerEditPostPage = () => {
       hourly_rate: serverData.working_conditions.hourly_rate,
       employment_type: serverData.working_conditions.employment_type,
       address: {
-        ...postInfo.body.address,
+        region_1depth_name:
+          serverData.workplace_information.region_1depth_name || '',
+        region_2depth_name:
+          serverData.workplace_information.region_2depth_name || '',
+        region_3depth_name:
+          serverData.workplace_information.region_3depth_name || '',
+        region_4depth_name:
+          serverData.workplace_information.region_4depth_name || '',
         address_name: serverData.workplace_information.main_address,
         latitude: serverData.workplace_information.latitude,
         longitude: serverData.workplace_information.longitude,

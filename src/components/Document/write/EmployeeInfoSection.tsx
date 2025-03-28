@@ -12,7 +12,7 @@ import {
   LaborContractEmployeeInfo,
 } from '@/types/api/document';
 import { GiggleAddress } from '@/types/api/users';
-import { getDetailAddress, propertyToString } from '@/utils/document';
+import { propertyToString } from '@/utils/document';
 import { renderMap } from '@/utils/map';
 import { Fragment } from 'react/jsx-runtime';
 
@@ -74,25 +74,6 @@ const EmployeeInfoSection = ({
     }
   };
 
-  // 특수 케이스에 대한 추가 컴포넌트 렌더링
-  const renderAdditionalContent = (key: string, value: GiggleAddress) => {
-    switch (key) {
-      case LaborContractEmployeeInfoProperty.ADDRESS:
-        return (
-          <div className="w-full flex flex-col gap-1">
-            <p className="button-2 text-text-alternative">
-              Detailed Address in korea
-            </p>
-            <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
-              {getDetailAddress(value as GiggleAddress)}
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left body-3 bg-white">
       <div className="w-full self-stretch flex flex-col items-start jusitfy-center">
@@ -108,7 +89,6 @@ const EmployeeInfoSection = ({
                 {renderTitle(key)}
                 {renderFieldContent(key, value)}
               </div>
-              {renderAdditionalContent(key, value as GiggleAddress)}
             </Fragment>
           ))}
         </div>
