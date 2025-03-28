@@ -55,6 +55,7 @@ const ApplicationCardList = ({
           }}
           leftButtonText="View Details"
           handleClickRightButton={() => {
+            updateCurrentPostId(data.job_posting_id);
             updateCurrentEmployeePostId(data.user_owner_job_posting_id);
             navigate(`/application/${data.user_owner_job_posting_id}`);
           }}
