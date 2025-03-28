@@ -82,14 +82,18 @@ const HomeMenu = () => {
           </button>
         ))}
       </nav>
-      <CommingSoonBottomSheet
-        isShowBottomsheet={isOpenCommingSoonBottomSheet}
-        setIsShowBottomSheet={setIsOpenCommingSoonBottomSheet}
-      />
-      <LoginBottomSheet
-        isShowBottomsheet={isOpenLoginBottomSheet}
-        setIsShowBottomSheet={setIsOpenLoginBottomSheet}
-      />
+      {isOpenCommingSoonBottomSheet && (
+        <CommingSoonBottomSheet
+          isShowBottomsheet={isOpenCommingSoonBottomSheet}
+          setIsShowBottomSheet={setIsOpenCommingSoonBottomSheet}
+        />
+      )}
+      {isOpenLoginBottomSheet && (
+        <LoginBottomSheet
+          isShowBottomsheet={isOpenLoginBottomSheet}
+          setIsShowBottomSheet={setIsOpenLoginBottomSheet}
+        />
+      )}
     </>
   );
 };
