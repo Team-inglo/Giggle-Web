@@ -18,7 +18,7 @@ export const POST_SORTING_KR = {
   [POST_SORTING.RECENT]: '최신순',
   ['최신순']: '최신순',
   ['인기순']: '인기순',
-}
+};
 
 export const enum FILTER_CATEGORY {
   REGION_1DEPTH = 'Region 1depth', // 시, 도
@@ -133,7 +133,7 @@ export const EN_FILTER_CATEGORY_OPTIONS: Record<string, string> = {
   'one week to one month': '1주일-1개월',
   'one month to three months': '1개월-3개월',
   'three months to six months': '3개월-6개월',
-  'one month to one year': '6개월-1년',
+  'six months to one year': '6개월-1년',
   'more than one year': '1년이상',
   'two days': '주 2일',
   'three days': '주 3일',

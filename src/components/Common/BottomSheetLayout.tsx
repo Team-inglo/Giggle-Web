@@ -49,6 +49,9 @@ const BottomSheetLayout = ({
     };
   }, [isOpen, isFixedBackground]);
 
+  // 앱에서 window.innerheight값이 없는 경우
+  if (!viewHeight) return <></>;
+
   return (
     <>
       {isOpen && isFixedBackground && (

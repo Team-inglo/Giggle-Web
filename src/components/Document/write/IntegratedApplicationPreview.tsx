@@ -2,7 +2,7 @@ import {
   IntegratedApplicationData,
   IntegratedApplicationField,
 } from '@/types/api/document';
-import { getDetailAddress, propertyToString } from '@/utils/document';
+import { propertyToString } from '@/utils/document';
 import { renderMap } from '@/utils/map';
 import { GiggleAddress } from '@/types/api/users';
 import { IntegratedApplicationPropertyInfo } from '@/constants/documents';
@@ -67,25 +67,6 @@ const IntegratedApplicationPreview = ({
     }
   };
 
-  // 특수 케이스에 대한 추가 컴포넌트 렌더링
-  const renderAdditionalContent = (key: string, value: unknown) => {
-    switch (key) {
-      case IntegratedApplicationField.ADDRESS:
-        return (
-          <div className="w-full flex flex-col gap-1">
-            <p className="button-2 text-text-alternative">
-              Detailed Address in korea
-            </p>
-            <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
-              {getDetailAddress(value as GiggleAddress)}
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
   if (!document) return null;
 
   return (
@@ -98,7 +79,6 @@ const IntegratedApplicationPreview = ({
                 {renderTitle(key)}
                 {renderFieldContent(key, value)}
               </div>
-              {renderAdditionalContent(key, value)}
             </Fragment>
           ))}
         </div>
