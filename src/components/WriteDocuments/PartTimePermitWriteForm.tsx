@@ -18,7 +18,10 @@ import {
   usePostPartTimeEmployPermit,
   usePutPartTimeEmployPermit,
 } from '@/hooks/api/useDocument';
-import { useCurrentPostIdEmployeeStore } from '@/store/url';
+import {
+  useCurrentDocumentIdStore,
+  useCurrentPostIdEmployeeStore,
+} from '@/store/url';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 
 type PartTimePermitFormProps = {
@@ -31,12 +34,13 @@ const PartTimePermitWriteForm = ({
   isEdit,
 }: PartTimePermitFormProps) => {
   const { currentPostId } = useCurrentPostIdEmployeeStore();
+  const { currentDocumentId } = useCurrentDocumentIdStore();
   const [newDocumentData, setNewDocumentData] =
     useState<PartTimePermitFormRequest>(initialPartTimePermitForm);
   const { mutate: postDocument, isPending: postPending } =
     usePostPartTimeEmployPermit(Number(currentPostId)); // 작성된 문서 제출 훅
   const { mutate: updateDocument, isPending: updatePending } =
-    usePutPartTimeEmployPermit(Number(currentPostId)); // 수정된 문서 제출 훅
+    usePutPartTimeEmployPermit(Number(currentDocumentId)); // 수정된 문서 제출 훅
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
@@ -69,7 +73,7 @@ const PartTimePermitWriteForm = ({
       phone_number: formatPhoneNumber(phoneNum),
     };
     const payload = {
-      id: Number(currentPostId),
+      id: Number(isEdit ? currentDocumentId : currentPostId),
       document: finalDocument, // TODO: 로그인 연결 후 userId를 넣어야 하는 것으로 추정
     };
 
