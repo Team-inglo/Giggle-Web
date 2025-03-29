@@ -52,7 +52,7 @@ const EmployerPartTimePermitForm = ({
   const [phoneNum, setPhoneNum] = useState({
     start: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).start
-      : '',
+      : '010',
     middle: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).middle
       : '',
@@ -130,7 +130,7 @@ const EmployerPartTimePermitForm = ({
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <div className="w-full h-screen fixed inset-0 bg-white">
+          <div className="w-full h-screen fixed inset-0 bg-white z-[3]">
             <DaumPostcodeEmbed
               style={{
                 position: 'fixed',
@@ -139,6 +139,7 @@ const EmployerPartTimePermitForm = ({
                 height: 'calc(100vh - 100px)',
                 marginTop: '3.125rem',
                 paddingBottom: '6.25rem',
+                zIndex: 9999,
               }}
               theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
               onComplete={handleAddressSelection}

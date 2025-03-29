@@ -31,7 +31,7 @@ export const renderMap = (address: GiggleAddress) => {
           {address.address_name} {address.address_detail}
         </div>
       </div>
-      <div className="w-full rounded-lg">
+      <div className="w-full rounded-lg z-1">
         <Map
           center={{
             lat: Number(address.latitude),
