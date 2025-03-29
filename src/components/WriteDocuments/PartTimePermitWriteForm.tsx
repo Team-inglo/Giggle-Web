@@ -170,6 +170,17 @@ const PartTimePermitWriteForm = ({
               }}
               canDelete={false}
             />
+            <Dropdown
+              value={String(newDocumentData.term_of_completion)}
+              placeholder="Term of completion"
+              options={Array.from({ length: 12 }, (_, i) => String(i + 1))}
+              setValue={(value) =>
+                setNewDocumentData({
+                  ...newDocumentData,
+                  term_of_completion: Number(value),
+                })
+              }
+            />
           </InputLayout>
           {/* 이메일 입력 */}
           <InputLayout title="Email" isEssential>
