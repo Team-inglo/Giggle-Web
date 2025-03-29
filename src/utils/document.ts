@@ -118,7 +118,8 @@ export const validateEmployerInformation = (
     !info.company_name ||
     !info.job_type ||
     !info.name ||
-    !info.phone_number
+    !info.phone_number ||
+    !info.signature_base64
   ) {
     return false;
   }
