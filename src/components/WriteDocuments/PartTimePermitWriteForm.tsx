@@ -59,9 +59,11 @@ const PartTimePermitWriteForm = ({
         email: document.employee_information.email,
       });
       setPhoneNum({
-        start: parsePhoneNumber(newDocumentData.phone_number).start,
-        middle: parsePhoneNumber(newDocumentData.phone_number).middle,
-        end: parsePhoneNumber(newDocumentData.phone_number).end,
+        start: parsePhoneNumber(document.employee_information.phone_number)
+          .start,
+        middle: parsePhoneNumber(document.employee_information.phone_number)
+          .middle,
+        end: parsePhoneNumber(document.employee_information.phone_number).end,
       });
     }
   }, [document, isEdit]);
@@ -171,6 +173,17 @@ const PartTimePermitWriteForm = ({
                 }
               }}
               canDelete={false}
+            />
+            <Dropdown
+              value={String(newDocumentData.term_of_completion)}
+              placeholder="Term of completion"
+              options={Array.from({ length: 12 }, (_, i) => String(i + 1))}
+              setValue={(value) =>
+                setNewDocumentData({
+                  ...newDocumentData,
+                  term_of_completion: Number(value),
+                })
+              }
             />
           </InputLayout>
           {/* 이메일 입력 */}

@@ -16,6 +16,7 @@ import {
 import { EmployerProfileRequestBody } from '@/types/api/profile';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
+import { documentTranslation } from '@/constants/translation';
 
 type EmployerEditInputSectionProps = {
   newEmployData: EmployerProfileRequestBody;
@@ -231,6 +232,12 @@ const EmployerEditInputSection = ({
                   }
                   canDelete={false}
                 />
+                {newEmployData.address.address_detail &&
+                  newEmployData.address.address_detail.length > 50 && (
+                    <p className="text-[#FF6F61] text-xs p-2">
+                      {documentTranslation.detailAddressTooLong.ko}
+                    </p>
+                  )}
               </InputLayout>
             </div>
             {/* 사업자 등록번호 입력 */}
