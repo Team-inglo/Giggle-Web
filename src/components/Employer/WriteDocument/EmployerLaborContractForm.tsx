@@ -24,12 +24,14 @@ import Button from '@/components/Common/Button';
 import { usePutLaborContractEmployer } from '@/hooks/api/useDocument';
 import {
   handleHourlyRateBlur,
+  parseStringToSafeDecimalNumberText,
   parseStringToSafeNumber,
   validateLaborContractEmployerInformation,
 } from '@/utils/document';
 import {
   formatCompanyRegistrationNumber,
   formatPhoneNumber,
+  limitInputValueLength,
   parsePhoneNumber,
 } from '@/utils/information';
 import { phone } from '@/constants/information';
@@ -41,6 +43,7 @@ import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import { useCurrentDocumentIdStore } from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { documentTranslation } from '@/constants/translation';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -59,7 +62,7 @@ const EmployerLaborContractForm = ({
   const [phoneNum, setPhoneNum] = useState({
     start: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).start
-      : '',
+      : '010',
     middle: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).middle
       : '',
@@ -67,6 +70,9 @@ const EmployerLaborContractForm = ({
       ? parsePhoneNumber(newDocumentData.phone_number).end
       : '',
   });
+  const [wageRateInput, setWageRateInput] = useState(
+    String(newDocumentData.wage_rate),
+  );
 
   const [isInvalid, setIsInvalid] = useState(false);
   // 근무시간, 요일 선택 모달 활성화 플래그
@@ -79,11 +85,15 @@ const EmployerLaborContractForm = ({
     if (isEdit && document?.employer_information) {
       setNewDocumentData(document?.employer_information);
       setPhoneNum({
-        start: parsePhoneNumber(document?.employee_information.phone_number)
-          .start,
-        middle: parsePhoneNumber(document?.employee_information.phone_number)
-          .middle,
-        end: parsePhoneNumber(document?.employee_information.phone_number).end,
+        start: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).start,
+        middle: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).middle,
+        end: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).end,
       });
     }
   }, [document, isEdit]);
@@ -148,7 +158,7 @@ const EmployerLaborContractForm = ({
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <div className="w-full h-screen fixed inset-0 bg-white">
+          <div className="w-full h-screen fixed inset-0 bg-white z-[3]">
             <DaumPostcodeEmbed
               style={{
                 position: 'fixed',
@@ -329,6 +339,12 @@ const EmployerLaborContractForm = ({
                       }
                       canDelete={false}
                     />
+                    {newDocumentData.address.address_detail &&
+                      newDocumentData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.ko}
+                        </p>
+                      )}
                   </InputLayout>
                 </>
               )}
@@ -342,11 +358,13 @@ const EmployerLaborContractForm = ({
                       className="w-full h-[10vh] px-[1rem] py-[0.75rem] border border-[#E2E5EB] rounded-[0.75rem] body-2 outline-none resize-none"
                       placeholder="업무의 내용을 작성해주세요"
                       value={newDocumentData.description}
-                      maxLength={100}
                       onChange={(e) =>
                         setNewDocumentData({
                           ...newDocumentData,
-                          description: e.target.value,
+                          description: limitInputValueLength(
+                            e.target.value,
+                            100,
+                          ),
                         })
                       }
                     />
@@ -515,13 +533,18 @@ const EmployerLaborContractForm = ({
               <Input
                 inputType={InputType.TEXT}
                 placeholder="0"
-                value={String(newDocumentData.wage_rate)}
-                onChange={(value) =>
+                value={wageRateInput}
+                onChange={(value) => {
+                  const validText = parseStringToSafeDecimalNumberText(value);
+                  setWageRateInput(validText);
+
+                  // 소수점으로 끝나는 경우에도 일단 숫자로 변환 (소수점은 무시됨)
+                  const numValue = validText === '' ? 0 : Number(validText);
                   setNewDocumentData({
                     ...newDocumentData,
-                    wage_rate: parseStringToSafeNumber(value),
-                  })
-                }
+                    wage_rate: numValue,
+                  });
+                }}
                 canDelete={false}
                 isUnit
                 unit="%"

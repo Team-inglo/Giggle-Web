@@ -52,7 +52,7 @@ const PostApplyResume = () => {
       <section className="flex flex-col p-4 gap-2 bg-surface-secondary pb-32">
         <InfoCardLayout
           icon={<YellowDocumentIcon />}
-          title="Visa"
+          title={profileTranslation.visa[isEmployer(pathname)]}
           rightTopElement={
             <p>
               <span className="mr-2 button-2 text-text-normal">
@@ -68,12 +68,12 @@ const PostApplyResume = () => {
         ></InfoCardLayout>
         <InfoCardLayout
           icon={<YellowDocumentIcon />}
-          title="Personal Information"
+          title={profileTranslation.personalInformation[isEmployer(pathname)]}
         >
           <div className="flex flex-col gap-2">
             <div className="w-full p-4 rounded-lg bg-surface-secondary">
               <h4 className="px-[0.25rem] pb-[0.375rem] button-2 text-text-normal">
-                Gender
+                {profileTranslation.gender[isEmployer(pathname)]}
               </h4>
               <p className="px-[0.25rem] body-3 text-text-normal">
                 {data?.data?.personal_information.gender}
@@ -81,7 +81,7 @@ const PostApplyResume = () => {
             </div>
             <div className="w-full p-4 rounded-lg bg-surface-secondary">
               <h4 className="px-[0.25rem] pb-[0.375rem] button-2 text-text-normal">
-                Date of birth
+                {profileTranslation.dateOfBirth[isEmployer(pathname)]}
               </h4>
               <p className="px-[0.25rem] body-3 text-text-normal">
                 {data?.data?.personal_information?.birth ||
@@ -90,7 +90,7 @@ const PostApplyResume = () => {
             </div>
             <div className="w-full p-4 rounded-lg bg-surface-secondary">
               <h4 className="px-[0.25rem] pb-[0.375rem] button-2 text-text-normal">
-                Nationality
+                {profileTranslation.nationality[isEmployer(pathname)]}
               </h4>
               <p className="px-[0.25rem] body-3 text-text-normal">
                 {data?.data?.personal_information?.nationality ||
@@ -99,7 +99,7 @@ const PostApplyResume = () => {
             </div>
             <div className="w-full p-4 rounded-lg bg-surface-secondary">
               <h4 className="px-[0.25rem] pb-[0.375rem] button-2 text-text-normal">
-                Phone Number
+                {profileTranslation.phoneNumber[isEmployer(pathname)]}
               </h4>
               <p className="px-[0.25rem] body-3 text-text-normal">
                 {data?.data?.personal_information.phone_number}
@@ -107,7 +107,7 @@ const PostApplyResume = () => {
             </div>
             <div className="w-full p-4 rounded-lg bg-surface-secondary">
               <h4 className="px-[0.25rem] pb-[0.375rem] button-2 text-text-normal">
-                Email
+                {profileTranslation.email[isEmployer(pathname)]}
               </h4>
               <p className="px-[0.25rem] body-3 text-text-normal">
                 {data?.data?.personal_information.email}
@@ -115,7 +115,7 @@ const PostApplyResume = () => {
             </div>
             <div className="w-full p-4 rounded-lg bg-surface-secondary">
               <h4 className="px-[0.25rem] pb-[0.375rem] button-2 text-text-normal">
-                Address
+                {profileTranslation.address[isEmployer(pathname)]}
               </h4>
               <p className="px-[0.25rem] body-3 text-text-normal">
                 {data?.data?.personal_information?.main_address
@@ -125,17 +125,23 @@ const PostApplyResume = () => {
             </div>
           </div>
         </InfoCardLayout>
-        <InfoCardLayout icon={<YellowDocumentIcon />} title="Introduction">
+        <InfoCardLayout
+          icon={<YellowDocumentIcon />}
+          title={profileTranslation.introduction[isEmployer(pathname)]}
+        >
           <p className="pb-2 body-3 text-text-alternative">
             {profileTranslation.introductionQuestion[isEmployer(pathname)]}
           </p>
-          <p className="pb-2 body-3 text-text-normal whitespace-pre">
+          <p className="w-full pb-2 body-3 text-text-normal whitespace-pre-wrap break-all">
             {data?.data?.introduction?.length > 0
               ? data.data.introduction
               : infoTranslation.notEntered[isEmployer(pathname)]}
           </p>
         </InfoCardLayout>
-        <InfoCardLayout icon={<YellowDocumentIcon />} title="Work Experience">
+        <InfoCardLayout
+          icon={<YellowDocumentIcon />}
+          title={profileTranslation.workExperience[isEmployer(pathname)]}
+        >
           <div className="flex flex-col gap-2">
             {data?.data?.work_experience?.length > 0 ? (
               data?.data?.work_experience?.map((data: WorkExperienceType) => (
@@ -146,7 +152,7 @@ const PostApplyResume = () => {
                   <h5 className="pb-[0.125rem] button-2 text-text-normal">
                     {data.title}
                   </h5>
-                  <p className="pb-2 caption text-text-normal">
+                  <p className="pb-2 caption text-text-normal whitespace-pre-wrap break-all">
                     {data?.description ??
                       infoTranslation.notEntered[isEmployer(pathname)]}
                   </p>
@@ -155,7 +161,10 @@ const PostApplyResume = () => {
                       {formatDate(data.start_date)}~
                       {data.end_date ? formatDate(data.end_date) : ''}
                     </p>
-                    <p className="text-[#5592FC]">{data.duration} months</p>
+                    <p className="text-[#5592FC]">
+                      {data.duration}{' '}
+                      {profileTranslation.months[isEmployer(pathname)]}
+                    </p>
                   </div>
                 </div>
               ))
@@ -166,7 +175,10 @@ const PostApplyResume = () => {
             )}
           </div>
         </InfoCardLayout>
-        <InfoCardLayout icon={<YellowDocumentIcon />} title="Education">
+        <InfoCardLayout
+          icon={<YellowDocumentIcon />}
+          title={profileTranslation.education[isEmployer(pathname)]}
+        >
           <div className="flex flex-col gap-2">
             {data?.data?.education?.length > 0 ? (
               data?.data?.education?.map((data: EducationType) => (
@@ -179,7 +191,8 @@ const PostApplyResume = () => {
                       {data.school_name}
                     </h5>
                     <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                      {EDUCATION_PERIOD[data.education_level]} years program
+                      {EDUCATION_PERIOD[data.education_level]}{' '}
+                      {profileTranslation.yearsProgram[isEmployer(pathname)]}
                     </div>
                   </div>
                   <p className="pb-2 caption text-text-normal">{data.major}</p>
@@ -187,7 +200,10 @@ const PostApplyResume = () => {
                     <p className="text-[#656565]">
                       {formatDate(data.start_date)}~{formatDate(data.end_date)}
                     </p>
-                    <p className="text-[#5592FC]">{data.grade}th grade</p>
+                    <p className="text-[#5592FC]">
+                      {data.grade}
+                      {profileTranslation.thGrade[isEmployer(pathname)]}
+                    </p>
                   </div>
                 </div>
               ))
@@ -198,12 +214,16 @@ const PostApplyResume = () => {
             )}
           </div>
         </InfoCardLayout>
-        <InfoCardLayout icon={<YellowDocumentIcon />} title="Languages">
+        <InfoCardLayout
+          icon={<YellowDocumentIcon />}
+          title={profileTranslation.languages[isEmployer(pathname)]}
+        >
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center w-full p-4 rounded-lg bg-surface-secondary">
               <h5 className="pb-[0.125rem] button-2 text-[#464646]">TOPIK</h5>
               <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                LEVEL {data?.data?.languages.topik}
+                {profileTranslation.level[isEmployer(pathname)]}{' '}
+                {data?.data?.languages.topik}
               </div>
             </div>
             <div className="flex justify-between items-center w-full p-4 rounded-lg bg-surface-secondary">
@@ -211,7 +231,8 @@ const PostApplyResume = () => {
                 Social Intergration
               </h5>
               <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                LEVEL {data?.data?.languages.social_integration}
+                {profileTranslation.level[isEmployer(pathname)]}{' '}
+                {data?.data?.languages.social_integration}
               </div>
             </div>
             <div className="flex justify-between items-center w-full p-4 rounded-lg bg-surface-secondary">
@@ -219,7 +240,8 @@ const PostApplyResume = () => {
                 Sejong Institute
               </h5>
               <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                LEVEL {data?.data?.languages.sejong_institute}
+                {profileTranslation.level[isEmployer(pathname)]}{' '}
+                {data?.data?.languages.sejong_institute}
               </div>
             </div>
             {data?.data?.languages.etc?.map((data: LanguageType) => (
@@ -231,7 +253,7 @@ const PostApplyResume = () => {
                   {data.language_name}
                 </h5>
                 <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                  Level {data.level}
+                  {profileTranslation.level[isEmployer(pathname)]} {data.level}
                 </div>
               </div>
             ))}

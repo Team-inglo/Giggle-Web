@@ -7,6 +7,7 @@ import Button from '@/components/Common/Button';
 import { usePatchHiKoreaResult } from '@/hooks/api/useApplication';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import PageTitle from '@/components/Common/PageTitle';
+import { limitInputValueLength } from '@/utils/information';
 
 const ApplicationResultPage = () => {
   const navigate = useNavigate();
@@ -64,9 +65,10 @@ const ApplicationResultPage = () => {
           <textarea
             className="min-h-24 w-full px-4 py-3 border border-border-alternative rounded body-2 focus:outline-none resize-none"
             placeholder="Was the process smooth? Any challenges? 💬"
-            maxLength={200}
             value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
+            onChange={(e) =>
+              setFeedback(limitInputValueLength(e.target.value, 200))
+            }
           />
         </section>
       </main>

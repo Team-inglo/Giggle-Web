@@ -27,6 +27,9 @@ export const isNotEmpty = (obj: Record<string, any>): boolean => {
       return value.trim().length > 0;
     }
 
+    if (key !== 'address') {
+      return value.address_detail.length <= 50;
+    }
     // 숫자나 불리언 등 다른 타입은 true 반환
     return true;
   });
@@ -118,7 +121,8 @@ export const validateEmployerInformation = (
     !info.company_name ||
     !info.job_type ||
     !info.name ||
-    !info.phone_number
+    !info.phone_number ||
+    !info.signature_base64
   ) {
     return false;
   }
@@ -145,7 +149,11 @@ export const validateEmployerInformation = (
   }
 
   // 주소 체크
-  if (!info.address?.region_1depth_name || !info.address.address_detail) {
+  if (
+    !info.address?.region_1depth_name ||
+    !info.address.address_detail ||
+    info.address.address_detail.length > 50
+  ) {
     return false;
   }
 
@@ -209,7 +217,11 @@ export const validateLaborContractEmployerInformation = (
   }
 
   // 주소 체크
-  if (!info.address?.region_1depth_name || !info.address.address_detail) {
+  if (
+    !info.address?.region_1depth_name ||
+    !info.address.address_detail ||
+    info.address.address_detail.length > 50
+  ) {
     return false;
   }
 
@@ -221,6 +233,20 @@ export const parseStringToSafeNumber = (value: string): number => {
   const numberValue = Number(value);
   if (isNaN(numberValue)) return 0;
   else return numberValue;
+};
+
+export const parseStringToSafeDecimalNumberText = (value: string): string => {
+  // 숫자와 소수점만 허용하는 정규식 검사
+  if (value === '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
+    return value;
+  }
+
+  // 유효하지 않은 입력이면 이전 유효한 값 반환
+  const cleanedValue = value.replace(/[^0-9.]/g, '');
+
+  // 소수점이 여러 개 있으면 첫 번째만 유지
+  const parts = cleanedValue.split('.');
+  return parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
 };
 
 // 시급 필드 onBlur 이벤트 핸들러
@@ -263,7 +289,10 @@ export const validateIntegratedApplication = (
   data: IntegratedApplicationData,
 ): boolean => {
   // 주소 검사
-  const isAddressValid = data.address.region_1depth_name !== '';
+  const isAddressValid =
+    data.address.region_1depth_name !== '' &&
+    !!data.address.address_detail &&
+    data.address.address_detail.length <= 50;
 
   // annual_income_amount 검사
   const isIncomeValid = data.annual_income_amount !== 0;

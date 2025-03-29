@@ -25,6 +25,7 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { documentTranslation } from '@/constants/translation';
 
 const EditProfilePage = () => {
   const { data: userProfile } = useGetUserProfile();
@@ -276,8 +277,6 @@ const EditProfilePage = () => {
                         placeholder="ex) 101dong"
                         value={userData.address.address_detail}
                         onChange={(value) =>
-                          value &&
-                          value.trim().length < 100 &&
                           setUserData({
                             ...userData,
                             address: {
@@ -288,6 +287,12 @@ const EditProfilePage = () => {
                         }
                         canDelete={false}
                       />
+                      {userData.address.address_detail &&
+                        userData.address.address_detail.length > 50 && (
+                          <p className="text-text-error text-xs p-2">
+                            {documentTranslation.detailAddressTooLong.en}
+                          </p>
+                        )}
                     </InputLayout>
                   </>
                 )}

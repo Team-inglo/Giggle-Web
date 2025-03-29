@@ -33,6 +33,7 @@ import {
 import { phone } from '@/constants/information';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { documentTranslation } from '@/constants/translation';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -52,7 +53,7 @@ const EmployerPartTimePermitForm = ({
   const [phoneNum, setPhoneNum] = useState({
     start: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).start
-      : '',
+      : '010',
     middle: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).middle
       : '',
@@ -70,11 +71,15 @@ const EmployerPartTimePermitForm = ({
     if (isEdit && document?.employer_information) {
       setNewDocumentData(document?.employer_information);
       setPhoneNum({
-        start: parsePhoneNumber(document?.employee_information.phone_number)
-          .start,
-        middle: parsePhoneNumber(document?.employee_information.phone_number)
-          .middle,
-        end: parsePhoneNumber(document?.employee_information.phone_number).end,
+        start: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).start,
+        middle: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).middle,
+        end: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).end,
       });
     }
   }, [document, isEdit]);
@@ -126,7 +131,7 @@ const EmployerPartTimePermitForm = ({
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <div className="w-full h-screen fixed inset-0 bg-white">
+          <div className="w-full h-screen fixed inset-0 bg-white z-[3]">
             <DaumPostcodeEmbed
               style={{
                 position: 'fixed',
@@ -135,6 +140,7 @@ const EmployerPartTimePermitForm = ({
                 height: 'calc(100vh - 100px)',
                 marginTop: '3.125rem',
                 paddingBottom: '6.25rem',
+                zIndex: 9999,
               }}
               theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
               onComplete={handleAddressSelection}
@@ -238,6 +244,12 @@ const EmployerPartTimePermitForm = ({
                       }
                       canDelete={false}
                     />
+                    {newDocumentData.address.address_detail &&
+                      newDocumentData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.ko}
+                        </p>
+                      )}
                   </InputLayout>
                 </>
               )}

@@ -98,6 +98,7 @@ export const usePutPartTimeEmployPermit = (
       navigate('/write-documents', {
         state: {
           type: DocumentType.PART_TIME_PERMIT,
+          isEdit: true,
         },
       }),
     ...options,
@@ -123,6 +124,7 @@ export const usePutPartTimeEmployPermitEmployer = (
       navigate('/write-documents', {
         state: {
           type: DocumentType.PART_TIME_PERMIT,
+          isEdit: true,
         },
       }),
     ...options,
@@ -173,6 +175,7 @@ export const usePutStandardLaborContracts = (
       navigate('/write-documents', {
         state: {
           type: DocumentType.LABOR_CONTRACT,
+          isEdit: true,
         },
       }),
     ...options,
@@ -198,6 +201,7 @@ export const usePutLaborContractEmployer = (
       navigate('/write-documents', {
         state: {
           type: DocumentType.LABOR_CONTRACT,
+          isEdit: true,
         },
       }),
     ...options,
@@ -249,6 +253,7 @@ export const usePutIntegratedApplicants = (
       navigate(`/write-documents/${id}`, {
         state: {
           type: DocumentType.INTEGRATED_APPLICATION,
+          isEdit: true,
         },
       }),
     ...options,
