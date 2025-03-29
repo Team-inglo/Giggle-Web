@@ -200,7 +200,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
           <div className="flex flex-col gap-3 w-full">
             {postDetailData.detailed_overview.length > 255 ? (
               <>
-                <p className="text-text-alternative caption whitespace-pre">
+                <p className="text-text-alternative caption whitespace-pre-wrap break-all">
                   {showDetailOverview
                     ? postDetailData.detailed_overview
                     : postDetailData.detailed_overview.slice(0, 255) + '...'}
@@ -219,7 +219,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 )}
               </>
             ) : (
-              <p className="text-text-alternative caption whitespace-pre">
+              <p className="text-text-alternative caption whitespace-pre-wrap break-all">
                 {postDetailData.detailed_overview}
               </p>
             )}

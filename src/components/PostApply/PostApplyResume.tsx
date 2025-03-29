@@ -132,7 +132,7 @@ const PostApplyResume = () => {
           <p className="pb-2 body-3 text-text-alternative">
             {profileTranslation.introductionQuestion[isEmployer(pathname)]}
           </p>
-          <p className="pb-2 body-3 text-text-normal whitespace-pre">
+          <p className="w-full pb-2 body-3 text-text-normal whitespace-pre-wrap break-all">
             {data?.data?.introduction?.length > 0
               ? data.data.introduction
               : infoTranslation.notEntered[isEmployer(pathname)]}
@@ -152,7 +152,7 @@ const PostApplyResume = () => {
                   <h5 className="pb-[0.125rem] button-2 text-text-normal">
                     {data.title}
                   </h5>
-                  <p className="pb-2 caption text-text-normal">
+                  <p className="pb-2 caption text-text-normal whitespace-pre-wrap break-all">
                     {data?.description ??
                       infoTranslation.notEntered[isEmployer(pathname)]}
                   </p>
