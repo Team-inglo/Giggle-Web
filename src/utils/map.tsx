@@ -27,8 +27,9 @@ export const renderMap = (address: GiggleAddress) => {
   return (
     <>
       <div className="w-full self-stretch flex flex-col items-start justify-start">
-        <div className="w-full flex-1 relative body-2">
-          {address.address_name} {address.address_detail}
+        <div className="w-full flex-1 relative body-2 mb-1">
+          {address.address_name}
+          {', '} {address.address_detail}
         </div>
       </div>
       <div className="w-full rounded-lg z-1">
