@@ -29,7 +29,10 @@ import {
   formatPhoneNumber,
   parsePhoneNumber,
 } from '@/utils/information';
-import { useCurrentPostIdEmployeeStore } from '@/store/url';
+import {
+  useCurrentDocumentIdStore,
+  useCurrentPostIdEmployeeStore,
+} from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
@@ -46,6 +49,7 @@ const IntegratedApplicationWriteForm = ({
   const [isInvalid, setIsInvalid] = useState(false);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const { currentPostId } = useCurrentPostIdEmployeeStore();
+  const { currentDocumentId } = useCurrentDocumentIdStore();
   const [newDocumentData, setNewDocumentData] =
     useState<IntegratedApplicationData>(initialIntegratedApplication);
 
@@ -148,7 +152,7 @@ const IntegratedApplicationWriteForm = ({
       new_work_place_phone_number: formatPhoneNumber(workPlacePhoneNum),
     };
     const payload = {
-      id: Number(currentPostId),
+      id: Number(isEdit ? currentDocumentId : currentPostId),
       document: finalDocument, // TODO: 로그인 연결 후 userId를 넣어야 하는 것으로 추정
     };
 
