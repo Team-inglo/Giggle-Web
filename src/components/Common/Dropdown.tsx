@@ -23,7 +23,7 @@ export const DropdownModal = ({
   onSelect: (option: string) => void;
 }) => {
   return (
-    <div className="max-h-48 overflow-y-scroll w-full relative rounded-lg bg-white border border-[#dcdcdc] flex flex-row items-start justify-start p-2 text-left body-2 text-primary-dark z-10">
+    <div className="max-h-[13.3rem] overflow-y-scroll w-full relative rounded-lg bg-white border border-[#dcdcdc] flex flex-row items-start justify-start p-2 text-left body-2 text-primary-dark z-10">
       <div className="flex-1 flex flex-col items-start justify-start gap-[5px]">
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
