@@ -24,7 +24,6 @@ import Button from '@/components/Common/Button';
 import { usePutLaborContractEmployer } from '@/hooks/api/useDocument';
 import {
   handleHourlyRateBlur,
-  parseStringToSafeDecimalNumber,
   parseStringToSafeDecimalNumberText,
   parseStringToSafeNumber,
   validateLaborContractEmployerInformation,
@@ -61,7 +60,7 @@ const EmployerLaborContractForm = ({
   const [phoneNum, setPhoneNum] = useState({
     start: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).start
-      : '',
+      : '010',
     middle: newDocumentData.phone_number
       ? parsePhoneNumber(newDocumentData.phone_number).middle
       : '',
@@ -157,7 +156,7 @@ const EmployerLaborContractForm = ({
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
         {isAddressSearch ? (
-          <div className="w-full h-screen fixed inset-0 bg-white">
+          <div className="w-full h-screen fixed inset-0 bg-white z-[3]">
             <DaumPostcodeEmbed
               style={{
                 position: 'fixed',
