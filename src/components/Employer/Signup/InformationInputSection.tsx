@@ -15,7 +15,7 @@ import {
   formatPhoneNumber,
 } from '@/utils/information';
 import PageTitle from '@/components/Common/PageTitle';
-import { signInputTranclation } from '@/constants/translation';
+import { documentTranslation, signInputTranclation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
@@ -291,6 +291,12 @@ const InformationInputSection = ({
                     }
                     canDelete={false}
                   />
+                  {newEmployData.address.address_detail &&
+                    newEmployData.address.address_detail.length > 50 && (
+                      <p className="text-text-error text-xs p-2">
+                        {documentTranslation.detailAddressTooLong.ko}
+                      </p>
+                    )}
                 </InputLayout>
               </div>
               {/* 사업자 등록번호 입력 */}

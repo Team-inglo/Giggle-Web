@@ -29,10 +29,14 @@ import {
   formatPhoneNumber,
   parsePhoneNumber,
 } from '@/utils/information';
-import { useCurrentPostIdEmployeeStore } from '@/store/url';
+import {
+  useCurrentDocumentIdStore,
+  useCurrentPostIdEmployeeStore,
+} from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
+import { documentTranslation } from '@/constants/translation';
 
 type IntegratedApplicationFormProps = {
   document?: IntegratedApplicationData;
@@ -46,6 +50,7 @@ const IntegratedApplicationWriteForm = ({
   const [isInvalid, setIsInvalid] = useState(false);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const { currentPostId } = useCurrentPostIdEmployeeStore();
+  const { currentDocumentId } = useCurrentDocumentIdStore();
   const [newDocumentData, setNewDocumentData] =
     useState<IntegratedApplicationData>(initialIntegratedApplication);
 
@@ -148,7 +153,7 @@ const IntegratedApplicationWriteForm = ({
       new_work_place_phone_number: formatPhoneNumber(workPlacePhoneNum),
     };
     const payload = {
-      id: Number(currentPostId),
+      id: Number(isEdit ? currentDocumentId : currentPostId),
       document: finalDocument, // TODO: 로그인 연결 후 userId를 넣어야 하는 것으로 추정
     };
 
@@ -287,8 +292,6 @@ const IntegratedApplicationWriteForm = ({
                       placeholder="ex) 101-dong"
                       value={newDocumentData.address.address_detail}
                       onChange={(value) =>
-                        value &&
-                        value.trim().length < 100 &&
                         setNewDocumentData({
                           ...newDocumentData,
                           address: {
@@ -299,6 +302,12 @@ const IntegratedApplicationWriteForm = ({
                       }
                       canDelete={false}
                     />
+                    {newDocumentData.address.address_detail &&
+                      newDocumentData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.en}
+                        </p>
+                      )}
                   </InputLayout>
                 </>
               )}

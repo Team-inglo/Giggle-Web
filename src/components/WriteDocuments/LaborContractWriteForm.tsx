@@ -20,10 +20,11 @@ import {
   usePostStandardLaborContracts,
   usePutStandardLaborContracts,
 } from '@/hooks/api/useDocument';
-import { useCurrentPostIdEmployeeStore } from '@/store/url';
+import { useCurrentDocumentIdStore, useCurrentPostIdEmployeeStore } from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
+import { documentTranslation } from '@/constants/translation';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -38,6 +39,7 @@ const LaborContractWriteForm = ({
   const [newDocumentData, setNewDocumentData] =
     useState<LaborContractEmployeeInfo>(initialLaborContractEmployeeInfo);
   const { currentPostId } = useCurrentPostIdEmployeeStore();
+  const { currentDocumentId } = useCurrentDocumentIdStore();
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
@@ -59,9 +61,11 @@ const LaborContractWriteForm = ({
         signature_base64: document.employee_information.signature_base64,
       });
       setPhoneNum({
-        start: parsePhoneNumber(newDocumentData.phone_number).start,
-        middle: parsePhoneNumber(newDocumentData.phone_number).middle,
-        end: parsePhoneNumber(newDocumentData.phone_number).end,
+        start: parsePhoneNumber(document.employee_information.phone_number)
+          .start,
+        middle: parsePhoneNumber(document.employee_information.phone_number)
+          .middle,
+        end: parsePhoneNumber(document.employee_information.phone_number).end,
       });
     }
   }, [document, isEdit]);
@@ -93,7 +97,7 @@ const LaborContractWriteForm = ({
       phone_number: formatPhoneNumber(phoneNum),
     };
     const payload = {
-      id: Number(currentPostId),
+      id: Number(isEdit ? currentDocumentId : currentPostId),
       document: finalDocument, // TODO: 로그인 연결 후 userId를 넣어야 하는 것으로 추정
     };
 
@@ -190,8 +194,6 @@ const LaborContractWriteForm = ({
                       placeholder="ex) 101-dong"
                       value={newDocumentData.address.address_detail}
                       onChange={(value) =>
-                        value &&
-                        value.trim().length < 100 &&
                         setNewDocumentData({
                           ...newDocumentData,
                           address: {
@@ -202,6 +204,12 @@ const LaborContractWriteForm = ({
                       }
                       canDelete={false}
                     />
+                    {newDocumentData.address.address_detail &&
+                      newDocumentData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.en}
+                        </p>
+                      )}
                   </InputLayout>
                 </>
               )}
