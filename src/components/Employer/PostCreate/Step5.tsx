@@ -5,6 +5,7 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import { buttonTypeKeys } from '@/constants/components';
 import { InputType } from '@/types/common/input';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
+import { limitInputValueLength } from '@/utils/information';
 import { useEffect, useState } from 'react';
 
 const Step5 = ({
@@ -89,13 +90,15 @@ const Step5 = ({
                   className="w-full h-[40vh] px-[1rem] py-[0.75rem] border border-[#E2E5EB] rounded-[0.75rem] body-2 outline-none resize-none"
                   placeholder="상세요강을 작성해주세요"
                   value={newPostInfo.body.description}
-                  maxLength={1000}
                   onChange={(e) =>
                     setNewPostInfo({
                       ...newPostInfo,
                       body: {
                         ...newPostInfo.body,
-                        description: e.target.value,
+                        description: limitInputValueLength(
+                          e.target.value,
+                          1000,
+                        ),
                       },
                     })
                   }
