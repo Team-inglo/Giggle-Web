@@ -24,6 +24,7 @@ import { useCurrentPostIdEmployeeStore } from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
+import { documentTranslation } from '@/constants/translation';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -192,8 +193,6 @@ const LaborContractWriteForm = ({
                       placeholder="ex) 101-dong"
                       value={newDocumentData.address.address_detail}
                       onChange={(value) =>
-                        value &&
-                        value.trim().length < 100 &&
                         setNewDocumentData({
                           ...newDocumentData,
                           address: {
@@ -204,6 +203,12 @@ const LaborContractWriteForm = ({
                       }
                       canDelete={false}
                     />
+                    {newDocumentData.address.address_detail &&
+                      newDocumentData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.en}
+                        </p>
+                      )}
                   </InputLayout>
                 </>
               )}

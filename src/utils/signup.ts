@@ -34,7 +34,8 @@ export const isValidEmployerRegistration = (
     !address.region_3depth_name ||
     !isValidString(address.region_3depth_name) ||
     !address.address_detail ||
-    !isValidString(address.address_detail)
+    !isValidString(address.address_detail) ||
+    !(address.address_detail.length <= 50)
   ) {
     return false;
   }

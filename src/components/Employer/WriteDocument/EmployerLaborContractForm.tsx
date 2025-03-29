@@ -42,6 +42,7 @@ import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import { useCurrentDocumentIdStore } from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { documentTranslation } from '@/constants/translation';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -337,6 +338,12 @@ const EmployerLaborContractForm = ({
                       }
                       canDelete={false}
                     />
+                    {newDocumentData.address.address_detail &&
+                      newDocumentData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.ko}
+                        </p>
+                      )}
                   </InputLayout>
                 </>
               )}

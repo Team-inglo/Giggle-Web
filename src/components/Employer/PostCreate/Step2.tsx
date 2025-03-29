@@ -12,6 +12,7 @@ import { buttonTypeKeys } from '@/constants/components';
 import { formatDateToDash } from '@/utils/editResume';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { documentTranslation } from '@/constants/translation';
 
 const Step2 = ({
   postInfo,
@@ -79,7 +80,8 @@ const Step2 = ({
     const isFormValid =
       address.address_name !== '' &&
       address.address_detail &&
-      address.address_detail !== '';
+      address.address_detail !== '' &&
+      address.address_detail.length <= 50;
     // work_day_times.length &&
     setIsInvalid(!isFormValid);
   }, [newPostInfo]);
@@ -155,6 +157,12 @@ const Step2 = ({
                   }
                   canDelete={false}
                 />
+                {newPostInfo.body.address.address_detail &&
+                  newPostInfo.body.address.address_detail.length > 50 && (
+                    <p className="text-text-error text-xs p-2">
+                      {documentTranslation.detailAddressTooLong.ko}
+                    </p>
+                  )}
               </InputLayout>
             </div>
             {/* 날짜 선택 입력 */}
