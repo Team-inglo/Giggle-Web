@@ -70,11 +70,15 @@ const EmployerPartTimePermitForm = ({
     if (isEdit && document?.employer_information) {
       setNewDocumentData(document?.employer_information);
       setPhoneNum({
-        start: parsePhoneNumber(document?.employee_information.phone_number)
-          .start,
-        middle: parsePhoneNumber(document?.employee_information.phone_number)
-          .middle,
-        end: parsePhoneNumber(document?.employee_information.phone_number).end,
+        start: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).start,
+        middle: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).middle,
+        end: parsePhoneNumber(
+          document?.employer_information.phone_number as string,
+        ).end,
       });
     }
   }, [document, isEdit]);

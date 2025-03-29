@@ -59,9 +59,11 @@ const LaborContractWriteForm = ({
         signature_base64: document.employee_information.signature_base64,
       });
       setPhoneNum({
-        start: parsePhoneNumber(newDocumentData.phone_number).start,
-        middle: parsePhoneNumber(newDocumentData.phone_number).middle,
-        end: parsePhoneNumber(newDocumentData.phone_number).end,
+        start: parsePhoneNumber(document.employee_information.phone_number)
+          .start,
+        middle: parsePhoneNumber(document.employee_information.phone_number)
+          .middle,
+        end: parsePhoneNumber(document.employee_information.phone_number).end,
       });
     }
   }, [document, isEdit]);
