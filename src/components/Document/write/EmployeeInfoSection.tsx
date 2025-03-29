@@ -69,6 +69,15 @@ const EmployeeInfoSection = ({
             </div>
           </div>
         );
+      // 이메일은 첫 글자 대문자화 제외
+      case PartTimePermitFormProperty.EMAIL:
+        return (
+          <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
+            {propertyToString(String(value)) === 'Null'
+              ? 'none'
+              : String(value)}
+          </div>
+        );
       default:
         return <DefaultValueRenderer value={value} />;
     }
