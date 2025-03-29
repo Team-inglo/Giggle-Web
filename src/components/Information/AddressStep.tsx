@@ -11,7 +11,10 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import PageTitle from '../Common/PageTitle';
-import { signInputTranclation } from '@/constants/translation';
+import {
+  documentTranslation,
+  signInputTranclation,
+} from '@/constants/translation';
 import { useLocation } from 'react-router-dom';
 import { isEmployer } from '@/utils/signup';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
@@ -120,6 +123,12 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
                     }}
                     canDelete={false}
                   />
+                  {newAddress.address_detail &&
+                    newAddress.address_detail.length > 50 && (
+                      <p className="text-text-error text-xs p-2">
+                        {documentTranslation.detailAddressTooLong.en}
+                      </p>
+                    )}
                 </InputLayout>
               </>
             )}
@@ -132,13 +141,13 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
           type="large"
           bgColor={
             newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 100
+            newAddress.address_detail?.trim().length > 50
               ? 'bg-[#F4F4F9]'
               : 'bg-[#fef387]'
           }
           fontColor={
             newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 100
+            newAddress.address_detail?.trim().length > 50
               ? ''
               : 'text-[#222]'
           }
@@ -146,7 +155,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
           title="Next"
           onClick={
             newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 100
+            newAddress.address_detail?.trim().length > 50
               ? undefined
               : () =>
                   onNext({

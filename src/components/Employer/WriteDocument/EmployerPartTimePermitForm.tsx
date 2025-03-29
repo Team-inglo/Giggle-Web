@@ -33,6 +33,7 @@ import {
 import { phone } from '@/constants/information';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { documentTranslation } from '@/constants/translation';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -243,6 +244,12 @@ const EmployerPartTimePermitForm = ({
                       }
                       canDelete={false}
                     />
+                    {newDocumentData.address.address_detail &&
+                      newDocumentData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.ko}
+                        </p>
+                      )}
                   </InputLayout>
                 </>
               )}

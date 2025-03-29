@@ -569,3 +569,10 @@ export const bannerTranslation = {
     en: 'Giggle will be back with some useful information soon!',
   },
 };
+
+export const documentTranslation = {
+  detailAddressTooLong: {
+    ko: '상세주소는 50자 이내로 입력해주세요',
+    en: 'max 50 characters.',
+  },
+};

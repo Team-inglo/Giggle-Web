@@ -27,6 +27,9 @@ export const isNotEmpty = (obj: Record<string, any>): boolean => {
       return value.trim().length > 0;
     }
 
+    if (key !== 'address') {
+      return value.address_detail.length <= 50;
+    }
     // 숫자나 불리언 등 다른 타입은 true 반환
     return true;
   });
@@ -146,7 +149,11 @@ export const validateEmployerInformation = (
   }
 
   // 주소 체크
-  if (!info.address?.region_1depth_name || !info.address.address_detail) {
+  if (
+    !info.address?.region_1depth_name ||
+    !info.address.address_detail ||
+    info.address.address_detail.length > 50
+  ) {
     return false;
   }
 
@@ -210,7 +217,11 @@ export const validateLaborContractEmployerInformation = (
   }
 
   // 주소 체크
-  if (!info.address?.region_1depth_name || !info.address.address_detail) {
+  if (
+    !info.address?.region_1depth_name ||
+    !info.address.address_detail ||
+    info.address.address_detail.length > 50
+  ) {
     return false;
   }
 
@@ -278,7 +289,10 @@ export const validateIntegratedApplication = (
   data: IntegratedApplicationData,
 ): boolean => {
   // 주소 검사
-  const isAddressValid = data.address.region_1depth_name !== '';
+  const isAddressValid =
+    data.address.region_1depth_name !== '' &&
+    data.address.address_detail &&
+    data.address.address_detail.length <= 50;
 
   // annual_income_amount 검사
   const isIncomeValid = data.annual_income_amount !== 0;
