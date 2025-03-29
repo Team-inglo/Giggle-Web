@@ -285,6 +285,70 @@ export const profileTranslation = {
     ko: '나를 한 줄로 표현한다면?',
     en: 'If you were to express yourself in one line?',
   },
+  visa: {
+    ko: '비자',
+    en: 'Visa',
+  },
+  personalInformation: {
+    ko: '개인 정보',
+    en: 'Personal Information',
+  },
+  gender: {
+    ko: '성별',
+    en: 'Gender',
+  },
+  dateOfBirth: {
+    ko: '생년월일',
+    en: 'Date of birth',
+  },
+  nationality: {
+    ko: '국적',
+    en: 'Nationality',
+  },
+  phoneNumber: {
+    ko: '전화번호',
+    en: 'Phone Number',
+  },
+  email: {
+    ko: '이메일',
+    en: 'Email',
+  },
+  address: {
+    ko: '주소지',
+    en: 'Address',
+  },
+  introduction: {
+    ko: '자기소개',
+    en: 'Introduction',
+  },
+  workExperience: {
+    ko: '경력',
+    en: 'Work Experience',
+  },
+  months: {
+    ko: '개월',
+    en: 'months',
+  },
+  education: {
+    ko: '학력',
+    en: 'Education',
+  },
+  languages: {
+    ko: '언어능력',
+    en: 'Languages',
+  },
+  level: {
+    ko: '급',
+    en: 'LEVEL',
+  },
+  yearsProgram: {
+    ko: '년 프로그램',
+    en: 'years program',
+  },
+  thGrade: {
+    ko: '년',
+    en: 'th grade',
+  },
 };
 
 export const headerTranslation = {
