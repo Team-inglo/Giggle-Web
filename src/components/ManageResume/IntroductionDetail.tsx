@@ -42,7 +42,9 @@ const IntroductionDetail = ({ data }: IntroductionDetailProps) => {
           <p className="pb-2 body-3 text-[#9397A1]">
             {profileTranslation.introductionQuestion[isEmployer(pathname)]}
           </p>
-          <p className="pb-2 body-3 text-[#252525] whitespace-pre">{data}</p>
+          <p className="pb-2 body-3 text-[#252525] whitespace-pre-wrap break-all">
+            {data}
+          </p>
         </div>
         <div className="flex justify-center items-center gap-2 ml-1">
           <EditIcon

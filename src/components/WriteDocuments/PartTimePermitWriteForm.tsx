@@ -160,20 +160,6 @@ const PartTimePermitWriteForm = ({
           </InputLayout>
           {/* 이수 학기 입력 */}
           <InputLayout title="Term of completion" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Term of completion"
-              value={String(newDocumentData.term_of_completion)}
-              onChange={(value) => {
-                if (typeof value === 'string' && !isNaN(Number(value))) {
-                  setNewDocumentData({
-                    ...newDocumentData,
-                    term_of_completion: Number(value),
-                  });
-                }
-              }}
-              canDelete={false}
-            />
             <Dropdown
               value={String(newDocumentData.term_of_completion)}
               placeholder="Term of completion"

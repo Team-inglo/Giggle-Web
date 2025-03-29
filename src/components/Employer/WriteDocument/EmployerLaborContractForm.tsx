@@ -31,6 +31,7 @@ import {
 import {
   formatCompanyRegistrationNumber,
   formatPhoneNumber,
+  limitInputValueLength,
   parsePhoneNumber,
 } from '@/utils/information';
 import { phone } from '@/constants/information';
@@ -357,11 +358,13 @@ const EmployerLaborContractForm = ({
                       className="w-full h-[10vh] px-[1rem] py-[0.75rem] border border-[#E2E5EB] rounded-[0.75rem] body-2 outline-none resize-none"
                       placeholder="업무의 내용을 작성해주세요"
                       value={newDocumentData.description}
-                      maxLength={100}
                       onChange={(e) =>
                         setNewDocumentData({
                           ...newDocumentData,
-                          description: e.target.value,
+                          description: limitInputValueLength(
+                            e.target.value,
+                            100,
+                          ),
                         })
                       }
                     />

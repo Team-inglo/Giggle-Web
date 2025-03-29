@@ -5,6 +5,7 @@ import IntroductionInput from '@/components/Introduction/IntroductionInput';
 import { buttonTypeKeys } from '@/constants/components';
 import { usePatchIntroduction } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
+import { limitInputValueLength } from '@/utils/information';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -25,12 +26,6 @@ const IntroductionPage = () => {
     const length = textareaRef.current!.value.length;
     textareaRef.current!.selectionStart = length;
     textareaRef.current!.selectionEnd = length;
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (event.target.value.length <= 200) {
-      setData(event.target.value);
-    }
   };
 
   const { mutate } = usePatchIntroduction();
@@ -64,7 +59,9 @@ const IntroductionPage = () => {
         data={data}
         textareaRef={textareaRef}
         handleFocusTextArea={handleFocusTextArea}
-        handleChange={handleChange}
+        handleChange={(value: string) =>
+          setData(limitInputValueLength(value, 200))
+        }
       />
       <BottomButtonPanel>
         <Button

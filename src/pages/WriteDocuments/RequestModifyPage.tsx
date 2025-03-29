@@ -3,6 +3,7 @@ import Button from '@/components/Common/Button';
 import CompleteModal from '@/components/Common/CompleteModal';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import { usePostRequest } from '@/hooks/api/useDocument';
+import { limitInputValueLength } from '@/utils/information';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -53,8 +54,9 @@ const RequestModifyPage = () => {
                     className="w-full h-[7.5rem] px-[1rem] py-[0.75rem] border border-[#E2E5EB] rounded-[0.75rem] body-2 outline-none resize-none"
                     placeholder="Write a contract review"
                     value={reasonInput}
-                    maxLength={100}
-                    onChange={(e) => setReasonInput(e.target.value)}
+                    onChange={(e) =>
+                      setReasonInput(limitInputValueLength(e.target.value, 100))
+                    }
                   />
                 </div>
               </div>

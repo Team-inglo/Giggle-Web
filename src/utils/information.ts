@@ -30,6 +30,13 @@ export const isValidPhoneNumber = (phone: {
   /^[0-9]{4}$/.test(phone.middle) &&
   /^[0-9]{4}$/.test(phone.end);
 
+// input에서 maxLength만큼 값을 제한하는 함수
+export const limitInputValueLength = (value: string, maxLength: number) => {
+  if (value.length <= maxLength) return value;
+
+  return value.slice(0, maxLength);
+};
+
 // 3개의 dropdown, input으로 나눠 받고 있는 state 통합하는 함수
 export const formatPhoneNumber = (phone: {
   start: string;

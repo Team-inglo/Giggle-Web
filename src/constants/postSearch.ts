@@ -75,7 +75,7 @@ export const FILTER_CATEGORY_OPTIONS: FilterOptionsType = {
     'One Week To One Month',
     'One Month To Three Months',
     'Three Months To Six Months',
-    'One Month To One Year',
+    'Six Months To One Year',
     'More Than One Year',
   ],
   [FILTER_CATEGORY.WORK_DAYS_PER_WEEK]: [
