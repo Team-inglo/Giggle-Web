@@ -291,7 +291,7 @@ export const validateIntegratedApplication = (
   // 주소 검사
   const isAddressValid =
     data.address.region_1depth_name !== '' &&
-    data.address.address_detail &&
+    !!data.address.address_detail &&
     data.address.address_detail.length <= 50;
 
   // annual_income_amount 검사
