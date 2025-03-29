@@ -24,6 +24,8 @@ import Button from '@/components/Common/Button';
 import { usePutLaborContractEmployer } from '@/hooks/api/useDocument';
 import {
   handleHourlyRateBlur,
+  parseStringToSafeDecimalNumber,
+  parseStringToSafeDecimalNumberText,
   parseStringToSafeNumber,
   validateLaborContractEmployerInformation,
 } from '@/utils/document';
@@ -67,6 +69,9 @@ const EmployerLaborContractForm = ({
       ? parsePhoneNumber(newDocumentData.phone_number).end
       : '',
   });
+  const [wageRateInput, setWageRateInput] = useState(
+    String(newDocumentData.wage_rate),
+  );
 
   const [isInvalid, setIsInvalid] = useState(false);
   // 근무시간, 요일 선택 모달 활성화 플래그
@@ -519,13 +524,18 @@ const EmployerLaborContractForm = ({
               <Input
                 inputType={InputType.TEXT}
                 placeholder="0"
-                value={String(newDocumentData.wage_rate)}
-                onChange={(value) =>
+                value={wageRateInput}
+                onChange={(value) => {
+                  const validText = parseStringToSafeDecimalNumberText(value);
+                  setWageRateInput(validText);
+
+                  // 소수점으로 끝나는 경우에도 일단 숫자로 변환 (소수점은 무시됨)
+                  const numValue = validText === '' ? 0 : Number(validText);
                   setNewDocumentData({
                     ...newDocumentData,
-                    wage_rate: parseStringToSafeNumber(value),
-                  })
-                }
+                    wage_rate: numValue,
+                  });
+                }}
                 canDelete={false}
                 isUnit
                 unit="%"

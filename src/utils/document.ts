@@ -224,6 +224,20 @@ export const parseStringToSafeNumber = (value: string): number => {
   else return numberValue;
 };
 
+export const parseStringToSafeDecimalNumberText = (value: string): string => {
+  // 숫자와 소수점만 허용하는 정규식 검사
+  if (value === '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
+    return value;
+  }
+
+  // 유효하지 않은 입력이면 이전 유효한 값 반환
+  const cleanedValue = value.replace(/[^0-9.]/g, '');
+
+  // 소수점이 여러 개 있으면 첫 번째만 유지
+  const parts = cleanedValue.split('.');
+  return parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
+};
+
 // 시급 필드 onBlur 이벤트 핸들러
 export const handleHourlyRateBlur = (value: string) => {
   const parsedValue = parseStringToSafeNumber(value);
