@@ -22,7 +22,13 @@ const ApplicationDetailStep6 = () => {
         fontColor="text-surface-invert"
         isBorder={false}
         title="Check the application documents"
-        onClick={() => navigate(`/application-documents/${id}`)}
+        onClick={() =>
+          navigate(`/application-documents/${id}`, {
+            state: {
+              isComplete: true,
+            },
+          })
+        }
       />
     </section>
   );
