@@ -16,6 +16,7 @@ import {
   patchPassword,
   postRegistrationNumberValidation,
   patchDeviceToken,
+  postValidatePassword,
 } from '@/api/auth';
 import {
   AuthenticationResponse,
@@ -329,6 +330,13 @@ export const usePatchPassword = (
         navigate('/employer/profile/account');
       }
     },
+  });
+};
+
+// 2.12 현재 비밀번호 확인
+export const usePostValidatePassword = () => {
+  return useMutation({
+    mutationFn: postValidatePassword,
   });
 };
 

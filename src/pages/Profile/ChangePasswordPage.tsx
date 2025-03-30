@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { usePatchPassword } from '@/hooks/api/useAuth';
+import { usePatchPassword, usePostValidatePassword } from '@/hooks/api/useAuth';
 import CurrentPasswordStep from '@/components/Profile/Password/CurrentPasswordStep';
 import NewPasswordStep from '@/components/Profile/Password/NewPasswordStep';
 import SuccessStep from '@/components/Profile/Password/SuccessStep';
 import { validatedConfirmPassword, validatePassword } from '@/utils/signin';
-import { useLocation } from 'react-router-dom';
+import { profileTranslation } from '@/constants/translation';
+import { isEmployerByAccountType } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
 
 type PasswordFieldType = 'currentPassword' | 'newPassword' | 'confirmPassword';
 
 const ChangePasswordPage = () => {
-  const { pathname } = useLocation();
+  const { account_type } = useUserStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [currentPassword, setCurrentPassword] = useState('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -19,7 +21,11 @@ const ChangePasswordPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
   >(null);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValidStep1, setIsValidStep1] = useState<boolean>(false);
+  const [isValidStep2, setIsValidStep2] = useState<boolean>(false);
+
+  const { mutateAsync: validateCurrentPassword } = usePostValidatePassword();
+
   const { mutate: changePassword } = usePatchPassword({
     onSuccess: () => {
       setCurrentStep((prev) => prev + 1);
@@ -28,18 +34,23 @@ const ChangePasswordPage = () => {
 
   const handlePasswordChange = (field: PasswordFieldType, value: string) => {
     switch (field) {
-      case 'currentPassword':
+      case 'currentPassword': {
         setCurrentPassword(value);
-        setPasswordError(null);
+        const isNewPasswordValid = validatePassword(
+          value,
+          setPasswordError,
+          isEmployerByAccountType(account_type),
+        );
+        setIsValidStep1(isNewPasswordValid);
         break;
-
+      }
       case 'newPassword': {
         setNewPassword(value);
         // 새 비밀번호 유효성 검사
         const isNewPasswordValid = validatePassword(
           value,
           setNewPasswordError,
-          pathname,
+          isEmployerByAccountType(account_type),
         );
         // 비밀번호 확인 재검증
         if (confirmPassword) {
@@ -47,10 +58,10 @@ const ChangePasswordPage = () => {
             value, // 새로운 비밀번호 값
             confirmPassword,
             setConfirmPasswordError,
-            pathname,
+            isEmployerByAccountType(account_type),
           );
         }
-        setIsValid(isNewPasswordValid && confirmPassword === value);
+        setIsValidStep2(isNewPasswordValid && confirmPassword === value);
         break;
       }
 
@@ -61,23 +72,29 @@ const ChangePasswordPage = () => {
           newPassword,
           value,
           setConfirmPasswordError,
-          pathname,
+          isEmployerByAccountType(account_type),
         );
         const isNewPasswordValid = validatePassword(
           newPassword,
           setNewPasswordError,
-          pathname,
+          isEmployerByAccountType(account_type),
         );
-        setIsValid(isNewPasswordValid && isConfirmValid);
+        setIsValidStep2(isNewPasswordValid && isConfirmValid);
         break;
       }
     }
   };
 
-  const handleCurrentPasswordSubmit = () => {
-    // 비밀번호 확인 api 호출
-    // onSuccess
-    setCurrentStep(2);
+  const handleCurrentPasswordSubmit = async () => {
+    const result = await validateCurrentPassword({
+      password: currentPassword,
+    });
+
+    if (result.data.is_valid) setCurrentStep((prev) => prev + 1);
+    else
+      alert(
+        profileTranslation.wrongPassword[isEmployerByAccountType(account_type)],
+      );
   };
 
   const handleChangePasswordSubmit = () => {
@@ -98,6 +115,7 @@ const ChangePasswordPage = () => {
             }
             onSubmit={handleCurrentPasswordSubmit}
             error={passwordError}
+            isValid={isValidStep1}
           />
         );
       case 2:
@@ -116,7 +134,7 @@ const ChangePasswordPage = () => {
             setNewPasswordError={setNewPasswordError}
             confirmPasswordError={confirmPasswordError}
             setConfirmPasswordError={setConfirmPasswordError}
-            isValid={isValid}
+            isValid={isValidStep2}
           />
         );
       case 3:
@@ -124,11 +142,7 @@ const ChangePasswordPage = () => {
     }
   };
 
-  return (
-    <>
-      {renderStep()}
-    </>
-  );
+  return <>{renderStep()}</>;
 };
 
 export default ChangePasswordPage;

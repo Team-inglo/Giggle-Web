@@ -106,7 +106,11 @@ const SignupInput = ({
   // 비밀번호 유효성 검사를 위한 단일 useEffect
   useEffect(() => {
     const isPasswordValid = debouncedPassword
-      ? validatePassword(debouncedPassword, setPasswordError, pathname)
+      ? validatePassword(
+          debouncedPassword,
+          setPasswordError,
+          isEmployer(pathname),
+        )
       : false;
     const isConfirmValid = confirmPasswordValue === debouncedPassword;
 
@@ -115,7 +119,7 @@ const SignupInput = ({
         debouncedPassword,
         confirmPasswordValue,
         setConfirmPasswordError,
-        pathname,
+        isEmployer(pathname),
       );
     }
 
@@ -133,7 +137,7 @@ const SignupInput = ({
     debouncedPassword,
     confirmPasswordValue,
     pathname,
-    emailVerifyStatus
+    emailVerifyStatus,
   ]);
 
   // 부모 컴포넌트로 값 전달
