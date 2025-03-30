@@ -11,6 +11,7 @@ import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessageListener';
 import ApiErrorBottomSheet from './components/Common/ApiErrorBottomSheet';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   const [isOpenServerErrorBottomSheet, setIsOpenServerErrorBottomSheet] =
@@ -52,8 +53,11 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactNativeMessageListener />
-      <Router />
+      <BrowserRouter>
+        <ReactNativeMessageListener />
+        <Router />
+      </BrowserRouter>
+
       {isOpenServerErrorBottomSheet && (
         <ServerErrorBottomSheet
           isShowBottomsheet={isOpenServerErrorBottomSheet}
