@@ -24,6 +24,7 @@ type InputProps = {
   isInvalid?: boolean; // 유효하지 않은 입력 상태 여부 (선택적)
   onDelete?: () => void; // 삭제 버튼 클릭 시 호출될 함수 (선택적)
   isPrefix?: boolean; // 접두사 여부
+  isPreventFocus?: boolean; // input focus 막을지 여부
   prefix?: string; // 접두사 내용
   isUnit?: boolean; // 단위 여부
   unit?: string; // 단위 내용
@@ -53,6 +54,7 @@ const Input = ({
   isInvalid,
   value,
   isPrefix,
+  isPreventFocus,
   prefix,
   isUnit,
   unit,
@@ -114,6 +116,7 @@ const Input = ({
               : 'password'
             : 'text'
         }
+        onFocus={(e) => isPreventFocus && e.target.blur()}
       />
       {/* 비밀번호 타입일 경우 표시/숨김 토글 아이콘을 표시합니다. */}
       {/* TODO : 추후 아이콘 추가 되면 비밀번호 가시 여부에 따라서 다른 아이콘 적용*/}
