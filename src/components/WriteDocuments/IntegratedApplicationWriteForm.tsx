@@ -413,6 +413,7 @@ const IntegratedApplicationWriteForm = ({
                   value={newDocumentData.school_name}
                   onChange={() => {}}
                   canDelete={false}
+                  isPreventFocus={true}
                 />
               </div>
             </InputLayout>

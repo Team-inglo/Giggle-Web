@@ -10,7 +10,7 @@ import { useGetDocumentsEmployee } from '@/hooks/api/useDocument';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
 import { DocumentsSummaryResponse } from '@/types/api/document';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export type SuccessModalContent = {
   title: string;
@@ -19,6 +19,9 @@ export type SuccessModalContent = {
 };
 
 const ApplicationDocumentsPage = () => {
+  const location = useLocation();
+  const { isComplete } = location.state || {};
+
   const navigate = useNavigate();
   const { currentPostId } = useCurrentPostIdEmployeeStore();
   const { data, isPending } = useGetDocumentsEmployee(Number(currentPostId));
@@ -57,8 +60,8 @@ const ApplicationDocumentsPage = () => {
           />
           <section className="w-full bg-surface-secondary">
             <PageTitle
-              title={`Your Resume,\nYour Next Opportunity 🚀`}
-              content={`Keep your resume updated and\ntrack your job applications in one place!`}
+              title={`All your work documents,\nin one place!🚀`}
+              content={`Easily track and manage your docs! Stay on\ntop of the process and complete the required\n steps smoothly.`}
             />
             {isPending ? (
               <div className="w-full h-[65vh] flex items-center justify-center">
@@ -72,26 +75,28 @@ const ApplicationDocumentsPage = () => {
                     setSuccessModalContent(content)
                   }
                 />
-                <BottomButtonPanel>
-                  <Button
-                    type="large"
-                    bgColor={
-                      isDocumentComplete(data?.data)
-                        ? 'bg-surface-primary'
-                        : 'bg-surface-secondary'
-                    }
-                    fontColor={
-                      isDocumentComplete(data?.data)
-                        ? 'text-text-normal'
-                        : 'text-text-disabled'
-                    }
-                    title="Next"
-                    isBorder={false}
-                    {...(isDocumentComplete(data?.data) && {
-                      onClick: () => submitDocuments(Number(currentPostId)),
-                    })}
-                  />
-                </BottomButtonPanel>
+                {!isComplete && (
+                  <BottomButtonPanel>
+                    <Button
+                      type="large"
+                      bgColor={
+                        isDocumentComplete(data?.data)
+                          ? 'bg-surface-primary'
+                          : 'bg-surface-secondary'
+                      }
+                      fontColor={
+                        isDocumentComplete(data?.data)
+                          ? 'text-text-normal'
+                          : 'text-text-disabled'
+                      }
+                      title="Completed"
+                      isBorder={false}
+                      {...(isDocumentComplete(data?.data) && {
+                        onClick: () => submitDocuments(Number(currentPostId)),
+                      })}
+                    />
+                  </BottomButtonPanel>
+                )}
               </>
             )}
           </section>

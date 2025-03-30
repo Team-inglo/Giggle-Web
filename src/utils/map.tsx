@@ -54,22 +54,14 @@ export const renderMap = (address: GiggleAddress) => {
 };
 
 export const convertToAddress = (addressData: Address): GiggleAddress => {
-  // 주소 타입에 따라 기본 주소 선택
-  const baseAddress =
-    addressData.userSelectedType === 'R'
-      ? addressData.roadAddress
-      : addressData.jibunAddress;
-  // region_3depth_name 추출
-  const region3DepthName = baseAddress
-    .replace(addressData.sido, '')
-    .replace(addressData.sigungu, '')
-    .trim();
+  // 무조건 지번 주소 사용하기
+  const baseAddress = addressData.jibunAddress;
 
   return {
     address_name: baseAddress,
     region_1depth_name: addressData.sido,
     region_2depth_name: addressData.sigungu,
-    region_3depth_name: region3DepthName,
+    region_3depth_name: addressData.bname,
     region_4depth_name: null,
     address_detail: null,
     longitude: null,

@@ -20,7 +20,10 @@ import {
   usePostStandardLaborContracts,
   usePutStandardLaborContracts,
 } from '@/hooks/api/useDocument';
-import { useCurrentDocumentIdStore, useCurrentPostIdEmployeeStore } from '@/store/url';
+import {
+  useCurrentDocumentIdStore,
+  useCurrentPostIdEmployeeStore,
+} from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
@@ -169,7 +172,7 @@ const LaborContractWriteForm = ({
                 </div>
               </InputLayout>
               {/* 검색한 위치를 보여주는 지도 */}
-              {newDocumentData.address.address_detail !== '' && (
+              {newDocumentData.address.address_name !== '' && (
                 <>
                   <div className="w-full rounded-xl">
                     <Map

@@ -10,16 +10,23 @@ import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessageListener';
+import ApiErrorBottomSheet from './components/Common/ApiErrorBottomSheet';
 
 function App() {
+  const [isOpenServerErrorBottomSheet, setIsOpenServerErrorBottomSheet] =
+    useState(false);
   const [isOpenErrorBottomSheet, setIsOpenErrorBottomSheet] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
   const openErrorBottomSheet = (error: unknown) => {
     if (!axios.isAxiosError(error)) return;
 
     if (error.response?.status === 500 || error.response?.status === 408) {
+      setIsOpenServerErrorBottomSheet(true);
+    } else if (error.response?.status !== 401) {
       setIsOpenErrorBottomSheet(true);
+      setErrorMessage(error.response?.data?.error?.message ?? '');
     }
   };
 
@@ -47,8 +54,15 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ReactNativeMessageListener />
       <Router />
-      {isOpenErrorBottomSheet && (
+      {isOpenServerErrorBottomSheet && (
         <ServerErrorBottomSheet
+          isShowBottomsheet={isOpenServerErrorBottomSheet}
+          setIsShowBottomSheet={setIsOpenServerErrorBottomSheet}
+        />
+      )}
+      {isOpenErrorBottomSheet && (
+        <ApiErrorBottomSheet
+          errorMessage={errorMessage}
           isShowBottomsheet={isOpenErrorBottomSheet}
           setIsShowBottomSheet={setIsOpenErrorBottomSheet}
         />
