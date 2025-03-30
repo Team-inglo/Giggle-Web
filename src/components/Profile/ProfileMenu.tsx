@@ -10,6 +10,8 @@ import ToggleBar from '@/assets/icons/Profile/ToggleBar.svg?react';
 import ToggleButton from '@/assets/icons/Profile/ToggleButton.svg?react';
 import { usePatchNotificationAllowed } from '@/hooks/api/useSetting';
 import { useGetUserSummaries } from '@/hooks/api/useProfile';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type ProfileMenuProps = {
   title: string;
@@ -24,8 +26,11 @@ const ProfileMenu = ({
   onClick,
   isToggle,
 }: ProfileMenuProps) => {
+  const { account_type } = useUserStore();
   const { mutate: patchNotificationAllowed } = usePatchNotificationAllowed();
-  const { data: notificaionAllowed } = useGetUserSummaries();
+  const { data: notificaionAllowed } = useGetUserSummaries(
+    account_type === UserType.USER,
+  );
 
   const [toggleOn, setToggleOn] = useState<boolean>(false);
 
@@ -36,7 +41,7 @@ const ProfileMenu = ({
         notificaionAllowed.data.user_information.is_notification_allowed,
       );
     }
-  }, []);
+  }, [isToggle, notificaionAllowed]);
 
   const handleToggleChange = () => {
     // 알림 설정 변경
