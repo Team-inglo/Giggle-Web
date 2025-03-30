@@ -108,7 +108,7 @@ export const signInputTranclation = {
     en: 'Enter the code from the email we sent you',
   },
   resetPasswordVerifySuccess: {
-    ko: '인증이 완료되었어요!',
+    ko: '인증',
   },
   verifyFailed: {
     ko: '인증에 실패했습니다. 인증번호 재발급 후 다시 시도해주세요. ',

@@ -24,11 +24,11 @@ export const isNotEmpty = (obj: Record<string, any>): boolean => {
 
     // 문자열이면서 phone_number가 아닌 경우 trim()으로 공백 제거 후 길이 확인
     if (typeof value === 'string' && key !== 'phone_number') {
-      return value.trim().length > 0;
+      return value.trim()?.length > 0;
     }
 
-    if (key !== 'address') {
-      return value.address_detail.length <= 50;
+    if (key === 'address') {
+      return value.address_detail?.length <= 50;
     }
     // 숫자나 불리언 등 다른 타입은 true 반환
     return true;
