@@ -146,8 +146,9 @@ export const useReIssueToken = () => {
 export const usePatchDeviceToken = () => {
   return useMutation({
     mutationFn: patchDeviceToken,
-    onError: () => {
+    onError: (error) => {
       console.error('디바이스 토큰 갱신에 실패했습니다.');
+      console.log(error);
     },
   });
 };

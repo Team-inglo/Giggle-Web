@@ -83,6 +83,7 @@ export const patchDeviceToken = async ({
   deviceToken: string;
   deviceId: string;
 }): Promise<RESTYPE<null>> => {
+  console.log(deviceId, deviceToken);
   const response = await api.patch('/auth/device-token', {
     device_token: deviceToken,
     device_id: deviceId,
