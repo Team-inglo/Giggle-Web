@@ -93,7 +93,7 @@ const Layout = () => {
 
 const Router = () => {
   return (
-    <BrowserRouter>
+
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
@@ -217,7 +217,6 @@ const Router = () => {
           />
         </Route>
       </Routes>
-    </BrowserRouter>
   );
 };
 
