@@ -128,7 +128,7 @@ const CardTagList = ({ className }: { className?: string }) => {
         fontStyle="caption"
       />
       <Tag
-        value={tags.visa.join(', ').replace(/_/g, '-')}
+        value={tags.visa.sort().join(', ').replace(/_/g, '-')}
         padding="py-[0.188rem] px-[0.25rem]"
         isRounded={false}
         hasCheckIcon={false}
