@@ -2,6 +2,7 @@ import {
   AuthenticationRequest,
   AuthenticationResponse,
   ChangePasswordRequest,
+  CurrentPasswordRequest,
   PolicyResponse,
   ReIssueAuthenticationRequest,
   SignInRequest,
@@ -182,6 +183,14 @@ export const patchPassword = async (
   passwords: ChangePasswordRequest,
 ): Promise<RESTYPE<null>> => {
   const response = await api.patch('/auth/password', passwords);
+  return response.data;
+};
+
+// 2.12 현재 비밀번호 확인
+export const postValidatePassword = async (
+  password: CurrentPasswordRequest,
+): Promise<RESTYPE<ValidationResponse>> => {
+  const response = await api.post('/auth/validations/password', password);
   return response.data;
 };
 

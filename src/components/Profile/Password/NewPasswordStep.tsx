@@ -11,6 +11,7 @@ import Input from '@/components/Common/Input';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import { InputType } from '@/types/common/input';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 interface NewPasswordStepProps {
   newPassword: string;
@@ -36,9 +37,8 @@ const NewPasswordStep = ({
   isValid,
 }: NewPasswordStepProps) => {
   const { account_type } = useUserStore();
-  const userLanguage = account_type === UserType.USER ? 'en' : 'ko';
   const navigate = useNavigate();
-  // password 유효성 검사
+
   return (
     <>
       <BaseHeader
@@ -52,17 +52,29 @@ const NewPasswordStep = ({
       <div className="w-full h-full min-h-[100vh] px-4 ">
         <div className="title-1 break-keep my-[3.125rem] w-full">
           <p className="h-20">
-            {profileTranslation.enterYourPassword[userLanguage]}
+            {
+              profileTranslation.enterYourPassword[
+                isEmployerByAccountType(account_type)
+              ]
+            }
           </p>
         </div>
         <div className="flex flex-col gap-4">
           <InputLayout
             isEssential
-            title={profileTranslation.newPassword[userLanguage]}
+            title={
+              profileTranslation.newPassword[
+                isEmployerByAccountType(account_type)
+              ]
+            }
           >
             <Input
               inputType={InputType.PASSWORD}
-              placeholder={profileTranslation.enterNewPassword[userLanguage]}
+              placeholder={
+                profileTranslation.enterNewPassword[
+                  isEmployerByAccountType(account_type)
+                ]
+              }
               value={newPassword}
               onChange={onNewPasswordChange}
               canDelete={false}
@@ -73,12 +85,18 @@ const NewPasswordStep = ({
           </InputLayout>
           <InputLayout
             isEssential
-            title={profileTranslation.confirmPassword[userLanguage]}
+            title={
+              profileTranslation.confirmPassword[
+                isEmployerByAccountType(account_type)
+              ]
+            }
           >
             <Input
               inputType={InputType.PASSWORD}
               placeholder={
-                profileTranslation.enterConfirmPassword[userLanguage]
+                profileTranslation.enterConfirmPassword[
+                  isEmployerByAccountType(account_type)
+                ]
               }
               value={confirmPassword}
               onChange={onConfirmPasswordChange}
@@ -102,7 +120,11 @@ const NewPasswordStep = ({
               bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
               fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
               isBorder={false}
-              title={signInputTranclation.continue[userLanguage]}
+              title={
+                signInputTranclation.continue[
+                  isEmployerByAccountType(account_type)
+                ]
+              }
               onClick={isValid ? onSubmit : undefined}
             />
           </div>

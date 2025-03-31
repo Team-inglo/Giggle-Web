@@ -71,4 +71,8 @@ export type PolicyResponse = {
 export type ChangePasswordRequest = {
   current_password: string;
   new_password: string;
-}
+};
+
+export type CurrentPasswordRequest = {
+  password: string;
+};
