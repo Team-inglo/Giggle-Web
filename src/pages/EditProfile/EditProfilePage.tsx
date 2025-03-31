@@ -26,6 +26,7 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import { documentTranslation } from '@/constants/translation';
+import { formatDateInput } from '@/utils/information';
 
 const EditProfilePage = () => {
   const { data: userProfile } = useGetUserProfile();
@@ -213,14 +214,14 @@ const EditProfilePage = () => {
               </InputLayout>
               {/* 생년월일 선택 */}
               <InputLayout title="Date of birth" isEssential={false} isOptional>
-                <Dropdown
-                  value={userData.birth.replace(/-/g, '/')}
-                  placeholder="Select Date"
-                  options={[]}
-                  isCalendar={true}
-                  setValue={(value) =>
-                    setUserData({ ...userData, birth: value })
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="YYYY-MM-DD"
+                  value={userData.birth || ''}
+                  onChange={(value) =>
+                    setUserData({ ...userData, birth: formatDateInput(value) })
                   }
+                  canDelete={false}
                 />
               </InputLayout>
               {/* 국적 선택 */}
