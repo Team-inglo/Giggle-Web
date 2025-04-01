@@ -3,6 +3,7 @@ import { initialUserInfo, UserInfoRequestBody } from '@/types/api/users';
 import { UserInfo } from '@/types/api/users';
 import { useEffect, useState } from 'react';
 import {
+  formatDateInput,
   formatPhoneNumber,
   isValidName,
   isValidPhoneNumber,
@@ -153,14 +154,17 @@ const InformationStep = ({
           </InputLayout>
           {/* 생년월일 선택 */}
           <InputLayout title="Date of birth" isEssential={false} isOptional>
-            <Dropdown
-              value={newUserInfo.birth}
-              placeholder="Select Date"
-              options={[]}
-              isCalendar={true}
-              setValue={(value) =>
-                setNewUserInfo({ ...newUserInfo, birth: value })
+            <Input
+              inputType={InputType.TEXT}
+              placeholder="YYYY-MM-DD"
+              value={newUserInfo.birth || ''}
+              onChange={(value) =>
+                setNewUserInfo({
+                  ...newUserInfo,
+                  birth: formatDateInput(value),
+                })
               }
+              canDelete={false}
             />
           </InputLayout>
           {/* 국적 선택 */}

@@ -30,12 +30,12 @@ import {
 } from '@/utils/document';
 import {
   formatCompanyRegistrationNumber,
+  formatDateInput,
   formatPhoneNumber,
   limitInputValueLength,
   parsePhoneNumber,
 } from '@/utils/information';
 import { phone } from '@/constants/information';
-import { formatDateToDash } from '@/utils/editResume';
 import AddTimeIcon from '@/assets/icons/FileAddIcon.svg?react';
 import WorkDayTimeWithRestBottomSheet from '@/components/Common/WorkDayTimeWithRestBottomSheet';
 import RadioButton from '@/components/Information/RadioButton';
@@ -239,40 +239,32 @@ const EmployerLaborContractForm = ({
             </InputLayout>
             {/* 근무 시작일 선택 입력 */}
             <InputLayout title="근무 시작일" isEssential>
-              <Dropdown
-                value={
-                  newDocumentData.start_date === null
-                    ? ''
-                    : newDocumentData.start_date
-                }
-                placeholder="날짜선택"
-                options={[]}
-                isCalendar={true}
-                setValue={(value) =>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="YYYY-MM-DD"
+                value={newDocumentData.start_date || ''}
+                onChange={(value) =>
                   setNewDocumentData({
                     ...newDocumentData,
-                    start_date: formatDateToDash(value),
+                    start_date: formatDateInput(value),
                   })
                 }
+                canDelete={false}
               />
             </InputLayout>
             {/* 근무 종료일 선택 입력 */}
             <InputLayout title="근무 종료일" isEssential>
-              <Dropdown
-                value={
-                  newDocumentData.end_date === null
-                    ? ''
-                    : newDocumentData.end_date
-                }
-                placeholder="날짜선택"
-                options={[]}
-                isCalendar={true}
-                setValue={(value) =>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="YYYY-MM-DD"
+                value={newDocumentData.end_date || ''}
+                onChange={(value) =>
                   setNewDocumentData({
                     ...newDocumentData,
-                    end_date: formatDateToDash(value),
+                    end_date: formatDateInput(value),
                   })
                 }
+                canDelete={false}
               />
             </InputLayout>
             {/* 대표자 이름 입력 */}
