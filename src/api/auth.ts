@@ -84,12 +84,30 @@ export const patchDeviceToken = async ({
   deviceToken: string;
   deviceId: string;
 }): Promise<RESTYPE<null>> => {
-  console.log(deviceId, deviceToken);
-  const response = await api.patch('/auth/device-token', {
-    device_token: deviceToken,
-    device_id: deviceId,
-  });
-  return response.data;
+  try {
+    const response = await api.patch('/auth/device-token', {
+      device_token: deviceToken,
+      device_id: deviceId,
+    });
+    return response.data;
+  } catch (error: unknown) {
+    // 에러 타입 명시적 처리
+    if (axios.isAxiosError(error)) {
+      // Axios 에러인 경우
+      console.error('디바이스 토큰 갱신 API 오류:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    } else if (error instanceof Error) {
+      // 일반 Error 객체인 경우
+      console.error('디바이스 토큰 갱신 일반 오류:', error.message);
+    } else {
+      // 기타 알 수 없는 오류
+      console.error('디바이스 토큰 갱신 알 수 없는 오류:', error);
+    }
+    throw error; // 오류 다시 던지기
+  }
 };
 
 // 2.1 아이디 중복검사
