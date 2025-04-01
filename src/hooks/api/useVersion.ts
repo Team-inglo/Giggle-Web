@@ -9,6 +9,15 @@ export const useGetNewestVersion = () => {
   const { mutate } = useMutation({
     mutationFn: getNewestVersion,
     onSuccess: (response: RESTYPE<VersionType>) => {
+      if (
+        !response?.data ||
+        typeof response.data.major !== 'number' ||
+        typeof response.data.minor !== 'number' ||
+        typeof response.data.patch !== 'number'
+      ) {
+        console.error('유효하지 않은 버전 정보 형식입니다.', response);
+        return;
+      }
       const versionString = `${response.data.major}.${response.data.minor}.${response.data.patch}`;
       sendReactNativeMessage({ type: 'VERSION_CHECK', payload: versionString });
     },
