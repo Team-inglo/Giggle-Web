@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { setupReactNativeMessageListener } from '@/utils/reactNativeMessage';
 import { usePatchDeviceToken } from '@/hooks/api/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useGetNewestVersion } from '@/hooks/api/useVersion';
 interface FCMTokenPayload {
   deviceToken: string;
   deviceId: string;
@@ -17,6 +18,7 @@ export const ReactNativeMessageListener = () => {
   } | null>(null);
 
   const { mutate: patchDeviceToken } = usePatchDeviceToken();
+  const { mutate: getVersion } = useGetNewestVersion();
   const navigate = useNavigate();
   // 상태가 변경될 때 API 호출
   useEffect(() => {
@@ -44,6 +46,9 @@ export const ReactNativeMessageListener = () => {
 
         if (data.type === 'NOTIFICATION_NAVIGATION') {
           navigate('/alarm');
+        }
+        if (data.type === 'CHECKVERSION') {
+          getVersion();
         }
       },
     );
