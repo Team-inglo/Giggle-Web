@@ -1,6 +1,5 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
-import Dropdown from '@/components/Common/Dropdown';
 import Input from '@/components/Common/Input';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { InputType } from '@/types/common/input';
@@ -13,6 +12,7 @@ import { formatDateToDash } from '@/utils/editResume';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import { documentTranslation } from '@/constants/translation';
+import { formatDateInput } from '@/utils/information';
 
 const Step2 = ({
   postInfo,
@@ -167,24 +167,20 @@ const Step2 = ({
             </div>
             {/* 날짜 선택 입력 */}
             <InputLayout title="공고 종료일" isEssential>
-              <Dropdown
-                value={
-                  newPostInfo.body.recruitment_dead_line === null
-                    ? ''
-                    : newPostInfo.body.recruitment_dead_line
-                }
-                placeholder="날짜 선택"
-                options={[]}
-                isCalendar={true}
-                setValue={(value) =>
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="YYYY-MM-DD"
+                value={newPostInfo.body.recruitment_dead_line || ''}
+                onChange={(value) =>
                   setNewPostInfo({
                     ...newPostInfo,
                     body: {
                       ...newPostInfo.body,
-                      recruitment_dead_line: formatDateToDash(value),
+                      recruitment_dead_line: formatDateInput(value),
                     },
                   })
                 }
+                canDelete={false}
               />
             </InputLayout>
             <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left body-3 text-text-alternative">

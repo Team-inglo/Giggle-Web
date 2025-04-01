@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
-import DatePicker from '@/components/Common/DatePicker';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {
@@ -8,7 +7,6 @@ type DropDownProps = {
   value: string | null; // 현재 선택된 값
   placeholder: string; // 플레이스홀더 텍스트
   options: Array<string>; // 드롭다운 옵션 목록
-  isCalendar?: boolean; // 캘린더 모드 여부 (선택적)
   setValue: (value: string) => void; // 선택된 값을 설정하는 함수
 };
 
@@ -46,7 +44,6 @@ const Dropdown = ({
   value,
   placeholder,
   options,
-  isCalendar,
   setValue,
 }: DropDownProps) => {
   // 드롭다운의 열림/닫힘 상태를 관리합니다.
@@ -96,15 +93,11 @@ const Dropdown = ({
         </div>
         {/* 드롭다운 선택지 모달 (열려있을 때만 표시) */}
         {isOpen ? (
-          isCalendar ? (
-            <DatePicker setSelectedDate={handleSelect} />
-          ) : (
-            <DropdownModal
-              value={value ?? ''}
-              options={options}
-              onSelect={handleSelect}
-            />
-          )
+          <DropdownModal
+            value={value ?? ''}
+            options={options}
+            onSelect={handleSelect}
+          />
         ) : null}
       </div>
     </div>
