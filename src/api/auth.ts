@@ -84,13 +84,11 @@ export const patchDeviceToken = async ({
   deviceToken: string;
   deviceId: string;
 }): Promise<RESTYPE<null>> => {
-  console.log(deviceId, deviceToken);
   try {
     const response = await api.patch('/auth/device-token', {
       device_token: deviceToken,
       device_id: deviceId,
     });
-    console.log(response.data);
     return response.data;
   } catch (error: unknown) {
     // 에러 타입 명시적 처리
