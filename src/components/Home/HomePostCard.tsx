@@ -67,9 +67,9 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
           />
           <Tag
             value={jobPostingData.tags.visa
-              .join(',')
-              .replace(/_/g, '-')
-              .toLowerCase()}
+              .sort()
+              .join(', ')
+              .replace(/_/g, '-')}
             padding="py-[0.188rem] px-[0.25rem]"
             isRounded={false}
             hasCheckIcon={false}
