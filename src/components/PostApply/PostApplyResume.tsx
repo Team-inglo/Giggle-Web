@@ -222,8 +222,8 @@ const PostApplyResume = () => {
             <div className="flex justify-between items-center w-full p-4 rounded-lg bg-surface-secondary">
               <h5 className="pb-[0.125rem] button-2 text-[#464646]">TOPIK</h5>
               <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                {profileTranslation.level[isEmployer(pathname)]}{' '}
-                {data?.data?.languages.topik}
+                {data?.data?.languages.topik}{' '}
+                {profileTranslation.level[isEmployer(pathname)]}
               </div>
             </div>
             <div className="flex justify-between items-center w-full p-4 rounded-lg bg-surface-secondary">
@@ -231,8 +231,8 @@ const PostApplyResume = () => {
                 Social Intergration
               </h5>
               <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                {profileTranslation.level[isEmployer(pathname)]}{' '}
-                {data?.data?.languages.social_integration}
+                {data?.data?.languages.social_integration}{' '}
+                {profileTranslation.level[isEmployer(pathname)]}
               </div>
             </div>
             <div className="flex justify-between items-center w-full p-4 rounded-lg bg-surface-secondary">
@@ -240,8 +240,8 @@ const PostApplyResume = () => {
                 Sejong Institute
               </h5>
               <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                {profileTranslation.level[isEmployer(pathname)]}{' '}
-                {data?.data?.languages.sejong_institute}
+                {data?.data?.languages.sejong_institute}{' '}
+                {profileTranslation.level[isEmployer(pathname)]}
               </div>
             </div>
             {data?.data?.languages.etc?.map((data: LanguageType) => (
@@ -253,7 +253,9 @@ const PostApplyResume = () => {
                   {data.language_name}
                 </h5>
                 <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                  {profileTranslation.level[isEmployer(pathname)]} {data.level}
+                  {isEmployer(pathname) === 'en'
+                    ? `${profileTranslation.level[isEmployer(pathname)]} ${data.level}`
+                    : `${data.level} ${profileTranslation.level[isEmployer(pathname)]}`}
                 </div>
               </div>
             ))}

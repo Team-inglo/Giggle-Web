@@ -46,7 +46,9 @@ const EditResumePage = () => {
                     {data.data?.visa.visa.replace(/_/g, '-')}
                   </span>
                   <span className="body-3 text-[#ABB0B9]">
-                    {data.data?.visa.description}
+                    {data.data?.visa.description === '-'
+                      ? ''
+                      : data.data?.visa.description}
                   </span>
                 </p>
               </div>
