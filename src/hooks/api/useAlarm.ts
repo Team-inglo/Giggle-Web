@@ -46,13 +46,12 @@ export const usePatchReadAlarm = () => {
 
   return useMutation({
     mutationFn: patchReadAlarm,
-    onSuccess: async () => {
+    onError: async (error) => {
       await queryClient.invalidateQueries({
         queryKey: ['alarm'],
       });
-    },
-    onError: (error) => {
       console.error('알림 읽음 상태 변경 실패', error);
     },
+    meta: { skipGlobalLoading: true },
   });
 };

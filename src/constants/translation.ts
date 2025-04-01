@@ -611,7 +611,7 @@ export const alarmTranslation = {
     en: 'Notification',
   },
   emptyAlarm: {
-    ko: '알람이 없습니다.',
+    ko: '알람이 아직 없어요.',
     en: 'There is no notifications',
   },
 };
