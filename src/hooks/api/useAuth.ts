@@ -87,10 +87,12 @@ export const useSignIn = () => {
 
         updateId('');
         updatePassword('');
+
         // 앱에서 FCM 토큰 요청
         sendReactNativeMessage({ type: 'RECEIVE_TOKEN' });
+
+        // 새로고침 전에 지연 추가
         navigate('/splash');
-        window.location.reload();
       }
     },
     onError: () => {
@@ -147,7 +149,7 @@ export const useReIssueToken = () => {
 export const usePatchDeviceToken = () => {
   return useMutation({
     mutationFn: patchDeviceToken,
-    onError: (error) => {
+    onError: (error: Error) => {
       console.error('디바이스 토큰 갱신에 실패했습니다.');
       console.log(error);
     },

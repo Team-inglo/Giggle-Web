@@ -133,7 +133,7 @@ const Step5 = ({
             bgColor={isInvalid ? 'bg-surface-secondary' : 'bg-surface-primary'}
             fontColor={isInvalid ? 'text-text-disabled' : 'text-text-normal'}
             isBorder={false}
-            title="다음"
+            title="완료"
             onClick={handleSubmit}
           />
         </div>

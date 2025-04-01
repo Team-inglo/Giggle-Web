@@ -40,5 +40,5 @@ export const initialEmployerRegistration: EmployerRegistrationRequestBody = {
     latitude: 0,
   },
   marketing_allowed: false,
-  notification_allowed: false,
+  notification_allowed: true,
 };

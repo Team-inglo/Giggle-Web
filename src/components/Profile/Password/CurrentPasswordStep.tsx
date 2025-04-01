@@ -18,7 +18,6 @@ interface CurrentPasswordStepProps {
   onPasswordChange: (value: string) => void;
   onSubmit: () => void;
   error: string | null;
-  isValid: boolean;
 }
 
 const CurrentPasswordStep = ({
@@ -26,7 +25,6 @@ const CurrentPasswordStep = ({
   onPasswordChange,
   onSubmit,
   error,
-  isValid,
 }: CurrentPasswordStepProps) => {
   const { account_type } = useUserStore();
   const navigate = useNavigate();
@@ -79,15 +77,21 @@ const CurrentPasswordStep = ({
           <div className="w-full">
             <Button
               type="large"
-              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
+              bgColor={
+                password?.length > 0
+                  ? 'bg-surface-primary'
+                  : 'bg-surface-secondary'
+              }
+              fontColor={
+                password?.length > 0 ? 'text-text-normal' : 'text-text-disabled'
+              }
               isBorder={false}
               title={
                 signInputTranclation.continue[
                   isEmployerByAccountType(account_type)
                 ]
               }
-              onClick={isValid ? onSubmit : undefined}
+              onClick={password?.length > 0 ? onSubmit : undefined}
             />
           </div>
         </BottomButtonPanel>

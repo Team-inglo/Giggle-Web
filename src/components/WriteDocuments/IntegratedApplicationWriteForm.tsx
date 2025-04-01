@@ -26,6 +26,7 @@ import {
 } from '@/hooks/api/useDocument';
 import {
   formatCompanyRegistrationNumber,
+  formatDateInput,
   formatPhoneNumber,
   parsePhoneNumber,
 } from '@/utils/information';
@@ -212,14 +213,17 @@ const IntegratedApplicationWriteForm = ({
             </InputLayout>
             {/* 생일 입력 */}
             <InputLayout title="Date Of Birth" isEssential>
-              <Dropdown
-                value={newDocumentData.birth}
-                placeholder="Select Date"
-                options={[]}
-                isCalendar={true}
-                setValue={(value) =>
-                  setNewDocumentData({ ...newDocumentData, birth: value })
+              <Input
+                inputType={InputType.TEXT}
+                placeholder="YYYY-MM-DD"
+                value={newDocumentData.birth || ''}
+                onChange={(value) =>
+                  setNewDocumentData({
+                    ...newDocumentData,
+                    birth: formatDateInput(value),
+                  })
                 }
+                canDelete={false}
               />
             </InputLayout>
             {/* 성별 입력 */}

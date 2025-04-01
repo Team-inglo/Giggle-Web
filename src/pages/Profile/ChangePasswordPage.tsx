@@ -21,7 +21,6 @@ const ChangePasswordPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
   >(null);
-  const [isValidStep1, setIsValidStep1] = useState<boolean>(false);
   const [isValidStep2, setIsValidStep2] = useState<boolean>(false);
 
   const { mutateAsync: validateCurrentPassword } = usePostValidatePassword();
@@ -36,12 +35,7 @@ const ChangePasswordPage = () => {
     switch (field) {
       case 'currentPassword': {
         setCurrentPassword(value);
-        const isNewPasswordValid = validatePassword(
-          value,
-          setPasswordError,
-          isEmployerByAccountType(account_type),
-        );
-        setIsValidStep1(isNewPasswordValid);
+        setPasswordError(null);
         break;
       }
       case 'newPassword': {
@@ -115,7 +109,6 @@ const ChangePasswordPage = () => {
             }
             onSubmit={handleCurrentPasswordSubmit}
             error={passwordError}
-            isValid={isValidStep1}
           />
         );
       case 2:

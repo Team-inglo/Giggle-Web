@@ -53,7 +53,7 @@ export const DocumentSubTitleContent = {
       name: 'Part-Time Employment Permit',
       key: 'part_time_employment_permits',
       content:
-        "International students must have the applicable permit to work part-time or part-time. If you don't get permission, you can become an illegal resident.",
+        "International students must have the applicable permit to work part-time. If you don't get permission, you can become an illegal resident.",
     },
     employer: {
       name: '취업허가서를 작성해주세요 ✍',
