@@ -269,6 +269,10 @@ export const profileTranslation = {
     ko: '비밀번호를 확인해주세요',
     en: 'Confirm new password',
   },
+  wrongPassword: {
+    ko: '현재 비밀번호를 다시 확인해주세요.',
+    en: 'Wrong current password input. Try again.',
+  },
   completeTitle: {
     ko: '비밀번호 변경이 완료되었어요!',
     en: 'Your password has been changed!',

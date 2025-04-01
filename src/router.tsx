@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
@@ -93,7 +93,7 @@ const Layout = () => {
 
 const Router = () => {
   return (
-    <BrowserRouter>
+
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
@@ -217,7 +217,6 @@ const Router = () => {
           />
         </Route>
       </Routes>
-    </BrowserRouter>
   );
 };
 

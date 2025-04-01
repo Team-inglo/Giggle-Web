@@ -20,14 +20,12 @@ export const validateId = (
 export const validatePassword = (
   password: string,
   setPasswordError: (error: string | null) => void,
-  pathname: string,
+  language: 'ko' | 'en',
 ): boolean => {
   const passwordRegex =
     /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,20}$/;
   if (!passwordRegex.test(password)) {
-    setPasswordError(
-      signInputTranclation.invalidPassword[isEmployer(pathname)],
-    );
+    setPasswordError(signInputTranclation.invalidPassword[language]);
     return false;
   }
   setPasswordError(null);
@@ -39,11 +37,11 @@ export const validatedConfirmPassword = (
   password: string,
   confirmPassword: string,
   setConfirmPasswordError: (error: string | null) => void,
-  pathname: string,
+  language: 'ko' | 'en',
 ): boolean => {
   if (confirmPassword !== password) {
     setConfirmPasswordError(
-      signInputTranclation.invalidConfirmPassword[isEmployer(pathname)],
+      signInputTranclation.invalidConfirmPassword[language],
     );
     return false;
   }

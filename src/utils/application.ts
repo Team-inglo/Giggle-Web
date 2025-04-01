@@ -1,5 +1,6 @@
 import { APPLICATION_STEP } from '@/constants/application';
 import { ApplicationStepType } from '@/types/application/applicationItem';
+import { sendReactNativeMessage } from './reactNativeMessage';
 
 export const findCurrentStep = (step: ApplicationStepType) => {
   switch (step) {
@@ -21,5 +22,33 @@ export const findCurrentStep = (step: ApplicationStepType) => {
       return 7;
     default:
       return 0;
+  }
+};
+
+export const handleGoExternalWeb = (type: string) => {
+  const isWebView = Boolean(window.ReactNativeWebView);
+
+  const urlMap: Record<string, string> = {
+    kakao: 'https://pf.kakao.com/_ixlCsn',
+    googleform: 'https://forms.gle/ukrnq4aLn4NczpXcA',
+    hikorea: isWebView
+      ? 'https://www.hikorea.go.kr/mobile/mMain.pt?locale=en'
+      : 'https://www.hikorea.go.kr/cvlappl/CvlapplStep1.pt#this',
+  };
+
+  const url = urlMap[type];
+
+  if (!url) {
+    console.error(`Unknown external web type: ${type}`);
+    return;
+  }
+
+  if (isWebView) {
+    sendReactNativeMessage({
+      type: 'GO_EXTERNAL_SITE',
+      payload: url,
+    });
+  } else {
+    window.location.href = url;
   }
 };

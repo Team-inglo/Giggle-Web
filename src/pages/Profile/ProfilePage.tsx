@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const [bottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
   const { pathname } = useLocation();
 
-  const { data } = useGetUserSummaries();
+  const { data } = useGetUserSummaries(true);
 
   // 로그아웃 바텀시트 핸들러
   const handleLogoutClick = () => {

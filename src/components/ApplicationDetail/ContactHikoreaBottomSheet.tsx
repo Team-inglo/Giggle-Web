@@ -3,7 +3,7 @@ import Button from '@/components/Common/Button';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import { usePatchApplyHiKorea } from '@/hooks/api/useApplication';
 import { useParams } from 'react-router-dom';
-import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
+import { handleGoExternalWeb } from '@/utils/application';
 
 type ContactHikoreaBottomSheetProps = {
   isShowBottomsheet: boolean;
@@ -17,15 +17,6 @@ const ContactHikoreaBottomSheet = ({
   const { id } = useParams();
 
   const { mutate } = usePatchApplyHiKorea();
-
-  const handleGoHiKorea = () => {
-    const isWebView = Boolean(window.ReactNativeWebView);
-    if (isWebView) sendReactNativeMessage({ type: 'GO_HIKOREA' });
-    else {
-      window.location.href =
-        'https://www.hikorea.go.kr/cvlappl/CvlapplStep1.pt#this';
-    }
-  };
 
   const handleCompleteApplyHikorea = () => {
     if (isNaN(Number(id))) return;
@@ -65,7 +56,7 @@ const ContactHikoreaBottomSheet = ({
           fontColor="text-surface-invert"
           title={'Go to Hikorea'}
           isBorder={false}
-          onClick={handleGoHiKorea}
+          onClick={() => handleGoExternalWeb('hikorea')}
         />
         <Button
           type={buttonTypeKeys.LARGE}

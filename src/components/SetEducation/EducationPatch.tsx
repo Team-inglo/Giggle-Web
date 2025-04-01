@@ -9,6 +9,7 @@ import { EducationLevels } from '@/constants/manageResume';
 import GraySearchIcon from '@/assets/icons/ManageResume/GraySearchIcon.svg?react';
 import { useState } from 'react';
 import SearchSchools from '@/components/SetEducation/SearchSchools';
+import { formatDateInput } from '@/utils/information';
 
 type EducationPatchProps = {
   educationData: PostEducationType;
@@ -37,13 +38,6 @@ const EducationPatch = ({
   const handleNumberChange = (field: 'grade' | 'gpa', value: string) => {
     const formmateedvalue = value == 'null' ? '' : value;
     handleInputChange(field, formmateedvalue);
-  };
-
-  const handleDateChange = (
-    field: 'start_date' | 'end_date',
-    value: string,
-  ) => {
-    handleInputChange(field, value.replace(/\//g, '-'));
   };
 
   return (
@@ -138,12 +132,14 @@ const EducationPatch = ({
           <p className="body-3 text-[#1E1926] px-1 py-2">
             Entrance Date <span className="text-[#EE4700] body-1">*</span>
           </p>
-          <Dropdown
-            value={educationData.start_date.replace(/-/g, '/')}
-            placeholder="Select Date"
-            options={[]}
-            isCalendar={true}
-            setValue={(value) => handleDateChange('start_date', value)}
+          <Input
+            inputType={InputType.TEXT}
+            placeholder="YYYY-MM-DD"
+            value={educationData.start_date || ''}
+            onChange={(value) =>
+              handleInputChange('start_date', formatDateInput(value))
+            }
+            canDelete={false}
           />
         </div>
         {/* 졸업 날짜 입력 */}
@@ -151,12 +147,14 @@ const EducationPatch = ({
           <p className="body-3 text-[#1E1926] px-1 py-2">
             Graduation Date <span className="text-[#EE4700] body-1">*</span>
           </p>
-          <Dropdown
-            value={educationData.end_date?.replace(/-/g, '/')}
-            placeholder="Select Date"
-            options={[]}
-            isCalendar={true}
-            setValue={(value) => handleDateChange('end_date', value)}
+          <Input
+            inputType={InputType.TEXT}
+            placeholder="YYYY-MM-DD"
+            value={educationData.end_date || ''}
+            onChange={(value) =>
+              handleInputChange('end_date', formatDateInput(value))
+            }
+            canDelete={false}
           />
         </div>
       </div>

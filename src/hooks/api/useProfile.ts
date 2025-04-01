@@ -29,10 +29,11 @@ export const useGetOwnerProfile = () => {
 };
 
 // 3.3 (유학생) 유저 요약 정보 조회하기
-export const useGetUserSummaries = () => {
+export const useGetUserSummaries = (isEnabled: boolean) => {
   return useQuery({
     queryKey: ['userSummaries'],
     queryFn: getUserSummaries,
+    enabled: isEnabled,
   });
 };
 

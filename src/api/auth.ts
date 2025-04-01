@@ -2,6 +2,7 @@ import {
   AuthenticationRequest,
   AuthenticationResponse,
   ChangePasswordRequest,
+  CurrentPasswordRequest,
   PolicyResponse,
   ReIssueAuthenticationRequest,
   SignInRequest,
@@ -76,13 +77,37 @@ export const reIssueToken = async (
 };
 
 // 1.4 (유학생/고용주) 디바이스 토큰 갱신하기
-export const patchDeviceToken = async (
-  deviceToken: string,
-): Promise<RESTYPE<null>> => {
-  const response = await api.patch('/auth/device-token', {
-    device_token: deviceToken,
-  });
-  return response.data;
+export const patchDeviceToken = async ({
+  deviceToken,
+  deviceId,
+}: {
+  deviceToken: string;
+  deviceId: string;
+}): Promise<RESTYPE<null>> => {
+  try {
+    const response = await api.patch('/auth/device-token', {
+      device_token: deviceToken,
+      device_id: deviceId,
+    });
+    return response.data;
+  } catch (error: unknown) {
+    // 에러 타입 명시적 처리
+    if (axios.isAxiosError(error)) {
+      // Axios 에러인 경우
+      console.error('디바이스 토큰 갱신 API 오류:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    } else if (error instanceof Error) {
+      // 일반 Error 객체인 경우
+      console.error('디바이스 토큰 갱신 일반 오류:', error.message);
+    } else {
+      // 기타 알 수 없는 오류
+      console.error('디바이스 토큰 갱신 알 수 없는 오류:', error);
+    }
+    throw error; // 오류 다시 던지기
+  }
 };
 
 // 2.1 아이디 중복검사
@@ -176,6 +201,14 @@ export const patchPassword = async (
   passwords: ChangePasswordRequest,
 ): Promise<RESTYPE<null>> => {
   const response = await api.patch('/auth/password', passwords);
+  return response.data;
+};
+
+// 2.12 현재 비밀번호 확인
+export const postValidatePassword = async (
+  password: CurrentPasswordRequest,
+): Promise<RESTYPE<ValidationResponse>> => {
+  const response = await api.post('/auth/validations/password', password);
   return response.data;
 };
 

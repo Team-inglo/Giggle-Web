@@ -12,6 +12,7 @@ import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
+import { handleGoExternalWeb } from '@/utils/application';
 
 const ApplicationDetailSchoolPage = () => {
   const { id } = useParams();
@@ -23,14 +24,6 @@ const ApplicationDetailSchoolPage = () => {
   const handleClickNextStep = () => {
     if (isNaN(Number(id))) return;
     mutate(Number(id));
-  };
-
-  const handleContactKaKao = () => {
-    window.location.href = 'https://pf.kakao.com/_ixlCsn';
-  };
-
-  const handleGoogleForm = () => {
-    window.location.href = 'https://forms.gle/ukrnq4aLn4NczpXcA';
   };
 
   return (
@@ -136,13 +129,13 @@ const ApplicationDetailSchoolPage = () => {
                   </p>
                   <button
                     className="mb-2 py-2 px-[0.625rem] border border-border-normal rounded-lg bg-surface-base body-2 text-surface-invert"
-                    onClick={handleContactKaKao}
+                    onClick={() => handleGoExternalWeb('googleform')}
                   >
                     Contact us
                   </button>
                   <button
                     className="caption text-text-alternative underline"
-                    onClick={handleGoogleForm}
+                    onClick={() => handleGoExternalWeb('kakao')}
                   >
                     Don't you have KakaoTalk? Click here
                   </button>

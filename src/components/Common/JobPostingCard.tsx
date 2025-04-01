@@ -24,6 +24,7 @@ import { calculateTimeAgo } from '@/utils/calculateTimeAgo';
 import { EN_FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
 import { WorkPeriodInfo } from '@/constants/documents';
 import { WorkPeriod } from '@/types/api/document';
+import { calculateDays } from '@/utils/calculateDDay';
 
 const CardContext = createContext<JobPostingItemType | null>(null);
 
@@ -127,7 +128,7 @@ const CardTagList = ({ className }: { className?: string }) => {
         fontStyle="caption"
       />
       <Tag
-        value={tags.visa.join(', ').replace(/_/g, '-')}
+        value={tags.visa.sort().join(', ').replace(/_/g, '-')}
         padding="py-[0.188rem] px-[0.25rem]"
         isRounded={false}
         hasCheckIcon={false}
@@ -153,7 +154,9 @@ const CardDeadLine = () => {
 
   return (
     <div className="flex gap-1 py-4">
-      <p className="button-1 text-text-normal">{recruitment_dead_line}</p>
+      <p className="button-1 text-text-normal">
+        {calculateDays(recruitment_dead_line)}
+      </p>
       <p className="button-2 text-text-normal">
         {postTranslation.deadline[isEmployerByAccountType(account_type)]}
       </p>
