@@ -253,7 +253,9 @@ const PostApplyResume = () => {
                   {data.language_name}
                 </h5>
                 <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                  {data.level} {profileTranslation.level[isEmployer(pathname)]}
+                  {isEmployer(pathname) === 'en'
+                    ? `${profileTranslation.level[isEmployer(pathname)]} ${data.level}`
+                    : `${data.level} ${profileTranslation.level[isEmployer(pathname)]}`}
                 </div>
               </div>
             ))}
