@@ -60,8 +60,8 @@ const validateCompanyRegistrationNumber = (value: string): boolean => {
   for (let i = 0; i < value.length; i++) {
     if (i === 3 || i === 6) {
       if (value[i] !== '/') return false; // 3, 6번째는 / 필수
-    } else {
-      if (!/^\d$/.test(value[i])) return false; // 나머지는 숫자만 가능
+    } else if (!/^\d$/.test(value[i])) {
+      return false; // 나머지는 숫자만 가능
     }
   }
   return true;
@@ -78,6 +78,35 @@ export const formatCompanyRegistrationNumber = (value: string) => {
       ?.slice(1)
       .filter(Boolean)
       .join('/') || '';
+
+  return formatValue;
+};
+
+// 날짜값 입력 시 YYYY-MM-DD 형식으로 만들기
+const validateDateInput = (value: string) => {
+  if (value.length > 10) return false;
+
+  for (let i = 0; i < value.length; i++) {
+    if (i === 4 || i === 7) {
+      if (value[i] !== '-') return false;
+    } else if (!/^\d$/.test(value[i])) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export const formatDateInput = (value: string) => {
+  if (validateDateInput(value)) return value;
+
+  const numberValue = value.replace(/\D/g, '').slice(0, 8);
+
+  const formatValue =
+    numberValue
+      .match(/(\d{1,4})(\d{1,2})?(\d{1,2})?/)
+      ?.slice(1)
+      .filter(Boolean)
+      .join('-') || '';
 
   return formatValue;
 };

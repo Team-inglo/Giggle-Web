@@ -1,9 +1,9 @@
 import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
 import { useEffect, useRef, useState, ChangeEvent } from 'react';
-import Dropdown from '@/components/Common/Dropdown';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { WorkExperienctRequest } from '@/types/api/resumes';
+import { formatDateInput } from '@/utils/information';
 
 type WorkExperiencePostProps = {
   workExperienceData: WorkExperienctRequest;
@@ -93,22 +93,26 @@ const WorkExperiencePost = ({
       </InputLayout>
       {/* 시작 날짜 입력 */}
       <InputLayout title="Start Date" isEssential={true}>
-        <Dropdown
-          value={workExperienceData.start_date.replace(/-/g, '/')}
-          placeholder="Select Date"
-          options={[]}
-          isCalendar={true}
-          setValue={(value) => handleDateChange('start_date', value)}
+        <Input
+          inputType={InputType.TEXT}
+          placeholder="YYYY-MM-DD"
+          value={workExperienceData.start_date || ''}
+          onChange={(value) =>
+            handleDateChange('start_date', formatDateInput(value))
+          }
+          canDelete={false}
         />
       </InputLayout>
       {/* 끝 날짜 입력 */}
       <InputLayout title="End Date" isEssential={true}>
-        <Dropdown
-          value={workExperienceData.end_date?.replace(/-/g, '/')}
-          placeholder="Select Date"
-          options={[]}
-          isCalendar={true}
-          setValue={(value) => handleDateChange('end_date', value)}
+        <Input
+          inputType={InputType.TEXT}
+          placeholder="YYYY-MM-DD"
+          value={workExperienceData.end_date || ''}
+          onChange={(value) =>
+            handleDateChange('end_date', formatDateInput(value))
+          }
+          canDelete={false}
         />
         <div
           className="flex items-center gap-3 mt-2 cursor-pointer"
