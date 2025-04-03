@@ -570,6 +570,10 @@ export const postSearchTranslation = {
     ko: '적용하기',
     en: 'Apply',
   },
+  maxSelectedArea: {
+    ko: '지역을 최대 3개까지 선택할 수 있습니다.',
+    en: 'You can select up to three regions.',
+  },
 };
 
 export const infoTranslation = {
