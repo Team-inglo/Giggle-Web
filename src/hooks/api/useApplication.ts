@@ -13,7 +13,8 @@ import {
   patchHiKoreaResult,
   patchWritingDocumentFinish,
 } from '@/api/application';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { smartNavigate } from '@/utils/application';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 // 4.8 (유학생) 공고 지원 자격 확인하기 훅
@@ -87,11 +88,14 @@ export const usePatchResumeAccepted = () => {
 };
 
 // 6.11 (고용주) 인터뷰 완료하기 훅
-export const usePatchInterviewFinish = () => {
+export const usePatchInterviewFinish = (id: number) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: patchInterviewFinish,
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['application', 'detail', id],
+      });
     },
     onError: (error) => {
       console.error('인터뷰 완료하기 실패', error);
@@ -105,7 +109,7 @@ export const usePatchWritingDocumentFinish = (id: number) => {
   return useMutation({
     mutationFn: patchWritingDocumentFinish,
     onSuccess: () => {
-      navigate(`/application/${id}`);
+      smartNavigate(navigate, `/application/${id}`);
     },
     onError: (error) => {
       console.error('서류 작성 완료하기 실패', error);
@@ -129,11 +133,14 @@ export const usePatchContactCoordinator = (id: number) => {
 };
 
 // 6.14 (유학생) 하이코리아 지원 훅
-export const usePatchApplyHiKorea = () => {
+export const usePatchApplyHiKorea = (id: number) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: patchApplyHiKorea,
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['application', 'detail', id],
+      });
     },
     onError: (error) => {
       console.error('하이코리아 지원 실패', error);
