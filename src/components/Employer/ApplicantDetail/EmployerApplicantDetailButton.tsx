@@ -6,8 +6,6 @@ import EmployerApplicantContactBottomSheet from './EmployerApplicantContactBotto
 import { findCurrentStep } from '@/utils/application';
 import { ApplicationStepType } from '@/types/application/applicationItem';
 import { APPLICATION_STEP } from '@/constants/application';
-import SuccessIcon from '@/assets/icons/ApplicationDetail/SuccessIcon.svg?react';
-import RejectIcon from '@/assets/icons/ApplicationDetail/RejectIcon.svg?react';
 
 type EmployerApplicantDetailButtonPropsType = {
   applicant_id: number;
@@ -70,62 +68,67 @@ const EmployerApplicantDetailButton = ({
         return (
           <Button
             type={buttonTypeKeys.APPLY}
-            bgColor={'bg-surface-secondary'}
-            fontColor="text-text-disabled"
-            title="담당자에게 서류를 검토받고 있어요"
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
+            title="신청 서류 확인하기"
             isBorder={false}
+            onClick={() =>
+              navigate(`/employer/applicant/document-detail/${applicant_id}`)
+            }
           />
         );
       case 5:
         return (
           <Button
             type={buttonTypeKeys.APPLY}
-            bgColor={'bg-surface-secondary'}
-            fontColor="text-text-disabled"
-            title="담당자에게 서류를 검토받고 있어요"
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
+            title="신청 서류 확인하기"
             isBorder={false}
+            onClick={() =>
+              navigate(`/employer/applicant/document-detail/${applicant_id}`)
+            }
           />
         );
       case 6:
         return (
           <Button
             type={buttonTypeKeys.APPLY}
-            bgColor={'bg-surface-secondary'}
-            fontColor="text-text-disabled"
-            title="지원자 결과를 기다리고 있어요"
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
+            title="신청 서류 확인하기"
             isBorder={false}
+            onClick={() =>
+              navigate(`/employer/applicant/document-detail/${applicant_id}`)
+            }
           />
         );
       case 7:
         return (
-          <>
-            {step === APPLICATION_STEP.APPLICATION_SUCCESS ? (
-              <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#0066FF]/10 rounded">
-                <SuccessIcon />
-                <p className="caption text-text-success">
-                  시간제취업허가 성공, 지원자와 이후 일정을 이야기해보세요.
-                </p>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
-                <RejectIcon />
-                <p className="caption text-text-error">
-                  시간제취업허가 실패, 원인을 찾고 재신청 할 수 있습니다.
-                </p>
-              </div>
-            )}
-          </>
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-primary-normal'}
+            fontColor="text-surface-invert"
+            title="신청 서류 확인하기"
+            isBorder={false}
+            onClick={() =>
+              navigate(`/employer/applicant/document-detail/${applicant_id}`)
+            }
+          />
         );
       default:
         return (
-          <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
-            <RejectIcon />
-            <p className="caption text-text-error">
-              {step === APPLICATION_STEP.PENDING
+          <Button
+            type={buttonTypeKeys.APPLY}
+            bgColor={'bg-primary-neutral'}
+            fontColor="text-text-disabled"
+            title={
+              step === APPLICATION_STEP.PENDING
                 ? '2주 이상 대기 중입니다.'
-                : '이력서를 거절했습니다.'}
-            </p>
-          </div>
+                : '이력서를 거절했습니다.'
+            }
+            isBorder={false}
+          />
         );
     }
   };

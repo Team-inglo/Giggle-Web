@@ -45,7 +45,7 @@ const ApplicationDetailPage = () => {
       case 6:
         return <ApplicationDetailStep6 />;
       case 7:
-        return <ApplicationDetailStep7 result={applicationData?.data?.step} />;
+        return <ApplicationDetailStep7 />;
       default:
         return (
           <ApplicationDetailStepEtc result={applicationData?.data?.step} />
@@ -84,9 +84,7 @@ const ApplicationDetailPage = () => {
             </JobPostingCard.Box>
           </JobPostingCard>
           <div className="w-full h-4 bg-surface-secondary"></div>
-          <ApplicationDetailSteps
-            step={findCurrentStep(applicationData?.data?.step)}
-          />
+          <ApplicationDetailSteps step={applicationData?.data?.step} />
           {showCurrentStepButton(findCurrentStep(applicationData?.data?.step))}
         </>
       )}
