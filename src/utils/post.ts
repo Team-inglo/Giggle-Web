@@ -4,6 +4,7 @@ import {
   genderInfo,
   JobCategoryInfo,
 } from '@/constants/post';
+import { ApplicationDetailItem } from '@/types/api/application';
 import { DayOfWeek, WorkDayTime, WorkPeriod } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
@@ -160,6 +161,31 @@ export const transformSummaryToJobPostingItemType = (
       employment_type: 'PARTTIME',
     },
     hourly_rate: data.summaries.hourly_rate,
+    recruitment_dead_line: '',
+    created_at: '',
+  };
+};
+
+// 지원상태 상세 조회하기 데이터를 JobPostingItemType으로 변환하기
+export const transformApplicationDetailToJobPostingItemType = (
+  data: ApplicationDetailItem,
+): JobPostingItemType => {
+  return {
+    id: data.id,
+    company_name: data.company_name,
+    title: data.title,
+    summaries: {
+      address: data.address_name,
+      work_period: data.work_period,
+      work_days_per_week: data.work_days_per_week,
+    },
+    tags: {
+      is_recruiting: false,
+      visa: [],
+      job_category: '',
+      employment_type: 'PARTTIME',
+    },
+    hourly_rate: data.hourly_rate,
     recruitment_dead_line: '',
     created_at: '',
   };
