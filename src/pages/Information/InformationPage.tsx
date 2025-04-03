@@ -57,7 +57,7 @@ const InformationPage = () => {
       ...userInfo,
       address: userInfo.address.address_name ? userInfo.address : null,
       marketing_allowed: marketingAllowed,
-      notification_allowed: false,
+      notification_allowed: true,
       temporary_token: String(getTemporaryToken()),
       language: language,
       term_types: termTypes,
