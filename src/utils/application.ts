@@ -92,10 +92,6 @@ export const smartNavigate = (
     // 실행 시점에 lastPath 값을 가져옴
     const lastPath = sessionStorage.getItem('lastPath');
 
-    console.log('Current URL:', window.location.pathname);
-    console.log('Target URL:', url);
-    console.log('Last Path:', lastPath);
-
     // 이전 경로와 동일하거나 강제 스킵이 요청된 경우
     if ((lastPath && lastPath === url) || forceSkip) {
       navigate(url, { replace: true, state });

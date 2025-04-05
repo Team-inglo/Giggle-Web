@@ -83,8 +83,6 @@ const Layout = () => {
   const shouldShowNavbar = showNavbarPaths().includes(location.pathname);
 
   useEffect(() => {
-    // 위치가 변경될 때마다 이전 위치 저장
-    console.log('current: ', location.pathname);
     return () => {
       sessionStorage.setItem('lastPath', location.pathname);
     };
