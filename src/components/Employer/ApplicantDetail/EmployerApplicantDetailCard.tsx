@@ -34,7 +34,7 @@ const EmployerApplicantDetailCard = ({
       <div className="flex items-center gap-2">
         <VisaIcon />
         <p className="caption text-text-normal">
-          {applicantData?.visa.replace(/_/g, '-')}
+          {applicantData?.visa?.replace(/_/g, '-')}
         </p>
       </div>
     </section>
