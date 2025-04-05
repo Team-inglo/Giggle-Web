@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 const WriteDocumentsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { type, isEdit } = location.state || {};
+  const { type, isEdit, userOwnerPostId } = location.state || {};
   const { id } = useParams();
 
   return (
@@ -17,13 +17,14 @@ const WriteDocumentsPage = () => {
         hasBackButton={true}
         hasMenuButton={false}
         title="Fill in document"
-        onClickBackButton={() => navigate(`/application-documents/${id}`)}
+        onClickBackButton={() => navigate(-1)}
       />
       <DocumentSubHeader type={type as DocumentType} />
       <DocumentFormDispenser
         type={type as DocumentType}
         isEdit={isEdit}
         applicant_id={Number(id)}
+        userOwnerPostId={Number(userOwnerPostId)}
       />
     </div>
   );

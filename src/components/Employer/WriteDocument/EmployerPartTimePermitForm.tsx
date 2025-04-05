@@ -38,11 +38,13 @@ import { documentTranslation } from '@/constants/translation';
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
   isEdit: boolean;
+  userOwnerPostId: number;
 };
 
 const EmployerPartTimePermitForm = ({
   document,
   isEdit,
+  userOwnerPostId,
 }: PartTimePermitFormProps) => {
   const { id } = useParams();
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
@@ -65,6 +67,7 @@ const EmployerPartTimePermitForm = ({
   // 입력 완료 시 제출
   const { mutate: putDocument, isPending } = usePutPartTimeEmployPermitEmployer(
     Number(id),
+    Number(userOwnerPostId),
   );
 
   useEffect(() => {

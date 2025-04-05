@@ -3,6 +3,7 @@ import {
   patchNotificationAllowed,
   patchUserLanguage,
 } from '@/api/mypage';
+import { smartNavigate } from '@/utils/application';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +23,7 @@ export const usePatchUserLanguage = () => {
   return useMutation({
     mutationFn: patchUserLanguage,
     onSuccess: () => {
-      navigate('/profile');
+      smartNavigate(navigate, '/profile');
     },
     onError: (error) => {
       console.error('언어 수정 실패', error);

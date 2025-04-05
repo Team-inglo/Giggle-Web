@@ -54,11 +54,11 @@ const ApplicationDocumentsPage = () => {
         <>
           <BaseHeader
             hasBackButton={true}
-            onClickBackButton={() => navigate(`/application/${currentPostId}`)}
+            onClickBackButton={() => navigate(-1)}
             hasMenuButton={false}
             title="Application Documents"
           />
-          <section className="w-full bg-surface-secondary">
+          <section className="w-full h-[calc(100vh-60px)] bg-surface-secondary overflow-y-scroll scrollbar-hide">
             <PageTitle
               title={`All your work documents,\nin one place!🚀`}
               content={`Easily track and manage your docs! Stay on\ntop of the process and complete the required\n steps smoothly.`}

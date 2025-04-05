@@ -8,7 +8,6 @@ import {
   useGetPartTimeEmployPermit,
   useGetStandardLaborContract,
 } from '@/hooks/api/useDocument';
-import { useCurrentDocumentIdStore } from '@/store/url';
 import {
   DocumentType,
   IntegratedApplicationData,
@@ -16,13 +15,13 @@ import {
   PartTimePermitData,
 } from '@/types/api/document';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const EmployerWriteDocumentsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { type, isEdit } = location.state || {};
-  const { currentDocumentId } = useCurrentDocumentIdStore();
+  const { type, isEdit, userOwnerPostId } = location.state || {};
+  const currentDocumentId = useParams().id;
 
   const [document, setDocument] = useState<
     PartTimePermitData | LaborContractDataResponse | IntegratedApplicationData
@@ -57,9 +56,7 @@ const EmployerWriteDocumentsPage = () => {
           hasBackButton={true}
           hasMenuButton={false}
           title="서류 작성"
-          onClickBackButton={() =>
-            navigate(`/employer/applicant/document-detail/${currentDocumentId}`)
-          } // 서류관리 페이지로 이동 요망
+          onClickBackButton={() => navigate(-1)} // 서류관리 페이지로 이동 요망
         />
         <DocumentSubHeader type={type as DocumentType} />
         <div className="flex flex-col items-center justify-start gap-6 p-4 bg-surface-secondary">
@@ -77,12 +74,14 @@ const EmployerWriteDocumentsPage = () => {
           <EmployerPartTimePermitForm
             document={document as PartTimePermitData}
             isEdit={isEdit}
+            userOwnerPostId={userOwnerPostId}
           />
         )}
         {type === DocumentType.LABOR_CONTRACT && (
           <EmployerLaborContractForm
             document={document as LaborContractDataResponse}
             isEdit={isEdit}
+            userOwnerPostId={userOwnerPostId}
           />
         )}
       </div>

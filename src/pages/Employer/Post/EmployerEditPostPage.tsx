@@ -12,6 +12,7 @@ import {
   initialJobPostingState,
   JobPostingForm,
 } from '@/types/postCreate/postCreate';
+import { smartNavigate } from '@/utils/application';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
@@ -135,7 +136,7 @@ const EmployerEditPostPage = () => {
       {devIsModal ? (
         <CompleteModal
           title="공고 수정을 완료했어요!"
-          onNext={() => navigate(`/employer/post/${id}`)}
+          onNext={() => smartNavigate(navigate, `/employer/post/${id}`)}
         />
       ) : (
         <>

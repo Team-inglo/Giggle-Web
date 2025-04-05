@@ -40,21 +40,23 @@ import AddTimeIcon from '@/assets/icons/FileAddIcon.svg?react';
 import WorkDayTimeWithRestBottomSheet from '@/components/Common/WorkDayTimeWithRestBottomSheet';
 import RadioButton from '@/components/Information/RadioButton';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
-import { useCurrentDocumentIdStore } from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import { documentTranslation } from '@/constants/translation';
+import { useParams } from 'react-router-dom';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
   isEdit: boolean;
+  userOwnerPostId: number;
 };
 
 const EmployerLaborContractForm = ({
   document,
   isEdit,
+  userOwnerPostId,
 }: LaborContractFormProps) => {
-  const { currentDocumentId } = useCurrentDocumentIdStore();
+  const currentDocumentId = useParams().id;
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [newDocumentData, setNewDocumentData] =
     useState<LaborContractEmployerInfo>(initialLaborContractEmployerInfo);
@@ -80,6 +82,7 @@ const EmployerLaborContractForm = ({
   // 입력 완료 시 제출
   const { mutate: putDocument, isPending } = usePutLaborContractEmployer(
     Number(currentDocumentId),
+    Number(userOwnerPostId),
   );
   useEffect(() => {
     if (isEdit && document?.employer_information) {

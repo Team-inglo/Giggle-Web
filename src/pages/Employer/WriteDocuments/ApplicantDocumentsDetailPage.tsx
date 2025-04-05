@@ -36,12 +36,10 @@ const ApplicantDocumentsDetailPage = () => {
         <BaseHeader
           hasBackButton={true}
           hasMenuButton={false}
-          onClickBackButton={() =>
-            navigate('/employer/applicant/document-detail')
-          }
+          onClickBackButton={() => navigate(-1)}
           title="서류 관리"
         />
-        <section className="w-full h-[calc(100vh-60px)] bg-surface-secondary">
+        <section className="w-full h-[calc(100vh-60px)] bg-surface-secondary overflow-y-scroll scrollbar-hide">
           <PageTitle
             title={`서류를 한 곳에서 관리하세요!`}
             content={`시간제취업허가서부터 근로계약서까지\n한눈에 확인하고 관리하세요. 진행 상황을 확인하고\n필요한 단계를 빠르게 완료할 수 있어요.`}

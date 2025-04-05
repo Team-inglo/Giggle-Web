@@ -20,29 +20,27 @@ import {
   usePostStandardLaborContracts,
   usePutStandardLaborContracts,
 } from '@/hooks/api/useDocument';
-import {
-  useCurrentDocumentIdStore,
-  useCurrentPostIdEmployeeStore,
-} from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
 import { documentTranslation } from '@/constants/translation';
+import { useParams } from 'react-router-dom';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
   isEdit: boolean;
+  userOwnerPostId: number;
 };
 
 const LaborContractWriteForm = ({
   document,
   isEdit,
+  userOwnerPostId,
 }: LaborContractFormProps) => {
+  const currentDocumentId = useParams().id;
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [newDocumentData, setNewDocumentData] =
     useState<LaborContractEmployeeInfo>(initialLaborContractEmployeeInfo);
-  const { currentPostId } = useCurrentPostIdEmployeeStore();
-  const { currentDocumentId } = useCurrentDocumentIdStore();
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
@@ -50,9 +48,9 @@ const LaborContractWriteForm = ({
     end: '',
   });
   const { mutate: postDocument, isPending: postPending } =
-    usePostStandardLaborContracts(Number(currentPostId)); // 작성된 근로계약서 제출 훅
+    usePostStandardLaborContracts(Number(userOwnerPostId)); // 작성된 근로계약서 제출 훅
   const { mutate: updateDocument, isPending: updatePending } =
-    usePutStandardLaborContracts(Number(currentPostId)); // 수정된 근로계약서 제출 훅
+    usePutStandardLaborContracts(Number(currentDocumentId), userOwnerPostId); // 수정된 근로계약서 제출 훅
   // 문서 편집일 시 페이지 진입과 동시에 기존 내용 자동 입력
   useEffect(() => {
     if (isEdit && document) {
@@ -100,8 +98,8 @@ const LaborContractWriteForm = ({
       phone_number: formatPhoneNumber(phoneNum),
     };
     const payload = {
-      id: Number(isEdit ? currentDocumentId : currentPostId),
-      document: finalDocument, // TODO: 로그인 연결 후 userId를 넣어야 하는 것으로 추정
+      id: Number(isEdit ? currentDocumentId : userOwnerPostId),
+      document: finalDocument,
     };
 
     if (isEdit) {

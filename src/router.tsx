@@ -82,6 +82,12 @@ const Layout = () => {
 
   const shouldShowNavbar = showNavbarPaths().includes(location.pathname);
 
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem('lastPath', location.pathname);
+    };
+  }, [location]);
+
   return (
     <>
       <ScrollToTop />
@@ -93,130 +99,126 @@ const Layout = () => {
 
 const Router = () => {
   return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/banner/:id" element={<HomeBannerPage />} />
+        <Route path="/splash" element={<Splash />} />
+        <Route path="/chatbot" element={<ChatBotPage />} />
+        <Route path="/alarm" element={<AlarmPage />} />
+        <Route path="/signin" element={<SigninPage />} />
+        <Route path="/find-password" element={<ResetPasswordPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/information" element={<InformationPage />} />
 
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/banner/:id" element={<HomeBannerPage />} />
-          <Route path="/splash" element={<Splash />} />
-          <Route path="/chatbot" element={<ChatBotPage />} />
-          <Route path="/alarm" element={<AlarmPage />} />
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/find-password" element={<ResetPasswordPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/information" element={<InformationPage />} />
+        <Route
+          path="/application-documents/:id"
+          element={<ApplicationDocumentsPage />}
+        />
 
-          <Route
-            path="/application-documents/:id"
-            element={<ApplicationDocumentsPage />}
-          />
+        <Route path="/search/filter" element={<PostSearchFilterPage />} />
+        <Route path="/search" element={<PostSearchPage />} />
 
-          <Route path="/search/filter" element={<PostSearchFilterPage />} />
-          <Route path="/search" element={<PostSearchPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/about" element={<AboutPage />} />
+        <Route path="/profile/account" element={<AccountPage />} />
+        <Route path="/profile/edit" element={<EditProfilePage />} />
+        <Route path="/profile/manage-resume" element={<ManageResumePage />} />
+        <Route path="/profile/edit-resume" element={<EditResumePage />} />
+        <Route path="/profile/language" element={<LanguageSettingPage />} />
+        <Route
+          path="/profile/change-password"
+          element={<ChangePasswordPage />}
+        />
 
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/about" element={<AboutPage />} />
-          <Route path="/profile/account" element={<AccountPage />} />
-          <Route path="/profile/edit" element={<EditProfilePage />} />
-          <Route path="/profile/manage-resume" element={<ManageResumePage />} />
-          <Route path="/profile/edit-resume" element={<EditResumePage />} />
-          <Route path="/profile/language" element={<LanguageSettingPage />} />
-          <Route
-            path="/profile/change-password"
-            element={<ChangePasswordPage />}
-          />
+        <Route path="/resume/introduction" element={<IntroductionPage />} />
+        <Route path="/resume/language/add" element={<PostLanguagePage />} />
+        <Route path="/resume/scrapped" element={<ScrappedJobPostsPage />} />
+        <Route path="/resume/education" element={<PostEducationPage />} />
+        <Route
+          path="/resume/education/edit/:id"
+          element={<PatchEducationPage />}
+        />
+        <Route
+          path="/resume/work-experience"
+          element={<PostWorkExperiencePage />}
+        />
+        <Route
+          path="/resume/work-experience/edit/:id"
+          element={<PatchWorkExperiencePage />}
+        />
 
-          <Route path="/resume/introduction" element={<IntroductionPage />} />
-          <Route path="/resume/language/add" element={<PostLanguagePage />} />
-          <Route path="/resume/scrapped" element={<ScrappedJobPostsPage />} />
-          <Route path="/resume/education" element={<PostEducationPage />} />
-          <Route
-            path="/resume/education/edit/:id"
-            element={<PatchEducationPage />}
-          />
-          <Route
-            path="/resume/work-experience"
-            element={<PostWorkExperiencePage />}
-          />
-          <Route
-            path="/resume/work-experience/edit/:id"
-            element={<PatchWorkExperiencePage />}
-          />
+        <Route path="/post/:id" element={<PostDetailPage />} />
+        <Route path="/post/apply/:id" element={<PostApplyPage />} />
+        <Route path="/write-documents/:id" element={<WriteDocumentsPage />} />
 
-          <Route path="/post/:id" element={<PostDetailPage />} />
-          <Route path="/post/apply/:id" element={<PostApplyPage />} />
-          <Route path="/write-documents/:id" element={<WriteDocumentsPage />} />
+        <Route path="/document-preview/:id" element={<DocumentPreview />} />
+        <Route path="/document-view/:id" element={<DocumentViewerPage />} />
 
-          <Route path="/document-preview/:id" element={<DocumentPreview />} />
-          <Route path="/document-view/:id" element={<DocumentViewerPage />} />
+        <Route path="/request-modify/:id" element={<RequestModifyPage />} />
 
-          <Route path="/request-modify/:id" element={<RequestModifyPage />} />
+        <Route path="/application" element={<ApplicationPage />} />
+        <Route path="/application/:id" element={<ApplicationDetailPage />} />
+        <Route
+          path="/application/:id/school"
+          element={<ApplicationDetailSchoolPage />}
+        />
+        <Route
+          path="/application/result/:id"
+          element={<ApplicationResultPage />}
+        />
 
-          <Route path="/application" element={<ApplicationPage />} />
-          <Route path="/application/:id" element={<ApplicationDetailPage />} />
-          <Route
-            path="/application/:id/school"
-            element={<ApplicationDetailSchoolPage />}
-          />
-          <Route
-            path="/application/result/:id"
-            element={<ApplicationResultPage />}
-          />
+        <Route path="/employer/signup" element={<EmployerSignupPage />} />
+        <Route
+          path="/employer/signup/information"
+          element={<EmployerSignupInfoPage />}
+        />
+        <Route path="/employer/post" element={<EmployerPostPage />} />
+        <Route
+          path="/employer/post/create/"
+          element={<EmployerCreatePostPage />}
+        />
+        <Route
+          path="/employer/post/edit/:id"
+          element={<EmployerEditPostPage />}
+        />
+        <Route path="/employer/post/:id" element={<EmployerPostDetailPage />} />
+        <Route
+          path="/employer/post/:id/applicant"
+          element={<EmployerApplicantListPage />}
+        />
+        <Route
+          path="/employer/applicant/:id"
+          element={<EmployerApplicantDetailPage />}
+        />
+        <Route
+          path="/employer/applicant/:id/resume"
+          element={<EmployerApplicantResumePage />}
+        />
 
-          <Route path="/employer/signup" element={<EmployerSignupPage />} />
-          <Route
-            path="/employer/signup/information"
-            element={<EmployerSignupInfoPage />}
-          />
-          <Route path="/employer/post" element={<EmployerPostPage />} />
-          <Route
-            path="/employer/post/create/"
-            element={<EmployerCreatePostPage />}
-          />
-          <Route
-            path="/employer/post/edit/:id"
-            element={<EmployerEditPostPage />}
-          />
-          <Route
-            path="/employer/post/:id"
-            element={<EmployerPostDetailPage />}
-          />
-          <Route
-            path="/employer/post/:id/applicant"
-            element={<EmployerApplicantListPage />}
-          />
-          <Route
-            path="/employer/applicant/:id"
-            element={<EmployerApplicantDetailPage />}
-          />
-          <Route
-            path="/employer/applicant/:id/resume"
-            element={<EmployerApplicantResumePage />}
-          />
+        <Route
+          path="/employer/applicant/:id/resume/accept"
+          element={<EmployerApplicantResumeAcceptPage />}
+        />
+        <Route
+          path="/employer/applicant/document-detail/:id"
+          element={<ApplicantDocumentsDetailPage />}
+        />
+        <Route
+          path="/employer/write-documents/:id"
+          element={<EmployerWriteDocumentsPage />}
+        />
+        <Route path="/write-documents" element={<WriteDocumentsPage />} />
+        <Route path="/document-preview" element={<DocumentPreview />} />
+        <Route path="/request-modify" element={<RequestModifyPage />} />
 
-          <Route
-            path="/employer/applicant/:id/resume/accept"
-            element={<EmployerApplicantResumeAcceptPage />}
-          />
-          <Route
-            path="/employer/applicant/document-detail/:id"
-            element={<ApplicantDocumentsDetailPage />}
-          />
-          <Route
-            path="/employer/write-documents/:id"
-            element={<EmployerWriteDocumentsPage />}
-          />
-          <Route path="/write-documents" element={<WriteDocumentsPage />} />
-          <Route path="/document-preview" element={<DocumentPreview />} />
-          <Route path="/request-modify" element={<RequestModifyPage />} />
-
-          <Route path="/employer/profile" element={<EmployerProfilePage />} />
-          <Route
-            path="/employer/profile/edit"
-            element={<EmployerEditProfilePage />}
-          />
-        </Route>
-      </Routes>
+        <Route path="/employer/profile" element={<EmployerProfilePage />} />
+        <Route
+          path="/employer/profile/edit"
+          element={<EmployerEditProfilePage />}
+        />
+      </Route>
+    </Routes>
   );
 };
 

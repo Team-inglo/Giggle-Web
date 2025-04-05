@@ -18,12 +18,14 @@ type DocumentFormDispenserProps = {
   type: DocumentType;
   isEdit: boolean;
   applicant_id: number;
+  userOwnerPostId: number;
 };
 
 const DocumentFormDispenser = ({
   type,
   isEdit,
-  applicant_id
+  applicant_id,
+  userOwnerPostId,
 }: DocumentFormDispenserProps) => {
   // const { id } = useParams();
   const [document, setDocument] = useState<
@@ -40,7 +42,9 @@ const DocumentFormDispenser = ({
   });
   {
     useEffect(() => {
-      {/* applicant_id가 null인 경우 (서류를 새로 생성하는 경우) 조회 api를 호출하지 않음. */}
+      {
+        /* applicant_id가 null인 경우 (서류를 새로 생성하는 경우) 조회 api를 호출하지 않음. */
+      }
       if (!applicant_id) return;
       switch (type) {
         case DocumentType.PART_TIME_PERMIT:
@@ -61,6 +65,7 @@ const DocumentFormDispenser = ({
         <PartTimePermitWriteForm
           document={document as PartTimePermitData}
           isEdit={isEdit}
+          userOwnerPostId={userOwnerPostId}
         />
       );
     case DocumentType.LABOR_CONTRACT:
@@ -68,6 +73,7 @@ const DocumentFormDispenser = ({
         <LaborContractWriteForm
           document={document as LaborContractDataResponse}
           isEdit={isEdit}
+          userOwnerPostId={userOwnerPostId}
         />
       );
     case DocumentType.INTEGRATED_APPLICATION:
@@ -75,6 +81,7 @@ const DocumentFormDispenser = ({
         <IntegratedApplicationWriteForm
           document={document as IntegratedApplicationData}
           isEdit={isEdit}
+          userOwnerPostId={userOwnerPostId}
         />
       );
   }

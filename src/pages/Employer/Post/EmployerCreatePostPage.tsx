@@ -12,11 +12,13 @@ import {
   initialJobPostingState,
   JobPostingForm,
 } from '@/types/postCreate/postCreate';
+import { smartNavigate } from '@/utils/application';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const EmployerCreatePostPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { isEdit } = location.state || {};
 
   const { updateCurrentPostId } = useCurrentPostIdStore();
@@ -32,13 +34,11 @@ const EmployerCreatePostPage = () => {
     onSuccess: (response) => {
       updateCurrentPostId(Number(response.data.id));
       setDevIsModal(true);
-      setTimeout(() => {
-        navigate(`/employer/post/${response.data.id}`);
-      }, 2000);
+      smartNavigate(navigate, `/employer/post/${response.data.id}`, {
+        delay: 2000,
+      });
     },
   }); // 공고 생성 시 호출하는 훅
-
-  const navigate = useNavigate(); // navigate 변수를 정의합니다.
 
   // 다음 step으로 넘어갈 때 호출되며, 각 step에서 입력한 정보를 userInfo에 저장, 다음 step으로 이동한다.
   const handleNext = (newInfo: JobPostingForm) => {

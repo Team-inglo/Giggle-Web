@@ -33,9 +33,11 @@ import {
   useMutation,
   UseMutationOptions,
   useQuery,
+  useQueryClient,
 } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RESTYPE } from '../../types/api/common';
+import { smartNavigate } from '@/utils/application';
 
 // 8.1 (유학생) 서류 조회하기 훅
 export const useGetDocumentsEmployee = (id: number) => {
@@ -66,10 +68,13 @@ export const usePostPartTimeEmployPermit = (
   return useMutation({
     mutationFn: postPartTimeEmployPermit,
     onSuccess: () => {
-      navigate(`/application-documents/${id}`);
+      smartNavigate(navigate, `/application-documents/${id}`, {
+        forceSkip: true,
+      });
     },
     onError: () =>
-      navigate('/write-documents', {
+      smartNavigate(navigate, '/write-documents', {
+        forceSkip: true,
         state: {
           type: DocumentType.PART_TIME_PERMIT,
         },
@@ -79,9 +84,9 @@ export const usePostPartTimeEmployPermit = (
 };
 
 // 8.10 (유학생)시간제취업허가서 수정 api 통신 커스텀 훅
-//TODO: ID값 사용해 redirect 해야
 export const usePutPartTimeEmployPermit = (
   id: number,
+  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
@@ -92,14 +97,14 @@ export const usePutPartTimeEmployPermit = (
   return useMutation({
     mutationFn: putPartTimeEmployPermit,
     onSuccess: () => {
-      navigate(`/application-documents/${id}`);
+      smartNavigate(navigate, `/application-documents/${userOwnerPostingId}`, {
+        forceSkip: true,
+      });
     },
     onError: () =>
-      navigate('/write-documents', {
-        state: {
-          type: DocumentType.PART_TIME_PERMIT,
-          isEdit: true,
-        },
+      smartNavigate(navigate, `/write-documents${id}`, {
+        forceSkip: true,
+        state: { type: DocumentType.PART_TIME_PERMIT, isEdit: true },
       }),
     ...options,
   });
@@ -108,6 +113,7 @@ export const usePutPartTimeEmployPermit = (
 // 8.11 (고용주)시간제취업허가서 수정 api 통신 커스텀 훅
 export const usePutPartTimeEmployPermitEmployer = (
   id: number,
+  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
@@ -115,17 +121,19 @@ export const usePutPartTimeEmployPermitEmployer = (
   >,
 ) => {
   const navigate = useNavigate();
+  console.log('userOwnerPostingId', userOwnerPostingId);
   return useMutation({
     mutationFn: putPartTimeEmployPermitEmployer,
     onSuccess: () => {
-      navigate(`/employer/applicant/document-detail/${id}`);
+      smartNavigate(
+        navigate,
+        `/employer/applicant/document-detail/${userOwnerPostingId}`,
+      );
     },
     onError: () =>
-      navigate('/write-documents', {
-        state: {
-          type: DocumentType.PART_TIME_PERMIT,
-          isEdit: true,
-        },
+      smartNavigate(navigate, `/employer/write-documents/${id}`, {
+        forceSkip: true,
+        state: { type: DocumentType.PART_TIME_PERMIT, isEdit: true },
       }),
     ...options,
   });
@@ -144,10 +152,13 @@ export const usePostStandardLaborContracts = (
   return useMutation({
     mutationFn: postStandardLaborContracts,
     onSuccess: () => {
-      navigate(`/application-documents/${id}`);
+      smartNavigate(navigate, `/application-documents/${id}`, {
+        forceSkip: true,
+      });
     },
     onError: () =>
-      navigate(`/write-documents/${id}`, {
+      smartNavigate(navigate, '/write-documents', {
+        forceSkip: true,
         state: {
           type: DocumentType.LABOR_CONTRACT,
         },
@@ -159,6 +170,7 @@ export const usePostStandardLaborContracts = (
 // 8.12 (유학생) 표준 근로계약서 수정 api 통신 커스텀 훅
 export const usePutStandardLaborContracts = (
   id: number,
+  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
@@ -169,10 +181,13 @@ export const usePutStandardLaborContracts = (
   return useMutation({
     mutationFn: putStandardLaborContracts,
     onSuccess: () => {
-      navigate(`/application-documents/${id}`);
+      smartNavigate(navigate, `/application-documents/${userOwnerPostingId}`, {
+        forceSkip: true,
+      });
     },
     onError: () =>
-      navigate('/write-documents', {
+      smartNavigate(navigate, `/write-documents${id}`, {
+        forceSkip: true,
         state: {
           type: DocumentType.LABOR_CONTRACT,
           isEdit: true,
@@ -185,24 +200,32 @@ export const usePutStandardLaborContracts = (
 // 8.13 (고용주) 표준 근로계약서 수정 api 통신 커스텀 훅
 export const usePutLaborContractEmployer = (
   id: number,
+  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
-    { id: number; document: LaborContractEmployerInfo }
+    {
+      id: number;
+      document: LaborContractEmployerInfo;
+    }
   >,
 ) => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: putLaborContractEmployer,
     onSuccess: () => {
-      navigate(`/employer/applicant/document-detail/${id}`);
+      smartNavigate(
+        navigate,
+        `/employer/applicant/document-detail/${userOwnerPostingId}`,
+        {
+          forceSkip: true,
+        },
+      );
     },
     onError: () =>
-      navigate('/write-documents', {
-        state: {
-          type: DocumentType.LABOR_CONTRACT,
-          isEdit: true,
-        },
+      smartNavigate(navigate, `/employer/write-documents/${id}`, {
+        forceSkip: true,
+        state: { type: DocumentType.LABOR_CONTRACT, isEdit: true },
       }),
     ...options,
   });
@@ -222,10 +245,13 @@ export const usePostIntegratedApplicants = (
   return useMutation({
     mutationFn: postIntegratedApplications,
     onSuccess: () => {
-      navigate(`/application-documents/${postId}`);
+      smartNavigate(navigate, `/application-documents/${postId}`, {
+        forceSkip: true,
+      });
     },
     onError: () =>
-      navigate('/write-documents', {
+      smartNavigate(navigate, '/write-documents', {
+        forceSkip: true,
         state: {
           type: DocumentType.INTEGRATED_APPLICATION,
         },
@@ -237,6 +263,7 @@ export const usePostIntegratedApplicants = (
 // 8.14 (유학생) 통합신청서 수정 api 통신 커스텀 훅
 export const usePutIntegratedApplicants = (
   id: number,
+  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
@@ -247,10 +274,13 @@ export const usePutIntegratedApplicants = (
   return useMutation({
     mutationFn: putIntegratedApplications,
     onSuccess: () => {
-      navigate(`/application-documents/${id}`);
+      smartNavigate(navigate, `/application-documents/${userOwnerPostingId}`, {
+        forceSkip: true,
+      });
     },
     onError: () =>
-      navigate(`/write-documents/${id}`, {
+      smartNavigate(navigate, `/write-documents${id}`, {
+        forceSkip: true,
         state: {
           type: DocumentType.INTEGRATED_APPLICATION,
           isEdit: true,
@@ -288,12 +318,16 @@ export const usePatchStatusSubmissionEmployer = (
 
 // 8.17 (유학생) 서류 (근로계약서, 시간제 취업허가서) 컨펌하기
 export const usePatchDocumentsStatusConfirmation = (
+  id: number,
   options?: UseMutationOptions<RESTYPE<null>, Error, number>,
 ) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: patchDocumentsStatusConfirmation,
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['application', 'documents', 'employee', id],
+      });
     },
     onError: (error) => {
       console.error('유학생의 서류 컨펌 실패', error);
@@ -333,7 +367,7 @@ export const usePostRequest = (
   const navigate = useNavigate();
   return useMutation({
     mutationFn: postRequest,
-    onError: () => navigate(`/request-modify/${id}`),
+    onError: () => smartNavigate(navigate, `/request-modify/${id}`),
     ...options,
   });
 };
