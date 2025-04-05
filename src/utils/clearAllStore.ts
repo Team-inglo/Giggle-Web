@@ -1,7 +1,6 @@
 import { useEmailTryCountStore } from '@/store/signup';
 import {
   useCurrentApplicantIdStore,
-  useCurrentDocumentIdStore,
   useCurrentPostIdEmployeeStore,
   useCurrentPostIdStore,
 } from '@/store/url';
@@ -13,6 +12,5 @@ export const clearAllStore = () => {
   useEmailTryCountStore.persist.clearStorage();
   useCurrentPostIdStore.persist.clearStorage();
   useCurrentApplicantIdStore.persist.clearStorage();
-  useCurrentDocumentIdStore.persist.clearStorage();
   useCurrentPostIdEmployeeStore.persist.clearStorage();
 };
