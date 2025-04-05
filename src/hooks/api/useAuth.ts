@@ -49,6 +49,7 @@ import { AxiosError } from 'axios';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
+import { smartNavigate } from '@/utils/application';
 
 /**
  * 로그인 프로세스를 처리하는 커스텀 훅
@@ -92,7 +93,7 @@ export const useSignIn = () => {
         sendReactNativeMessage({ type: 'RECEIVE_TOKEN' });
 
         // 새로고침 전에 지연 추가
-        navigate('/splash');
+        smartNavigate(navigate, '/splash');
       }
     },
     onError: () => {
@@ -114,12 +115,12 @@ export const useLogout = () => {
         // store 전역 변수 초기화
         clearAllStore();
         // 스플래시 이동
-        navigate('/splash');
+        smartNavigate(navigate, '/splash');
       }
     },
     onError: () => {
       alert('로그아웃을 다시 시도해주세요.');
-      navigate('/profile');
+      smartNavigate(navigate, '/profile');
     },
   });
 };
@@ -135,7 +136,7 @@ export const useReIssueToken = () => {
         setRefreshToken(data.data.refresh_token);
         // 앱에서 FCM 토큰 요청
         sendReactNativeMessage({ type: 'RECEIVE_TOKEN' });
-        navigate('/splash');
+        smartNavigate(navigate, '/splash');
       }
     },
     onError: () => {
@@ -210,7 +211,7 @@ export const useSignUp = (setSuccess: () => void) => {
       }
     },
     onError: () => {
-      navigate('/splash');
+      smartNavigate(navigate, '/splash');
     },
   });
 };
@@ -230,7 +231,7 @@ export const useSignupEmployer = (setSuccess: () => void) => {
       }
     },
     onError: () => {
-      navigate('/splash');
+      smartNavigate(navigate, '/splash');
     },
   });
 };
@@ -272,7 +273,7 @@ export const useReIssueAuthentication = () => {
           '인증코드 재발송이 실패하였습니다. 회원가입을 다시 시도해주세요.',
         );
       }
-      navigate('/signup');
+      smartNavigate(navigate, '/signup');
     },
   });
 };
@@ -327,10 +328,10 @@ export const usePatchPassword = (
     onError: () => {
       if (account_type === UserType.USER) {
         alert('현재 비밀번호를 다시 확인해주세요.');
-        navigate('/profile/account');
+        smartNavigate(navigate, '/profile/account');
       } else {
         alert('Wrong current password input. Try again.');
-        navigate('/employer/profile/account');
+        smartNavigate(navigate, '/employer/profile/account');
       }
     },
   });
