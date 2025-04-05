@@ -2,7 +2,7 @@ import BaseHeader from '@/components/Common/Header/BaseHeader';
 import DocumentSubHeader from '@/components/Document/write/DocumentSubHeader';
 import { DocumentType } from '@/types/api/document';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   PartTimePermitData,
   LaborContractDataResponse,
@@ -16,13 +16,12 @@ import {
 } from '@/hooks/api/useDocument';
 import EmployeeInfoSection from '@/components/Document/write/EmployeeInfoSection';
 import IntegratedApplicationPreview from '@/components/Document/write/IntegratedApplicationPreview';
-import { useCurrentDocumentIdStore } from '@/store/url';
 import { useUserStore } from '@/store/user';
 
 const DocumentPreview = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentDocumentId } = useCurrentDocumentIdStore();
+  const currentDocumentId = useParams().id;
   const { account_type } = useUserStore();
   const { type } = location.state || {};
   const [document, setDocument] = useState<
@@ -83,13 +82,7 @@ const DocumentPreview = () => {
         hasBackButton={true}
         hasMenuButton={false}
         title={account_type === 'OWNER' ? `문서 미리보기` : `Document Preview`}
-        onClickBackButton={() =>
-          navigate(
-            account_type === 'OWNER'
-              ? `/employer/applicant/document-detail/${currentDocumentId}`
-              : `/application-documents/${currentDocumentId}`,
-          )
-        }
+        onClickBackButton={() => navigate(-1)}
       />
       <DocumentSubHeader type={type as DocumentType} />
       <div className="bg-surface-secondary py-4 flex flex-col gap-4 px-4">

@@ -16,7 +16,7 @@ const ContactHikoreaBottomSheet = ({
 }: ContactHikoreaBottomSheetProps) => {
   const { id } = useParams();
 
-  const { mutate } = usePatchApplyHiKorea();
+  const { mutate } = usePatchApplyHiKorea(Number(id));
 
   const handleCompleteApplyHikorea = () => {
     if (isNaN(Number(id))) return;
