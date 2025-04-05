@@ -36,94 +36,88 @@ const ApplicationDetailSteps = ({ step }: ApplicationDetailStepsProps) => {
     }
   };
 
-  const showCurrentStepMessage = (currentStep: number) => {
-    if (account_type === UserType.USER && currentStep === 2) {
-      return (
-        <>
-          <article className="w-full mt-2 p-4 rounded-lg bg-surface-secondary">
-            <h5 className="pb-1 button-2 text-text-normal">
-              Waiting for employer response… ⏳
-            </h5>
-            <p className="pb-4 caption text-text-alternative">
-              The employer will request an interview soon. Hang tight!
-            </p>
-            <button
-              className="caption text-text-assistive underline"
-              onClick={() => setIsShowBottomSheet(true)}
-            >
-              Didn't get a response? 😓
-            </button>
-          </article>
-          <ContactRecruiterBottomSheet
-            isShowBottomsheet={isShowBottomsheet}
-            setIsShowBottomSheet={setIsShowBottomSheet}
-          />
-        </>
-      );
-    } else if (account_type === UserType.USER && currentStep === 7) {
-      return (
-        <>
-          {step === APPLICATION_STEP.APPLICATION_SUCCESS ? (
-            <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-[#0066FF]/10 rounded">
-              <SuccessIcon />
-              <p className="body-2 text-text-success">
-                This application is successed.
-              </p>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
-              <RejectIcon />
-              <p className="body-2 text-text-error">
-                This application is rejected.
-              </p>
-            </div>
-          )}
-        </>
-      );
-    } else if (
-      account_type === UserType.USER &&
-      step === APPLICATION_STEP.RESUME_REJECTED
-    ) {
-      return (
-        <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
-          <RejectIcon />
-          <p className="body-2 text-text-error">
-            Your resume has been rejected.
+  const createMessageUI = {
+    // 성공 메시지
+    success: (message: string) => (
+      <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-[#0066FF]/10 rounded">
+        <SuccessIcon />
+        <p className="body-2 text-text-success">{message}</p>
+      </div>
+    ),
+    // 거절 메시지
+    error: (message: string) => (
+      <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
+        <RejectIcon />
+        <p className="body-2 text-text-error">{message}</p>
+      </div>
+    ),
+    // 일반 메시지
+    info: (message: string) => (
+      <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-primary-neutral rounded">
+        <MessageIcon />
+        <p className="body-2 text-text-alternative">{message}</p>
+      </div>
+    ),
+    waiting: () => (
+      <>
+        <article className="w-full mt-2 p-4 rounded-lg bg-surface-secondary">
+          <h5 className="pb-1 button-2 text-text-normal">
+            Waiting for employer response… ⏳
+          </h5>
+          <p className="pb-4 caption text-text-alternative">
+            The employer will request an interview soon. Hang tight!
           </p>
-        </div>
-      );
-    } else if (
-      account_type === UserType.OWNER &&
-      step === APPLICATION_STEP.RESUME_REJECTED
-    ) {
-      return (
-        <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-primary-neutral rounded">
-          <MessageIcon />
-          <p className="body-2 text-text-alternative">이력서를 거절했습니다.</p>
-        </div>
-      );
-    } else if (
-      account_type === UserType.OWNER &&
-      (currentStep === 4 || currentStep === 5)
-    ) {
-      return (
-        <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-primary-neutral rounded">
-          <MessageIcon />
-          <p className="body-2 text-text-alternative">
-            현재 지원자가 담당자에게 서류를 검토받고 있어요
-          </p>
-        </div>
-      );
-    } else if (account_type === UserType.OWNER && currentStep === 6) {
-      return (
-        <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-primary-neutral rounded">
-          <MessageIcon />
-          <p className="body-2 text-text-alternative">
-            현재 지원자가 결과를 기다리고 있어요
-          </p>
-        </div>
-      );
-    }
+          <button
+            className="caption text-text-assistive underline"
+            onClick={() => setIsShowBottomSheet(true)}
+          >
+            Didn't get a response? 😓
+          </button>
+        </article>
+        <ContactRecruiterBottomSheet
+          isShowBottomsheet={isShowBottomsheet}
+          setIsShowBottomSheet={setIsShowBottomSheet}
+        />
+      </>
+    ),
+  };
+
+  const showCurrentStepMessage = (currentStep: ApplicationStepType) => {
+    const messageMap: Record<
+      UserType,
+      Partial<Record<ApplicationStepType, JSX.Element>>
+    > = {
+      [UserType.USER]: {
+        [APPLICATION_STEP.WAITING_FOR_INTERVIEW]: createMessageUI.waiting(),
+        [APPLICATION_STEP.APPLICATION_SUCCESS]: createMessageUI.success(
+          'This application is successed.',
+        ),
+        [APPLICATION_STEP.APPLICATION_REJECTED]: createMessageUI.error(
+          'This application is rejected.',
+        ),
+        [APPLICATION_STEP.RESUME_REJECTED]: createMessageUI.error(
+          'Your resume has been rejected.',
+        ),
+      },
+      [UserType.OWNER]: {
+        [APPLICATION_STEP.RESUME_REJECTED]:
+          createMessageUI.info('이력서를 거절했습니다.'),
+        [APPLICATION_STEP.DOCUMENT_UNDER_REVIEW]: createMessageUI.info(
+          '현재 지원자가 담당자에게 서류를 검토받고 있어요',
+        ),
+        [APPLICATION_STEP.APPLICATION_IN_PROGRESS]: createMessageUI.info(
+          '현재 지원자가 담당자에게 서류를 검토받고 있어요',
+        ),
+        [APPLICATION_STEP.REGISTERING_RESULTS]: createMessageUI.info(
+          '현재 지원자가 결과를 기다리고 있어요',
+        ),
+      },
+    };
+
+    if (!account_type) return null;
+
+    const message = messageMap[account_type]?.[currentStep];
+    return message ?? null;
   };
 
   return (
@@ -143,7 +137,7 @@ const ApplicationDetailSteps = ({ step }: ApplicationDetailStepsProps) => {
             ]
           }
         </p>
-        {showCurrentStepMessage(findCurrentStep(step))}
+        {showCurrentStepMessage(step)}
         <div className="w-full pt-10">
           {APPLICATION_STEP_EXPLAIN_DATA.map((data) => (
             <ApplicationDetailStepBarLayout
