@@ -1203,7 +1203,7 @@ export const REGION_DATA: RegionDataType = {
     ],
   },
   인천: {
-    인천: [''],
+    전체: [''],
     중구: [
       '경동',
       '관동1가',
@@ -2145,6 +2145,7 @@ export const REGION_DATA: RegionDataType = {
     ],
   },
   세종특별자치시: {
+    전체: [''],
     세종특별자치시: [
       '가람동',
       '갈산리',
@@ -2295,7 +2296,7 @@ export const REGION_DATA: RegionDataType = {
     ],
   },
   경기도: {
-    경기도: ['경기도'],
+    전체: [''],
     수원시: ['수원시'],
     '수원시 장안구': [
       '상광교동',
@@ -4580,7 +4581,7 @@ export const REGION_DATA: RegionDataType = {
     ],
   },
   강원특별자치도: {
-    강원특별자치도: ['강원특별자치도'],
+    전체: [''],
     춘천시: [
       '가일리',
       '가정리',
@@ -14847,7 +14848,7 @@ export const REGION_DATA: RegionDataType = {
     ],
   },
   경북: {
-    경북: [''],
+    전체: [''],
     포항시: ['포항시'],
     '포항시 남구': ['포항시 남구'],
     포항시남구: [

@@ -10,31 +10,21 @@ import ApplicationDetailStep7 from '@/components/ApplicationDetail/ApplicationDe
 import { findCurrentStep } from '@/utils/application';
 import ApplicationDetailStepEtc from '@/components/ApplicationDetail/ApplicationDetailStepEtc';
 import { useGetApplicationDetail } from '@/hooks/api/useApplication';
-import {
-  useCurrentPostIdEmployeeStore,
-  useCurrentPostIdStore,
-} from '@/store/url';
+import { useCurrentPostIdEmployeeStore } from '@/store/url';
 import useNavigateBack from '@/hooks/useNavigateBack';
-import { useGetPostSummary } from '@/hooks/api/usePost';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
-import { transformSummaryToJobPostingItemType } from '@/utils/post';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
+import { transformApplicationDetailToJobPostingItemType } from '@/utils/post';
 
 const ApplicationDetailPage = () => {
   const handleBackButtonClick = useNavigateBack();
-  const { currentPostId } = useCurrentPostIdStore();
   const { currentPostId: currentEmployeePostId } =
     useCurrentPostIdEmployeeStore();
 
-  const { data: postData, isLoading: postDataLoading } = useGetPostSummary(
-    Number(currentPostId),
-    !isNaN(Number(currentPostId)) ? true : false,
+  const { data: applicationData, isLoading } = useGetApplicationDetail(
+    Number(currentEmployeePostId),
+    !isNaN(Number(currentEmployeePostId)) ? true : false,
   );
-  const { data: applicationData, isLoading: applicationDataLoading } =
-    useGetApplicationDetail(
-      Number(currentEmployeePostId),
-      !isNaN(Number(currentEmployeePostId)) ? true : false,
-    );
 
   const showCurrentStepButton = (step: number) => {
     switch (step) {
@@ -43,7 +33,11 @@ const ApplicationDetailPage = () => {
       case 2:
         return <ApplicationDetailStep2 />;
       case 3:
-        return <ApplicationDetailStep3 applicant_id={Number(currentPostId)} />;
+        return (
+          <ApplicationDetailStep3
+            applicant_id={Number(currentEmployeePostId)}
+          />
+        );
       case 4:
         return <ApplicationDetailStep4 />;
       case 5:
@@ -51,7 +45,7 @@ const ApplicationDetailPage = () => {
       case 6:
         return <ApplicationDetailStep6 />;
       case 7:
-        return <ApplicationDetailStep7 result={applicationData?.data?.step} />;
+        return <ApplicationDetailStep7 />;
       default:
         return (
           <ApplicationDetailStepEtc result={applicationData?.data?.step} />
@@ -67,14 +61,16 @@ const ApplicationDetailPage = () => {
         hasMenuButton={false}
         title="Check Status"
       />
-      {postDataLoading || applicationDataLoading ? (
+      {isLoading ? (
         <div className="w-full h-56 flex justify-center items-center">
           <LoadingPostItem />
         </div>
       ) : (
         <>
           <JobPostingCard
-            {...transformSummaryToJobPostingItemType(postData?.data)}
+            {...transformApplicationDetailToJobPostingItemType(
+              applicationData?.data,
+            )}
           >
             <JobPostingCard.Box>
               <JobPostingCard.Header />
@@ -88,9 +84,7 @@ const ApplicationDetailPage = () => {
             </JobPostingCard.Box>
           </JobPostingCard>
           <div className="w-full h-4 bg-surface-secondary"></div>
-          <ApplicationDetailSteps
-            step={findCurrentStep(applicationData?.data?.step)}
-          />
+          <ApplicationDetailSteps step={applicationData?.data?.step} />
           {showCurrentStepButton(findCurrentStep(applicationData?.data?.step))}
         </>
       )}
