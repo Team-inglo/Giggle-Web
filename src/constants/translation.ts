@@ -570,6 +570,10 @@ export const postSearchTranslation = {
     ko: '적용하기',
     en: 'Apply',
   },
+  maxSelectedArea: {
+    ko: '지역을 최대 3개까지 선택할 수 있습니다.',
+    en: 'You can select up to three regions.',
+  },
 };
 
 export const infoTranslation = {
@@ -611,7 +615,7 @@ export const alarmTranslation = {
     en: 'Notification',
   },
   emptyAlarm: {
-    ko: '알람이 없습니다.',
+    ko: '알람이 아직 없어요.',
     en: 'There is no notifications',
   },
 };

@@ -7,24 +7,24 @@ import { useUserStore } from '@/store/user';
 import { isEmployerByAccountType } from '@/utils/signup';
 
 type PostSearchFilterBottomSheetType = {
-  currentRegion1: string[];
-  currentRegion2: string[];
-  currentRegion3: string[];
+  selectedRegions: {
+    depth1: string[];
+    depth2: string[];
+    depth3: string[];
+  };
   onClickDelete: (index: number) => void;
   onClickReset: () => void;
   onClickSubmit: () => void;
 };
 
 const PostSearchFilterBottomSheet = ({
-  currentRegion1,
-  currentRegion2,
-  currentRegion3,
+  selectedRegions,
   onClickDelete,
   onClickReset,
   onClickSubmit,
 }: PostSearchFilterBottomSheetType) => {
   const formatRegionArrayToString = (index: number) => {
-    return `${currentRegion1[index]} ${currentRegion2[index]} ${currentRegion3[index] === 'none' ? '' : currentRegion3[index]}`;
+    return `${selectedRegions.depth1[index]} ${selectedRegions.depth2[index]} ${selectedRegions.depth3[index] === 'none' ? '' : selectedRegions.depth3[index]}`;
   };
   const { account_type } = useUserStore();
 
@@ -43,11 +43,11 @@ const PostSearchFilterBottomSheet = ({
             ]
           }
           <span className="pl-2 text-primary-normal">
-            {currentRegion1.length}
+            {selectedRegions.depth1.length}
           </span>
         </h3>
         <div className="w-full flex flex-wrap gap-2">
-          {currentRegion1.map((region, index) => (
+          {selectedRegions.depth1.map((region, index) => (
             <Tag
               key={`${region}_${index}`}
               value={formatRegionArrayToString(index)}
