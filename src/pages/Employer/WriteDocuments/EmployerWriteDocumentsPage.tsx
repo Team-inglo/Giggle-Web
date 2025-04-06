@@ -8,6 +8,7 @@ import {
   useGetPartTimeEmployPermit,
   useGetStandardLaborContract,
 } from '@/hooks/api/useDocument';
+import useNavigateBack from '@/hooks/useNavigateBack';
 import {
   DocumentType,
   IntegratedApplicationData,
@@ -15,10 +16,10 @@ import {
   PartTimePermitData,
 } from '@/types/api/document';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const EmployerWriteDocumentsPage = () => {
-  const navigate = useNavigate();
+  const navigateBack = useNavigateBack();
   const location = useLocation();
   const { type, isEdit, userOwnerPostId } = location.state || {};
   const currentDocumentId = useParams().id;
@@ -56,7 +57,7 @@ const EmployerWriteDocumentsPage = () => {
           hasBackButton={true}
           hasMenuButton={false}
           title="서류 작성"
-          onClickBackButton={() => navigate(-1)} // 서류관리 페이지로 이동 요망
+          onClickBackButton={navigateBack} // 서류관리 페이지로 이동 요망
         />
         <DocumentSubHeader type={type as DocumentType} />
         <div className="flex flex-col items-center justify-start gap-6 p-4 bg-surface-secondary">

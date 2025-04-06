@@ -2,7 +2,7 @@ import BaseHeader from '@/components/Common/Header/BaseHeader';
 import DocumentSubHeader from '@/components/Document/write/DocumentSubHeader';
 import { DocumentType } from '@/types/api/document';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import {
   PartTimePermitData,
   LaborContractDataResponse,
@@ -17,9 +17,10 @@ import {
 import EmployeeInfoSection from '@/components/Document/write/EmployeeInfoSection';
 import IntegratedApplicationPreview from '@/components/Document/write/IntegratedApplicationPreview';
 import { useUserStore } from '@/store/user';
+import useNavigateBack from '@/hooks/useNavigateBack';
 
 const DocumentPreview = () => {
-  const navigate = useNavigate();
+  const handleClickBackButton = useNavigateBack();
   const location = useLocation();
   const currentDocumentId = useParams().id;
   const { account_type } = useUserStore();
@@ -82,7 +83,7 @@ const DocumentPreview = () => {
         hasBackButton={true}
         hasMenuButton={false}
         title={account_type === 'OWNER' ? `문서 미리보기` : `Document Preview`}
-        onClickBackButton={() => navigate(-1)}
+        onClickBackButton={handleClickBackButton}
       />
       <DocumentSubHeader type={type as DocumentType} />
       <div className="bg-surface-secondary py-4 flex flex-col gap-4 px-4">
