@@ -124,7 +124,7 @@ export const usePatchContactCoordinator = (id: number) => {
   return useMutation({
     mutationFn: patchContactCoordinator,
     onSuccess: () => {
-      navigate(`/application/${id}`);
+      smartNavigate(navigate, `/application/${id}`, { forceSkip: true });
     },
     onError: (error) => {
       console.error('유학생 담당자 검토 완료 실패', error);
@@ -155,7 +155,7 @@ export const usePatchHiKoreaResult = (id: number) => {
   return useMutation({
     mutationFn: patchHiKoreaResult,
     onSuccess: () => {
-      navigate(`/application/${id}`);
+      smartNavigate(navigate, `/application/${id}`, { forceSkip: true });
     },
     onError: (error) => {
       console.error('하이코리아 처리결과 등록 실패', error);
