@@ -148,7 +148,7 @@ export const usePatchApplyHiKorea = (id: number) => {
   });
 };
 
-// 6.15 (유학생) 하이코리아 처리결과 등록하기 훅 (지금 넘어가기 안됨)
+// 6.15 (유학생) 하이코리아 처리결과 등록하기 훅
 export const usePatchHiKoreaResult = (id: number) => {
   const navigate = useNavigate();
 
