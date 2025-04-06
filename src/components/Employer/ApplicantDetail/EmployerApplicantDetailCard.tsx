@@ -16,7 +16,7 @@ const EmployerApplicantDetailCard = ({
         <div className="flex items-center">
           <h3 className="head-3 text-text-strong">{applicantData?.name}</h3>
           <p className="pl-2 button-2 text-text-alternative">
-            {applicantData.nationality.replace(/_/g, ' ').toLowerCase()}
+            {applicantData?.nationality?.replace(/_/g, ' ').toLowerCase()}
           </p>
         </div>
         <p className=" caption text-text-alternative">
@@ -34,7 +34,7 @@ const EmployerApplicantDetailCard = ({
       <div className="flex items-center gap-2">
         <VisaIcon />
         <p className="caption text-text-normal">
-          {applicantData?.visa.replace(/_/g, '-')}
+          {applicantData?.visa?.replace(/_/g, '-')}
         </p>
       </div>
     </section>

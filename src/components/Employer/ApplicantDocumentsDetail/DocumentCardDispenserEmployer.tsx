@@ -3,16 +3,16 @@ import FolderIcon from '@/assets/icons/FolderIcon.svg?react';
 import DownloadIcon from '@/assets/icons/DownloadIcon.svg?react';
 import BlackFolderIcon from '@/assets/icons/BlackFolder.svg?react';
 import ArrowrightIcon from '@/assets/icons/Chevron.svg?react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DocumentStatusEmployer } from '@/constants/documents';
 import {
   useGetPartTimeEmployPermit,
   useGetStandardLaborContract,
   usePatchStatusSubmissionEmployer,
 } from '@/hooks/api/useDocument';
-import { useCurrentDocumentIdStore } from '@/store/url';
 import { ReactNode, useEffect, useState } from 'react';
 import { SuccessModalContent } from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
+import { useQueryClient } from '@tanstack/react-query';
 
 type DocumentCardProps = {
   tagText?: string;
@@ -86,6 +86,8 @@ const DocumentCardDispenserEmployer = ({
   setModalContent,
 }: DocumentCardDispenserProps) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const currentUserOwnerPostId = useParams().id;
   const handleDownload = (url: string) => {
     // 웹뷰 환경인지 체크
     const isWebView = Boolean(window.ReactNativeWebView);
@@ -108,14 +110,24 @@ const DocumentCardDispenserEmployer = ({
       document.body.removeChild(link);
     }
   };
-  const { updateCurrentDocumentId } = useCurrentDocumentIdStore();
   const { mutate: submitDocument } = usePatchStatusSubmissionEmployer({
     onSuccess: () => {
       setModalContent({
         // TODO: 디자인 변경 되면 문구 수정 적용
         title: 'Registration has been\nsuccessfully completed',
         content: `The employer will check the documents\nsoon and fill them out together.\nWe will send you a notification when I'm\ndone writing it!`,
-        onNext: () => window.location.reload(),
+        onNext: () => {},
+      });
+    },
+    onSettled: async () => {
+      setModalContent({ title: '', content: '', onNext: () => {} });
+      await queryClient.invalidateQueries({
+        queryKey: [
+          'application',
+          'documents',
+          'employer',
+          Number(currentUserOwnerPostId),
+        ],
       });
     },
   });
@@ -164,12 +176,12 @@ const DocumentCardDispenserEmployer = ({
             <button
               className={`${isEmployerWrote ? 'bg-surface-secondary' : 'bg-surface-primary'} text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
               onClick={() => {
-                updateCurrentDocumentId(documentInfo.id);
                 navigate(`/employer/write-documents/${documentInfo.id}`, {
                   // EmployerWriteDocumentPage.tsx
                   state: {
                     type: type,
                     isEdit: true,
+                    userOwnerPostId: currentUserOwnerPostId,
                   },
                 });
               }}
@@ -198,7 +210,6 @@ const DocumentCardDispenserEmployer = ({
           content="유학생이 문서를 확인 중이에요. 조금만 기다려 주세요!"
           preview="서류 확인하기"
           onPreview={() => {
-            updateCurrentDocumentId(documentInfo.id);
             navigate(`/document-preview/${documentInfo.id}`, {
               state: {
                 type: type,
@@ -222,7 +233,6 @@ const DocumentCardDispenserEmployer = ({
               <button
                 className={`bg-surface-secondary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
                 onClick={() => {
-                  updateCurrentDocumentId(documentInfo.id);
                   navigate(`/employer/write-documents/${documentInfo.id}`, {
                     // EmployerWriteDocumentPage.tsx
                     state: {

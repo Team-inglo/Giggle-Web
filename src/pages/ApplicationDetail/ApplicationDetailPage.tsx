@@ -33,11 +33,7 @@ const ApplicationDetailPage = () => {
       case 2:
         return <ApplicationDetailStep2 />;
       case 3:
-        return (
-          <ApplicationDetailStep3
-            applicant_id={Number(currentEmployeePostId)}
-          />
-        );
+        return <ApplicationDetailStep3 applicant_id={Number(currentEmployeePostId)} />;
       case 4:
         return <ApplicationDetailStep4 />;
       case 5:
