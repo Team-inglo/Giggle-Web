@@ -1,16 +1,17 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import RadioButton from '@/components/Information/RadioButton';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { usePatchHiKoreaResult } from '@/hooks/api/useApplication';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import PageTitle from '@/components/Common/PageTitle';
 import { limitInputValueLength } from '@/utils/information';
+import useNavigateBack from '@/hooks/useNavigateBack';
 
 const ApplicationResultPage = () => {
-  const navigate = useNavigate();
+  const handleClickBackButton = useNavigateBack();
   const { id } = useParams();
 
   const { mutate } = usePatchHiKoreaResult(Number(id));
@@ -32,7 +33,7 @@ const ApplicationResultPage = () => {
       <BaseHeader
         hasBackButton={true}
         title="Register the result"
-        onClickBackButton={() => navigate(`/application/${id}`)}
+        onClickBackButton={handleClickBackButton}
         hasMenuButton={false}
       />
       <PageTitle

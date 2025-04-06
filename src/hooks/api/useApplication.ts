@@ -124,7 +124,7 @@ export const usePatchContactCoordinator = (id: number) => {
   return useMutation({
     mutationFn: patchContactCoordinator,
     onSuccess: () => {
-      navigate(`/application/${id}`);
+      smartNavigate(navigate, `/application/${id}`, { forceSkip: true });
     },
     onError: (error) => {
       console.error('유학생 담당자 검토 완료 실패', error);
@@ -148,14 +148,14 @@ export const usePatchApplyHiKorea = (id: number) => {
   });
 };
 
-// 6.15 (유학생) 하이코리아 처리결과 등록하기 훅
+// 6.15 (유학생) 하이코리아 처리결과 등록하기 훅 (지금 넘어가기 안됨)
 export const usePatchHiKoreaResult = (id: number) => {
   const navigate = useNavigate();
 
   return useMutation({
     mutationFn: patchHiKoreaResult,
     onSuccess: () => {
-      navigate(`/application/${id}`);
+      smartNavigate(navigate, `/application/${id}`, { forceSkip: true });
     },
     onError: (error) => {
       console.error('하이코리아 처리결과 등록 실패', error);
