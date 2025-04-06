@@ -351,6 +351,7 @@ export const useSearchSchool = ({
       console.error('학교 검색 중 오류 발생:', error);
       onError?.(error);
     },
+    meta: { skipGlobalLoading: true },
   });
   return { searchSchool: mutate, ...rest };
 };
