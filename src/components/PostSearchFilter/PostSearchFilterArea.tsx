@@ -5,6 +5,9 @@ import PostSearchFilterBottomSheet from '@/components/PostSearchFilter/PostSearc
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { FILTER_CATEGORY } from '@/constants/postSearch';
 import { REGION_DATA } from '@/constants/regionData';
+import { useUserStore } from '@/store/user';
+import { postSearchTranslation } from '@/constants/translation';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 type PostSearchFilterAreaType = {
   setIsOpenAreaFilter: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,25 +20,39 @@ const PostSearchFilterArea = ({
   filterList,
   setFilterList,
 }: PostSearchFilterAreaType) => {
-  const [currentRegion1, setCurrentRegion1] = useState<string[]>([]);
-  const [currentRegion2, setCurrentRegion2] = useState<string[]>([]);
-  const [currentRegion3, setCurrentRegion3] = useState<string[]>([]);
+  const { account_type } = useUserStore();
 
-  const [region1Depth, setRegion1Depth] = useState<string | null>(null);
-  const [region2Depth, setRegion2Depth] = useState<string | null>(null);
-  const [region3Depth, setRegion3Depth] = useState<string | null>(null);
+  // 선택된 전체 지역 배열
+  const [selectedRegions, setSelectedRegions] = useState<{
+    depth1: string[];
+    depth2: string[];
+    depth3: string[];
+  }>({
+    depth1: [],
+    depth2: [],
+    depth3: [],
+  });
+
+  // 현재 선택 중인 지역
+  const [currentSelectedRegion, setCurrentSelectedRegion] = useState<{
+    depth1: string | null;
+    depth2: string | null;
+    depth3: string | null;
+  }>({
+    depth1: null,
+    depth2: null,
+    depth3: null,
+  });
 
   const [region2DepthData, setRegion2DepthData] = useState<string[]>([]);
   const [region3DepthData, setRegion3DepthData] = useState<string[]>([]);
 
   useEffect(() => {
-    const region1Depth = filterList[FILTER_CATEGORY.REGION_1DEPTH];
-    const region2Depth = filterList[FILTER_CATEGORY.REGION_2DEPTH];
-    const region3Depth = filterList[FILTER_CATEGORY.REGION_3DEPTH];
+    const depth1 = filterList[FILTER_CATEGORY.REGION_1DEPTH];
+    const depth2 = filterList[FILTER_CATEGORY.REGION_2DEPTH];
+    const depth3 = filterList[FILTER_CATEGORY.REGION_3DEPTH];
 
-    setCurrentRegion1(region1Depth ? [...region1Depth] : []);
-    setCurrentRegion2(region2Depth ? [...region2Depth] : []);
-    setCurrentRegion3(region3Depth ? [...region3Depth] : []);
+    setSelectedRegions({ depth1, depth2, depth3 });
   }, [filterList]);
 
   const onClickBackButton = () => {
@@ -43,42 +60,57 @@ const PostSearchFilterArea = ({
   };
 
   const onSelectRegion1Depth = (region: string) => {
-    setRegion1Depth(region);
-    setRegion2Depth(null);
-    setRegion3Depth(null);
+    setCurrentSelectedRegion({
+      depth1: region,
+      depth2: null,
+      depth3: null,
+    });
 
     const isValidRegionData = REGION_DATA[region];
-    if (isValidRegionData) {
-      setRegion2DepthData(Object.keys(isValidRegionData));
-    } else {
-      setRegion2DepthData([]);
-    }
+    setRegion2DepthData(
+      isValidRegionData ? Object.keys(isValidRegionData) : [],
+    );
     setRegion3DepthData([]);
   };
 
   const onSelectRegion2Depth = (region: string) => {
-    if (!region1Depth) return;
-    setRegion2Depth(region);
+    const { depth1 } = currentSelectedRegion;
+    if (!depth1) return;
+    setCurrentSelectedRegion((prev) => ({
+      ...prev,
+      depth2: region,
+      depth3: null,
+    }));
 
     // 전체 선택이면 바로 태그에 추가
     if (region === '전체') {
-      setRegion3Depth('none');
+      setCurrentSelectedRegion((prev) => ({
+        ...prev,
+        depth3: 'none',
+      }));
       setRegion3DepthData([]);
 
-      if (isExistedFilter(region1Depth, region, 'none')) {
-        alert('이미 선택된 지역입니다.');
+      // 선택된 지역 클릭 시 선택 해제
+      const findIndex = indexOfSelectedFilter(depth1, region, 'none');
+      if (findIndex !== -1) {
+        handleDelete(findIndex);
         return;
       }
 
-      setCurrentRegion1([...currentRegion1, region1Depth]);
-      setCurrentRegion2([...currentRegion2, region]);
-      setCurrentRegion3([...currentRegion3, 'none']);
+      setSelectedRegions((prev) => ({
+        depth1: [...prev.depth1, depth1],
+        depth2: [...prev.depth2, region],
+        depth3: [...prev.depth3, 'none'],
+      }));
       return;
     }
 
-    setRegion3Depth(null);
+    setCurrentSelectedRegion((prev) => ({
+      ...prev,
+      depth3: null,
+    }));
 
-    const isValidRegionData = REGION_DATA[region1Depth];
+    const isValidRegionData = REGION_DATA[depth1];
     if (isValidRegionData && isValidRegionData[region]) {
       setRegion3DepthData(['전체', ...isValidRegionData[region]]);
     } else {
@@ -87,22 +119,34 @@ const PostSearchFilterArea = ({
   };
 
   const onSelectRegion3Depth = (region: string) => {
-    if (!region1Depth || !region2Depth) return;
-    setRegion3Depth(region);
+    const { depth1, depth2 } = currentSelectedRegion;
+    if (!depth1 || !depth2) return;
+    setCurrentSelectedRegion((prev) => ({
+      ...prev,
+      depth3: region,
+    }));
 
-    if (currentRegion1.length === 3) {
-      alert('지역은 3개까지만 선택할 수 있습니다');
+    // 선택된 지역 클릭 시 선택 해제
+    const findIndex = indexOfSelectedFilter(depth1, depth2, region);
+    if (findIndex !== -1) {
+      handleDelete(findIndex);
       return;
     }
 
-    if (isExistedFilter(region1Depth, region2Depth, region)) {
-      alert('이미 선택된 지역입니다.');
+    if (selectedRegions.depth1.length === 3) {
+      alert(
+        postSearchTranslation.maxSelectedArea[
+          isEmployerByAccountType(account_type)
+        ],
+      );
       return;
     }
 
-    setCurrentRegion1([...currentRegion1, region1Depth]);
-    setCurrentRegion2([...currentRegion2, region2Depth]);
-    setCurrentRegion3([...currentRegion3, region]);
+    setSelectedRegions((prev) => ({
+      depth1: [...prev.depth1, depth1],
+      depth2: [...prev.depth2, depth2],
+      depth3: [...prev.depth3, region],
+    }));
   };
 
   // 중복 선택 검사하기
@@ -111,47 +155,86 @@ const PostSearchFilterArea = ({
     region2Depth: string,
     region3Depth: string,
   ) => {
-    for (let i = 0; i < currentRegion1.length; i++) {
+    for (let i = 0; i < selectedRegions.depth1.length; i++) {
       if (
-        region1Depth === currentRegion1[i] &&
-        region2Depth === currentRegion2[i] &&
-        region3Depth === currentRegion3[i]
+        region1Depth === selectedRegions.depth1[i] &&
+        region2Depth === selectedRegions.depth2[i] &&
+        region3Depth === selectedRegions.depth3[i]
       )
         return true;
     }
     return false;
   };
 
-  const onClickSubmit = () => {
+  // 선택된 지역의 Index 찾기
+  const indexOfSelectedFilter = (
+    region1Depth: string,
+    region2Depth: string,
+    region3Depth: string,
+  ) => {
+    for (let i = 0; i < selectedRegions.depth1.length; i++) {
+      if (
+        region1Depth === selectedRegions.depth1[i] &&
+        region2Depth === selectedRegions.depth2[i] &&
+        region3Depth === selectedRegions.depth3[i]
+      )
+        return i;
+    }
+    return -1;
+  };
+
+  const handleSubmit = () => {
     const updatedFilterList = {
       ...filterList,
-      [FILTER_CATEGORY.REGION_1DEPTH]: [...currentRegion1],
-      [FILTER_CATEGORY.REGION_2DEPTH]: [...currentRegion2],
-      [FILTER_CATEGORY.REGION_3DEPTH]: [...currentRegion3],
+      [FILTER_CATEGORY.REGION_1DEPTH]: [...selectedRegions.depth1],
+      [FILTER_CATEGORY.REGION_2DEPTH]: [...selectedRegions.depth2],
+      [FILTER_CATEGORY.REGION_3DEPTH]: [...selectedRegions.depth3],
     };
     setFilterList(updatedFilterList);
     setIsOpenAreaFilter(false);
   };
 
-  const onClickDelete = (regionIndex: number) => {
-    const newCurrentRegion1 = currentRegion1.filter(
+  const handleDelete = (regionIndex: number) => {
+    const newDepth1 = selectedRegions.depth1.filter(
       (_value, index) => index !== regionIndex,
     );
-    setCurrentRegion1(newCurrentRegion1);
-    const newCurrentRegion2 = currentRegion2.filter(
+    const newDepth2 = selectedRegions.depth2.filter(
       (_value, index) => index !== regionIndex,
     );
-    setCurrentRegion2(newCurrentRegion2);
-    const newCurrentRegion3 = currentRegion3.filter(
+    const newDepth3 = selectedRegions.depth3.filter(
       (_value, index) => index !== regionIndex,
     );
-    setCurrentRegion3(newCurrentRegion3);
+
+    setSelectedRegions({
+      depth1: newDepth1,
+      depth2: newDepth2,
+      depth3: newDepth3,
+    });
   };
 
-  const onClickReset = () => {
-    setCurrentRegion1([]);
-    setCurrentRegion2([]);
-    setCurrentRegion3([]);
+  const handleReset = () => {
+    setSelectedRegions({ depth1: [], depth2: [], depth3: [] });
+  };
+
+  // 이미 선택된 "00시 전체"인 경우 체크
+  const checkSelectedRegion2Depth = (region: string) => {
+    if (!currentSelectedRegion.depth1) return false;
+
+    if (
+      region === '전체' &&
+      isExistedFilter(currentSelectedRegion.depth1, region, 'none')
+    )
+      return true;
+    return false;
+  };
+
+  // 이미 선택된 3depth인지 체크
+  const checkSelectedRegion3Depth = (region: string) => {
+    const { depth1, depth2 } = currentSelectedRegion;
+    if (!depth1 || !depth2) return false;
+
+    if (isExistedFilter(depth1, depth2, region)) return true;
+    return false;
   };
 
   return (
@@ -165,29 +248,29 @@ const PostSearchFilterArea = ({
         />
         <section className="flex-1 flex w-full pt-4 pb-[15rem]">
           <PostSearchFilterSelect
-            selectedRegion={region1Depth}
+            selectedRegion={currentSelectedRegion.depth1}
             onSelect={onSelectRegion1Depth}
             regionData={Object.keys(REGION_DATA)}
           />
           <PostSearchFilterSelect
-            selectedRegion={region2Depth}
+            selectedRegion={currentSelectedRegion.depth2}
             onSelect={onSelectRegion2Depth}
             regionData={region2DepthData}
+            checkIsSelected={checkSelectedRegion2Depth}
           />
           <PostSearchFilterSelect
-            selectedRegion={region3Depth}
+            selectedRegion={currentSelectedRegion.depth3}
             onSelect={onSelectRegion3Depth}
             regionData={region3DepthData}
+            checkIsSelected={checkSelectedRegion3Depth}
           />
         </section>
       </div>
       <PostSearchFilterBottomSheet
-        currentRegion1={currentRegion1}
-        currentRegion2={currentRegion2}
-        currentRegion3={currentRegion3}
-        onClickDelete={onClickDelete}
-        onClickReset={onClickReset}
-        onClickSubmit={onClickSubmit}
+        selectedRegions={selectedRegions}
+        onClickDelete={handleDelete}
+        onClickReset={handleReset}
+        onClickSubmit={handleSubmit}
       />
     </>
   );

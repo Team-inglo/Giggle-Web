@@ -4,7 +4,6 @@ import EmployerApplicantDetailButton from '@/components/Employer/ApplicantDetail
 import EmployerApplicantDetailCard from '@/components/Employer/ApplicantDetail/EmployerApplicantDetailCard';
 import { useGetEmployerApplicationDetail } from '@/hooks/api/useApplication';
 import { useCurrentApplicantIdStore } from '@/store/url';
-import { findCurrentStep } from '@/utils/application';
 import { useNavigate } from 'react-router-dom';
 
 const EmployerApplicantDetailPage = () => {
@@ -28,7 +27,7 @@ const EmployerApplicantDetailPage = () => {
       />
       <EmployerApplicantDetailCard applicantData={data?.data} />
       <div className="w-full h-4 bg-surface-secondary"></div>
-      <ApplicationDetailSteps step={findCurrentStep(data?.data.step)} />
+      <ApplicationDetailSteps step={data?.data.step} />
       <EmployerApplicantDetailButton
         applicant_id={Number(currentApplicantId)}
         step={data?.data.step}

@@ -9,6 +9,7 @@ import {
   patchOwnerProfile,
   patchUserProfile,
 } from '@/api/mypage';
+import { navigateWithSkipHistory } from '@/utils/application';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,7 +57,7 @@ export const usePatchUserProfile = () => {
       await queryClient.invalidateQueries({
         queryKey: ['userSummaries'],
       });
-      navigate('/profile');
+      navigateWithSkipHistory(navigate, '/profile');
     },
     onError: (error) => {
       console.error('프로필 수정 실패', error);
@@ -70,7 +71,7 @@ export const usePatchOwnerProfile = () => {
   return useMutation({
     mutationFn: patchOwnerProfile,
     onSuccess: () => {
-      navigate('/employer/profile');
+      navigateWithSkipHistory(navigate, '/employer/profile');
     },
     onError: (error) => {
       console.error('프로필 수정 실패', error);

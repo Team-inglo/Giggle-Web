@@ -23,7 +23,7 @@ const EmployerApplicantContactBottomSheet = ({
     Number(id),
     !isNaN(Number(id)),
   );
-  const { mutate } = usePatchInterviewFinish();
+  const { mutate } = usePatchInterviewFinish(Number(id));
 
   const sendPhoneNumberToApp = (phoneNumber: number) => {
     const message = {

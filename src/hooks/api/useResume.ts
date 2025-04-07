@@ -22,7 +22,8 @@ import {
   AdditionalLanguageRequest,
   LanguagesLevelType,
 } from '@/types/api/resumes';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { smartNavigate } from '@/utils/application';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 // 7.1 (유학생/고용주) 이력서 조회하기
@@ -62,6 +63,7 @@ export const useGetLanguagesSummaries = () => {
 // 7.12 (유학생) 언어 - SOCIAL INTEGRATION PROGRAM 레벨 수정하기
 // 7.13 (유학생) 언어 - SEJONG INSTITUTE 레벨 수정하기
 export const usePatchLanguagesLevel = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       type,
@@ -70,8 +72,10 @@ export const usePatchLanguagesLevel = () => {
       type: LanguagesLevelType;
       level: number;
     }) => patchLanguagesLevel({ type, level }),
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['resume'],
+      });
     },
     onError: (error) => {
       console.error('언어 레벨 수정 실패', error);
@@ -85,7 +89,7 @@ export const usePostWorkExperience = () => {
   return useMutation({
     mutationFn: postWorkExperience,
     onSuccess: () => {
-      navigate('/profile/edit-resume');
+      smartNavigate(navigate, '/profile/edit-resume');
     },
     onError: (error) => {
       console.error('경력 작성 실패', error);
@@ -99,7 +103,7 @@ export const usePostEducation = () => {
   return useMutation({
     mutationFn: postEducation,
     onSuccess: () => {
-      navigate('/profile/edit-resume');
+      smartNavigate(navigate, '/profile/edit-resume');
     },
     onError: (error) => {
       console.error('학력 작성 실패', error);
@@ -113,7 +117,7 @@ export const usePostEtcLanguageLevel = () => {
   return useMutation({
     mutationFn: postEtcLanguageLevel,
     onSuccess: () => {
-      navigate('/profile/edit-resume');
+      smartNavigate(navigate, '/profile/edit-resume');
     },
     onError: (error) => {
       alert('이미 존재하는 언어입니다');
@@ -128,7 +132,7 @@ export const usePatchIntroduction = () => {
   return useMutation({
     mutationFn: patchIntroduction,
     onSuccess: () => {
-      navigate('/profile/edit-resume');
+      smartNavigate(navigate, '/profile/edit-resume');
     },
     onError: (error) => {
       console.error('자기소개 작성 실패', error);
@@ -142,7 +146,7 @@ export const usePatchWorkExperience = () => {
   return useMutation({
     mutationFn: patchWorkExperience,
     onSuccess: () => {
-      navigate('/profile/edit-resume');
+      smartNavigate(navigate, '/profile/edit-resume');
     },
     onError: (error) => {
       console.error('경력 수정 실패', error);
@@ -156,7 +160,7 @@ export const usePatchEducation = () => {
   return useMutation({
     mutationFn: patchEducation,
     onSuccess: () => {
-      navigate('/profile/edit-resume');
+      smartNavigate(navigate, '/profile/edit-resume');
     },
     onError: (error) => {
       console.error('학력 수정 실패', error);
@@ -166,6 +170,7 @@ export const usePatchEducation = () => {
 
 // 7.14 (유학생) 언어 - ETC 수정하기
 export const usePatchEtcLanguageLevel = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       id,
@@ -174,8 +179,10 @@ export const usePatchEtcLanguageLevel = () => {
       id: number;
       data: AdditionalLanguageRequest;
     }) => patchEtcLanguageLevel(id, data),
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['resume'],
+      });
     },
     onError: (error) => {
       console.error('기타 언어 수정 실패', error);
@@ -185,12 +192,13 @@ export const usePatchEtcLanguageLevel = () => {
 
 // 7.15 (유학생) 자기소개 삭제하기
 export const useDeleteIntroduction = () => {
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteIntroduction,
-    onSuccess: () => {
-      window.location.reload();
-      navigate('/profile/edit-resume');
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['resume'],
+      });
     },
     onError: (error) => {
       console.error('자기소개 삭제 실패', error);
@@ -200,10 +208,13 @@ export const useDeleteIntroduction = () => {
 
 // 7.16 (유학생) 경력 삭제하기
 export const useDeleteWorkExperience = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteWorkExperience,
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['resume'],
+      });
     },
     onError: (error) => {
       console.error('경력 삭제 실패', error);
@@ -213,10 +224,13 @@ export const useDeleteWorkExperience = () => {
 
 // 7.17 (유학생) 학력 삭제하기
 export const useDeleteEducation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteEducation,
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['resume'],
+      });
     },
     onError: (error) => {
       console.error('학력 삭제 실패', error);
@@ -226,10 +240,13 @@ export const useDeleteEducation = () => {
 
 // 7.18 (유학생) 언어 - ETC 삭제하기
 export const useDeleteEtcLanguageLevel = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteEtcLanguageLevel,
-    onSuccess: () => {
-      window.location.reload();
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['resume'],
+      });
     },
     onError: (error) => {
       console.error('ETC 삭제 실패', error);

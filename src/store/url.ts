@@ -37,24 +37,6 @@ export const useCurrentApplicantIdStore = create(
   ),
 );
 
-type CurrentDocumentIdStore = {
-  currentDocumentId: number | null;
-  updateCurrentDocumentId: (id: number) => void;
-};
-
-export const useCurrentDocumentIdStore = create(
-  persist<CurrentDocumentIdStore>(
-    (set) => ({
-      currentDocumentId: null,
-      updateCurrentDocumentId: (newId: number) =>
-        set(() => ({ currentDocumentId: newId })),
-    }),
-    {
-      name: 'currentDocumentIdStore',
-    },
-  ),
-);
-
 type CurrentPostIdStoreEmployee = {
   currentPostId: number | null;
   updateCurrentPostId: (id: number) => void;

@@ -30,28 +30,26 @@ import {
   formatPhoneNumber,
   parsePhoneNumber,
 } from '@/utils/information';
-import {
-  useCurrentDocumentIdStore,
-  useCurrentPostIdEmployeeStore,
-} from '@/store/url';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import InputLayout from '../WorkExperience/InputLayout';
 import { documentTranslation } from '@/constants/translation';
+import { useParams } from 'react-router-dom';
 
 type IntegratedApplicationFormProps = {
   document?: IntegratedApplicationData;
   isEdit: boolean;
+  userOwnerPostId: number;
 };
 
 const IntegratedApplicationWriteForm = ({
   document,
   isEdit,
+  userOwnerPostId,
 }: IntegratedApplicationFormProps) => {
+  const currentDocumentId = useParams().id;
   const [isInvalid, setIsInvalid] = useState(false);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
-  const { currentPostId } = useCurrentPostIdEmployeeStore();
-  const { currentDocumentId } = useCurrentDocumentIdStore();
   const [newDocumentData, setNewDocumentData] =
     useState<IntegratedApplicationData>(initialIntegratedApplication);
 
@@ -79,9 +77,9 @@ const IntegratedApplicationWriteForm = ({
   // 학교 선택 모달 출현 여부 관리 state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { mutate: postDocument, isPending: postPending } =
-    usePostIntegratedApplicants(Number(currentPostId)); // 통합신청서 생성 훅
+    usePostIntegratedApplicants(Number(userOwnerPostId)); // 통합신청서 생성 훅
   const { mutate: updateDocument, isPending: updatePending } =
-    usePutIntegratedApplicants(Number(currentPostId)); // 통합신청서 수정 훅
+    usePutIntegratedApplicants(Number(currentDocumentId), userOwnerPostId); // 통합신청서 수정 훅
   // 문서 편집일 시 페이지 진입과 동시에 기존 내용 자동 입력
   useEffect(() => {
     if (isEdit && document) {
@@ -154,7 +152,7 @@ const IntegratedApplicationWriteForm = ({
       new_work_place_phone_number: formatPhoneNumber(workPlacePhoneNum),
     };
     const payload = {
-      id: Number(isEdit ? currentDocumentId : currentPostId),
+      id: Number(isEdit ? currentDocumentId : userOwnerPostId),
       document: finalDocument, // TODO: 로그인 연결 후 userId를 넣어야 하는 것으로 추정
     };
 

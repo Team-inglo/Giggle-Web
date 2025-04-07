@@ -1,6 +1,7 @@
 import { APPLICATION_STEP } from '@/constants/application';
 import { ApplicationStepType } from '@/types/application/applicationItem';
-import RejectIcon from '@/assets/icons/ApplicationDetail/RejectIcon.svg?react';
+import Button from '@/components/Common/Button';
+import { buttonTypeKeys } from '@/constants/components';
 
 type ApplicationDetailStepEtcProps = {
   result: ApplicationStepType;
@@ -11,15 +12,18 @@ const ApplicationDetailStepEtc = ({
 }: ApplicationDetailStepEtcProps) => {
   return (
     <>
-      <section className="w-full px-4 pt-3 pb-[3.125rem]">
-        <div className="flex items-center gap-1 mb-6 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
-          <RejectIcon />
-          <p className="caption text-text-error">
-            {result === APPLICATION_STEP.PENDING
+      <section className="w-full px-4 pb-[3.125rem]">
+        <Button
+          type={buttonTypeKeys.LARGE}
+          bgColor={'bg-primary-neutral'}
+          fontColor="text-text-disabled"
+          title={
+            result === APPLICATION_STEP.PENDING
               ? "I'm on standby for more than two weeks"
-              : 'Your resume has been rejected'}
-          </p>
-        </div>
+              : 'Your resume has been rejected'
+          }
+          isBorder={false}
+        />
       </section>
     </>
   );

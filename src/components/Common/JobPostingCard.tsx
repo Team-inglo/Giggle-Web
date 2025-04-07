@@ -185,7 +185,7 @@ const CardWorkPeriod = () => {
       <p className="caption text-text-normal">
         {account_type === UserType.OWNER
           ? WorkPeriodInfo[summaries.work_period as WorkPeriod].name
-          : summaries.work_period.replace(/_/g, ' ').toLowerCase()}
+          : summaries.work_period?.replace(/_/g, ' ').toLowerCase()}
       </p>
     </div>
   );

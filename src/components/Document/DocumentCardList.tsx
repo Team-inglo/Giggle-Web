@@ -17,7 +17,7 @@ const DocumentCardList = ({
 
   return (
     <>
-      <div className="flex flex-col w-full p-4 gap-3 pb-[8rem]">
+      <div className="flex flex-col w-full h-full p-4 gap-3">
         {documentTypes.map((property, index) =>
           documents[property] ? (
             <DocumentCardDispenser
