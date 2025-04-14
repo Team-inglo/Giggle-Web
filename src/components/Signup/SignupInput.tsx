@@ -284,9 +284,15 @@ const SignupInput = ({
               </div>
             )}
             {emailVerifyStatus === 'sent' && (
-              <p className="text-blue-600 text-xs p-2">
-                {signInputTranclation.enterCode[isEmployer(pathname)]}
-              </p>
+              <>
+                <p className="text-blue-600 text-xs p-2">
+                  {signInputTranclation.enterCode[isEmployer(pathname)]}
+                </p>
+                <p className="text-[#FF6F61] text-xs p-2 pt-0">
+                  {' '}
+                  {signInputTranclation.spamEmailInfo[isEmployer(pathname)]}
+                </p>
+              </>
             )}
             {emailVerifyStatus === 'resent' && (
               <p className="text-blue-600 text-xs p-2">
