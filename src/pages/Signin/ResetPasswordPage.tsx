@@ -197,9 +197,14 @@ const ResetPasswordPage = () => {
                     </div>
                   )}
                   {emailVerifyStatus === 'sent' && (
-                    <p className="text-blue-600 text-xs p-2">
-                      {signInputTranclation.enterCode['ko']}
-                    </p>
+                    <>
+                      <p className="text-blue-600 text-xs p-2">
+                        {signInputTranclation.enterCode['ko']}
+                      </p>
+                      <p className="text-[#FF6F61] text-xs px-2 pb-2">
+                        {signInputTranclation.spamEmailInfo['ko']}
+                      </p>
+                    </>
                   )}
                   {emailVerifyStatus === 'resent' && (
                     <p className="text-blue-600 text-xs p-2">
