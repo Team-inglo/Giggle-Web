@@ -201,7 +201,7 @@ const ResetPasswordPage = () => {
                       <p className="text-blue-600 text-xs p-2">
                         {signInputTranclation.enterCode['ko']}
                       </p>
-                      <p className="text-[#FF6F61] text-xs p-2">
+                      <p className="text-[#FF6F61] text-xs px-2 pb-2">
                         {signInputTranclation.spamEmailInfo['ko']}
                       </p>
                     </>
