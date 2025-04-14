@@ -107,6 +107,10 @@ export const signInputTranclation = {
     ko: '인증번호를 보내드렸어요. (5분)',
     en: 'Enter the code from the email we sent you',
   },
+  spamEmailInfo: {
+    ko: '*이메일이 오지 않았나요? 스팸함 또는 프로모션함을 확인해주세요!',
+    en: "*Didn't receive the email? Please check your spam or promotions folder!",
+  },
   resetPasswordVerifySuccess: {
     ko: '인증',
   },
