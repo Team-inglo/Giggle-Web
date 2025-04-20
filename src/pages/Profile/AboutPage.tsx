@@ -40,8 +40,8 @@ const AboutPage = () => {
         hasMenuButton={false}
         title={account_type === UserType.USER ? 'About' : '정보'}
       />
-      <div className="w-full h-full min-h-[100vh] bg-[#f4f4f9]">
-        <div className="flex flex-col gap-4 px-4 pb-4 bg-white rounded-lg">
+      <div className="w-full h-full min-h-[100vh] bg-white">
+        <div className="flex flex-col gap-4 pb-4 bg-white rounded-lg">
           <div className="flex flex-col divide-y divide-gray-200">
             <ProfileMenu
               title={
