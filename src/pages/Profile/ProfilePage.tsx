@@ -44,14 +44,14 @@ const ProfilePage = () => {
               setIsShowBottomSheet={setBottomSheetOpen}
             />
           )}
-          <div className="w-full h-full min-h-[100vh] bg-[#f4f4f9]">
+          <div className="w-full h-full min-h-[100vh] bg-white">
             {/* Profile 페이지 시작 */}
             <BaseHeader
               hasBackButton={false}
               hasMenuButton={false}
               title={headerTranslation.profile[isEmployer(pathname)]}
             />
-            <div className="flex flex-col px-4 gap-4 pb-24">
+            <div className="flex flex-col gap-4 pb-24">
               <ProfileCard data={data.data.user_information} />
               <ApplicationStatus />
               <ProfileMenuList onLogoutClick={handleLogoutClick} />
