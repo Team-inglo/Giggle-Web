@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { IconType } from '@/constants/profile';
 import { usePatchNotificationAllowed } from '@/hooks/api/useSetting';
 import { useGetUserSummaries } from '@/hooks/api/useProfile';
 import { useUserStore } from '@/store/user';
@@ -8,7 +7,6 @@ import ArrowIcon from '@/assets/icons/Chevron.svg?react';
 
 type ProfileMenuProps = {
   title: string;
-  iconType: IconType;
   onClick?: () => void;
   isToggle?: boolean;
 };

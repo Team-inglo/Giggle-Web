@@ -1,4 +1,3 @@
-import { IconType } from '@/constants/profile';
 import { useNavigate } from 'react-router-dom';
 import EmployerProfileMenu from '@/components/Employer/Profile/EmployerProfileMenu';
 
@@ -16,9 +15,9 @@ const EmployerProfileMenuList = ({
   };
 
   const menuItems = [
-    { title: '계정', iconType: IconType.PROFILE, path: '/profile/account' },
-    { title: '알림 수신', iconType: IconType.NOTIFICATION, isToggle: true },
-    { title: '정보', iconType: IconType.PROFILE, path: '/profile/about' },
+    { title: '계정', path: '/profile/account' },
+    { title: '알림 수신', isToggle: true },
+    { title: '정보', path: '/profile/about' },
   ];
 
   return (
@@ -28,7 +27,6 @@ const EmployerProfileMenuList = ({
           <EmployerProfileMenu
             key={item.title}
             title={item.title}
-            iconType={item.iconType}
             isToggle={item.isToggle}
             onClick={item.path ? () => handleNavigate(item.path) : undefined}
           />

@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { IconType } from '@/constants/profile';
 import { usePatchNotificationAllowed } from '@/hooks/api/useSetting';
 import { usegetOwnerSummaries } from '@/hooks/api/useProfile';
 import ArrowIcon from '@/assets/icons/Chevron.svg?react';
 
 type EmployerProfileMenuProps = {
   title: string;
-  iconType: IconType;
   onClick?: () => void;
   isToggle?: boolean;
 };

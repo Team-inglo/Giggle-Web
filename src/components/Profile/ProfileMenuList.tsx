@@ -1,4 +1,3 @@
-import { IconType } from '@/constants/profile';
 import ProfileMenu from '@/components/Profile/ProfileMenu';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,17 +11,15 @@ const ProfileMenuList = ({ onLogoutClick }: ProfileMenuListProps) => {
   const menuItems = [
     {
       title: 'Scrapped Job Posts',
-      iconType: IconType.SCRAPPED,
       path: '/resume/scrapped',
     },
-    { title: 'Account', iconType: IconType.PROFILE, path: '/profile/account' },
-    { title: 'Notifications', iconType: IconType.NOTIFICATION, isToggle: true },
+    { title: 'Account', path: '/profile/account' },
+    { title: 'Notifications', isToggle: true },
     {
       title: 'Language',
-      iconType: IconType.LANGUAGE,
       path: '/profile/language',
     },
-    { title: 'About', iconType: IconType.LOGOUT, path: '/profile/about' },
+    { title: 'About', path: '/profile/about' },
   ];
 
   const handleNavigate = (path: string) => {
@@ -36,7 +33,6 @@ const ProfileMenuList = ({ onLogoutClick }: ProfileMenuListProps) => {
           <ProfileMenu
             key={item.title}
             title={item.title}
-            iconType={item.iconType}
             isToggle={item.isToggle}
             onClick={item.path ? () => handleNavigate(item.path) : undefined}
           />

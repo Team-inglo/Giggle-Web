@@ -1,7 +1,6 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import DeleteModal from '@/components/Profile/DeleteModal';
 import ProfileMenu from '@/components/Profile/ProfileMenu';
-import { IconType } from '@/constants/profile';
 import { profileTranslation } from '@/constants/translation';
 import { useUserStore } from '@/store/user';
 import { useState } from 'react';
@@ -44,7 +43,6 @@ const AccountPage = () => {
                   ? profileTranslation.changePassword.en
                   : profileTranslation.changePassword.ko
               }
-              iconType={IconType.LOGOUT}
               onClick={() => navigate('/profile/change-password')}
             />
             <ProfileMenu
@@ -53,7 +51,6 @@ const AccountPage = () => {
                   ? profileTranslation.deleteAccount.en
                   : profileTranslation.deleteAccount.ko
               }
-              iconType={IconType.LOGOUT}
               onClick={() => handleDeleteButton(true)}
             />
           </div>
