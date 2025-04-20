@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { IconType } from '@/constants/profile';
 import { usePatchNotificationAllowed } from '@/hooks/api/useSetting';
 import { usegetOwnerSummaries } from '@/hooks/api/useProfile';
+import ArrowIcon from '@/assets/icons/Chevron.svg?react';
 
 type EmployerProfileMenuProps = {
   title: string;
@@ -39,15 +40,15 @@ const EmployerProfileMenu = ({
   return (
     <div
       onClick={onClick}
-      className="flex items-center justify-between cursor-pointer px-4 py-4  bg-cover bg-no-repeat bg-center"
+      className="flex items-center justify-between cursor-pointer px-4 py-[1.125rem] bg-cover bg-no-repeat bg-center"
     >
       <div className="flex justify-center items-center gap-4">
         <div className="head-3 text-[#1E1926]">{title}</div>
       </div>
-      {isToggle && (
+      {isToggle ? (
         <div className="relative flex items-center">
           <div
-            className={`w-[34px] h-5 rounded-full ${toggleOn ? 'bg-primary-normal' : 'bg-surface-disabled'}`}
+            className={`w-[2.125rem] h-5 rounded-full ${toggleOn ? 'bg-primary-normal' : 'bg-surface-disabled'}`}
           />
           <div
             className={`w-[0.875rem] h-[0.875rem] rounded-full absolute bg-white transform transition-transform duration-300 ease-in-out ${
@@ -55,6 +56,10 @@ const EmployerProfileMenu = ({
             }`}
             onClick={handleToggleChange}
           />
+        </div>
+      ) : (
+        <div className="flex items-center">
+          <ArrowIcon />
         </div>
       )}
     </div>
