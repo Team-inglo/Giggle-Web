@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
 import { IconType } from '@/constants/profile';
-import ProfileIcon from '@/assets/icons/Profile/ProfileIcon.svg?react';
-import NotificationIcon from '@/assets/icons/Profile/NotificationIcon.svg?react';
-import LogoutIcon from '@/assets/icons/Profile/LogoutIcon.svg?react';
-import ToggleBar from '@/assets/icons/Profile/ToggleBar.svg?react';
-import ToggleButton from '@/assets/icons/Profile/ToggleButton.svg?react';
 import { usePatchNotificationAllowed } from '@/hooks/api/useSetting';
 import { usegetOwnerSummaries } from '@/hooks/api/useProfile';
 
@@ -17,7 +12,6 @@ type EmployerProfileMenuProps = {
 
 const EmployerProfileMenu = ({
   title,
-  iconType,
   onClick,
   isToggle,
 }: EmployerProfileMenuProps) => {
@@ -42,37 +36,22 @@ const EmployerProfileMenu = ({
     });
   };
 
-  const iconMapping = (iconType: IconType) => {
-    switch (iconType) {
-      case IconType.PROFILE:
-        return <ProfileIcon />;
-      case IconType.NOTIFICATION:
-        return <NotificationIcon />;
-      case IconType.LOGOUT:
-        return <LogoutIcon />;
-      default:
-        return null;
-    }
-  };
-
-  const Icon = iconMapping(iconType);
-
   return (
     <div
       onClick={onClick}
-      className="flex items-center justify-between cursor-pointer py-4  bg-cover bg-no-repeat bg-center"
+      className="flex items-center justify-between cursor-pointer px-4 py-4  bg-cover bg-no-repeat bg-center"
     >
       <div className="flex justify-center items-center gap-4">
-        {Icon}
-        <div className="body-2 text-[#1E1926]">{title}</div>
+        <div className="head-3 text-[#1E1926]">{title}</div>
       </div>
       {isToggle && (
         <div className="relative flex items-center">
-          <ToggleBar fill="#00D1A033" />
-          <ToggleButton
-            fill={toggleOn ? '#00D1A0' : '#DCDCDC'}
-            className={`absolute transform transition-transform duration-300 ease-in-out ${
-              toggleOn ? 'translate-x-4' : 'translate-x-0'
+          <div
+            className={`w-[34px] h-5 rounded-full ${toggleOn ? 'bg-primary-normal' : 'bg-surface-disabled'}`}
+          />
+          <div
+            className={`w-[0.875rem] h-[0.875rem] rounded-full absolute bg-white transform transition-transform duration-300 ease-in-out ${
+              toggleOn ? 'translate-x-4' : 'translate-x-[0.25rem]'
             }`}
             onClick={handleToggleChange}
           />

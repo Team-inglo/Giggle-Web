@@ -6,8 +6,6 @@ import ScrappedIcon from '@/assets/icons/Scrap.svg?react';
 import NotificationIcon from '@/assets/icons/Profile/NotificationIcon.svg?react';
 import LanguageIcon from '@/assets/icons/Profile/LanguageIcon.svg?react';
 import LogoutIcon from '@/assets/icons/Profile/LogoutIcon.svg?react';
-import ToggleBar from '@/assets/icons/Profile/ToggleBar.svg?react';
-import ToggleButton from '@/assets/icons/Profile/ToggleButton.svg?react';
 import { usePatchNotificationAllowed } from '@/hooks/api/useSetting';
 import { useGetUserSummaries } from '@/hooks/api/useProfile';
 import { useUserStore } from '@/store/user';
@@ -84,11 +82,12 @@ const ProfileMenu = ({
       </div>
       {isToggle && (
         <div className="relative flex items-center">
-          <ToggleBar fill="#00D1A033" />
-          <ToggleButton
-            fill={toggleOn ? '#00D1A0' : '#DCDCDC'}
-            className={`absolute transform transition-transform duration-300 ease-in-out ${
-              toggleOn ? 'translate-x-4' : 'translate-x-0'
+          <div
+            className={`w-[34px] h-5 rounded-full ${toggleOn ? 'bg-primary-normal' : 'bg-surface-disabled'}`}
+          />
+          <div
+            className={`w-[0.875rem] h-[0.875rem] rounded-full absolute bg-white transform transition-transform duration-300 ease-in-out ${
+              toggleOn ? 'translate-x-4' : 'translate-x-[0.25rem]'
             }`}
             onClick={handleToggleChange}
           />
