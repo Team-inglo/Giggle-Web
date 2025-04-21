@@ -1,4 +1,3 @@
-import { IconType } from '@/constants/profile';
 import { useNavigate } from 'react-router-dom';
 import EmployerProfileMenu from '@/components/Employer/Profile/EmployerProfileMenu';
 
@@ -10,33 +9,32 @@ const EmployerProfileMenuList = ({
   handleBottomSheetOpen,
 }: EmployerProfileMenuListProps) => {
   const navigate = useNavigate();
-  const handleAccountClick = () => {
-    navigate('/profile/account');
-  };
-  const handleAboutClick = () => {
-    navigate('/profile/about');
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
   };
 
+  const menuItems = [
+    { title: '계정', path: '/profile/account' },
+    { title: '알림 수신', isToggle: true },
+    { title: '정보', path: '/profile/about' },
+  ];
+
   return (
-    <div className="flex flex-col gap-4 px-4 pb-4 bg-white rounded-lg">
+    <div className="flex flex-col gap-4 pb-4 bg-white rounded-lg">
       <div className="flex flex-col divide-y divide-gray-200">
-        <EmployerProfileMenu
-          title="계정"
-          iconType={IconType.PROFILE}
-          onClick={handleAccountClick}
-        />
-        <EmployerProfileMenu
-          title="알림 수신"
-          iconType={IconType.NOTIFICATION}
-          isToggle={true}
-        />
-        <EmployerProfileMenu
-          title="정보"
-          iconType={IconType.PROFILE}
-          onClick={handleAboutClick}
-        />
+        {menuItems.map((item) => (
+          <EmployerProfileMenu
+            key={item.title}
+            title={item.title}
+            isToggle={item.isToggle}
+            onClick={item.path ? () => handleNavigate(item.path) : undefined}
+          />
+        ))}
+      </div>
+      <div className="px-4">
         <button
-          className="grow w-full bg-[#ebeef1] rounded-lg px-5 py-3 text-center button-2 text-[#1E1926]"
+          className="grow w-full bg-surface-tertiary rounded-lg px-5 py-3 text-center button-2 text-text-strong"
           onClick={handleBottomSheetOpen}
         >
           로그아웃

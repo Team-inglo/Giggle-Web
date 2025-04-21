@@ -33,7 +33,7 @@ export default {
       },
       colors: {
         text: {
-          strong: '#000000',
+          strong: '#191919',
           normal: '#252525',
           alternative: '#9397a1',
           assistive: '#abb0b9',
@@ -60,12 +60,12 @@ export default {
           secondary: '#f4f4f9',
           tertiary: '#ebeef1',
           disabled: '#e2e5eb',
-          invert: '#000000',
+          invert: '#191919',
           primary: '#FEF387',
         },
         primary: {
           normal: '#FEF387',
-          dark: '#252525',
+          dark: '#191919',
           neutral: '#f4f4f9',
         },
       },

@@ -1,10 +1,12 @@
 import { useGetOwnerApplicationCounts } from '@/hooks/api/useProfile';
 import { EmployerCountsInfoResponse } from '@/types/api/profile';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EmployerJobInfo = () => {
   const { data } = useGetOwnerApplicationCounts();
   const [jobData, setJobData] = useState<EmployerCountsInfoResponse>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -12,30 +14,45 @@ const EmployerJobInfo = () => {
     }
   }, [data]);
 
+  const handleEditCompanyInfo = () => {
+    navigate('/employer/profile/edit');
+  };
+
+  const infoItems = jobData
+    ? [
+        { label: '올린 공고', value: jobData.job_postings_counts },
+        { label: '지원자 총합', value: jobData.applicants_counts },
+        { label: '계약 성공', value: jobData.successful_hire_counts },
+      ]
+    : [];
+
+  if (!jobData) return null;
+
   return (
     <>
-      {jobData && (
-        <div className="flex gap-2 items-stretch justify-center p-4 bg-white rounded-lg">
-          <div className="flex flex-col justify-between w-full p-3 bg-[#F4F4F9] rounded-lg">
-            <div className="body-3 text-[#abb0b9] text-center">올린 공고</div>
-            <div className="head-3 text-[#1E1926] text-center">
-              {jobData.job_postings_counts}
-            </div>
+      <div className="flex divide-x divide-gray-200 items-stretch justify-center p-3 bg-white">
+        {infoItems.map((item) => (
+          <div
+            key={item.label}
+            className="flex flex-col gap-1 w-full justify-center bg-white"
+          >
+            <span className="head-3 text-text-strong text-center">
+              {item.value}
+            </span>
+            <span className="body-3 text-text-assistive text-center">
+              {item.label}
+            </span>
           </div>
-          <div className="flex flex-col justify-between w-full p-3 bg-[#F4F4F9] rounded-lg">
-            <div className="body-3 text-[#abb0b9] text-center">지원자 총합</div>
-            <div className="head-3 text-[#1E1926] text-center">
-              {jobData.applicants_counts}
-            </div>
-          </div>
-          <div className="flex flex-col justify-between gap-3 w-full p-3 bg-[#F4F4F9] rounded-lg">
-            <div className="body-3 text-[#abb0b9] text-center">계약 성공</div>
-            <div className="head-3 text-[#1E1926] text-center">
-              {jobData.successful_hire_counts}
-            </div>
-          </div>
-        </div>
-      )}
+        ))}
+      </div>
+      <div className="px-4">
+        <button
+          className="grow w-full bg-primary-normal rounded-lg px-5 py-3 text-center button-2 text-text-strong"
+          onClick={handleEditCompanyInfo}
+        >
+          회사 정보 수정
+        </button>
+      </div>
     </>
   );
 };

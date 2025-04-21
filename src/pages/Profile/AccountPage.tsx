@@ -1,7 +1,6 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import DeleteModal from '@/components/Profile/DeleteModal';
 import ProfileMenu from '@/components/Profile/ProfileMenu';
-import { IconType } from '@/constants/profile';
 import { profileTranslation } from '@/constants/translation';
 import { useUserStore } from '@/store/user';
 import { useState } from 'react';
@@ -35,8 +34,8 @@ const AccountPage = () => {
         hasMenuButton={false}
         title={account_type === UserType.USER ? 'Account' : '계정'}
       />
-      <div className="w-full h-full min-h-[100vh] bg-[#f4f4f9]">
-        <div className="flex flex-col gap-4 px-4 pb-4 bg-white rounded-lg">
+      <div className="w-full h-full min-h-[100vh] bg-white">
+        <div className="flex flex-col gap-4 pb-4 bg-white rounded-lg">
           <div className="flex flex-col divide-y divide-gray-200">
             <ProfileMenu
               title={
@@ -44,7 +43,6 @@ const AccountPage = () => {
                   ? profileTranslation.changePassword.en
                   : profileTranslation.changePassword.ko
               }
-              iconType={IconType.LOGOUT}
               onClick={() => navigate('/profile/change-password')}
             />
             <ProfileMenu
@@ -53,7 +51,6 @@ const AccountPage = () => {
                   ? profileTranslation.deleteAccount.en
                   : profileTranslation.deleteAccount.ko
               }
-              iconType={IconType.LOGOUT}
               onClick={() => handleDeleteButton(true)}
             />
           </div>

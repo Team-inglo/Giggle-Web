@@ -1,6 +1,5 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import ProfileMenu from '@/components/Profile/ProfileMenu';
-import { IconType } from '@/constants/profile';
 import { profileTranslation } from '@/constants/translation';
 import { useUserStore } from '@/store/user';
 import { useState } from 'react';
@@ -22,9 +21,42 @@ const AboutPage = () => {
     },
   });
 
+  const handleBack = () => {
+    navigate(
+      account_type === UserType.USER ? '/profile' : '/employer/profile'
+    );
+  };
+
+  const policyMenuItems = [
+    {
+      title: account_type === UserType.USER
+        ? profileTranslation.companyServiceTerm.en
+        : profileTranslation.companyServiceTerm.ko,
+      termType: TermType.ENTERPRISE_SERVICE_TERMS
+    },
+    {
+      title: account_type === UserType.USER
+        ? profileTranslation.personalServiceTerm.en
+        : profileTranslation.personalServiceTerm.ko,
+      termType: TermType.PERSONAL_SERVICE_TERMS
+    },
+    {
+      title: account_type === UserType.USER
+        ? profileTranslation.personalInfoPolicy.en
+        : profileTranslation.personalInfoPolicy.ko,
+      termType: TermType.PRIVACY_POLICY
+    },
+    {
+      title: account_type === UserType.USER
+        ? profileTranslation.locationInfoTerm.en
+        : profileTranslation.locationInfoTerm.ko,
+      termType: TermType.LOCATION_BASED_TERMS
+    }
+  ];
+
   return (
     <>
-      {isPolicyPreview === true && (
+      {isPolicyPreview && (
         <PolicyViewer
           content={policy}
           onBack={() => setIsPolicyPreview(false)}
@@ -32,53 +64,20 @@ const AboutPage = () => {
       )}
       <BaseHeader
         hasBackButton
-        onClickBackButton={() =>
-          navigate(
-            account_type === UserType.USER ? '/profile' : '/employer/profile',
-          )
-        }
+        onClickBackButton={handleBack}
         hasMenuButton={false}
         title={account_type === UserType.USER ? 'About' : '정보'}
       />
-      <div className="w-full h-full min-h-[100vh] bg-[#f4f4f9]">
-        <div className="flex flex-col gap-4 px-4 pb-4 bg-white rounded-lg">
+      <div className="w-full h-full min-h-[100vh] bg-white">
+        <div className="flex flex-col gap-4 pb-4 bg-white rounded-lg">
           <div className="flex flex-col divide-y divide-gray-200">
-            <ProfileMenu
-              title={
-                account_type === UserType.USER
-                  ? profileTranslation.companyServiceTerm.en
-                  : profileTranslation.companyServiceTerm.ko
-              }
-              iconType={IconType.PROFILE}
-              onClick={() => getPolicy(TermType.ENTERPRISE_SERVICE_TERMS)}
-            />
-            <ProfileMenu
-              title={
-                account_type === UserType.USER
-                  ? profileTranslation.personalServiceTerm.en
-                  : profileTranslation.personalServiceTerm.ko
-              }
-              iconType={IconType.PROFILE}
-              onClick={() => getPolicy(TermType.PERSONAL_SERVICE_TERMS)}
-            />
-            <ProfileMenu
-              title={
-                account_type === UserType.USER
-                  ? profileTranslation.personalInfoPolicy.en
-                  : profileTranslation.personalInfoPolicy.ko
-              }
-              iconType={IconType.PROFILE}
-              onClick={() => getPolicy(TermType.PRIVACY_POLICY)}
-            />
-            <ProfileMenu
-              title={
-                account_type === UserType.USER
-                  ? profileTranslation.locationInfoTerm.en
-                  : profileTranslation.locationInfoTerm.ko
-              }
-              iconType={IconType.PROFILE}
-              onClick={() => getPolicy(TermType.LOCATION_BASED_TERMS)}
-            />
+            {policyMenuItems.map((item) => (
+              <ProfileMenu
+                key={item.termType}
+                title={item.title}
+                onClick={() => getPolicy(item.termType)}
+              />
+            ))}
           </div>
         </div>
       </div>

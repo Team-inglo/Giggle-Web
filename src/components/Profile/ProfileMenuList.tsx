@@ -1,4 +1,3 @@
-import { IconType } from '@/constants/profile';
 import ProfileMenu from '@/components/Profile/ProfileMenu';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,54 +8,44 @@ type ProfileMenuListProps = {
 const ProfileMenuList = ({ onLogoutClick }: ProfileMenuListProps) => {
   const navigate = useNavigate();
 
-  const handleAccountClick = () => {
-    navigate('/profile/account');
+  const menuItems = [
+    {
+      title: 'Scrapped Job Posts',
+      path: '/resume/scrapped',
+    },
+    { title: 'Account', path: '/profile/account' },
+    { title: 'Notifications', isToggle: true },
+    {
+      title: 'Language',
+      path: '/profile/language',
+    },
+    { title: 'About', path: '/profile/about' },
+  ];
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
   };
-  const handleScrappedClick = () => {
-    navigate('/resume/scrapped');
-  };
-  const handleLanguageClick = () => {
-    navigate('/profile/language');
-  };
-  const handleAboutClick = () => {
-    navigate('/profile/about');
-  };
-//TODO: 아이콘 에셋 나오면 추가
+
   return (
-    <div className="flex flex-col gap-4 px-4 pb-4 bg-white rounded-lg">
+    <div className="flex flex-col gap-4 pb-4 bg-white rounded-lg">
       <div className="flex flex-col divide-y divide-gray-200">
-        <ProfileMenu
-          title="Scrapped Job Posts"
-          iconType={IconType.SCRAPPED}
-          onClick={handleScrappedClick}
-        />
-        <ProfileMenu
-          title="Account"
-          iconType={IconType.PROFILE}
-          onClick={handleAccountClick}
-        />
-        <ProfileMenu
-          title="Notifications"
-          iconType={IconType.NOTIFICATION}
-          isToggle={true}
-        />
-        <ProfileMenu
-          title="Language"
-          iconType={IconType.LANGUAGE}
-          onClick={handleLanguageClick}
-        />
-        <ProfileMenu
-          title="About"
-          iconType={IconType.LOGOUT}
-          onClick={handleAboutClick}
-        />
+        {menuItems.map((item) => (
+          <ProfileMenu
+            key={item.title}
+            title={item.title}
+            isToggle={item.isToggle}
+            onClick={item.path ? () => handleNavigate(item.path) : undefined}
+          />
+        ))}
       </div>
-      <button
-        className="grow w-full bg-[#ebeef1] rounded-lg px-5 py-3 text-center button-2 text-[#1E1926]"
-        onClick={onLogoutClick}
-      >
-        Log Out
-      </button>
+      <div className="px-4">
+        <button
+          className="grow w-full bg-surface-tertiary rounded-lg px-5 py-3 text-center button-2 text-text-strong"
+          onClick={onLogoutClick}
+        >
+          Log Out
+        </button>
+      </div>
     </div>
   );
 };
