@@ -30,6 +30,9 @@ export const useGetPostValidation = (id: number, isEnabled: boolean) => {
 export const usePostApplyPost = () => {
   return useMutation({
     mutationFn: postApplyPost,
+    meta: {
+      skipGlobalError: true,
+    },
     onError: (error) => {
       console.error('공고 지원하기 실패', error);
     },

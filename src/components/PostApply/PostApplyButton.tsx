@@ -5,9 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { usePostApplyPost } from '@/hooks/api/useApplication';
 import PostApplyErrorBottomSheet from '@/components/PostApply/PostApplyErrorBottomSheet';
-import { AxiosError } from 'axios';
+import axios from 'axios';
 import { useCurrentPostIdEmployeeStore } from '@/store/url';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import { useErrorStore } from '@/store/error';
 
 const PostApplyButton = () => {
   const navigate = useNavigate();
@@ -16,26 +17,30 @@ const PostApplyButton = () => {
   const [isComplete, setIsComplete] = useState<boolean>(false);
   const [isShowBottomsheet, setIsShowBottomSheet] = useState<boolean>(false);
 
-  const { mutateAsync } = usePostApplyPost();
+  const { mutate } = usePostApplyPost();
   const { updateCurrentPostId, currentPostId } =
     useCurrentPostIdEmployeeStore();
+  const { openErrorBottomSheet } = useErrorStore();
 
-  const onClickApply = async () => {
+  const onClickApply = () => {
     if (isNaN(Number(id))) return;
-    try {
-      const result = await mutateAsync(Number(id));
 
-      if (result?.success) {
-        updateCurrentPostId(result?.data?.id);
+    mutate(Number(id), {
+      onSuccess: (data) => {
+        updateCurrentPostId(data?.data?.id);
         setIsComplete(true);
-      }
-    } catch (error) {
-      const axiosError = error as AxiosError<{ error: { code: number } }>;
-
-      if (axiosError.response?.data.error.code === 40011) {
-        setIsShowBottomSheet(true);
-      }
-    }
+      },
+      onError: (error) => {
+        if (
+          axios.isAxiosError(error) &&
+          error.response?.data?.error?.code === 40011
+        ) {
+          setIsShowBottomSheet(true);
+        } else {
+          openErrorBottomSheet(error);
+        }
+      },
+    });
   };
 
   return (
