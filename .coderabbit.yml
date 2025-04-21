@@ -11,5 +11,6 @@ reviews:
   auto_review:
     enabled: true # 자동 리뷰 활성화
     base_branches: ['.*'] # 모든 브랜치에 대해 자동 리뷰
+    ignore_labels: ['no-rabbit-zone'] # 이 라벨이 있는 PR은 리뷰하지 않음
 chat:
   auto_reply: true # 질문에 자동 응답 활성화
