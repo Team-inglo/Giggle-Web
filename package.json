@@ -23,6 +23,7 @@
     "react-daum-postcode": "^3.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.56.0",
     "react-kakao-maps-sdk": "^1.1.27",
     "react-router-dom": "^6.27.0",
     "react-signature-canvas": "^1.0.6",
