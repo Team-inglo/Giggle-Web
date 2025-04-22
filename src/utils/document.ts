@@ -9,7 +9,7 @@ import {
 import { GiggleAddress } from '@/types/api/users';
 import { extractNumbersAsNumber } from './post';
 import { InsuranceInfo } from '@/constants/documents';
-import { parsePhoneNumber } from './information';
+import { formatPhoneNumber, parsePhoneNumber } from './information';
 
 export const MINIMUM_HOURLY_RATE = 10030;
 
@@ -69,14 +69,13 @@ export const validatePartTimePermit = (
   if (
     hasStringValue(data.first_name) &&
     hasStringValue(data.last_name) &&
-    hasStringValue(data.phone_number) &&
+    data.phone &&
     isEmailValid(data.email) &&
-    isValidPhoneNumber(data.phone_number) &&
+    isValidPhoneNumber(formatPhoneNumber(data.phone)) &&
     isValidTermOfCompletion(data.term_of_completion)
   ) {
     return true;
   }
-
   return false;
 };
 

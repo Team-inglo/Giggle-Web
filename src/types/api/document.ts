@@ -127,6 +127,11 @@ export type PartTimePermitFormRequest = {
   term_of_completion: number;
   phone_number: string;
   email: string;
+  phone?: {
+    start: string;
+    middle: string;
+    end: string;
+  };
 };
 
 // 근로 계약서 조회 응답 양식
