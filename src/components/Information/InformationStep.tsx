@@ -70,6 +70,39 @@ const InformationStep = ({
     setIsInvalid(false);
   }, [newUserInfo, phoneNum]);
 
+  // 사용자 정보 포맷팅을 위한 별도 함수
+  const formatUserInfoForSubmission = (
+    newUserInfo: UserInfo,
+    phoneNum: string,
+  ): UserInfo => {
+    return {
+      ...newUserInfo,
+      first_name: newUserInfo.first_name?.replace(/\s+/g, ' ').trim() ?? null,
+      last_name: newUserInfo.last_name?.replace(/\s+/g, ' ').trim() ?? null,
+      nationality:
+        newUserInfo.nationality?.toUpperCase().replace(/\s/g, '_') ?? null,
+      birth: newUserInfo.birth
+        ? formatDateToDash(newUserInfo.birth as string)
+        : null,
+      phone_number: phoneNum,
+      visa: newUserInfo.visa?.replace(/-/g, '_') ?? '',
+    };
+  };
+
+  const handleNextClick = () => {
+    if (isInvalid) return;
+
+    const formattedUserInfo = formatUserInfoForSubmission(
+      newUserInfo,
+      formatPhoneNumber(phoneNum),
+    );
+
+    onNext({
+      ...userInfo,
+      user_info: formattedUserInfo,
+    });
+  };
+
   return (
     <div className="w-full flex flex-col gap-4">
       <div className="w-full flex flex-row items-center justify-between">
@@ -198,29 +231,7 @@ const InformationStep = ({
             fontColor={isInvalid ? '' : 'text-[#222]'}
             isBorder={false}
             title="Next"
-            onClick={
-              isInvalid
-                ? undefined
-                : () =>
-                    onNext({
-                      ...userInfo,
-                      user_info: {
-                        ...newUserInfo,
-                        nationality:
-                          newUserInfo.nationality === null
-                            ? null
-                            : newUserInfo.nationality
-                                .toUpperCase()
-                                .replace(/\s/g, '_'),
-                        birth: formatDateToDash(newUserInfo.birth as string),
-                        phone_number: formatPhoneNumber(phoneNum),
-                        visa:
-                          newUserInfo.visa !== null
-                            ? newUserInfo.visa.replace(/-/g, '_')
-                            : '',
-                      },
-                    })
-            }
+            onClick={handleNextClick}
           />
         </BottomButtonPanel>
       </div>
