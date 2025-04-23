@@ -84,13 +84,10 @@ const InformationStep = ({
         newUserInfo.last_name &&
         newUserInfo.last_name.replace(/\s+/g, ' ').trim(),
       nationality:
-        newUserInfo.nationality === null
-          ? null
-          : newUserInfo.nationality.toUpperCase().replace(/\s/g, '_'),
+        newUserInfo.nationality?.toUpperCase().replace(/\s/g, '_') ?? null,
       birth: formatDateToDash(newUserInfo.birth as string),
       phone_number: phoneNum,
-      visa:
-        newUserInfo.visa !== null ? newUserInfo.visa.replace(/-/g, '_') : '',
+      visa: newUserInfo.visa?.replace(/-/g, '_') ?? '',
     };
   };
 
