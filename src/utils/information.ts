@@ -27,19 +27,13 @@ export const countNormalizedNameLength = (name: string): number => {
  * @returns 유효성 검사 결과
  */
 export const isValidName = (name: string): boolean => {
-  // 빈 문자열 체크
-  if (name.trim() === '') {
-    return false;
-  }
 
-  // 공백 정규화 후 길이 체크
-  const normalizedLength = countNormalizedNameLength(name);
+  const normalizedName = name.replace(/\s+/g, ' ').trim();
+
+  const normalizedLength = normalizedName.length;
   if (normalizedLength > MAX_NAME_LENGTH) {
     return false;
   }
-
-  // 정규화된 이름 생성 (연속된 공백을 하나의 공백으로)
-  const normalizedName = name.replace(/\s+/g, ' ').trim();
 
   return nameRegexWithSpaces.test(normalizedName);
 };

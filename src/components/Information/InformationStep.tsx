@@ -77,15 +77,13 @@ const InformationStep = ({
   ): UserInfo => {
     return {
       ...newUserInfo,
-      first_name:
-        newUserInfo.first_name &&
-        newUserInfo.first_name.replace(/\s+/g, ' ').trim(),
-      last_name:
-        newUserInfo.last_name &&
-        newUserInfo.last_name.replace(/\s+/g, ' ').trim(),
+      first_name: newUserInfo.first_name?.replace(/\s+/g, ' ').trim() ?? null,
+      last_name: newUserInfo.last_name?.replace(/\s+/g, ' ').trim() ?? null,
       nationality:
         newUserInfo.nationality?.toUpperCase().replace(/\s/g, '_') ?? null,
-      birth: formatDateToDash(newUserInfo.birth as string),
+      birth: newUserInfo.birth
+        ? formatDateToDash(newUserInfo.birth as string)
+        : null,
       phone_number: phoneNum,
       visa: newUserInfo.visa?.replace(/-/g, '_') ?? '',
     };
