@@ -20,11 +20,25 @@ import DocumentFormInput from '../Document/write/input/DocumentFormInput';
 import ValidatedSubmitButton from '../Document/write/ValidatedSubmitButton';
 import PhoneNumberInput from '../Document/write/input/PhoneNumberInput';
 import DropdownInput from '../Document/write/input/DropdownInput';
+import {
+  PartTimePermitFormProperty,
+  PartTimePermitFormInfo,
+} from '@/constants/documents';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
   isEdit: boolean;
   userOwnerPostId: number;
+};
+
+// 폼 필드 타입 정의
+type FormField = {
+  type: 'text' | 'phone' | 'dropdown';
+  name: keyof PartTimePermitFormRequest | 'phone';
+  title: string;
+  placeholder: string;
+  options?: string[];
+  format?: string;
 };
 
 const PartTimePermitWriteForm = ({
@@ -71,6 +85,83 @@ const PartTimePermitWriteForm = ({
     }
     postDocument(payload);
   };
+
+  // 폼 필드 정의
+  const formFields: FormField[] = [
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.FIRST_NAME,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.FIRST_NAME].name,
+      placeholder: 'First Name',
+    },
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.LAST_NAME,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.LAST_NAME].name,
+      placeholder: 'Last Name',
+    },
+    {
+      type: 'phone',
+      name: 'phone',
+      title:
+        PartTimePermitFormInfo[PartTimePermitFormProperty.PHONE_NUMBER].name,
+      placeholder: '', // PhoneNumberInput에서 자체적으로 처리
+    },
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.MAJOR,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.MAJOR].name,
+      placeholder: 'Department (major)',
+    },
+    {
+      type: 'dropdown',
+      name: PartTimePermitFormProperty.TERM_OF_COMPLETION,
+      title:
+        PartTimePermitFormInfo[PartTimePermitFormProperty.TERM_OF_COMPLETION]
+          .name,
+      placeholder: 'Term of completion',
+      options: Array.from({ length: 12 }, (_, i) => String(i + 1)),
+    },
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.EMAIL,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.EMAIL].name,
+      placeholder: 'email@email.com',
+    },
+  ];
+
+  // 필드 타입에 따른 입력 컴포넌트 렌더링
+  const renderField = (field: FormField) => {
+    switch (field.type) {
+      case 'text':
+        return (
+          <DocumentFormInput
+            inputType={InputType.TEXT}
+            placeholder={field.placeholder}
+            canDelete={false}
+            name={field.name as keyof PartTimePermitFormRequest}
+            control={control}
+            format={field.format}
+          />
+        );
+      case 'phone':
+        return (
+          <PhoneNumberInput control={control} name={field.name as 'phone'} />
+        );
+      case 'dropdown':
+        return (
+          <DropdownInput
+            control={control}
+            name={field.name as keyof PartTimePermitFormRequest}
+            placeholder={field.placeholder}
+            options={field.options || []}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <form
@@ -81,59 +172,12 @@ const PartTimePermitWriteForm = ({
         }}
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
-          {/* 이름 입력 */}
-          <InputLayout title="First Name" isEssential>
-            <DocumentFormInput
-              inputType={InputType.TEXT}
-              placeholder="First Name"
-              canDelete={false}
-              name="first_name"
-              control={control}
-            />
-          </InputLayout>
-          {/* 성 입력 */}
-          <InputLayout title="Last Name" isEssential>
-            <DocumentFormInput
-              inputType={InputType.TEXT}
-              placeholder="Last Name"
-              canDelete={false}
-              name="last_name"
-              control={control}
-            />
-          </InputLayout>
-          {/* 전화번호 입력 */}
-          <InputLayout title="Cell phone No." isEssential>
-            <PhoneNumberInput control={control} name="phone" />
-          </InputLayout>
-          {/* 전공 입력 */}
-          <InputLayout title="Department (major)" isEssential>
-            <DocumentFormInput
-              inputType={InputType.TEXT}
-              placeholder="Department (major)"
-              canDelete={false}
-              name="major"
-              control={control}
-            />
-          </InputLayout>
-          {/* 이수 학기 입력 */}
-          <InputLayout title="Term of completion" isEssential>
-            <DropdownInput
-              control={control}
-              name="term_of_completion"
-              placeholder="Term of completion"
-              options={Array.from({ length: 12 }, (_, i) => String(i + 1))}
-            />
-          </InputLayout>
-          {/* 이메일 입력 */}
-          <InputLayout title="Email" isEssential>
-            <DocumentFormInput
-              inputType={InputType.TEXT}
-              placeholder="email@email.com"
-              canDelete={false}
-              name="email"
-              control={control}
-            />
-          </InputLayout>
+          {formFields.map((field) => (
+            <InputLayout key={field.name} title={field.title} isEssential>
+              {renderField(field)}
+            </InputLayout>
+          ))}
+
           {/* 고용주 정보가 있다면 표시 */}
           {document?.employer_information && (
             <EmployerInfoSection

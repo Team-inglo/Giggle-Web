@@ -145,6 +145,11 @@ export type LaborContractEmployeeInfo = {
   first_name: string;
   last_name: string;
   address: GiggleAddress;
+  phone?: {
+    start: string;
+    middle: string;
+    end: string;
+  };
   phone_number: string;
   signature_base64: string; // base64 문자열
 };
