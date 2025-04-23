@@ -1,24 +1,51 @@
-// Regular expression for first name validation
-// Allows 1-50 characters, only letters (no numbers or special characters)
-export const firstNameRegex = /^[A-Za-z가-힣]{1,50}$/;
+// 이름 유효성 검사 및 포맷팅 관련 유틸리티 함수들
+// 이름은 영문 대소문자, 한글만 허용하며, 공백도 허용
+// 연속된 공백은 하나의 공백으로 간주
+export const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
 
-// Regular expression for last name validation
-// Allows 1-100 characters, only letters (no numbers or special characters)
-export const lastNameRegex = /^[A-Za-z가-힣]{1,50}$/;
+// 이름의 최대 길이
+export const MAX_NAME_LENGTH = 50;
 
-// Function to test if a string matches the first name criteria
-export const isValidFirstName = (name: string): boolean => {
-  return firstNameRegex.test(name);
+/**
+ * 공백을 포함한 이름에서 실제 문자 수를 계산하는 함수
+ * 연속된 공백은 하나의 공백으로 간주하여 계산
+ * @param name 사용자가 입력한 이름
+ * @returns 정규화된 공백을 포함한 문자 수
+ */
+export const countNormalizedNameLength = (name: string): number => {
+  // 연속된 공백을 하나의 공백으로 정규화
+  const normalizedName = name.replace(/\s+/g, ' ').trim();
+  return normalizedName.length;
 };
 
-// Function to test if a string matches the last name criteria
-export const isValidLastName = (name: string): boolean => {
-  return lastNameRegex.test(name);
+/**
+ * 이름 유효성 검사 함수
+ * 1. 공백이 허용됨 (연속된 공백은 하나로 간주)
+ * 2. 이름은 글자(영문, 한글)와 공백만 포함 가능
+ * 3. 정규화된 총 길이는 MAX_NAME_LENGTH(50자) 이하
+ * @param name 사용자가 입력한 이름
+ * @returns 유효성 검사 결과
+ */
+export const isValidName = (name: string): boolean => {
+
+  const normalizedName = name.replace(/\s+/g, ' ').trim();
+
+  const normalizedLength = normalizedName.length;
+  if (normalizedLength > MAX_NAME_LENGTH) {
+    return false;
+  }
+
+  return nameRegexWithSpaces.test(normalizedName);
 };
 
 // 이름 유효성 검사 함수
-export const isValidName = (name: string) =>
-  name.trim() !== '' && (isValidFirstName(name) || isValidLastName(name));
+export const isValidFirstName = (name: string): boolean => {
+  return isValidName(name);
+};
+
+export const isValidLastName = (name: string): boolean => {
+  return isValidName(name);
+};
 
 // 전화번호 유효성 검사 함수
 export const isValidPhoneNumber = (phone: {
