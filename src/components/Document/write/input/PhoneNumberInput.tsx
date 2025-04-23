@@ -3,6 +3,7 @@ import Dropdown from '@/components/Common/Dropdown';
 import Input from '@/components/Common/Input';
 import { phone } from '@/constants/information';
 import { InputType } from '@/types/common/input';
+import { applyFormat } from '@/utils/document';
 import { Control, Controller, FieldValues } from 'react-hook-form';
 
 // 전화번호 입력을 위한 커스텀 컴포넌트
@@ -41,7 +42,11 @@ const PhoneNumberInput = <T extends FieldValues>({
             inputType={InputType.TEXT}
             placeholder="0000"
             value={field.value}
-            onChange={(value) => field.onChange(value)}
+            onChange={(value) => {
+              // 포맷팅 적용 후 값 업데이트
+              const formattedValue = applyFormat(value, 'numbers-only');
+              field.onChange(formattedValue);
+            }}
             canDelete={false}
           />
         )}
@@ -55,7 +60,11 @@ const PhoneNumberInput = <T extends FieldValues>({
             inputType={InputType.TEXT}
             placeholder="0000"
             value={field.value}
-            onChange={(value) => field.onChange(value)}
+            onChange={(value) => {
+              // 포맷팅 적용 후 값 업데이트
+              const formattedValue = applyFormat(value, 'numbers-only');
+              field.onChange(formattedValue);
+            }}
             canDelete={false}
           />
         )}

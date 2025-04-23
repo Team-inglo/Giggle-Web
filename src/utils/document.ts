@@ -2,6 +2,7 @@ import {
   EmployerInformation,
   Insurance,
   IntegratedApplicationData,
+  LaborContractEmployeeInfo,
   LaborContractEmployerInfo,
   PartTimePermitFormRequest,
   WorkDayTime,
@@ -73,6 +74,25 @@ export const validatePartTimePermit = (
     isEmailValid(data.email) &&
     isValidPhoneNumber(formatPhoneNumber(data.phone)) &&
     isValidTermOfCompletion(data.term_of_completion)
+  ) {
+    return true;
+  }
+  return false;
+};
+
+// 근로계약서 유효성 검사 함수
+export const validateLaborContract = (
+  data: LaborContractEmployeeInfo,
+): boolean => {
+  // 필수 입력 항목 체크(이름, 성, 전화번호, 주소, 서명)
+  if (
+    hasStringValue(data.first_name) &&
+    hasStringValue(data.last_name) &&
+    data.phone &&
+    isValidPhoneNumber(formatPhoneNumber(data.phone)) &&
+    data.address.address_detail &&
+    data.address.address_detail.length <= 50 &&
+    data.signature_base64
   ) {
     return true;
   }
@@ -350,4 +370,67 @@ export const getInsuranceByKey = (key: string): Insurance | undefined => {
     ([_, value]) => value.key === key,
   );
   return entry ? (entry[0] as Insurance) : undefined;
+};
+
+// 입력 형식 처리를 위한 유틸리티 함수
+type InputFormatter = (value: string) => string;
+
+// 다양한 포맷 옵션을 매핑하는 객체
+const formatters: Record<string, InputFormatter> = {
+  // 숫자만 허용
+  'numbers-only': (value) => value.replace(/[^0-9]/g, ''),
+  // 사업자등록번호 포맷 (000/00/00000)
+  'business-id': (value) => {
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    if (digitsOnly.length <= 3) return digitsOnly;
+    if (digitsOnly.length <= 5)
+      return `${digitsOnly.slice(0, 3)}/${digitsOnly.slice(3)}`;
+    return `${digitsOnly.slice(0, 3)}/${digitsOnly.slice(3, 5)}/${digitsOnly.slice(5, 10)}`;
+  },
+
+  // 날짜 포맷 (YYYY-MM-DD)
+  date: (value) => {
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    if (digitsOnly.length <= 4) return digitsOnly;
+    if (digitsOnly.length <= 6)
+      return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4)}`;
+    return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4, 6)}-${digitsOnly.slice(6, 8)}`;
+  },
+
+  // 알파벳만 허용
+  'alpha-only': (value) => value.replace(/[^a-zA-Z]/g, ''),
+
+  // 알파벳과 숫자만 허용
+  alphanumeric: (value) => value.replace(/[^a-zA-Z0-9]/g, ''),
+
+  // 최대 글자수 제한 (예: 'max-length-10')
+  'max-length': (value, maxLength = 10) => value.slice(0, maxLength),
+};
+
+// 포맷팅 적용 함수
+export const applyFormat = (
+  value: string,
+  format?: string | string[],
+): string => {
+  if (!format) return value;
+
+  let result = value;
+  const formatList = Array.isArray(format) ? format : [format];
+
+  for (const formatKey of formatList) {
+    // 특수 형식: max-length-N
+    if (formatKey.startsWith('max-length-')) {
+      const maxLength = parseInt(formatKey.split('-')[2], 10);
+      result = result.slice(0, maxLength);
+      continue;
+    }
+
+    // 일반 포맷터 적용
+    const formatter = formatters[formatKey];
+    if (formatter) {
+      result = formatter(result);
+    }
+  }
+
+  return result;
 };

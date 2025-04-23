@@ -1,5 +1,6 @@
 import Input from '@/components/Common/Input';
 import { InputType } from '@/types/common/input';
+import { applyFormat } from '@/utils/document';
 import {
   useController,
   UseControllerProps,
@@ -18,6 +19,7 @@ type DocumentFormInputProps<
   control: UseControllerProps<TFieldValues, TName>['control']; // UseControllerProps에서 필수 prop
   rules?: UseControllerProps<TFieldValues, TName>['rules']; // 선택적 유효성 검사 규칙
   defaultValue?: UseControllerProps<TFieldValues, TName>['defaultValue']; // 선택적 기본값
+  format?: string | string[];
   // Input의 나머지 선택적 props
   clearInvalid?: () => void;
   onDelete?: () => void;
@@ -39,6 +41,7 @@ const DocumentFormInput = <
   control,
   rules,
   defaultValue,
+  format,
   clearInvalid,
   onDelete,
   isPrefix,
@@ -59,7 +62,11 @@ const DocumentFormInput = <
       inputType={inputType}
       placeholder={placeholder}
       value={field.value}
-      onChange={(value) => field.onChange(value)}
+      onChange={(value) => {
+        // 포맷팅 적용 후 값 업데이트
+        const formattedValue = applyFormat(value, format);
+        field.onChange(formattedValue);
+      }}
       canDelete={canDelete}
       isInvalid={!!fieldState.error}
       clearInvalid={clearInvalid}
