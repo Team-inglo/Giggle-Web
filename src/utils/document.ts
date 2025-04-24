@@ -5,12 +5,12 @@ import {
   LaborContractEmployeeInfo,
   LaborContractEmployerInfo,
   PartTimePermitFormRequest,
+  Phone,
   WorkDayTime,
 } from '@/types/api/document';
 import { GiggleAddress } from '@/types/api/users';
 import { extractNumbersAsNumber } from './post';
 import { InsuranceInfo } from '@/constants/documents';
-import { formatPhoneNumber, parsePhoneNumber } from './information';
 
 export const MINIMUM_HOURLY_RATE = 10030;
 
@@ -48,12 +48,11 @@ const isEmailValid = (email: string): boolean => {
 };
 
 // 전화번호 유효성 검사 함수
-const isValidPhoneNumber = (phone: string) => {
-  const phoneNum = parsePhoneNumber(phone);
+const isValidPhoneNumber = (phone: Phone) => {
   return (
-    phoneNum.start !== '' &&
-    /^[0-9]{4}$/.test(phoneNum.middle) &&
-    /^[0-9]{4}$/.test(phoneNum.end)
+    phone.start !== '' &&
+    /^[0-9]{4}$/.test(phone.middle) &&
+    /^[0-9]{4}$/.test(phone.end)
   );
 };
 
@@ -72,7 +71,7 @@ export const validatePartTimePermit = (
     hasStringValue(data.last_name) &&
     data.phone &&
     isEmailValid(data.email) &&
-    isValidPhoneNumber(formatPhoneNumber(data.phone)) &&
+    isValidPhoneNumber(data.phone) &&
     isValidTermOfCompletion(data.term_of_completion)
   ) {
     return true;
@@ -89,7 +88,7 @@ export const validateLaborContract = (
     hasStringValue(data.first_name) &&
     hasStringValue(data.last_name) &&
     data.phone &&
-    isValidPhoneNumber(formatPhoneNumber(data.phone)) &&
+    isValidPhoneNumber(data.phone) &&
     data.address.address_detail &&
     data.address.address_detail.length <= 50 &&
     data.signature_base64
@@ -309,6 +308,7 @@ export const validateIntegratedApplication = (
 ): boolean => {
   // 주소 검사
   const isAddressValid =
+    !!data.address.region_1depth_name &&
     data.address.region_1depth_name !== '' &&
     !!data.address.address_detail &&
     data.address.address_detail.length <= 50;
@@ -333,10 +333,10 @@ export const validateIntegratedApplication = (
 
   // 전화번호 필드들 검사
   const isPhoneValid =
-    isValidPhoneNumber(data.tele_phone_number) &&
-    isValidPhoneNumber(data.cell_phone_number) &&
-    isValidPhoneNumber(data.school_phone_number) &&
-    isValidPhoneNumber(data.new_work_place_phone_number);
+    isValidPhoneNumber(data.tele_phone as Phone) &&
+    isValidPhoneNumber(data.cell_phone as Phone) &&
+    isValidPhoneNumber(data.school_phone as Phone) &&
+    isValidPhoneNumber(data.new_work_place_phone as Phone);
   // 나머지 필드 검사
   const otherFieldsValid = Object.entries(data).every(([key, value]) => {
     // 앞서 검사한 필드들은 스킵
