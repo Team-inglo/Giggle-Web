@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSearchSchool } from '@/hooks/api/useDocument';
 import {
   IntegratedApplicationData,
@@ -11,7 +11,7 @@ import { RESTYPE } from '@/types/api/common';
 
 type SearchSchoolBottomSheetProps = {
   newDocumentData: IntegratedApplicationData;
-  setNewDocumentData: Dispatch<SetStateAction<IntegratedApplicationData>>;
+  setNewDocumentData: (data: IntegratedApplicationData) => void;
   onClose: () => void;
 };
 
@@ -20,6 +20,7 @@ const SearchSchoolBottomSheet = ({
   setNewDocumentData,
   onClose,
 }: SearchSchoolBottomSheetProps) => {
+  const [searchValue, setSearchValue] = useState<string>('');
   const [searchResult, setSearchResult] = useState<School[]>();
   const { searchSchool } = useSearchSchool({
     onSuccess: (data: RESTYPE<SearchSchoolResponse>) =>
@@ -29,10 +30,7 @@ const SearchSchoolBottomSheet = ({
   // 검색 입력 시 실시간으로 검색 진행
   const handleAddressSearch = useCallback(
     (name: string) => {
-      setNewDocumentData({
-        ...newDocumentData,
-        school_name: name,
-      });
+      setSearchValue(name);
       if (name !== '') {
         searchSchool(name);
       } else {
@@ -61,7 +59,7 @@ const SearchSchoolBottomSheet = ({
           <Input
             inputType={InputType.SEARCH}
             placeholder="Name of School"
-            value={newDocumentData.school_name}
+            value={searchValue}
             onChange={(name: string) => handleAddressSearch(name)}
             canDelete={true}
             onDelete={() =>

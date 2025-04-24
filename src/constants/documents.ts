@@ -15,6 +15,11 @@ import {
   PartTimePermitFormRequest,
 } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
+import { country } from './information';
+import {
+  transformers,
+  ValueTransformer,
+} from '@/components/Document/write/input/RadioGroup';
 
 // 문서 타입별 정보를 담은 객체
 export const DocumentTypeInfo = {
@@ -638,3 +643,217 @@ export const personalInfoList = [
   'Spouse of applicant Signature',
   'Parents of applicant',
 ];
+
+// 필수 검증 필드 목록
+export const REQUIRED_FIELDS: Array<keyof IntegratedApplicationData> = [
+  'first_name',
+  'last_name',
+  'tele_phone',
+  'cell_phone',
+  'school_phone',
+  'nationality',
+  'new_work_place_phone',
+  'school_name',
+  'new_work_place_registration_number',
+  'annual_income_amount',
+  'occupation',
+  'email',
+  'address',
+  'signature_base64',
+];
+
+// FormField 타입 정의
+export type IntegratedApplicationFormField = {
+  type:
+    | 'text'
+    | 'phone'
+    | 'address'
+    | 'dropdown'
+    | 'radio'
+    | 'signature'
+    | 'school_name';
+  name: keyof IntegratedApplicationData;
+  title: string;
+  placeholder: string;
+  description?: string;
+  options?: string[];
+  format?: string;
+  transformer?: ValueTransformer;
+};
+
+// 폼 필드 정의
+export const IntegratedApplicationformFields: IntegratedApplicationFormField[] =
+  [
+    {
+      type: 'text',
+      name: IntegratedApplicationField.FIRST_NAME,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.FIRST_NAME]
+          .name,
+      placeholder: 'First Name',
+    },
+    {
+      type: 'text',
+      name: IntegratedApplicationField.LAST_NAME,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.LAST_NAME]
+          .name,
+      placeholder: 'Last Name',
+    },
+    {
+      type: 'text',
+      name: IntegratedApplicationField.BIRTH,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.BIRTH]
+          .name,
+      placeholder: 'Date Of Birth',
+      format: 'date',
+    },
+    {
+      type: 'radio',
+      name: IntegratedApplicationField.GENDER,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.GENDER]
+          .name,
+      placeholder: 'Gender',
+      options: ['Male', 'Female'],
+      transformer: transformers.gender,
+    },
+    {
+      type: 'dropdown',
+      name: IntegratedApplicationField.NATIONALITY,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.NATIONALITY
+        ].name,
+      placeholder: 'Nationality',
+      options: country,
+    },
+    {
+      type: 'phone',
+      name: 'tele_phone',
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.TELE_PHONE_NUMBER
+        ].name,
+      placeholder: 'Telephone No.',
+      format: 'numbers-only',
+    },
+    {
+      type: 'phone',
+      name: 'cell_phone',
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.CELL_PHONE_NUMBER
+        ].name,
+      placeholder: 'Cell Phone No.',
+      format: 'numbers-only',
+    },
+    {
+      type: 'address',
+      name: IntegratedApplicationField.ADDRESS,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.ADDRESS]
+          .name,
+      placeholder: 'Address in Korea',
+    },
+    {
+      type: 'radio',
+      name: IntegratedApplicationField.IS_ACCREDITED,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.IS_ACCREDITED
+        ].name,
+      placeholder: 'Type Of Name',
+      options: [
+        'Accredited by Education Office',
+        'Non-accredited, Alternative School',
+      ],
+      description: 'University is an education office accredited school.',
+      transformer: transformers.boolean('Accredited by Education Office'),
+    },
+    {
+      type: 'school_name',
+      name: IntegratedApplicationField.SCHOOL_NAME,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.SCHOOL_NAME
+        ].name,
+      placeholder: 'Name Of School',
+    },
+    {
+      type: 'phone',
+      name: 'school_phone',
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.SCHOOL_PHONE_NUMBER
+        ].name,
+      placeholder: 'Phone Number of School',
+      format: 'numbers-only',
+    },
+    {
+      type: 'text',
+      name: IntegratedApplicationField.NEW_WORK_PLACE_NAME,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.NEW_WORK_PLACE_NAME
+        ].name,
+      placeholder: 'New Workplace',
+    },
+    {
+      type: 'text',
+      name: IntegratedApplicationField.NEW_WORK_PLACE_REGISTRATION_NUMBER,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.NEW_WORK_PLACE_REGISTRATION_NUMBER
+        ].name,
+      placeholder: 'Business Registration No. Of New Workplace',
+      format: 'business-id',
+    },
+    {
+      type: 'phone',
+      name: 'new_work_place_phone',
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.NEW_WORK_PLACE_PHONE_NUMBER
+        ].name,
+      placeholder: 'Phone Number Of New Workplace',
+      format: 'numbers-only',
+    },
+    {
+      type: 'text',
+      name: IntegratedApplicationField.ANNUAL_INCOME_AMOUNT,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.ANNUAL_INCOME_AMOUNT
+        ].name,
+      placeholder: 'Annual Income Amount',
+      format: 'numbers-only',
+    },
+    {
+      type: 'text',
+      name: IntegratedApplicationField.OCCUPATION,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.OCCUPATION]
+          .name,
+      placeholder: 'Occupation',
+      description: `If you are a college student, please write 'student'`,
+    },
+    {
+      type: 'text',
+      name: IntegratedApplicationField.EMAIL,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.EMAIL]
+          .name,
+      placeholder: 'Email',
+    },
+    {
+      type: 'signature',
+      name: IntegratedApplicationField.SIGNATURE_BASE64,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.SIGNATURE_BASE64
+        ].name,
+      placeholder: 'Signature',
+    },
+  ];
