@@ -31,7 +31,7 @@ const AddressInput = <T extends FieldValues>({
   return (
     <>
       {isAddressSearch ? (
-        <div className="w-full h-screen absolute inset-0 bg-white z-10">
+        <div className="w-full h-screen fixed inset-0 bg-white z-20">
           <Controller
             control={control}
             name={name as any}
