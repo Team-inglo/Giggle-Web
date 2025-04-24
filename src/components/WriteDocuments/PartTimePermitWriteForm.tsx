@@ -3,6 +3,7 @@ import {
   DocumentType,
   PartTimePermitData,
   PartTimePermitFormRequest,
+  Phone,
 } from '@/types/api/document';
 import { InputType } from '@/types/common/input';
 import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
@@ -50,13 +51,8 @@ const PartTimePermitWriteForm = ({
   const { control, handleSubmit } = useForm<PartTimePermitFormRequest>({
     values: document
       ? {
-          first_name: document.employee_information.first_name,
-          last_name: document.employee_information.last_name,
-          major: document.employee_information.major,
-          term_of_completion: document.employee_information.term_of_completion,
-          email: document.employee_information.email,
+          ...document.employee_information,
           phone: parsePhoneNumber(document.employee_information.phone_number),
-          phone_number: document.employee_information.phone_number,
         }
       : initialPartTimePermitForm,
   });
@@ -67,13 +63,11 @@ const PartTimePermitWriteForm = ({
 
   // 문서 작성 완료 핸들러 함수
   const handleNext = (data: PartTimePermitFormRequest) => {
+    const { phone, ...rest } = data;
     const finalDocument = {
-      ...data,
-      phone_number: formatPhoneNumber(
-        data.phone as { start: string; middle: string; end: string },
-      ),
+      ...rest,
+      phone_number: formatPhoneNumber(phone as Phone),
     };
-    delete finalDocument.phone;
     const payload = {
       id: Number(isEdit ? currentDocumentId : userOwnerPostId),
       document: finalDocument,

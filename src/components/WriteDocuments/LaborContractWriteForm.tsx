@@ -7,6 +7,7 @@ import {
   DocumentType,
   LaborContractDataResponse,
   LaborContractEmployeeInfo,
+  Phone,
 } from '@/types/api/document';
 import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import { InputType } from '@/types/common/input';
@@ -51,12 +52,8 @@ const LaborContractWriteForm = ({
   const { control, handleSubmit } = useForm<LaborContractEmployeeInfo>({
     values: document
       ? {
-          first_name: document.employee_information.first_name,
-          last_name: document.employee_information.last_name,
-          address: document.employee_information.address,
+          ...document.employee_information,
           phone: parsePhoneNumber(document.employee_information.phone_number),
-          phone_number: document.employee_information.phone_number,
-          signature_base64: document.employee_information.signature_base64,
         }
       : initialLaborContractEmployeeInfo,
   });
@@ -68,13 +65,13 @@ const LaborContractWriteForm = ({
 
   // 문서 작성 완료 핸들러 함수
   const handleNext = (data: LaborContractEmployeeInfo) => {
+    const { phone, ...rest } = data;
     const finalDocument = {
-      ...data,
+      ...rest,
       phone_number: formatPhoneNumber(
-        data.phone as { start: string; middle: string; end: string },
+        phone as Phone
       ),
     };
-    delete finalDocument.phone;
     const payload = {
       id: Number(isEdit ? currentDocumentId : userOwnerPostId),
       document: finalDocument,

@@ -42,6 +42,13 @@ export type EmployDocumentsSummaryResponse = {
   standard_labor_contract: EmployDocumentInfo | null;
 };
 
+// 전화번호 state 타입
+export type Phone = {
+  start: string;
+  middle: string;
+  end: string;
+};
+
 // 문서 종류 property와 이름 mapping
 export enum DocumentType {
   PART_TIME_PERMIT = 'part_time_employment_permits',
@@ -127,11 +134,7 @@ export type PartTimePermitFormRequest = {
   term_of_completion: number;
   phone_number: string;
   email: string;
-  phone?: {
-    start: string;
-    middle: string;
-    end: string;
-  };
+  phone?: Phone;
 };
 
 // 근로 계약서 조회 응답 양식
@@ -145,11 +148,7 @@ export type LaborContractEmployeeInfo = {
   first_name: string;
   last_name: string;
   address: GiggleAddress;
-  phone?: {
-    start: string;
-    middle: string;
-    end: string;
-  };
+  phone?: Phone;
   phone_number: string;
   signature_base64: string; // base64 문자열
 };
@@ -262,6 +261,10 @@ export type IntegratedApplicationData = {
   email: string;
   signature_base64: string;
   address: GiggleAddress;
+  tele_phone?: Phone;
+  cell_phone?: Phone;
+  new_work_place_phone?: Phone;
+  school_phone?: Phone;
 };
 
 export enum IntegratedApplicationField {
