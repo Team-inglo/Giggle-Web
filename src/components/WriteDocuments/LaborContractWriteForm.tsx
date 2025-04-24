@@ -1,7 +1,7 @@
 import {
   initialLaborContractEmployeeInfo,
-  LaborContractEmployeeFormInfo,
-  LaborContractEmployeeInfoProperty,
+  LaborContractFormField,
+  LaborContractFormFields,
 } from '@/constants/documents';
 import {
   DocumentType,
@@ -19,28 +19,31 @@ import {
   usePostStandardLaborContracts,
   usePutStandardLaborContracts,
 } from '@/hooks/api/useDocument';
-import InputLayout from '../WorkExperience/InputLayout';
+import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
-import DocumentFormInput from '../Document/write/input/DocumentFormInput';
-import PhoneNumberInput from '../Document/write/input/PhoneNumberInput';
-import ValidatedSubmitButton from '../Document/write/ValidatedSubmitButton';
-import AddressInput from '../Document/write/input/AddressInput';
+import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
+import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
+import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
+import AddressInput from '@/components/Document/write/input/AddressInput';
+
+// 상수 정의
+const SIGNATURE_PAD_HEIGHT = '120px';
+const SIGNATURE_BOTTOM_MARGIN = '40';
+
+// 필수 검증 필드 목록
+const REQUIRED_FIELDS: Array<keyof LaborContractEmployeeInfo | 'phone'> = [
+  'first_name',
+  'last_name',
+  'phone',
+  'address',
+  'signature_base64',
+];
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
   isEdit: boolean;
   userOwnerPostId: number;
-};
-
-// 폼 필드 타입 정의
-type FormField = {
-  type: 'text' | 'phone' | 'address' | 'signature';
-  name: keyof LaborContractEmployeeInfo | 'phone';
-  title: string;
-  placeholder: string;
-  options?: string[];
-  format?: string;
 };
 
 const LaborContractWriteForm = ({
@@ -49,29 +52,33 @@ const LaborContractWriteForm = ({
   userOwnerPostId,
 }: LaborContractFormProps) => {
   const currentDocumentId = useParams().id;
+
+  // useForm 훅 사용
   const { control, handleSubmit } = useForm<LaborContractEmployeeInfo>({
     values: document
-      ? {
-          ...document.employee_information,
-          phone: parsePhoneNumber(document.employee_information.phone_number),
-        }
+      ? createInitialValues(document)
       : initialLaborContractEmployeeInfo,
   });
+
+  // 초기값 생성 함수
+  function createInitialValues(
+    doc: LaborContractDataResponse,
+  ): LaborContractEmployeeInfo {
+    return {
+      ...doc.employee_information,
+      phone: parsePhoneNumber(doc.employee_information.phone_number),
+    };
+  }
+
   const { mutate: postDocument, isPending: postPending } =
     usePostStandardLaborContracts(Number(userOwnerPostId)); // 작성된 근로계약서 제출 훅
   const { mutate: updateDocument, isPending: updatePending } =
     usePutStandardLaborContracts(Number(currentDocumentId), userOwnerPostId); // 수정된 근로계약서 제출 훅
-  // 문서 편집일 시 페이지 진입과 동시에 기존 내용 자동 입력
 
   // 문서 작성 완료 핸들러 함수
   const handleNext = (data: LaborContractEmployeeInfo) => {
-    const { phone, ...rest } = data;
-    const finalDocument = {
-      ...rest,
-      phone_number: formatPhoneNumber(
-        phone as Phone
-      ),
-    };
+    const finalDocument = prepareDocumentForSubmission(data);
+
     const payload = {
       id: Number(isEdit ? currentDocumentId : userOwnerPostId),
       document: finalDocument,
@@ -84,56 +91,17 @@ const LaborContractWriteForm = ({
     postDocument(payload);
   };
 
-  // 폼 필드 정의
-  const formFields: FormField[] = [
-    {
-      type: 'text',
-      name: LaborContractEmployeeInfoProperty.FIRST_NAME,
-      title:
-        LaborContractEmployeeFormInfo[
-          LaborContractEmployeeInfoProperty.FIRST_NAME
-        ].name,
-      placeholder: 'First Name',
-    },
-    {
-      type: 'text',
-      name: LaborContractEmployeeInfoProperty.LAST_NAME,
-      title:
-        LaborContractEmployeeFormInfo[
-          LaborContractEmployeeInfoProperty.LAST_NAME
-        ].name,
-      placeholder: 'Last Name',
-    },
-    {
-      type: 'phone',
-      name: 'phone',
-      title:
-        LaborContractEmployeeFormInfo[
-          LaborContractEmployeeInfoProperty.PHONE_NUMBER
-        ].name,
-      placeholder: '', // PhoneNumberInput에서 자체적으로 처리
-    },
-    {
-      type: 'address',
-      name: LaborContractEmployeeInfoProperty.ADDRESS,
-      title:
-        LaborContractEmployeeFormInfo[LaborContractEmployeeInfoProperty.ADDRESS]
-          .name,
-      placeholder: 'Search Your Address',
-    },
-    {
-      type: 'signature',
-      name: LaborContractEmployeeInfoProperty.SIGNATURE_BASE64,
-      title:
-        LaborContractEmployeeFormInfo[
-          LaborContractEmployeeInfoProperty.SIGNATURE_BASE64
-        ].name,
-      placeholder: 'Signature',
-    },
-  ];
+  // 데이터 제출 전 가공 함수
+  const prepareDocumentForSubmission = (data: LaborContractEmployeeInfo) => {
+    const { phone, ...rest } = data;
+    return {
+      ...rest,
+      phone_number: formatPhoneNumber(phone as Phone),
+    };
+  };
 
   // 필드 타입에 따른 입력 컴포넌트 렌더링
-  const renderField = (field: FormField) => {
+  const renderField = (field: LaborContractFormField) => {
     switch (field.type) {
       case 'text':
         return (
@@ -148,7 +116,7 @@ const LaborContractWriteForm = ({
         );
       case 'phone':
         return (
-          <PhoneNumberInput control={control} name={field.name as 'phone'} />
+          <PhoneNumberInput control={control} name={field.name as string} />
         );
       case 'address':
         return (
@@ -164,7 +132,9 @@ const LaborContractWriteForm = ({
             control={control}
             name="signature_base64"
             render={({ field: { value, onChange } }) => (
-              <div className="w-full relative shadow rounded-xl box-border h-[120px] mb-40">
+              <div
+                className={`w-full relative shadow rounded-xl box-border h-[${SIGNATURE_PAD_HEIGHT}] mb-${SIGNATURE_BOTTOM_MARGIN}`}
+              >
                 <SignaturePad
                   onSave={onChange}
                   onReset={() => onChange('')}
@@ -179,10 +149,13 @@ const LaborContractWriteForm = ({
     }
   };
 
+  // 폼이 비활성화되어야 하는지 여부
+  const isFormDisabled = postPending || updatePending;
+
   return (
     <>
       <form
-        className={`w-full flex flex-col ${postPending || updatePending ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full flex flex-col px-4 ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit(handleNext);
@@ -190,7 +163,7 @@ const LaborContractWriteForm = ({
       >
         <div className="p-4 first-letter:[&>*:last-child]:mb-40 flex flex-col gap-4">
           {/* 유학생 작성 정보 */}
-          {formFields.map((field) => (
+          {LaborContractFormFields.map((field) => (
             <InputLayout key={field.name} title={field.title} isEssential>
               {renderField(field)}
             </InputLayout>
@@ -208,13 +181,7 @@ const LaborContractWriteForm = ({
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
           <ValidatedSubmitButton
             control={control}
-            fieldNames={[
-              'first_name',
-              'last_name',
-              'phone',
-              'address',
-              'signature_base64',
-            ]}
+            fieldNames={REQUIRED_FIELDS}
             validationFn={validateLaborContract}
             buttonText={isEdit ? 'Modify' : 'Create'}
             onClick={handleSubmit(handleNext)}

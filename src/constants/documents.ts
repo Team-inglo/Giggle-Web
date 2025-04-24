@@ -644,7 +644,117 @@ export const personalInfoList = [
   'Parents of applicant',
 ];
 
-// 필수 검증 필드 목록
+// 시간제 근로 허가서 폼 필드 타입 정의
+export type PartTimePermitFormField = {
+  type: 'text' | 'phone' | 'dropdown';
+  name: keyof PartTimePermitFormRequest | 'phone';
+  title: string;
+  placeholder: string;
+  options?: string[];
+  format?: string;
+};
+
+// 시간제 근로 허가서 폼 필드 정의
+export const PartTimePermitFormFields: PartTimePermitFormField[] = [
+  {
+    type: 'text',
+    name: PartTimePermitFormProperty.FIRST_NAME,
+    title: PartTimePermitFormInfo[PartTimePermitFormProperty.FIRST_NAME].name,
+    placeholder: 'First Name',
+  },
+  {
+    type: 'text',
+    name: PartTimePermitFormProperty.LAST_NAME,
+    title: PartTimePermitFormInfo[PartTimePermitFormProperty.LAST_NAME].name,
+    placeholder: 'Last Name',
+  },
+  {
+    type: 'phone',
+    name: 'phone',
+    title: PartTimePermitFormInfo[PartTimePermitFormProperty.PHONE_NUMBER].name,
+    placeholder: '', // PhoneNumberInput에서 자체적으로 처리
+  },
+  {
+    type: 'text',
+    name: PartTimePermitFormProperty.MAJOR,
+    title: PartTimePermitFormInfo[PartTimePermitFormProperty.MAJOR].name,
+    placeholder: 'Department (major)',
+  },
+  {
+    type: 'dropdown',
+    name: PartTimePermitFormProperty.TERM_OF_COMPLETION,
+    title:
+      PartTimePermitFormInfo[PartTimePermitFormProperty.TERM_OF_COMPLETION]
+        .name,
+    placeholder: 'Term of completion',
+    options: Array.from({ length: 12 }, (_, i) => String(i + 1)),
+  },
+  {
+    type: 'text',
+    name: PartTimePermitFormProperty.EMAIL,
+    title: PartTimePermitFormInfo[PartTimePermitFormProperty.EMAIL].name,
+    placeholder: 'email@email.com',
+  },
+];
+
+// 표준근로계약서 폼 필드 타입 정의
+export type LaborContractFormField = {
+  type: 'text' | 'phone' | 'address' | 'signature';
+  name: keyof LaborContractEmployeeInfo | 'phone';
+  title: string;
+  placeholder: string;
+  options?: string[];
+  format?: string;
+};
+
+// 표준근로계약서 폼 필드 정의
+export const LaborContractFormFields: LaborContractFormField[] = [
+  {
+    type: 'text',
+    name: LaborContractEmployeeInfoProperty.FIRST_NAME,
+    title:
+      LaborContractEmployeeFormInfo[
+        LaborContractEmployeeInfoProperty.FIRST_NAME
+      ].name,
+    placeholder: 'First Name',
+  },
+  {
+    type: 'text',
+    name: LaborContractEmployeeInfoProperty.LAST_NAME,
+    title:
+      LaborContractEmployeeFormInfo[LaborContractEmployeeInfoProperty.LAST_NAME]
+        .name,
+    placeholder: 'Last Name',
+  },
+  {
+    type: 'phone',
+    name: 'phone',
+    title:
+      LaborContractEmployeeFormInfo[
+        LaborContractEmployeeInfoProperty.PHONE_NUMBER
+      ].name,
+    placeholder: '', // PhoneNumberInput에서 자체적으로 처리
+  },
+  {
+    type: 'address',
+    name: LaborContractEmployeeInfoProperty.ADDRESS,
+    title:
+      LaborContractEmployeeFormInfo[LaborContractEmployeeInfoProperty.ADDRESS]
+        .name,
+    placeholder: 'Search Your Address',
+  },
+  {
+    type: 'signature',
+    name: LaborContractEmployeeInfoProperty.SIGNATURE_BASE64,
+    title:
+      LaborContractEmployeeFormInfo[
+        LaborContractEmployeeInfoProperty.SIGNATURE_BASE64
+      ].name,
+    placeholder: 'Signature',
+  },
+];
+
+// 통합신청서 필수 검증 필드 목록
 export const REQUIRED_FIELDS: Array<keyof IntegratedApplicationData> = [
   'first_name',
   'last_name',
@@ -662,7 +772,7 @@ export const REQUIRED_FIELDS: Array<keyof IntegratedApplicationData> = [
   'signature_base64',
 ];
 
-// FormField 타입 정의
+// 통합신청서 폼 필드 타입 정의
 export type IntegratedApplicationFormField = {
   type:
     | 'text'
@@ -681,7 +791,7 @@ export type IntegratedApplicationFormField = {
   transformer?: ValueTransformer;
 };
 
-// 폼 필드 정의
+// 통합신청서 폼 필드 정의
 export const IntegratedApplicationformFields: IntegratedApplicationFormField[] =
   [
     {

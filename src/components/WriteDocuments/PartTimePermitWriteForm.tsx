@@ -1,4 +1,8 @@
-import { initialPartTimePermitForm } from '@/constants/documents';
+import {
+  initialPartTimePermitForm,
+  PartTimePermitFormField,
+  PartTimePermitFormFields,
+} from '@/constants/documents';
 import {
   DocumentType,
   PartTimePermitData,
@@ -17,29 +21,25 @@ import {
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import DocumentFormInput from '../Document/write/input/DocumentFormInput';
-import ValidatedSubmitButton from '../Document/write/ValidatedSubmitButton';
-import PhoneNumberInput from '../Document/write/input/PhoneNumberInput';
-import DropdownInput from '../Document/write/input/DropdownInput';
-import {
-  PartTimePermitFormProperty,
-  PartTimePermitFormInfo,
-} from '@/constants/documents';
+import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
+import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
+import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
+import DropdownInput from '@/components/Document/write/input/DropdownInput';
+
+// 필수 검증 필드 목록
+const REQUIRED_FIELDS: Array<keyof PartTimePermitFormRequest> = [
+  'first_name',
+  'last_name',
+  'phone',
+  'major',
+  'term_of_completion',
+  'email',
+];
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
   isEdit: boolean;
   userOwnerPostId: number;
-};
-
-// 폼 필드 타입 정의
-type FormField = {
-  type: 'text' | 'phone' | 'dropdown';
-  name: keyof PartTimePermitFormRequest | 'phone';
-  title: string;
-  placeholder: string;
-  options?: string[];
-  format?: string;
 };
 
 const PartTimePermitWriteForm = ({
@@ -50,12 +50,20 @@ const PartTimePermitWriteForm = ({
   const currentDocumentId = useParams().id;
   const { control, handleSubmit } = useForm<PartTimePermitFormRequest>({
     values: document
-      ? {
-          ...document.employee_information,
-          phone: parsePhoneNumber(document.employee_information.phone_number),
-        }
+      ? createInitialValues(document)
       : initialPartTimePermitForm,
   });
+
+  // 초기값 생성 함수
+  function createInitialValues(
+    doc: PartTimePermitData,
+  ): PartTimePermitFormRequest {
+    return {
+      ...doc.employee_information,
+      phone: parsePhoneNumber(doc.employee_information.phone_number),
+    };
+  }
+
   const { mutate: postDocument, isPending: postPending } =
     usePostPartTimeEmployPermit(Number(userOwnerPostId)); // 작성된 문서 제출 훅
   const { mutate: updateDocument, isPending: updatePending } =
@@ -63,11 +71,8 @@ const PartTimePermitWriteForm = ({
 
   // 문서 작성 완료 핸들러 함수
   const handleNext = (data: PartTimePermitFormRequest) => {
-    const { phone, ...rest } = data;
-    const finalDocument = {
-      ...rest,
-      phone_number: formatPhoneNumber(phone as Phone),
-    };
+    const finalDocument = prepareDocumentForSubmission(data);
+
     const payload = {
       id: Number(isEdit ? currentDocumentId : userOwnerPostId),
       document: finalDocument,
@@ -80,52 +85,17 @@ const PartTimePermitWriteForm = ({
     postDocument(payload);
   };
 
-  // 폼 필드 정의
-  const formFields: FormField[] = [
-    {
-      type: 'text',
-      name: PartTimePermitFormProperty.FIRST_NAME,
-      title: PartTimePermitFormInfo[PartTimePermitFormProperty.FIRST_NAME].name,
-      placeholder: 'First Name',
-    },
-    {
-      type: 'text',
-      name: PartTimePermitFormProperty.LAST_NAME,
-      title: PartTimePermitFormInfo[PartTimePermitFormProperty.LAST_NAME].name,
-      placeholder: 'Last Name',
-    },
-    {
-      type: 'phone',
-      name: 'phone',
-      title:
-        PartTimePermitFormInfo[PartTimePermitFormProperty.PHONE_NUMBER].name,
-      placeholder: '', // PhoneNumberInput에서 자체적으로 처리
-    },
-    {
-      type: 'text',
-      name: PartTimePermitFormProperty.MAJOR,
-      title: PartTimePermitFormInfo[PartTimePermitFormProperty.MAJOR].name,
-      placeholder: 'Department (major)',
-    },
-    {
-      type: 'dropdown',
-      name: PartTimePermitFormProperty.TERM_OF_COMPLETION,
-      title:
-        PartTimePermitFormInfo[PartTimePermitFormProperty.TERM_OF_COMPLETION]
-          .name,
-      placeholder: 'Term of completion',
-      options: Array.from({ length: 12 }, (_, i) => String(i + 1)),
-    },
-    {
-      type: 'text',
-      name: PartTimePermitFormProperty.EMAIL,
-      title: PartTimePermitFormInfo[PartTimePermitFormProperty.EMAIL].name,
-      placeholder: 'email@email.com',
-    },
-  ];
+  // 데이터 제출 전 가공 함수
+  const prepareDocumentForSubmission = (data: PartTimePermitFormRequest) => {
+    const { phone, ...rest } = data;
+    return {
+      ...rest,
+      phone_number: formatPhoneNumber(phone as Phone),
+    };
+  };
 
   // 필드 타입에 따른 입력 컴포넌트 렌더링
-  const renderField = (field: FormField) => {
+  const renderField = (field: PartTimePermitFormField) => {
     switch (field.type) {
       case 'text':
         return (
@@ -140,7 +110,7 @@ const PartTimePermitWriteForm = ({
         );
       case 'phone':
         return (
-          <PhoneNumberInput control={control} name={field.name as 'phone'} />
+          <PhoneNumberInput control={control} name={field.name as string} />
         );
       case 'dropdown':
         return (
@@ -156,17 +126,20 @@ const PartTimePermitWriteForm = ({
     }
   };
 
+  // 폼이 비활성화되어야 하는지 여부
+  const isFormDisabled = postPending || updatePending;
+
   return (
     <>
       <form
-        className={`w-full p-4 flex flex-col ${postPending || updatePending ? 'overflow-hidden pointer-events-none' : ''}`}
+        className={`w-full p-4 flex flex-col ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit(handleNext);
         }}
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
-          {formFields.map((field) => (
+          {PartTimePermitFormFields.map((field) => (
             <InputLayout key={field.name} title={field.title} isEssential>
               {renderField(field)}
             </InputLayout>
@@ -185,14 +158,7 @@ const PartTimePermitWriteForm = ({
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
           <ValidatedSubmitButton
             control={control}
-            fieldNames={[
-              'first_name',
-              'last_name',
-              'phone',
-              'major',
-              'term_of_completion',
-              'email',
-            ]}
+            fieldNames={REQUIRED_FIELDS}
             validationFn={validatePartTimePermit}
             buttonText={isEdit ? 'Modify' : 'Create'}
             onClick={handleSubmit(handleNext)}

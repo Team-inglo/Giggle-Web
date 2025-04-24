@@ -54,7 +54,7 @@ const IntegratedApplicationWriteForm = ({
         : initialIntegratedApplication,
     });
 
-  // 초기값 생성 함수 (책임 분리)
+  // 초기값 생성 함수
   function createInitialValues(
     doc: IntegratedApplicationData,
   ): IntegratedApplicationData {
