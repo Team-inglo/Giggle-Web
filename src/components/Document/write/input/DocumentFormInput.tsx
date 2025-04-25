@@ -56,7 +56,7 @@ const DocumentFormInput = <
     name,
     control,
     rules,
-    defaultValue,
+    defaultValue: (defaultValue ?? '') as typeof defaultValue,
   });
 
   return (

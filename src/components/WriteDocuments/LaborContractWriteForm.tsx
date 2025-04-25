@@ -27,9 +27,6 @@ import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import AddressInput from '@/components/Document/write/input/AddressInput';
 
-// 상수 정의
-const SIGNATURE_PAD_HEIGHT = '120px';
-const SIGNATURE_BOTTOM_MARGIN = '40';
 
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof LaborContractEmployeeInfo | 'phone'> = [
@@ -55,7 +52,7 @@ const LaborContractWriteForm = ({
 
   // useForm 훅 사용
   const { control, handleSubmit } = useForm<LaborContractEmployeeInfo>({
-    values: document
+    defaultValues: document
       ? createInitialValues(document)
       : initialLaborContractEmployeeInfo,
   });
@@ -116,7 +113,7 @@ const LaborContractWriteForm = ({
         );
       case 'phone':
         return (
-          <PhoneNumberInput control={control} name={field.name as string} />
+          <PhoneNumberInput control={control} name={field.name} />
         );
       case 'address':
         return (
@@ -133,7 +130,7 @@ const LaborContractWriteForm = ({
             name="signature_base64"
             render={({ field: { value, onChange } }) => (
               <div
-                className={`w-full relative shadow rounded-xl box-border h-[${SIGNATURE_PAD_HEIGHT}] mb-${SIGNATURE_BOTTOM_MARGIN}`}
+                className={`w-full relative shadow rounded-xl box-border h-[120px] mb-40`}
               >
                 <SignaturePad
                   onSave={onChange}
@@ -156,10 +153,6 @@ const LaborContractWriteForm = ({
     <>
       <form
         className={`w-full flex flex-col px-4 ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(handleNext);
-        }}
       >
         <div className="p-4 first-letter:[&>*:last-child]:mb-40 flex flex-col gap-4">
           {/* 유학생 작성 정보 */}

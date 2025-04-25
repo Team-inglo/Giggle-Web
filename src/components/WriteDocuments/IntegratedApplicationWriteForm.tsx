@@ -31,8 +31,6 @@ import { RadioGroup } from '@/components/Document/write/input/RadioGroup';
 import Input from '@/components/Common/Input';
 
 // 상수 정의
-const SIGNATURE_PAD_HEIGHT = '120px';
-const SIGNATURE_BOTTOM_MARGIN = '40';
 
 type IntegratedApplicationFormProps = {
   document?: IntegratedApplicationData;
@@ -49,7 +47,7 @@ const IntegratedApplicationWriteForm = ({
   const { control, handleSubmit, getValues, setValue } =
     useForm<IntegratedApplicationData>({
       // 문서 편집일 시 기존 값 자동 입력
-      values: document
+      defaultValues: document
         ? createInitialValues(document)
         : initialIntegratedApplication,
     });
@@ -151,9 +149,7 @@ const IntegratedApplicationWriteForm = ({
           />
         );
       case 'phone':
-        return (
-          <PhoneNumberInput control={control} name={field.name as string} />
-        );
+        return <PhoneNumberInput control={control} name={field.name} />;
       case 'address':
         return (
           <AddressInput
@@ -178,7 +174,7 @@ const IntegratedApplicationWriteForm = ({
             name="signature_base64"
             render={({ field: { value, onChange } }) => (
               <div
-                className={`w-full relative shadow rounded-xl box-border h-[${SIGNATURE_PAD_HEIGHT}] mb-${SIGNATURE_BOTTOM_MARGIN}`}
+                className={`w-full relative shadow rounded-xl box-border h-[120px] mb-40`}
               >
                 <SignaturePad
                   onSave={onChange}
@@ -214,10 +210,6 @@ const IntegratedApplicationWriteForm = ({
     <>
       <form
         className={`w-full flex flex-col px-4 ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(handleNext);
-        }}
       >
         <div className="[&>*:last-child]:mb-20 flex flex-col gap-4">
           {/* 작성 폼 렌더링 */}
