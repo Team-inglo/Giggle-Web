@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Control, Controller, FieldValues } from 'react-hook-form';
+import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import RadioButton from '@/components/Information/RadioButton';
 
 // 값 변환 핸들러 타입 정의
@@ -13,7 +13,7 @@ export type ValueTransformer<T = any> = {
 // RadioGroup 컴포넌트 타입 정의
 type RadioGroupProps<T extends FieldValues = FieldValues> = {
   control: Control<T>;
-  name: string;
+  name: FieldPath<T>;
   options: string[];
   description?: string;
   // 커스텀 값 변환 로직 (옵션)
@@ -38,7 +38,7 @@ export const RadioGroup = <T extends FieldValues = FieldValues>({
       )}
       <Controller
         control={control}
-        name={name as any}
+        name={name as FieldPath<T>}
         render={({ field: { value, onChange } }) => (
           <div
             className={`flex ${isLongOption ? 'flex-col' : 'flex-row'} gap-4`}
