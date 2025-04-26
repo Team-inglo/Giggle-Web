@@ -1,8 +1,7 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import PostSearchFilterButtons from '@/components/PostSearchFilter/PostSearchFilterButtons';
 import PostSearchFilterAreaInput from '@/components/PostSearchFilter/PostSearchFilterAreaInput';
-import { useState } from 'react';
-import { FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
+import { useCallback, useState } from 'react';
 import PostSearchFilterList from '@/components/PostSearchFilter/PostSearchFilterList';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import PostSearchFilterArea from '@/components/PostSearchFilter/PostSearchFilterArea';
@@ -24,6 +23,19 @@ const PostSearchFilterPage = () => {
   );
   const [isOpenAreaFilter, setIsOpenAreaFilter] = useState<boolean>(false);
 
+  const handleChangeFilterList = useCallback(
+    (
+      newValue:
+        | PostSearchFilterItemType
+        | ((prev: PostSearchFilterItemType) => PostSearchFilterItemType),
+    ) => {
+      setFilterList((prev) =>
+        typeof newValue === 'function' ? newValue(prev) : newValue,
+      );
+    },
+    [],
+  );
+
   const goToPostSearchPage = () => {
     navigate(`/search`, { state: searchOption });
   };
@@ -40,7 +52,7 @@ const PostSearchFilterPage = () => {
         <PostSearchFilterArea
           setIsOpenAreaFilter={setIsOpenAreaFilter}
           filterList={filterList}
-          setFilterList={setFilterList}
+          setFilterList={handleChangeFilterList}
         />
       ) : (
         // 정렬 선택 페이지
@@ -59,16 +71,15 @@ const PostSearchFilterPage = () => {
             <PostSearchFilterAreaInput
               setIsOpenAreaFilter={setIsOpenAreaFilter}
               filterList={filterList}
-              setFilterList={setFilterList}
+              setFilterList={handleChangeFilterList}
             />
             <PostSearchFilterList
-              showCategories={Object.entries(FILTER_CATEGORY_OPTIONS)}
               filterList={filterList}
-              setFilterList={setFilterList}
+              setFilterList={handleChangeFilterList}
             />
           </section>
           <PostSearchFilterButtons
-            setFilterList={setFilterList}
+            setFilterList={handleChangeFilterList}
             onClickApply={onClickApply}
           />
         </>

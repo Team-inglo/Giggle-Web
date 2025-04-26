@@ -7,7 +7,7 @@ import { buttonTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 
 type PostSearchFilterButtonsType = {
-  setFilterList: React.Dispatch<React.SetStateAction<PostSearchFilterItemType>>;
+  setFilterList: (filterList: PostSearchFilterItemType) => void;
   onClickApply: () => void;
 };
 
@@ -25,7 +25,7 @@ const PostSearchFilterButtons = ({
     <section className="w-full flex justify-center items-center gap-[0.5rem] pt-[0.75rem] pb-[2.5rem] px-[1.5rem]">
       <Button
         type={buttonTypeKeys.BACK}
-        bgColor='bg-surface-secondary'
+        bgColor="bg-surface-secondary"
         fontColor="text-text-normal button-1"
         title={buttonTranslation.reset[isEmployerByAccountType(account_type)]}
         isBorder={false}
@@ -33,7 +33,7 @@ const PostSearchFilterButtons = ({
       />
       <Button
         type={buttonTypeKeys.CONTINUE}
-        bgColor='bg-surface-primary'
+        bgColor="bg-surface-primary"
         fontColor="text-[#1E1926] button-1"
         title={buttonTranslation.apply[isEmployerByAccountType(account_type)]}
         isBorder={false}

@@ -11,7 +11,7 @@ import { isEmployerByAccountType } from '@/utils/signup';
 type PostSearchFilterAreaInputProps = {
   setIsOpenAreaFilter: React.Dispatch<React.SetStateAction<boolean>>;
   filterList: PostSearchFilterItemType;
-  setFilterList: React.Dispatch<React.SetStateAction<PostSearchFilterItemType>>;
+  setFilterList: (filterList: PostSearchFilterItemType) => void;
 };
 
 const PostSearchFilterAreaInput = ({
