@@ -46,7 +46,7 @@ const ApplicantDocumentsDetailPage = () => {
           />
           <div className="flex flex-col gap-2 p-4">
             {documentTypes.map((property, index) =>
-              data?.data[property] ? (
+              data?.data[property]?.status ? (
                 <DocumentCardDispenserEmployer
                   key={`${index}_${property}`}
                   documentInfo={data.data[property] as EmployDocumentInfo}
