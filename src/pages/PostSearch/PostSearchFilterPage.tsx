@@ -10,6 +10,7 @@ import { usePostSearch } from '@/hooks/usePostSearch';
 import { postSearchTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
+import { FILTER_CATEGORY } from '@/constants/postSearch';
 
 const PostSearchFilterPage = () => {
   const navigate = useNavigate();
@@ -36,6 +37,10 @@ const PostSearchFilterPage = () => {
     [],
   );
 
+  const handleChangeIsOpenAreaFilter = useCallback((value: boolean) => {
+    setIsOpenAreaFilter(value);
+  }, []);
+
   const goToPostSearchPage = () => {
     navigate(`/search`, { state: searchOption });
   };
@@ -50,7 +55,7 @@ const PostSearchFilterPage = () => {
       {isOpenAreaFilter ? (
         // 지역 선택 페이지
         <PostSearchFilterArea
-          setIsOpenAreaFilter={setIsOpenAreaFilter}
+          setIsOpenAreaFilter={handleChangeIsOpenAreaFilter}
           filterList={filterList}
           setFilterList={handleChangeFilterList}
         />
@@ -69,8 +74,10 @@ const PostSearchFilterPage = () => {
           />
           <section className="flex flex-col gap-8 w-full p-4">
             <PostSearchFilterAreaInput
-              setIsOpenAreaFilter={setIsOpenAreaFilter}
-              filterList={filterList}
+              setIsOpenAreaFilter={handleChangeIsOpenAreaFilter}
+              filterListRegion1={filterList[FILTER_CATEGORY.REGION_1DEPTH]}
+              filterListRegion2={filterList[FILTER_CATEGORY.REGION_2DEPTH]}
+              filterListRegion3={filterList[FILTER_CATEGORY.REGION_3DEPTH]}
               setFilterList={handleChangeFilterList}
             />
             <PostSearchFilterList

@@ -10,7 +10,7 @@ import { postSearchTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 
 type PostSearchFilterAreaType = {
-  setIsOpenAreaFilter: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenAreaFilter: (value: boolean) => void;
   filterList: PostSearchFilterItemType;
   setFilterList: (filterList: PostSearchFilterItemType) => void;
 };
