@@ -7,7 +7,7 @@ import { headerTranslation } from '@/constants/translation';
 import { useLogout } from '@/hooks/api/useAuth';
 import { isEmployer } from '@/utils/signup';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 
 const EmployerProfilePage = () => {
   const [logoutBottomSheet, setLogoutBottomSheet] = useState(false);
@@ -32,13 +32,13 @@ const EmployerProfilePage = () => {
           setIsShowBottomSheet={setLogoutBottomSheet}
         />
       )}
-      <div className="w-full h-full min-h-[100vh] bg-[#f4f4f9]">
+      <div className="w-full h-full min-h-[100vh] bg-white">
         <BaseHeader
           hasBackButton={false}
           hasMenuButton={false}
           title={headerTranslation.profile[isEmployer(pathname)]}
         />
-        <div className="flex flex-col px-4 gap-4 pb-24">
+        <div className="flex flex-col gap-4 pb-24">
           <EmployerProfileCard />
           <EmployerJobInfo />
           <EmployerProfileMenuList

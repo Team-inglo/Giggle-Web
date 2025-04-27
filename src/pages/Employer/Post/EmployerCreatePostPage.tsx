@@ -36,6 +36,7 @@ const EmployerCreatePostPage = () => {
       setDevIsModal(true);
       smartNavigate(navigate, `/employer/post/${response.data.id}`, {
         delay: 2000,
+        forceSkip: true,
       });
     },
   }); // 공고 생성 시 호출하는 훅
