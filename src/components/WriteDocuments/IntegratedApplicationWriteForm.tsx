@@ -27,7 +27,7 @@ import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput
 import AddressInput from '@/components/Document/write/input/AddressInput';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import DropdownInput from '@/components/Document/write/input/DropdownInput';
-import { RadioGroup } from '@/components/Document/write/input/RadioGroup';
+import RadioGroup from '@/components/Document/write/input/RadioGroup';
 import Input from '@/components/Common/Input';
 
 // 상수 정의

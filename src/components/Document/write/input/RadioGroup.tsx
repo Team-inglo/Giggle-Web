@@ -21,7 +21,7 @@ type RadioGroupProps<T extends FieldValues = FieldValues> = {
 };
 
 // 라디오 버튼 그룹을 핸들링하는 공용 컴포넌트
-export const RadioGroup = <T extends FieldValues = FieldValues>({
+const RadioGroup = <T extends FieldValues = FieldValues>({
   control,
   name,
   options,
@@ -79,20 +79,4 @@ export const RadioGroup = <T extends FieldValues = FieldValues>({
   );
 };
 
-// 미리 정의된 변환기 - 공통 케이스를 위한 헬퍼 함수들
-export const transformers = {
-  // 성별을 대문자로 저장하는 변환기
-  gender: {
-    transformValue: (option: string) => option.toUpperCase(),
-    compareValue: (value: string, option: string) =>
-      typeof value === 'string' && value.toUpperCase() === option.toUpperCase(),
-  },
-
-  // Boolean 값으로 저장하는 변환기
-  boolean: (trueOption: string) => ({
-    transformValue: (option: string) => option === trueOption,
-    compareValue: (value: boolean, option: string) =>
-      (value === true && option === trueOption) ||
-      (value === false && option !== trueOption),
-  }),
-};
+export default RadioGroup;

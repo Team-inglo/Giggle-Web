@@ -434,3 +434,21 @@ export const applyFormat = (
 
   return result;
 };
+
+// 라디오버튼 그룹 공통 케이스를 위한 헬퍼 함수들
+export const transformers = {
+  // 성별을 대문자로 저장하는 변환기
+  gender: {
+    transformValue: (option: string) => option.toUpperCase(),
+    compareValue: (value: string, option: string) =>
+      typeof value === 'string' && value.toUpperCase() === option.toUpperCase(),
+  },
+
+  // Boolean 값으로 저장하는 변환기
+  boolean: (trueOption: string) => ({
+    transformValue: (option: string) => option === trueOption,
+    compareValue: (value: boolean, option: string) =>
+      (value === true && option === trueOption) ||
+      (value === false && option !== trueOption),
+  }),
+};
