@@ -16,10 +16,8 @@ import {
 } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { country } from './information';
-import {
-  transformers,
-  ValueTransformer,
-} from '@/components/Document/write/input/RadioGroup';
+import { ValueTransformer } from '@/components/Document/write/input/RadioGroup';
+import { transformers } from '@/utils/document';
 
 // 문서 타입별 정보를 담은 객체
 export const DocumentTypeInfo = {
@@ -276,12 +274,12 @@ export const LaborContractEmployerInfoNameMap = {
   },
   [LaborContractEmployerInfoProperty.BONUS]: {
     name: 'Bonuses',
-    ko: '보너스',
+    ko: '상여금',
     key: 'bonus',
   },
   [LaborContractEmployerInfoProperty.ADDITIONAL_SALARY]: {
     name: 'Other benefits (such as allowances)',
-    ko: '기타 복지',
+    ko: '기타급여(제수당 등)',
     key: 'additional_salary',
   },
   [LaborContractEmployerInfoProperty.WAGE_RATE]: {
@@ -314,7 +312,7 @@ export const LaborContractEmployerInfoNameMap = {
 // 고용주 표준근로계약서 초기 state
 export const initialLaborContractEmployerInfo: LaborContractEmployerInfo = {
   company_name: '',
-  company_registration_number: null,
+  company_registration_number: '',
   phone_number: '',
   name: '',
   start_date: '', // yyyy-MM-dd
@@ -394,7 +392,7 @@ export const initialLaborContractEmployeeInfo: LaborContractEmployeeInfo = {
     longitude: 0,
     latitude: 0,
   },
-  phone_number: '010-0000-0000',
+  phone_number: '',
   signature_base64: '',
 };
 
@@ -967,3 +965,285 @@ export const IntegratedApplicationformFields: IntegratedApplicationFormField[] =
       placeholder: 'Signature',
     },
   ];
+
+export type CheckboxOption = {
+  key: string;
+  name: string;
+};
+
+// 표준근로계약서 고용주 폼 필드 타입 정의
+export type LaborContractEmployerFormField = {
+  type:
+    | 'text'
+    | 'phone'
+    | 'address'
+    | 'dropdown'
+    | 'date'
+    | 'signature'
+    | 'textarea'
+    | 'number'
+    | 'work_schedule'
+    | 'checkbox'
+    | 'weekday_selector'
+    | 'radio';
+  name: keyof LaborContractEmployerInfo | 'phone';
+  title: string;
+  placeholder: string;
+  description?: string;
+  options?: string[];
+  chcekboxOptions?: CheckboxOption[];
+  format?: string;
+  transformer?: ValueTransformer;
+  isRequired?: boolean;
+  prefix?: string;
+  isPrefix?: boolean;
+  unit?: string;
+  isUnit?: boolean;
+  variant?: 'checkbox' | 'button';
+};
+
+// 고용주 표준근로계약서 필수 검증 필드 목록
+export const EMPLOYER_LABOR_CONTRACT_REQUIRED_FIELDS: Array<
+  keyof LaborContractEmployerInfo
+> = [
+  'company_name',
+  'company_registration_number',
+  'phone',
+  'name',
+  'start_date',
+  'end_date',
+  'address',
+  'description',
+  'work_day_time_list',
+  'weekly_last_days',
+  'hourly_rate',
+  'wage_rate',
+  'payment_day',
+  'payment_method',
+  'insurance',
+  'signature_base64',
+];
+
+// 표준근로계약서 고용주 폼 필드 정의
+export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
+  [
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.COMPANY_NAME,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.COMPANY_NAME
+        ].ko,
+      placeholder: '회사/점포명을 작성해주세요',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.COMPANY_REGISTRATION_NUMBER,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.COMPANY_REGISTRATION_NUMBER
+        ].ko,
+      placeholder: '사업자등록번호를 입력해주세요',
+      format: 'business-id',
+      isRequired: true,
+    },
+    {
+      type: 'phone',
+      name: 'phone',
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.PHONE_NUMBER
+        ].ko || '사업체 전화번호',
+      placeholder: '',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.START_DATE,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.START_DATE
+        ].ko,
+      placeholder: 'YYYY-MM-DD',
+      format: 'date',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.END_DATE,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.END_DATE
+        ].ko,
+      placeholder: 'YYYY-MM-DD',
+      format: 'date',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.NAME,
+      title:
+        LaborContractEmployerInfoNameMap[LaborContractEmployerInfoProperty.NAME]
+          .ko,
+      placeholder: '이름을 작성해주세요',
+      isRequired: true,
+    },
+    {
+      type: 'address',
+      name: LaborContractEmployerInfoProperty.ADDRESS,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.ADDRESS
+        ].ko,
+      placeholder: '주소 검색',
+      isRequired: true,
+    },
+    {
+      type: 'textarea',
+      name: LaborContractEmployerInfoProperty.DESCRIPTION,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.DESCRIPTION
+        ].ko,
+      placeholder: '업무의 내용을 작성해주세요',
+      isRequired: true,
+    },
+    {
+      type: 'work_schedule',
+      name: LaborContractEmployerInfoProperty.WORK_DAY_TIME_LIST,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.WORK_DAY_TIME_LIST
+        ].ko,
+      placeholder: '근무 시간',
+      description: '원하는 근무 시간을 추가해주세요.',
+      isRequired: true,
+    },
+    {
+      type: 'checkbox',
+      name: LaborContractEmployerInfoProperty.WEEKLY_LAST_DAYS,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.WEEKLY_LAST_DAYS
+        ].ko,
+      placeholder: '주휴일',
+      description: '다중 선택 가능합니다.',
+      isRequired: true,
+      chcekboxOptions: Object.entries(DAYS).map(([koreanDay, englishDay]) => ({
+        key: englishDay,
+        name: koreanDay,
+      })),
+      variant: 'button',
+    },
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.HOURLY_RATE,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.HOURLY_RATE
+        ].ko,
+      placeholder: '시급을 입력해주세요',
+      description: '2025년 최소 시급은 10,030원입니다.',
+      format: 'numbers-only',
+      isRequired: true,
+      isUnit: true,
+      unit: '원',
+    },
+    {
+      type: 'radio',
+      name: LaborContractEmployerInfoProperty.BONUS,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.BONUS
+        ].ko,
+      placeholder: '0',
+      options: ['있어요', '없어요'],
+      format: 'numbers-only',
+      isRequired: true,
+      transformer: transformers.boolean('있어요'),
+    },
+    {
+      type: 'radio',
+      name: LaborContractEmployerInfoProperty.ADDITIONAL_SALARY,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.ADDITIONAL_SALARY
+        ].ko,
+      placeholder: '0',
+      options: ['있어요', '없어요'],
+      format: 'numbers-only',
+      isRequired: true,
+      transformer: transformers.boolean('있어요'),
+    },
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.WAGE_RATE,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.WAGE_RATE
+        ].ko,
+      placeholder: '0',
+      description:
+        "단시간근로자와 사용자 사이에 근로하기로 정한 시간을 초과하여 근로하면 법정근로시간 내라도 통상임금의 100분의 50% 이상의 가산임금 지급('14.9.19 시행)",
+      format: 'numbers-only',
+      isRequired: true,
+      isUnit: true,
+      unit: '원',
+    },
+    {
+      type: 'text',
+      name: LaborContractEmployerInfoProperty.PAYMENT_DAY,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.PAYMENT_DAY
+        ].ko,
+      placeholder: '0',
+      format: 'numbers-only',
+      isRequired: true,
+      isPrefix: true,
+      prefix: '매월',
+      isUnit: true,
+      unit: '일',
+    },
+    {
+      type: 'radio',
+      name: LaborContractEmployerInfoProperty.PAYMENT_METHOD,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.PAYMENT_METHOD
+        ].ko,
+      placeholder: '',
+      options: ['근로자에게 직접지급', '근로자 명의 예금통장에 입금'],
+      isRequired: true,
+    },
+    {
+      type: 'checkbox',
+      name: LaborContractEmployerInfoProperty.INSURANCE,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.INSURANCE
+        ].ko,
+      placeholder: '가입할 보험을 선택하세요',
+      chcekboxOptions: Object.values(InsuranceInfo).map((info) => ({
+        key: info.key,
+        name: info.name,
+      })),
+      isRequired: true,
+      variant: 'checkbox',
+    },
+    {
+      type: 'signature',
+      name: LaborContractEmployerInfoProperty.SIGNATURE_BASE64,
+      title:
+        LaborContractEmployerInfoNameMap[
+          LaborContractEmployerInfoProperty.SIGNATURE_BASE64
+        ].ko,
+      placeholder: '서명',
+      isRequired: true,
+    },
+  ];
+
+// 표준근로계약서 유학생(직원) 필수 검증 필드 목록
+export const EMPLOYEE_REQUIRED_FIELDS: Array<keyof LaborContractEmployeeInfo> =
+  ['first_name', 'last_name', 'phone_number', 'address', 'signature_base64'];

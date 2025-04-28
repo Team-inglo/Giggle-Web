@@ -184,12 +184,7 @@ export const validateLaborContractEmployerInformation = (
 ): boolean => {
   const companyRegistrationNumPattern = /^\d{3}\/\d{2}\/\d{5}$/;
   // 빈 문자열 체크
-  if (
-    !info.company_name ||
-    !info.name ||
-    !info.description ||
-    !info.phone_number
-  ) {
+  if (!info.company_name || !info.name || !info.description || !info.phone) {
     console.log('문자열');
     return false;
   }

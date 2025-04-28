@@ -200,7 +200,7 @@ export type WorkDayTimeWithRest = {
 // 근로 계약서 고용주 정보
 export type LaborContractEmployerInfo = {
   company_name: string;
-  company_registration_number: string | null;
+  company_registration_number: string;
   phone_number: string;
   name: string;
   start_date: string; // yyyy-MM-dd 형식
@@ -217,6 +217,7 @@ export type LaborContractEmployerInfo = {
   payment_method: PaymentMethod;
   insurance: Insurance[];
   signature_base64: string; // base64 문자열
+  phone?: Phone;
 };
 
 // 근로계약서 고용주 정보 속성명 enum
