@@ -47,7 +47,7 @@ const IntegratedApplicationWriteForm = ({
   const { control, handleSubmit, getValues, setValue } =
     useForm<IntegratedApplicationData>({
       // 문서 편집일 시 기존 값 자동 입력
-      defaultValues: document
+      values: document
         ? createInitialValues(document)
         : initialIntegratedApplication,
     });
@@ -210,6 +210,7 @@ const IntegratedApplicationWriteForm = ({
     <>
       <form
         className={`w-full flex flex-col px-4 ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
+        onSubmit={(e) => e.preventDefault()}
       >
         <div className="[&>*:last-child]:mb-20 flex flex-col gap-4">
           {/* 작성 폼 렌더링 */}

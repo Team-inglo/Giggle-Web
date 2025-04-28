@@ -49,7 +49,7 @@ const PartTimePermitWriteForm = ({
 }: PartTimePermitFormProps) => {
   const currentDocumentId = useParams().id;
   const { control, handleSubmit } = useForm<PartTimePermitFormRequest>({
-    defaultValues: document
+    values: document
       ? createInitialValues(document)
       : initialPartTimePermitForm,
   });
@@ -109,9 +109,7 @@ const PartTimePermitWriteForm = ({
           />
         );
       case 'phone':
-        return (
-          <PhoneNumberInput control={control} name={field.name} />
-        );
+        return <PhoneNumberInput control={control} name={field.name} />;
       case 'dropdown':
         return (
           <DropdownInput
@@ -133,6 +131,7 @@ const PartTimePermitWriteForm = ({
     <>
       <form
         className={`w-full p-4 flex flex-col ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
+        onSubmit={(e) => e.preventDefault()}
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
           {PartTimePermitFormFields.map((field) => (

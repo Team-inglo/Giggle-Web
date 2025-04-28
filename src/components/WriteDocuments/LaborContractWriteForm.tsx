@@ -27,7 +27,6 @@ import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import AddressInput from '@/components/Document/write/input/AddressInput';
 
-
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof LaborContractEmployeeInfo | 'phone'> = [
   'first_name',
@@ -52,7 +51,7 @@ const LaborContractWriteForm = ({
 
   // useForm 훅 사용
   const { control, handleSubmit } = useForm<LaborContractEmployeeInfo>({
-    defaultValues: document
+    values: document
       ? createInitialValues(document)
       : initialLaborContractEmployeeInfo,
   });
@@ -112,9 +111,7 @@ const LaborContractWriteForm = ({
           />
         );
       case 'phone':
-        return (
-          <PhoneNumberInput control={control} name={field.name} />
-        );
+        return <PhoneNumberInput control={control} name={field.name} />;
       case 'address':
         return (
           <AddressInput
@@ -153,8 +150,9 @@ const LaborContractWriteForm = ({
     <>
       <form
         className={`w-full flex flex-col px-4 ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
+        onSubmit={(e) => e.preventDefault()}
       >
-        <div className="p-4 first-letter:[&>*:last-child]:mb-40 flex flex-col gap-4">
+        <div className="first-letter:[&>*:last-child]:mb-40 flex flex-col gap-4">
           {/* 유학생 작성 정보 */}
           {LaborContractFormFields.map((field) => (
             <InputLayout key={field.name} title={field.title} isEssential>
