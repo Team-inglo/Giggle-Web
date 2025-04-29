@@ -24,10 +24,10 @@ import DocumentFormInput from '@/components/Document/write/input/DocumentFormInp
 import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
 import AddressInput from '@/components/Document/write/input/AddressInput';
 import {
-  SimpleDropdownInput,
   KeyValueDropdownInput,
   DropdownOption,
 } from '@/components/Document/write/input/DropdownInput';
+import DropdownInput from '@/components/Document/write/input/DropdownInput';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -110,6 +110,7 @@ const EmployerPartTimePermitForm = ({
             control={control}
             name={field.name as string}
             placeholder={field.placeholder}
+            label={field.label}
           />
         );
       case 'dropdown':
@@ -130,7 +131,7 @@ const EmployerPartTimePermitForm = ({
           );
         }
         return (
-          <SimpleDropdownInput
+          <DropdownInput
             control={control}
             name={field.name as keyof EmployerInformation}
             placeholder={field.placeholder}

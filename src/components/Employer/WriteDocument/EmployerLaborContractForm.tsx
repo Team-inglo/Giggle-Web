@@ -22,7 +22,6 @@ import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitBu
 import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
 import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
 import AddressInput from '@/components/Document/write/input/AddressInput';
-import DropdownInput from '@/components/Document/write/input/DropdownInput';
 import RadioGroup from '@/components/Document/write/input/RadioGroup';
 import CheckboxGroup from '@/components/Document/write/input/CheckboxGroup';
 import WorkDayTimeWithRestInput from '@/components/Document/write/input/WorkDayTimeWithRestInput';
@@ -132,6 +131,7 @@ const EmployerLaborContractForm = ({
             control={control}
             name={field.name as string}
             placeholder={field.placeholder}
+            label={field.label}
           />
         );
       case 'work_schedule':
@@ -139,15 +139,6 @@ const EmployerLaborContractForm = ({
           <WorkDayTimeWithRestInput
             control={control}
             name={field.name as keyof LaborContractEmployerInfo}
-          />
-        );
-      case 'dropdown':
-        return (
-          <DropdownInput
-            control={control}
-            name={field.name as keyof LaborContractEmployerInfo}
-            placeholder={field.placeholder}
-            options={field.options || []}
           />
         );
       case 'signature':
