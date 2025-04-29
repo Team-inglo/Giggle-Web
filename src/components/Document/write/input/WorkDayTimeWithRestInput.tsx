@@ -52,14 +52,14 @@ const WorkDayTimeWithRestInput = <
               ))}
             </div>
           )}
-          <div
+          <button
             className="w-full flex gap-2 items-center justify-center text-left body-2 border rounded-xl shadow-sm border-border-alternative [--input-color:text-alternative] bg-white py-[10px] pl-4 pr-[14px] cursor-pointer"
             onClick={() => setIsModal(true)}
           >
             <span className="text-text-alternative">
               <AddIcon />
             </span>
-          </div>
+          </button>
 
           {/* 모달 */}
           {isModal && (

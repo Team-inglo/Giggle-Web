@@ -61,21 +61,26 @@ const CheckboxGroup = <T extends FieldValues = FieldValues>({
                 </button>
               ) : (
                 // 체크박스 버전인 경우 체크박스 렌더링
-                <div
-                  className="w-full relative flex items-center justify-start py-2 gap-2 text-left body-3 text-text-alternative"
+                <label
+                  className="w-full relative flex items-center justify-start py-2 gap-2 text-left body-3 text-text-alternative cursor-pointer"
                   key={`${info.key}_${index}`}
                 >
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={isChecked}
+                    onChange={() => {
+                      const newValue = isChecked
+                        ? value.filter((v: string) => v !== info.key)
+                        : [...value, info.key];
+                      onChange(newValue);
+                    }}
+                  />
                   <div className="w-6 h-6 relative">
                     <div
                       className={`w-full h-full border border-border-alternative flex items-center justify-center ${
                         isChecked ? 'bg-primary-dark' : 'bg-white'
                       }`}
-                      onClick={() => {
-                        const newValue = isChecked
-                          ? value.filter((v: string) => v !== info.key)
-                          : [...value, info.key];
-                        onChange(newValue);
-                      }}
                     >
                       <CheckIcon />
                     </div>
@@ -83,7 +88,7 @@ const CheckboxGroup = <T extends FieldValues = FieldValues>({
                   <div className="flex items-start justify-start">
                     {info.name}
                   </div>
-                </div>
+                </label>
               );
             })}
           </div>
