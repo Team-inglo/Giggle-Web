@@ -1194,7 +1194,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
       format: 'numbers-only',
       isRequired: true,
       isUnit: true,
-      unit: '원',
+      unit: '%',
     },
     {
       type: 'text',
