@@ -140,9 +140,12 @@ export const validateEmployerInformation = (
     !info.company_name ||
     !info.job_type ||
     !info.name ||
-    !info.phone_number ||
     !info.signature_base64
   ) {
+    return false;
+  }
+
+  if (!info.phone || !isValidPhoneNumber(info.phone)) {
     return false;
   }
 
@@ -186,7 +189,6 @@ export const validateLaborContractEmployerInformation = (
   const companyRegistrationNumPattern = /^\d{3}\/\d{2}\/\d{5}$/;
   // 빈 문자열 체크
   if (!info.company_name || !info.name || !info.description || !info.phone) {
-    console.log('문자열');
     return false;
   }
 

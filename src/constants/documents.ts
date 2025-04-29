@@ -154,6 +154,11 @@ export const initialPartTimePermitForm: PartTimePermitFormRequest = {
   major: '',
   term_of_completion: 0,
   phone_number: '',
+  phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   email: '',
 };
 
@@ -315,6 +320,11 @@ export const initialLaborContractEmployerInfo: LaborContractEmployerInfo = {
   company_name: '',
   company_registration_number: '',
   phone_number: '',
+  phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   name: '',
   start_date: '', // yyyy-MM-dd
   end_date: '', // yyyy-MM-dd
@@ -394,6 +404,11 @@ export const initialLaborContractEmployeeInfo: LaborContractEmployeeInfo = {
     latitude: 0,
   },
   phone_number: '',
+  phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   signature_base64: '',
 };
 
@@ -405,13 +420,33 @@ export const initialIntegratedApplication: IntegratedApplicationData = {
   gender: Gender.MALE,
   nationality: '',
   tele_phone_number: '',
+  tele_phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   cell_phone_number: '',
+  cell_phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   is_accredited: true,
   school_name: '',
   school_phone_number: '',
+  school_phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   new_work_place_name: '',
   new_work_place_registration_number: '',
   new_work_place_phone_number: '',
+  new_work_place_phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   annual_income_amount: 0,
   occupation: '',
   email: '',
@@ -552,6 +587,11 @@ export const initialPartTimePermitEmployerForm = {
   job_type: '',
   name: '',
   phone_number: '',
+  phone: {
+    start: '010',
+    middle: '',
+    end: '',
+  },
   signature_base64: '',
   work_period: WorkPeriod.ONE_DAY,
   hourly_rate: 0,
@@ -1255,7 +1295,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
 
 // 표준근로계약서 유학생(직원) 필수 검증 필드 목록
 export const EMPLOYEE_REQUIRED_FIELDS: Array<keyof LaborContractEmployeeInfo> =
-  ['first_name', 'last_name', 'phone_number', 'address', 'signature_base64'];
+  ['first_name', 'last_name', 'phone', 'address', 'signature_base64'];
 
 // 시간제 근로 허가서 고용주 폼 필드 타입 정의
 export type PartTimePermitEmployerFormField = {
@@ -1282,7 +1322,7 @@ export const EMPLOYER_PART_TIME_PERMIT_REQUIRED_FIELDS: Array<
   'company_registration_number',
   'job_type',
   'name',
-  'phone_number',
+  'phone',
   'signature_base64',
   'work_period',
   'hourly_rate',
