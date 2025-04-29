@@ -992,7 +992,7 @@ export type LaborContractEmployerFormField = {
   placeholder: string;
   description?: string;
   options?: string[];
-  chcekboxOptions?: CheckboxOption[];
+  checkboxOptions?: CheckboxOption[];
   format?: string;
   transformer?: ValueTransformer;
   isRequired?: boolean;
@@ -1131,7 +1131,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
       placeholder: '주휴일',
       description: '다중 선택 가능합니다.',
       isRequired: true,
-      chcekboxOptions: Object.entries(DAYS).map(([koreanDay, englishDay]) => ({
+      checkboxOptions: Object.entries(DAYS).map(([koreanDay, englishDay]) => ({
         key: englishDay,
         name: koreanDay,
       })),
@@ -1231,7 +1231,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
           LaborContractEmployerInfoProperty.INSURANCE
         ].ko,
       placeholder: '가입할 보험을 선택하세요',
-      chcekboxOptions: Object.values(InsuranceInfo).map((info) => ({
+      checkboxOptions: Object.values(InsuranceInfo).map((info) => ({
         key: info.key,
         name: info.name,
       })),

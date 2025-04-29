@@ -185,7 +185,7 @@ const EmployerLaborContractForm = ({
           <CheckboxGroup
             control={control}
             name={field.name}
-            options={field.chcekboxOptions || []}
+            options={field.checkboxOptions || []}
             description={field.description}
             variant={field.variant}
           />
