@@ -9,9 +9,6 @@ import {
   PartTimePermitFormRequest,
   Phone,
 } from '@/types/api/document';
-import { InputType } from '@/types/common/input';
-import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
-import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { validatePartTimePermit } from '@/utils/document';
 import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import {
@@ -21,10 +18,10 @@ import {
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
-import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
-import DropdownInput from '@/components/Document/write/input/DropdownInput';
+import { renderField } from '@/components/Document/write/renderField';
+import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof PartTimePermitFormRequest> = [
@@ -95,33 +92,12 @@ const PartTimePermitWriteForm = ({
   };
 
   // 필드 타입에 따른 입력 컴포넌트 렌더링
-  const renderField = (field: PartTimePermitFormField) => {
-    switch (field.type) {
-      case 'text':
-        return (
-          <DocumentFormInput
-            inputType={InputType.TEXT}
-            placeholder={field.placeholder}
-            canDelete={false}
-            name={field.name as keyof PartTimePermitFormRequest}
-            control={control}
-            format={field.format}
-          />
-        );
-      case 'phone':
-        return <PhoneNumberInput control={control} name={field.name} />;
-      case 'dropdown':
-        return (
-          <DropdownInput
-            control={control}
-            name={field.name as keyof PartTimePermitFormRequest}
-            placeholder={field.placeholder}
-            options={field.options || []}
-          />
-        );
-      default:
-        return null;
-    }
+  const renderFormField = (field: PartTimePermitFormField) => {
+    return renderField<PartTimePermitFormRequest>({
+      field,
+      control,
+      name: field.name as keyof PartTimePermitFormRequest,
+    });
   };
 
   // 폼이 비활성화되어야 하는지 여부
@@ -136,7 +112,7 @@ const PartTimePermitWriteForm = ({
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
           {PartTimePermitFormFields.map((field) => (
             <InputLayout key={field.name} title={field.title} isEssential>
-              {renderField(field)}
+              {renderFormField(field)}
             </InputLayout>
           ))}
 

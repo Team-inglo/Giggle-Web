@@ -4,30 +4,20 @@ import {
   initialPartTimePermitEmployerForm,
   PartTimePermitEmployerFormField,
   PartTimePermitEmployerFormFields,
-  WorkPeriodInfo,
 } from '@/constants/documents';
 import {
   EmployerInformation,
   PartTimePermitData,
   Phone,
 } from '@/types/api/document';
-import { InputType } from '@/types/common/input';
-import SignaturePad from '@/components/Document/write/SignaturePad';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { usePutPartTimeEmployPermitEmployer } from '@/hooks/api/useDocument';
 import { useParams } from 'react-router-dom';
 import { validateEmployerInformation } from '@/utils/document';
 import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
-import { Controller, useForm } from 'react-hook-form';
-import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
-import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
-import AddressInput from '@/components/Document/write/input/AddressInput';
-import {
-  KeyValueDropdownInput,
-  DropdownOption,
-} from '@/components/Document/write/input/DropdownInput';
-import DropdownInput from '@/components/Document/write/input/DropdownInput';
+import { useForm } from 'react-hook-form';
+import { renderField } from '@/components/Document/write/renderField';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -84,83 +74,13 @@ const EmployerPartTimePermitForm = ({
   };
 
   // 폼 필드 렌더링 함수
-  const renderField = (field: PartTimePermitEmployerFormField) => {
-    switch (field.type) {
-      case 'text':
-        return (
-          <DocumentFormInput
-            inputType={InputType.TEXT}
-            placeholder={field.placeholder}
-            canDelete={false}
-            name={field.name as keyof EmployerInformation}
-            control={control}
-            format={field.format}
-            description={field.description}
-            isUnit={field.isUnit}
-            unit={field.unit}
-            isPrefix={field.isPrefix}
-            prefix={field.prefix}
-          />
-        );
-      case 'phone':
-        return <PhoneNumberInput control={control} name={field.name} />;
-      case 'address':
-        return (
-          <AddressInput
-            control={control}
-            name={field.name as string}
-            placeholder={field.placeholder}
-            label={field.label}
-          />
-        );
-      case 'dropdown':
-        if (field.name === 'work_period') {
-          const workPeriodOptions: DropdownOption[] = Object.entries(
-            WorkPeriodInfo,
-          ).map(([key, value]) => ({
-            key,
-            name: (value as { name: string }).name,
-          }));
-          return (
-            <KeyValueDropdownInput
-              control={control}
-              name={field.name as keyof EmployerInformation}
-              placeholder={field.placeholder}
-              options={workPeriodOptions}
-            />
-          );
-        }
-        return (
-          <DropdownInput
-            control={control}
-            name={field.name as keyof EmployerInformation}
-            placeholder={field.placeholder}
-            options={field.options || []}
-          />
-        );
-      case 'signature':
-        return (
-          <Controller
-            control={control}
-            name={field.name as keyof EmployerInformation}
-            render={({ field: { value, onChange } }) => (
-              <div
-                className={`w-full relative shadow rounded-xl box-border h-[120px] mb-40`}
-              >
-                <SignaturePad
-                  onSave={onChange}
-                  onReset={() => onChange('')}
-                  previewImg={value as string}
-                />
-              </div>
-            )}
-          />
-        );
-      default:
-        return null;
-    }
+  const renderFormField = (field: PartTimePermitEmployerFormField) => {
+    return renderField<EmployerInformation>({
+      field,
+      control,
+      name: field.name as keyof EmployerInformation,
+    });
   };
-
   return (
     <>
       <div
@@ -170,7 +90,7 @@ const EmployerPartTimePermitForm = ({
           {/** 고용주 작성 정보 */}
           {PartTimePermitEmployerFormFields.map((field) => (
             <InputLayout key={field.name} title={field.title} isEssential>
-              {renderField(field)}
+              {renderFormField(field)}
             </InputLayout>
           ))}
         </div>

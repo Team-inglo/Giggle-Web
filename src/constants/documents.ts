@@ -691,6 +691,12 @@ export type PartTimePermitFormField = {
   placeholder: string;
   options?: string[];
   format?: string;
+  description?: string;
+  isUnit?: boolean;
+  unit?: string;
+  isPrefix?: boolean;
+  prefix?: string;
+  label?: string;
 };
 
 // 시간제 근로 허가서 폼 필드 정의
@@ -744,6 +750,12 @@ export type LaborContractFormField = {
   placeholder: string;
   options?: string[];
   format?: string;
+  description?: string;
+  isUnit?: boolean;
+  unit?: string;
+  isPrefix?: boolean;
+  prefix?: string;
+  label?: string;
 };
 
 // 표준근로계약서 폼 필드 정의
@@ -828,6 +840,12 @@ export type IntegratedApplicationFormField = {
   options?: string[];
   format?: string;
   transformer?: ValueTransformer;
+  isRequired?: boolean;
+  isUnit?: boolean;
+  unit?: string;
+  isPrefix?: boolean;
+  prefix?: string;
+  label?: string;
 };
 
 // 통합신청서 폼 필드 정의

@@ -6,13 +6,9 @@ import {
 } from '@/constants/documents';
 import { IntegratedApplicationData, Phone } from '@/types/api/document';
 import { useState } from 'react';
-
-import { InputType } from '@/types/common/input';
-
 import { validateIntegratedApplication } from '@/utils/document';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import SearchSchoolBottomSheet from '@/components/Document/write/SearchSchoolBottomSheet';
-import SignaturePad from '@/components/Document/write/SignaturePad';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import {
   usePostIntegratedApplicants,
@@ -21,17 +17,11 @@ import {
 import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form';
-import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
-import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
-import AddressInput from '@/components/Document/write/input/AddressInput';
+import { useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
-import DropdownInput from '@/components/Document/write/input/DropdownInput';
-import RadioGroup from '@/components/Document/write/input/RadioGroup';
-import Input from '@/components/Common/Input';
+import { renderField } from '@/components/Document/write/renderField';
 
 // 상수 정의
-
 type IntegratedApplicationFormProps = {
   document?: IntegratedApplicationData;
   isEdit: boolean;
@@ -114,92 +104,14 @@ const IntegratedApplicationWriteForm = ({
   };
 
   // 폼 필드 렌더링 함수
-  const renderField = (field: IntegratedApplicationFormField) => {
-    switch (field.type) {
-      case 'text':
-        return (
-          <DocumentFormInput
-            inputType={InputType.TEXT}
-            placeholder={field.placeholder}
-            canDelete={false}
-            name={field.name as keyof IntegratedApplicationData}
-            control={control}
-            format={field.format}
-            description={field.description}
-          />
-        );
-      case 'school_name':
-        return (
-          <Controller
-            control={control}
-            name={field.name as keyof IntegratedApplicationData}
-            render={({ field: { value } }) => (
-              <>
-                <div onClick={() => setIsModalOpen(true)}>
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder={field.placeholder}
-                    value={value as string}
-                    onChange={() => {}}
-                    canDelete={false}
-                  />
-                </div>
-              </>
-            )}
-          />
-        );
-      case 'phone':
-        return <PhoneNumberInput control={control} name={field.name} />;
-      case 'address':
-        return (
-          <AddressInput
-            control={control}
-            name={field.name as string}
-            placeholder={field.placeholder}
-          />
-        );
-      case 'dropdown':
-        return (
-          <DropdownInput
-            control={control}
-            name={field.name as keyof IntegratedApplicationData}
-            placeholder={field.placeholder}
-            options={field.options || []}
-          />
-        );
-      case 'signature':
-        return (
-          <Controller
-            control={control}
-            name="signature_base64"
-            render={({ field: { value, onChange } }) => (
-              <div
-                className={`w-full relative shadow rounded-xl box-border h-[120px] mb-40`}
-              >
-                <SignaturePad
-                  onSave={onChange}
-                  onReset={() => onChange('')}
-                  previewImg={value || ''}
-                />
-              </div>
-            )}
-          />
-        );
-
-      case 'radio': {
-        return (
-          <RadioGroup
-            control={control}
-            name={field.name}
-            options={field.options || []}
-            description={field.description}
-            transformer={field.transformer}
-          />
-        );
-      }
-      default:
-        return null;
-    }
+  const renderFormField = (field: IntegratedApplicationFormField) => {
+    return renderField<IntegratedApplicationData>({
+      field,
+      control,
+      name: field.name as keyof IntegratedApplicationData,
+      onSchoolNameClick:
+        field.type === 'school_name' ? () => setIsModalOpen(true) : undefined,
+    });
   };
 
   // 폼이 비활성화되어야 하는지 여부
@@ -216,7 +128,7 @@ const IntegratedApplicationWriteForm = ({
           {/* 작성 폼 렌더링 */}
           {IntegratedApplicationformFields.map((field) => (
             <InputLayout key={field.name} title={field.title} isEssential>
-              {renderField(field)}
+              {renderFormField(field)}
             </InputLayout>
           ))}
         </div>
