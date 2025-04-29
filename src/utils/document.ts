@@ -2,14 +2,16 @@ import {
   EmployerInformation,
   Insurance,
   IntegratedApplicationData,
+  LaborContractEmployeeInfo,
   LaborContractEmployerInfo,
   PartTimePermitFormRequest,
+  Phone,
   WorkDayTime,
+  PaymentMethod,
 } from '@/types/api/document';
 import { GiggleAddress } from '@/types/api/users';
 import { extractNumbersAsNumber } from './post';
 import { InsuranceInfo } from '@/constants/documents';
-import { parsePhoneNumber } from './information';
 
 export const MINIMUM_HOURLY_RATE = 10030;
 
@@ -47,12 +49,11 @@ const isEmailValid = (email: string): boolean => {
 };
 
 // 전화번호 유효성 검사 함수
-const isValidPhoneNumber = (phone: string) => {
-  const phoneNum = parsePhoneNumber(phone);
+const isValidPhoneNumber = (phone: Phone) => {
   return (
-    phoneNum.start !== '' &&
-    /^[0-9]{4}$/.test(phoneNum.middle) &&
-    /^[0-9]{4}$/.test(phoneNum.end)
+    phone.start !== '' &&
+    /^[0-9]{4}$/.test(phone.middle) &&
+    /^[0-9]{4}$/.test(phone.end)
   );
 };
 
@@ -69,14 +70,32 @@ export const validatePartTimePermit = (
   if (
     hasStringValue(data.first_name) &&
     hasStringValue(data.last_name) &&
-    hasStringValue(data.phone_number) &&
+    data.phone &&
     isEmailValid(data.email) &&
-    isValidPhoneNumber(data.phone_number) &&
+    isValidPhoneNumber(data.phone) &&
     isValidTermOfCompletion(data.term_of_completion)
   ) {
     return true;
   }
+  return false;
+};
 
+// 근로계약서 유효성 검사 함수
+export const validateLaborContract = (
+  data: LaborContractEmployeeInfo,
+): boolean => {
+  // 필수 입력 항목 체크(이름, 성, 전화번호, 주소, 서명)
+  if (
+    hasStringValue(data.first_name) &&
+    hasStringValue(data.last_name) &&
+    data.phone &&
+    isValidPhoneNumber(data.phone) &&
+    data.address.address_detail &&
+    data.address.address_detail.length <= 50 &&
+    data.signature_base64
+  ) {
+    return true;
+  }
   return false;
 };
 
@@ -121,9 +140,12 @@ export const validateEmployerInformation = (
     !info.company_name ||
     !info.job_type ||
     !info.name ||
-    !info.phone_number ||
     !info.signature_base64
   ) {
+    return false;
+  }
+
+  if (!info.phone || !isValidPhoneNumber(info.phone)) {
     return false;
   }
 
@@ -170,9 +192,9 @@ export const validateLaborContractEmployerInformation = (
     !info.company_name ||
     !info.name ||
     !info.description ||
-    !info.phone_number
+    !info.phone ||
+    !isValidPhoneNumber(info.phone)
   ) {
-    console.log('문자열');
     return false;
   }
 
@@ -290,6 +312,7 @@ export const validateIntegratedApplication = (
 ): boolean => {
   // 주소 검사
   const isAddressValid =
+    !!data.address.region_1depth_name &&
     data.address.region_1depth_name !== '' &&
     !!data.address.address_detail &&
     data.address.address_detail.length <= 50;
@@ -314,10 +337,10 @@ export const validateIntegratedApplication = (
 
   // 전화번호 필드들 검사
   const isPhoneValid =
-    isValidPhoneNumber(data.tele_phone_number) &&
-    isValidPhoneNumber(data.cell_phone_number) &&
-    isValidPhoneNumber(data.school_phone_number) &&
-    isValidPhoneNumber(data.new_work_place_phone_number);
+    isValidPhoneNumber(data.tele_phone as Phone) &&
+    isValidPhoneNumber(data.cell_phone as Phone) &&
+    isValidPhoneNumber(data.school_phone as Phone) &&
+    isValidPhoneNumber(data.new_work_place_phone as Phone);
   // 나머지 필드 검사
   const otherFieldsValid = Object.entries(data).every(([key, value]) => {
     // 앞서 검사한 필드들은 스킵
@@ -351,4 +374,117 @@ export const getInsuranceByKey = (key: string): Insurance | undefined => {
     ([_, value]) => value.key === key,
   );
   return entry ? (entry[0] as Insurance) : undefined;
+};
+
+// 입력 형식 처리를 위한 유틸리티 함수
+type InputFormatter = (value: string) => string;
+
+// 다양한 포맷 옵션을 매핑하는 객체
+const formatters: Record<string, InputFormatter> = {
+  // 숫자만 허용
+  'numbers-only': (value) => value.replace(/[^0-9]/g, ''),
+  // 사업자등록번호 포맷 (000/00/00000)
+  'business-id': (value) => {
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    if (digitsOnly.length <= 3) return digitsOnly;
+    if (digitsOnly.length <= 5)
+      return `${digitsOnly.slice(0, 3)}/${digitsOnly.slice(3)}`;
+    return `${digitsOnly.slice(0, 3)}/${digitsOnly.slice(3, 5)}/${digitsOnly.slice(5, 10)}`;
+  },
+
+  // 날짜 포맷 (YYYY-MM-DD)
+  date: (value) => {
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    if (digitsOnly.length <= 4) return digitsOnly;
+    if (digitsOnly.length <= 6)
+      return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4)}`;
+    return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4, 6)}-${digitsOnly.slice(6, 8)}`;
+  },
+
+  // 알파벳만 허용
+  'alpha-only': (value) => value.replace(/[^a-zA-Z]/g, ''),
+
+  // 알파벳과 숫자만 허용
+  alphanumeric: (value) => value.replace(/[^a-zA-Z0-9]/g, ''),
+
+  // 최대 글자수 제한 (예: 'max-length-10')
+  'max-length': (value, maxLength = 10) => value.slice(0, maxLength),
+};
+
+// 포맷팅 적용 함수
+export const applyFormat = (
+  value: string,
+  format?: string | string[],
+): string => {
+  if (!format) return value;
+
+  let result = value;
+  const formatList = Array.isArray(format) ? format : [format];
+
+  for (const formatKey of formatList) {
+    // 특수 형식: max-length-N
+    if (formatKey.startsWith('max-length-')) {
+      const maxLength = parseInt(formatKey.split('-')[2], 10);
+      result = result.slice(0, maxLength);
+      continue;
+    }
+
+    // 일반 포맷터 적용
+    const formatter = formatters[formatKey];
+    if (formatter) {
+      result = formatter(result);
+    }
+  }
+
+  return result;
+};
+
+// 라디오버튼 그룹 공통 케이스를 위한 헬퍼 함수들
+export const transformers = {
+  // 성별을 대문자로 저장하는 변환기
+  gender: {
+    transformValue: (option: string) => option.toUpperCase(),
+    compareValue: (value: string, option: string) =>
+      typeof value === 'string' && value.toUpperCase() === option.toUpperCase(),
+  },
+
+  // Boolean 값으로 저장하는 변환기
+  boolean: (trueOption: string) => ({
+    transformValue: (option: string) => option === trueOption,
+    compareValue: (value: boolean, option: string) =>
+      (value === true && option === trueOption) ||
+      (value === false && option !== trueOption),
+  }),
+
+  // "있어요"/"없어요" 라디오 버튼을 위한 변환기
+  presence: {
+    transformValue: (option: string) => (option === '있어요' ? 0 : null),
+    compareValue: (value: number | null, option: string) =>
+      (value !== null && option === '있어요') ||
+      (value === null && option === '없어요'),
+  },
+
+  // PaymentMethod enum을 처리하기 위한 변환기
+  paymentMethod: {
+    transformValue: (option: string) => {
+      switch (option) {
+        case '근로자에게 직접지급':
+          return PaymentMethod.DIRECT;
+        case '근로자 명의 예금통장에 입금':
+          return PaymentMethod.BANK_TRANSFER;
+        default:
+          return PaymentMethod.DIRECT;
+      }
+    },
+    compareValue: (value: PaymentMethod, option: string) => {
+      switch (option) {
+        case '근로자에게 직접지급':
+          return value === PaymentMethod.DIRECT;
+        case '근로자 명의 예금통장에 입금':
+          return value === PaymentMethod.BANK_TRANSFER;
+        default:
+          return false;
+      }
+    },
+  },
 };

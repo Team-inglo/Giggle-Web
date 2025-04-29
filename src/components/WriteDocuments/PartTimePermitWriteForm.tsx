@@ -1,17 +1,14 @@
-import { initialPartTimePermitForm } from '@/constants/documents';
+import {
+  initialPartTimePermitForm,
+  PartTimePermitFormField,
+  PartTimePermitFormFields,
+} from '@/constants/documents';
 import {
   DocumentType,
   PartTimePermitData,
   PartTimePermitFormRequest,
+  Phone,
 } from '@/types/api/document';
-import { useEffect, useState } from 'react';
-import Input from '@/components/Common/Input';
-import { InputType } from '@/types/common/input';
-import Dropdown from '@/components/Common/Dropdown';
-import { phone } from '@/constants/information';
-import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
-import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
-import Button from '@/components/Common/Button';
 import { validatePartTimePermit } from '@/utils/document';
 import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import {
@@ -20,6 +17,21 @@ import {
 } from '@/hooks/api/useDocument';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
+import { renderField } from '@/components/Document/write/renderField';
+import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+
+// 필수 검증 필드 목록
+const REQUIRED_FIELDS: Array<keyof PartTimePermitFormRequest> = [
+  'first_name',
+  'last_name',
+  'phone',
+  'major',
+  'term_of_completion',
+  'email',
+];
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -33,48 +45,34 @@ const PartTimePermitWriteForm = ({
   userOwnerPostId,
 }: PartTimePermitFormProps) => {
   const currentDocumentId = useParams().id;
-  const [newDocumentData, setNewDocumentData] =
-    useState<PartTimePermitFormRequest>(initialPartTimePermitForm);
+  const { control, handleSubmit } = useForm<PartTimePermitFormRequest>({
+    values: document
+      ? createInitialValues(document)
+      : initialPartTimePermitForm,
+  });
+
+  // 초기값 생성 함수
+  function createInitialValues(
+    doc: PartTimePermitData,
+  ): PartTimePermitFormRequest {
+    return {
+      ...doc.employee_information,
+      phone: parsePhoneNumber(doc.employee_information.phone_number),
+    };
+  }
+
   const { mutate: postDocument, isPending: postPending } =
     usePostPartTimeEmployPermit(Number(userOwnerPostId)); // 작성된 문서 제출 훅
   const { mutate: updateDocument, isPending: updatePending } =
     usePutPartTimeEmployPermit(Number(currentDocumentId), userOwnerPostId); // 수정된 문서 제출 훅
-  // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
-  const [phoneNum, setPhoneNum] = useState({
-    start: '010',
-    middle: '',
-    end: '',
-  });
-  // 문서 편집일 시 페이지 진입과 동시에 기존 내용 자동 입력
-  useEffect(() => {
-    if (isEdit && document) {
-      setNewDocumentData({
-        first_name: document.employee_information.first_name,
-        last_name: document.employee_information.last_name,
-        major: document.employee_information.major,
-        term_of_completion: document.employee_information.term_of_completion,
-        phone_number: document.employee_information.phone_number,
-        email: document.employee_information.email,
-      });
-      setPhoneNum({
-        start: parsePhoneNumber(document.employee_information.phone_number)
-          .start,
-        middle: parsePhoneNumber(document.employee_information.phone_number)
-          .middle,
-        end: parsePhoneNumber(document.employee_information.phone_number).end,
-      });
-    }
-  }, [document, isEdit]);
 
   // 문서 작성 완료 핸들러 함수
-  const handleNext = () => {
-    const finalDocument = {
-      ...newDocumentData,
-      phone_number: formatPhoneNumber(phoneNum),
-    };
+  const handleNext = (data: PartTimePermitFormRequest) => {
+    const finalDocument = prepareDocumentForSubmission(data);
+
     const payload = {
       id: Number(isEdit ? currentDocumentId : userOwnerPostId),
-      document: finalDocument, // TODO: 로그인 연결 후 userId를 넣어야 하는 것으로 추정
+      document: finalDocument,
     };
 
     if (isEdit) {
@@ -83,108 +81,41 @@ const PartTimePermitWriteForm = ({
     }
     postDocument(payload);
   };
+
+  // 데이터 제출 전 가공 함수
+  const prepareDocumentForSubmission = (data: PartTimePermitFormRequest) => {
+    const { phone, ...rest } = data;
+    return {
+      ...rest,
+      phone_number: formatPhoneNumber(phone as Phone),
+    };
+  };
+
+  // 필드 타입에 따른 입력 컴포넌트 렌더링
+  const renderFormField = (field: PartTimePermitFormField) => {
+    return renderField<PartTimePermitFormRequest>({
+      field,
+      control,
+      name: field.name as keyof PartTimePermitFormRequest,
+    });
+  };
+
+  // 폼이 비활성화되어야 하는지 여부
+  const isFormDisabled = postPending || updatePending;
+
   return (
     <>
-      <div
-        className={`w-full p-4 flex flex-col ${postPending || updatePending ? 'overflow-hidden pointer-events-none' : ''}`}
+      <form
+        className={`w-full p-4 flex flex-col ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
+        onSubmit={(e) => e.preventDefault()}
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
-          {/* 이름 입력 */}
-          <InputLayout title="First Name" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="First Name"
-              value={newDocumentData.first_name}
-              onChange={(value) =>
-                setNewDocumentData({ ...newDocumentData, first_name: value })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 성 입력 */}
-          <InputLayout title="Last Name" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Last Name"
-              value={newDocumentData.last_name}
-              onChange={(value) =>
-                setNewDocumentData({ ...newDocumentData, last_name: value })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 전화번호 입력 */}
-          <InputLayout title="Cell phone No." isEssential>
-            <div className="w-full flex flex-row gap-2 justify-between mb-[0rem]">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={phoneNum.start}
-                  placeholder="010"
-                  options={phone}
-                  setValue={(value) =>
-                    setPhoneNum({ ...phoneNum, start: value })
-                  }
-                />
-              </div>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.middle}
-                onChange={(value) =>
-                  setPhoneNum({ ...phoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.end}
-                onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
-                canDelete={false}
-              />
-            </div>
-          </InputLayout>
-          {/* 전공 입력 */}
-          <InputLayout title="Department (major)" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="Major"
-              value={newDocumentData.major}
-              onChange={(value) =>
-                setNewDocumentData({ ...newDocumentData, major: value })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
-          {/* 이수 학기 입력 */}
-          <InputLayout title="Term of completion" isEssential>
-            <Dropdown
-              value={String(newDocumentData.term_of_completion)}
-              placeholder="Term of completion"
-              options={Array.from({ length: 12 }, (_, i) => String(i + 1))}
-              setValue={(value) =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  term_of_completion: Number(value),
-                })
-              }
-            />
-          </InputLayout>
-          {/* 이메일 입력 */}
-          <InputLayout title="Email" isEssential>
-            <Input
-              inputType={InputType.TEXT}
-              placeholder="email@email.com"
-              value={newDocumentData.email}
-              onChange={(value) =>
-                setNewDocumentData({
-                  ...newDocumentData,
-                  email: value,
-                })
-              }
-              canDelete={false}
-            />
-          </InputLayout>
+          {PartTimePermitFormFields.map((field) => (
+            <InputLayout key={field.name} title={field.title} isEssential>
+              {renderFormField(field)}
+            </InputLayout>
+          ))}
+
           {/* 고용주 정보가 있다면 표시 */}
           {document?.employer_information && (
             <EmployerInfoSection
@@ -196,29 +127,15 @@ const PartTimePermitWriteForm = ({
 
         <BottomButtonPanel>
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
-          {validatePartTimePermit({
-            ...newDocumentData,
-            phone_number: formatPhoneNumber(phoneNum),
-          }) ? (
-            <Button
-              type="large"
-              bgColor="bg-[#fef387]"
-              fontColor="text-[#222]"
-              isBorder={false}
-              title={isEdit ? 'Modify' : 'Create'}
-              onClick={handleNext}
-            />
-          ) : (
-            <Button
-              type="large"
-              bgColor="bg-[#F4F4F9]"
-              fontColor=""
-              isBorder={false}
-              title={isEdit ? 'Modify' : 'Create'}
-            />
-          )}
+          <ValidatedSubmitButton
+            control={control}
+            fieldNames={REQUIRED_FIELDS}
+            validationFn={validatePartTimePermit}
+            buttonText={isEdit ? 'Modify' : 'Create'}
+            onClick={handleSubmit(handleNext)}
+          />
         </BottomButtonPanel>
-      </div>
+      </form>
     </>
   );
 };
