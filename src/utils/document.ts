@@ -7,6 +7,7 @@ import {
   PartTimePermitFormRequest,
   Phone,
   WorkDayTime,
+  PaymentMethod,
 } from '@/types/api/document';
 import { GiggleAddress } from '@/types/api/users';
 import { extractNumbersAsNumber } from './post';
@@ -446,4 +447,36 @@ export const transformers = {
       (value === true && option === trueOption) ||
       (value === false && option !== trueOption),
   }),
+
+  // "있어요"/"없어요" 라디오 버튼을 위한 변환기
+  presence: {
+    transformValue: (option: string) => (option === '있어요' ? 0 : null),
+    compareValue: (value: number | null, option: string) =>
+      (value !== null && option === '있어요') ||
+      (value === null && option === '없어요'),
+  },
+
+  // PaymentMethod enum을 처리하기 위한 변환기
+  paymentMethod: {
+    transformValue: (option: string) => {
+      switch (option) {
+        case '근로자에게 직접지급':
+          return PaymentMethod.DIRECT;
+        case '근로자 명의 예금통장에 입금':
+          return PaymentMethod.BANK_TRANSFER;
+        default:
+          return PaymentMethod.DIRECT;
+      }
+    },
+    compareValue: (value: PaymentMethod, option: string) => {
+      switch (option) {
+        case '근로자에게 직접지급':
+          return value === PaymentMethod.DIRECT;
+        case '근로자 명의 예금통장에 입금':
+          return value === PaymentMethod.BANK_TRANSFER;
+        default:
+          return false;
+      }
+    },
+  },
 };

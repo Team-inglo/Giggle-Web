@@ -985,7 +985,8 @@ export type LaborContractEmployerFormField = {
     | 'work_schedule'
     | 'checkbox'
     | 'weekday_selector'
-    | 'radio';
+    | 'radio'
+    | 'input_with_radio';
   name: keyof LaborContractEmployerInfo | 'phone';
   title: string;
   placeholder: string;
@@ -1151,7 +1152,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
       unit: '원',
     },
     {
-      type: 'radio',
+      type: 'input_with_radio',
       name: LaborContractEmployerInfoProperty.BONUS,
       title:
         LaborContractEmployerInfoNameMap[
@@ -1161,10 +1162,12 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
       options: ['있어요', '없어요'],
       format: 'numbers-only',
       isRequired: true,
-      transformer: transformers.boolean('있어요'),
+      transformer: transformers.presence,
+      isUnit: true,
+      unit: '원',
     },
     {
-      type: 'radio',
+      type: 'input_with_radio',
       name: LaborContractEmployerInfoProperty.ADDITIONAL_SALARY,
       title:
         LaborContractEmployerInfoNameMap[
@@ -1174,7 +1177,9 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
       options: ['있어요', '없어요'],
       format: 'numbers-only',
       isRequired: true,
-      transformer: transformers.boolean('있어요'),
+      transformer: transformers.presence,
+      isUnit: true,
+      unit: '원',
     },
     {
       type: 'text',
@@ -1216,6 +1221,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
       placeholder: '',
       options: ['근로자에게 직접지급', '근로자 명의 예금통장에 입금'],
       isRequired: true,
+      transformer: transformers.paymentMethod,
     },
     {
       type: 'checkbox',

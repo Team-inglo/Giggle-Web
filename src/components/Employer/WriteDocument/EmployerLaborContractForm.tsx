@@ -191,6 +191,38 @@ const EmployerLaborContractForm = ({
           />
         );
       }
+      case 'input_with_radio': {
+        return (
+          <div>
+            <Controller
+              control={control}
+              name={field.name as keyof LaborContractEmployerInfo}
+              render={({ field: { value } }) => (
+                <div className="flex flex-col gap-2">
+                  <RadioGroup
+                    control={control}
+                    name={field.name}
+                    options={field.options || []}
+                    description={field.description}
+                    transformer={field.transformer}
+                  />
+                  {value === 0 && (
+                    <DocumentFormInput
+                      inputType={InputType.TEXT}
+                      placeholder={field.placeholder}
+                      canDelete={false}
+                      name={field.name as keyof LaborContractEmployerInfo}
+                      control={control}
+                      isUnit={field.isUnit}
+                      unit={field.unit}
+                    />
+                  )}
+                </div>
+              )}
+            />
+          </div>
+        );
+      }
       default:
         return null;
     }
