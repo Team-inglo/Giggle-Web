@@ -55,7 +55,7 @@ const DropdownInput = <
 
   return (
     <Dropdown
-      value={field.value}
+      value={field.value || ''}
       placeholder={placeholder}
       options={options}
       setValue={(value) => field.onChange(value)}
