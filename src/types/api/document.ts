@@ -111,6 +111,7 @@ export type EmployerInformation = {
   company_registration_number: string | null;
   job_type: string | null;
   name: string | null;
+  phone?: Phone;
   phone_number: string | null;
   signature_base64: string;
   work_period: WorkPeriod | null;

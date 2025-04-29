@@ -8,6 +8,7 @@ import {
   WorkPeriod,
   IntegratedApplicationField,
   ValueTransformer,
+  EmployerInformation,
 } from '@/types/api/document';
 import {
   DocumentType,
@@ -1001,6 +1002,7 @@ export type LaborContractEmployerFormField = {
   unit?: string;
   isUnit?: boolean;
   variant?: 'checkbox' | 'button';
+  label?: string;
 };
 
 // 고용주 표준근로계약서 필수 검증 필드 목록
@@ -1099,6 +1101,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
         ].ko,
       placeholder: '주소 검색',
       isRequired: true,
+      label: '상세 주소',
     },
     {
       type: 'textarea',
@@ -1253,3 +1256,141 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
 // 표준근로계약서 유학생(직원) 필수 검증 필드 목록
 export const EMPLOYEE_REQUIRED_FIELDS: Array<keyof LaborContractEmployeeInfo> =
   ['first_name', 'last_name', 'phone_number', 'address', 'signature_base64'];
+
+// 시간제 근로 허가서 고용주 폼 필드 타입 정의
+export type PartTimePermitEmployerFormField = {
+  type: 'text' | 'phone' | 'address' | 'signature' | 'dropdown' | 'number';
+  name: keyof EmployerInformation | 'phone';
+  title: string;
+  placeholder: string;
+  description?: string;
+  options?: string[];
+  format?: string;
+  isRequired?: boolean;
+  isUnit?: boolean;
+  unit?: string;
+  isPrefix?: boolean;
+  prefix?: string;
+  label?: string;
+};
+
+// 고용주 시간제 근로 허가서 필수 검증 필드 목록
+export const EMPLOYER_PART_TIME_PERMIT_REQUIRED_FIELDS: Array<
+  keyof EmployerInformation
+> = [
+  'company_name',
+  'company_registration_number',
+  'job_type',
+  'name',
+  'phone_number',
+  'signature_base64',
+  'work_period',
+  'hourly_rate',
+  'work_days_weekdays',
+  'work_days_weekends',
+  'address',
+];
+
+// 시간제 근로 허가서 고용주 폼 필드 정의
+export const PartTimePermitEmployerFormFields: PartTimePermitEmployerFormField[] =
+  [
+    {
+      type: 'text',
+      name: 'company_name',
+      title:
+        PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.COMPANY_NAME].ko,
+      placeholder: '이름을 작성해주세요',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: 'company_registration_number',
+      title:
+        PartTimeEmployPermitEmployerInfo[
+          EmployerInfoProperty.COMPANY_REGISTRATION_NUMBER
+        ].ko,
+      placeholder: '사업자등록번호를 입력해주세요',
+      format: 'business-id',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: 'job_type',
+      title: PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.JOB_TYPE].ko,
+      placeholder: '업종을 입력해주세요',
+      isRequired: true,
+    },
+    {
+      type: 'address',
+      name: 'address',
+      title: PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.ADDRESS].ko,
+      placeholder: '주소 검색',
+      isRequired: true,
+      label: '상세 주소',
+    },
+    {
+      type: 'text',
+      name: 'name',
+      title: PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.NAME].ko,
+      placeholder: '이름을 작성해주세요',
+      isRequired: true,
+    },
+    {
+      type: 'phone',
+      name: 'phone',
+      title:
+        PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.PHONE_NUMBER].ko,
+      placeholder: '',
+      isRequired: true,
+    },
+    {
+      type: 'dropdown',
+      name: 'work_period',
+      title:
+        PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.WORK_PERIOD].ko,
+      placeholder: '근무 기간을 선택해주세요',
+      options: WorkPeriodNames,
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: 'hourly_rate',
+      title:
+        PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.HOURLY_RATE].ko,
+      placeholder: '시급을 입력해주세요',
+      description: '2025년 기준 최저시급은 10,030원입니다.',
+      format: 'numbers-only',
+      isRequired: true,
+      isUnit: true,
+      unit: '원',
+    },
+    {
+      type: 'text',
+      name: 'work_days_weekdays',
+      title:
+        PartTimeEmployPermitEmployerInfo[
+          EmployerInfoProperty.WORK_DAYS_WEEKDAYS
+        ].ko,
+      placeholder: 'ex) 요일/00:00-00:00 혹은 휴무',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: 'work_days_weekends',
+      title:
+        PartTimeEmployPermitEmployerInfo[
+          EmployerInfoProperty.WORK_DAYS_WEEKENDS
+        ].ko,
+      placeholder: 'ex) 요일/00:00-00:00 혹은 휴무',
+      isRequired: true,
+    },
+    {
+      type: 'signature',
+      name: 'signature_base64',
+      title:
+        PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.SIGNATURE_BASE64]
+          .ko,
+      placeholder: '서명',
+      isRequired: true,
+    },
+  ];
