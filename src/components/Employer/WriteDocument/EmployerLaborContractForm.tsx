@@ -41,7 +41,7 @@ const EmployerLaborContractForm = ({
   const currentDocumentId = useParams().id;
   // useForm 훅 사용
   const { control, handleSubmit } = useForm<LaborContractEmployerInfo>({
-    defaultValues: document?.employer_information
+    values: document?.employer_information
       ? createInitialValues(document.employer_information)
       : initialLaborContractEmployerInfo,
   });
