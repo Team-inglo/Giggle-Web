@@ -7,6 +7,7 @@ import {
   PaymentMethod,
   WorkPeriod,
   IntegratedApplicationField,
+  ValueTransformer,
 } from '@/types/api/document';
 import {
   DocumentType,
@@ -16,7 +17,6 @@ import {
 } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { country } from './information';
-import { ValueTransformer } from '@/components/Document/write/input/RadioGroup';
 import { transformers } from '@/utils/document';
 
 // 문서 타입별 정보를 담은 객체

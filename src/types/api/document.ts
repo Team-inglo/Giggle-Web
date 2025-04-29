@@ -309,3 +309,12 @@ export enum WorkPeriod {
   SIX_MONTHS_TO_ONE_YEAR = 'SIX_MONTHS_TO_ONE_YEAR',
   MORE_THAN_ONE_YEAR = 'MORE_THAN_ONE_YEAR',
 }
+
+// 값 변환 핸들러 타입 정의
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ValueTransformer<T = any> = {
+  // 화면에 표시될 값을 저장 형식으로 변환 (예: 'Male' → 'MALE' 또는 'Accredited...' → true)
+  transformValue: (selectedOption: string) => T;
+  // 저장된 값과 옵션 항목을 비교하는 함수 (예: 'MALE'과 'Male' 비교, true와 'Accredited...' 비교)
+  compareValue: (currentValue: T, option: string) => boolean;
+};

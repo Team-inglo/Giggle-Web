@@ -1,15 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import { CheckboxOption } from '@/constants/documents';
-
-// 값 변환 핸들러 타입 정의
-export type ValueTransformer<T = any> = {
-  // 화면에 표시될 값을 저장 형식으로 변환 (예: 'Male' → 'MALE' 또는 'Accredited...' → true)
-  transformValue: (selectedOption: string) => T;
-  // 저장된 값과 옵션 항목을 비교하는 함수 (예: 'MALE'과 'Male' 비교, true와 'Accredited...' 비교)
-  compareValue: (currentValue: T, option: string) => boolean;
-};
+import { ValueTransformer } from '@/types/api/document';
 
 // CheckboxGroup 컴포넌트 타입 정의
 type CheckboxGroupProps<T extends FieldValues = FieldValues> = {
