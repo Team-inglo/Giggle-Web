@@ -21,13 +21,16 @@ import {
   PartTimePermitEmployerFormField,
   WorkPeriodInfo,
 } from '@/constants/documents';
+import { PostFormField } from '@/constants/post';
+import WorkDayTimeInput from './input/WorkDayTimeInput';
 
 type FormField =
   | LaborContractFormField
   | PartTimePermitFormField
   | IntegratedApplicationFormField
   | LaborContractEmployerFormField
-  | PartTimePermitEmployerFormField;
+  | PartTimePermitEmployerFormField
+  | PostFormField;
 
 type RenderFieldProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -162,6 +165,15 @@ export const renderField = <
       );
     case 'work_schedule':
       return <WorkDayTimeWithRestInput control={control} name={name} />;
+    case 'work_day_time':
+      return (
+        <WorkDayTimeInput
+          control={control}
+          name={name}
+          placeholder={field.placeholder}
+          description={field.description}
+        />
+      );
     case 'school_name':
       return (
         <Controller

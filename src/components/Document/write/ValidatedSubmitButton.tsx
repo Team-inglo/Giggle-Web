@@ -33,9 +33,16 @@ const ValidatedSubmitButton = <T extends FieldValues>({
     fieldNames.forEach((name, index) => {
       // 중첩 객체 속성 처리 (예: 'phone.start')
       if (String(name).includes('.')) {
-        const [parent, child] = String(name).split('.');
-        if (!data[parent]) data[parent] = {};
-        data[parent][child] = watchedFields[index];
+        const parts = String(name).split('.');
+        let current = data;
+
+        for (let i = 0; i < parts.length - 1; i++) {
+          const part = parts[i];
+          if (!current[part]) current[part] = {};
+          current = current[part];
+        }
+
+        current[parts[parts.length - 1]] = watchedFields[index];
       } else {
         data[name as string] = watchedFields[index];
       }
@@ -49,12 +56,15 @@ const ValidatedSubmitButton = <T extends FieldValues>({
     [formData, validationFn],
   );
 
+  // Button 컴포넌트에 맞는 props 설정
   return cloneElement(children, {
     onClick: isValid ? onClick : () => {},
+    disabled: !isValid,
+    bgColor: isValid ? 'bg-surface-primary' : 'bg-surface-secondary',
+    fontColor: isValid ? 'text-text-normal' : 'text-text-disabled',
+    ...children.props,
     style: {
       ...children.props.style,
-      backgroundColor: isValid ? 'bg-surface-primary' : 'bg-surface-secondary',
-      color: isValid ? 'text-text-normal' : 'text-text-disabled',
     },
   });
 };
