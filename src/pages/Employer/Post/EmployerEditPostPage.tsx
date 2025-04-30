@@ -14,12 +14,14 @@ import {
 } from '@/types/postCreate/postCreate';
 import { smartNavigate } from '@/utils/application';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
 const EmployerEditPostPage = () => {
   const location = useLocation();
   const { isEdit } = location.state || {};
   const { id } = useParams();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
@@ -32,13 +34,20 @@ const EmployerEditPostPage = () => {
       setDevIsModal(true);
     },
   }); //  공고 수정 시 호출하는 훅
+
+  const form = useForm<JobPostingForm>({
+    values: isEdit
+      ? mapServerDataToFormData(data.data)
+      : initialJobPostingState,
+    shouldUnregister: false, // step 간 데이터 유지
+    mode: 'onChange',
+  });
   const [devIsModal, setDevIsModal] = useState(false);
   const [isDataMapped, setIsDataMapped] = useState(false);
   const navigate = useNavigate();
 
   // 다음 step으로 넘어갈 때 호출되며, 각 step에서 입력한 정보를 userInfo에 저장, 다음 step으로 이동한다.
-  const handleNext = (newInfo: JobPostingForm) => {
-    setPostInfo(newInfo);
+  const handleNext = () => {
     setCurrentStep((prev) => prev + 1);
   };
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
@@ -48,60 +57,64 @@ const EmployerEditPostPage = () => {
     }
   };
 
-  const mapServerDataToFormData = (
+  function mapServerDataToFormData(
     serverData: typeof data.data,
-  ): JobPostingForm => ({
-    images: serverData.company_img_url_list,
-    body: {
-      title: serverData.title,
-      job_category: serverData.tags.job_category,
-      work_day_times: serverData.working_conditions.work_day_times.map(
-        (workDayTime: WorkDayTime) => ({
-          ...workDayTime,
-          work_start_time:
-            workDayTime.work_start_time === '협의가능'
-              ? null
-              : workDayTime.work_start_time,
-          work_end_time:
-            workDayTime.work_end_time === '협의가능'
-              ? null
-              : workDayTime.work_end_time,
-        }),
-      ),
-      work_period: serverData.working_conditions.work_period,
-      hourly_rate: serverData.working_conditions.hourly_rate,
-      employment_type: serverData.working_conditions.employment_type,
-      address: {
-        region_1depth_name:
-          serverData.workplace_information.region_1depth_name || '',
-        region_2depth_name:
-          serverData.workplace_information.region_2depth_name || '',
-        region_3depth_name:
-          serverData.workplace_information.region_3depth_name || '',
-        region_4depth_name:
-          serverData.workplace_information.region_4depth_name || '',
-        address_name: serverData.workplace_information.main_address,
-        latitude: serverData.workplace_information.latitude,
-        longitude: serverData.workplace_information.longitude,
-        address_detail: serverData.workplace_information.detailed_address,
+  ): JobPostingForm {
+    return {
+      images: serverData.company_img_url_list,
+      body: {
+        title: serverData.title,
+        job_category: serverData.tags.job_category,
+        work_day_times: serverData.working_conditions.work_day_times.map(
+          (workDayTime: WorkDayTime) => ({
+            ...workDayTime,
+            work_start_time:
+              workDayTime.work_start_time === '협의가능'
+                ? null
+                : workDayTime.work_start_time,
+            work_end_time:
+              workDayTime.work_end_time === '협의가능'
+                ? null
+                : workDayTime.work_end_time,
+          }),
+        ),
+        work_period: serverData.working_conditions.work_period,
+        hourly_rate: serverData.working_conditions.hourly_rate,
+        employment_type: serverData.working_conditions.employment_type,
+        address: {
+          region_1depth_name:
+            serverData.workplace_information.region_1depth_name || '',
+          region_2depth_name:
+            serverData.workplace_information.region_2depth_name || '',
+          region_3depth_name:
+            serverData.workplace_information.region_3depth_name || '',
+          region_4depth_name:
+            serverData.workplace_information.region_4depth_name || '',
+          address_name: serverData.workplace_information.main_address,
+          latitude: serverData.workplace_information.latitude,
+          longitude: serverData.workplace_information.longitude,
+          address_detail: serverData.workplace_information.detailed_address,
+        },
+        recruitment_dead_line:
+          serverData.recruitment_conditions.recruitment_deadline === '상시모집'
+            ? null
+            : serverData.recruitment_conditions.recruitment_deadline,
+        recruitment_number:
+          serverData.recruitment_conditions.number_of_recruits,
+        gender: serverData.recruitment_conditions.gender,
+        age_restriction: serverData.recruitment_conditions.age_restriction,
+        education_level: serverData.recruitment_conditions.education,
+        visa: serverData.recruitment_conditions.visa,
+        recruiter_name: serverData.company_information.recruiter,
+        recruiter_email: serverData.company_information.email,
+        recruiter_phone_number: serverData.company_information.contact,
+        description: serverData.detailed_overview,
+        preferred_conditions:
+          serverData.recruitment_conditions.preferred_conditions,
       },
-      recruitment_dead_line:
-        serverData.recruitment_conditions.recruitment_deadline === '상시모집'
-          ? null
-          : serverData.recruitment_conditions.recruitment_deadline,
-      recruitment_number: serverData.recruitment_conditions.number_of_recruits,
-      gender: serverData.recruitment_conditions.gender,
-      age_restriction: serverData.recruitment_conditions.age_restriction,
-      education_level: serverData.recruitment_conditions.education,
-      visa: serverData.recruitment_conditions.visa,
-      recruiter_name: serverData.company_information.recruiter,
-      recruiter_email: serverData.company_information.email,
-      recruiter_phone_number: serverData.company_information.contact,
-      description: serverData.detailed_overview,
-      preferred_conditions:
-        serverData.recruitment_conditions.preferred_conditions,
-    },
-  });
+    };
+  }
+
   useEffect(() => {
     if (data?.data) {
       try {
@@ -144,11 +157,14 @@ const EmployerEditPostPage = () => {
             title="공고를 수정해주세요 ✍"
             content="필요한 정보만 빠르게 입력하고, 바로 시작하세요!"
           />
-          <div className="w-full flex justify-center px-4">
+          <form
+            className="w-full flex justify-center px-4"
+            onSubmit={(e) => e.preventDefault()}
+          >
             {!isPending && isDataMapped && currentStep === 1 && (
               <Step1
                 key={data?.data.id} // 또는 다른 유니크한 값
-                postInfo={postInfo}
+                control={form.control}
                 onNext={handleNext}
               />
             )}
@@ -187,7 +203,7 @@ const EmployerEditPostPage = () => {
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}
-          </div>
+          </form>
         </>
       )}
     </div>

@@ -103,6 +103,8 @@ export type JobPostingForm = {
   };
 };
 
+export type JobPostingFormField = keyof JobPostingForm['body'];
+
 // Initial State
 export const initialJobPostingState: JobPostingForm = {
   images: [],

@@ -14,6 +14,7 @@ import {
 } from '@/types/postCreate/postCreate';
 import { smartNavigate } from '@/utils/application';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const EmployerCreatePostPage = () => {
@@ -41,9 +42,14 @@ const EmployerCreatePostPage = () => {
     },
   }); // 공고 생성 시 호출하는 훅
 
+  const form = useForm<JobPostingForm>({
+    values: isEdit ? initialJobPostingState : initialJobPostingState,
+    shouldUnregister: false, // step 간 데이터 유지
+    mode: 'onChange',
+  });
+
   // 다음 step으로 넘어갈 때 호출되며, 각 step에서 입력한 정보를 userInfo에 저장, 다음 step으로 이동한다.
-  const handleNext = (newInfo: JobPostingForm) => {
-    setPostInfo(newInfo);
+  const handleNext = () => {
     setCurrentStep((prev) => prev + 1);
   };
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
@@ -80,7 +86,7 @@ const EmployerCreatePostPage = () => {
           />
           <div className="w-full flex justify-center px-4">
             {currentStep === 1 && (
-              <Step1 postInfo={postInfo} onNext={handleNext} />
+              <Step1 control={form.control} onNext={handleNext} />
             )}
             {currentStep === 2 && (
               <Step2
