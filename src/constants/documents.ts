@@ -18,7 +18,7 @@ import {
 } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { country } from './information';
-import { transformers } from '@/utils/document';
+import { transformers } from '@/utils/transformers';
 
 // 문서 타입별 정보를 담은 객체
 export const DocumentTypeInfo = {
