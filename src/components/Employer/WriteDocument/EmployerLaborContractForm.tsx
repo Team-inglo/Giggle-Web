@@ -18,6 +18,7 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
+import Button from '@/components/Common/Button';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -105,9 +106,16 @@ const EmployerLaborContractForm = ({
             control={control}
             fieldNames={EMPLOYER_LABOR_CONTRACT_REQUIRED_FIELDS}
             validationFn={validateLaborContractEmployerInformation}
-            buttonText={'작성완료'}
             onClick={handleSubmit(handleNext)}
-          />
+          >
+            <Button
+              type="large"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
+              isBorder={false}
+              title={'작성완료'}
+            />
+          </ValidatedSubmitButton>
         </BottomButtonPanel>
       </div>
     </>

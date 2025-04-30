@@ -22,6 +22,7 @@ import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitBu
 import { renderField } from '@/components/Document/write/renderField';
 import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import Button from '../Common/Button';
 
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof PartTimePermitFormRequest> = [
@@ -131,9 +132,16 @@ const PartTimePermitWriteForm = ({
             control={control}
             fieldNames={REQUIRED_FIELDS}
             validationFn={validatePartTimePermit}
-            buttonText={isEdit ? 'Modify' : 'Create'}
             onClick={handleSubmit(handleNext)}
-          />
+          >
+            <Button
+              type="large"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
+              isBorder={false}
+              title={'Complete'}
+            />
+          </ValidatedSubmitButton>
         </BottomButtonPanel>
       </form>
     </>

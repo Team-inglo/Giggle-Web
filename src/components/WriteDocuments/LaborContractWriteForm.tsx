@@ -22,6 +22,7 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
+import Button from '../Common/Button';
 
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof LaborContractEmployeeInfo | 'phone'> = [
@@ -132,9 +133,16 @@ const LaborContractWriteForm = ({
             control={control}
             fieldNames={REQUIRED_FIELDS}
             validationFn={validateLaborContract}
-            buttonText={isEdit ? 'Modify' : 'Create'}
             onClick={handleSubmit(handleNext)}
-          />
+          >
+            <Button
+              type="large"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
+              isBorder={false}
+              title={'Complete'}
+            />
+          </ValidatedSubmitButton>
         </BottomButtonPanel>
       </form>
     </>

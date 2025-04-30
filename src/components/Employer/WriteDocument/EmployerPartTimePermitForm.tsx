@@ -18,6 +18,7 @@ import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { useForm } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
+import Button from '@/components/Common/Button';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -100,9 +101,16 @@ const EmployerPartTimePermitForm = ({
             control={control}
             fieldNames={EMPLOYER_PART_TIME_PERMIT_REQUIRED_FIELDS}
             validationFn={validateEmployerInformation}
-            buttonText={'작성완료'}
             onClick={handleSubmit(handleNext)}
-          />
+          >
+            <Button
+              type="large"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
+              isBorder={false}
+              title={'작성완료'}
+            />
+          </ValidatedSubmitButton>
         </BottomButtonPanel>
       </div>
     </>

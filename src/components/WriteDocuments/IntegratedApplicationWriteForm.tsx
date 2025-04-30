@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
+import Button from '../Common/Button';
 
 // 상수 정의
 type IntegratedApplicationFormProps = {
@@ -159,9 +160,16 @@ const IntegratedApplicationWriteForm = ({
             control={control}
             fieldNames={REQUIRED_FIELDS}
             validationFn={validateIntegratedApplication}
-            buttonText={isEdit ? 'Modify' : 'Create'}
             onClick={handleSubmit(handleNext)}
-          />
+          >
+            <Button
+              type="large"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
+              isBorder={false}
+              title={isEdit ? 'Modify' : 'Create'}
+            />
+          </ValidatedSubmitButton>
         </BottomButtonPanel>
       </form>
     </>
