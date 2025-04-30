@@ -1,4 +1,5 @@
 import { Gender } from '@/types/api/users';
+import { InputType } from '@/types/common/input';
 import {
   EducationLevel,
   EmploymentType,
@@ -6,6 +7,19 @@ import {
   VisaGroup,
 } from '@/types/postCreate/postCreate';
 import { EducationCategoryNames, JobCategoryNames } from '@/utils/post';
+import { ValueTransformer } from '@/types/api/document';
+import { transformers } from '@/utils/transformers';
+
+// 근무 기간 리스트
+export const WorkPeriodNames = [
+  '하루',
+  '1주 미만',
+  '1주 ~ 1개월',
+  '1개월 ~ 3개월',
+  '3개월 ~ 6개월',
+  '6개월 ~ 1년',
+  '1년 이상',
+];
 
 export const JobCategoryInfo = {
   [JobCategory.GENERAL_INTERPRETATION_TRANSLATION]: {
@@ -153,4 +167,96 @@ export const WorkTypeInfo = {
     name: '아르바이트',
     key: 'PARTTIME',
   },
+};
+
+// 공고 폼 필드 타입 정의
+export type PostFormField = {
+  type: 'text' | 'dropdown' | 'radio' | 'work_day_time' | 'number';
+  name: string; // body.title, body.job_category 등의 경로
+  title: string;
+  placeholder: string;
+  description?: string;
+  options?: string[];
+  inputType?: InputType;
+  isRequired?: boolean;
+  isUnit?: boolean;
+  unit?: string;
+  isPrefix?: boolean;
+  prefix?: string;
+  dropdownValuesList?: string[];
+  variant?: 'checkbox' | 'button';
+  label?: string;
+  format?: string;
+  transformer?: ValueTransformer;
+};
+
+// Step1에 해당하는 폼 필드 정의
+export const PostFormFields: Record<string, PostFormField[]> = {
+  step1: [
+    {
+      type: 'text',
+      name: 'body.title',
+      title: '공고 제목',
+      placeholder: '제목을 입력해주세요',
+      inputType: InputType.TEXT,
+      isRequired: true,
+    },
+    {
+      type: 'dropdown',
+      name: 'body.job_category',
+      title: '업직종',
+      placeholder: '업직종을 선택해주세요',
+      options: JobCategoryList,
+      isRequired: true,
+    },
+    {
+      type: 'work_day_time',
+      name: 'body.work_day_times',
+      title: '근무 시간',
+      placeholder: '원하는 근무 시간을 추가해주세요.',
+      isRequired: true,
+    },
+    {
+      type: 'text',
+      name: 'body.hourly_rate',
+      title: '시급',
+      placeholder: '시급을 입력해주세요',
+      inputType: InputType.TEXT,
+      isRequired: true,
+      isUnit: true,
+      unit: '원',
+      description: '2025년 기준 최저시급은 10,030원입니다.',
+    },
+    {
+      type: 'radio',
+      name: 'body.employment_type',
+      title: '타입',
+      placeholder: '',
+      options: ['아르바이트', '인턴십'],
+      isRequired: true,
+      transformer: transformers.employmentType,
+    },
+    {
+      type: 'dropdown',
+      name: 'body.work_period',
+      title: '근무기간',
+      placeholder: '근무 기간을 선택해주세요',
+      options: WorkPeriodNames,
+      isRequired: true,
+    },
+  ],
+  // 다른 step들도 필요에 따라 추가
+};
+
+// Step별 필수 필드 정의
+export const POST_REQUIRED_FIELDS = {
+  step1: [
+    'body.title',
+    'body.job_category',
+    'body.work_day_times',
+    'body.hourly_rate',
+    'body.work_period',
+    'body.employment_type',
+  ],
+  // 다른 step별 필수 필드도 필요에 따라 추가
 };
