@@ -24,7 +24,7 @@ const EmployerCreatePostPage = () => {
 
   const { updateCurrentPostId } = useCurrentPostIdStore();
 
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const [postInfo, setPostInfo] = useState<JobPostingForm>(
     initialJobPostingState,
@@ -90,9 +90,7 @@ const EmployerCreatePostPage = () => {
             )}
             {currentStep === 2 && (
               <Step2
-                postInfo={postInfo}
-                isAddressSearch={isAddressSearch}
-                setIsAddressSearch={setIsAddressSearch}
+                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />

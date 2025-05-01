@@ -19,8 +19,6 @@ const Step1 = ({
   control: Control<JobPostingForm>;
   onNext: () => void;
 }) => {
-  // 현재 step내에서 입력받는 정보를 따로 관리할 state, 추후 다음 step으로 넘어갈 때 funnel 관리 페이지의 state로 통합된다.
-
   const validatePostInfo = (data: JobPostingForm) => {
     const {
       body: { title, job_category, work_day_times, hourly_rate, work_period },

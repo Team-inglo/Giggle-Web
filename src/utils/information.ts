@@ -110,7 +110,7 @@ export const formatCompanyRegistrationNumber = (value: string) => {
 };
 
 // 날짜값 입력 시 YYYY-MM-DD 형식으로 만들기
-const validateDateInput = (value: string) => {
+export const validateDateInput = (value: string) => {
   if (value.length > 10) return false;
 
   for (let i = 0; i < value.length; i++) {

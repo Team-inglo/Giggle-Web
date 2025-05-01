@@ -170,10 +170,7 @@ const EmployerEditPostPage = () => {
             )}
             {!isPending && isDataMapped && currentStep === 2 && (
               <Step2
-                key={`${data?.data.id}2`} // 또는 다른 유니크한 값
-                isAddressSearch={isAddressSearch}
-                setIsAddressSearch={setIsAddressSearch}
-                postInfo={postInfo}
+                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
