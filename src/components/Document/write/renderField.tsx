@@ -25,6 +25,7 @@ import { PostFormField } from '@/constants/post';
 import WorkDayTimeInput from './input/WorkDayTimeInput';
 import VisaDropdown from '@/components/Common/VisaDropdown';
 import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
+import ImageUploadInput from './input/ImageUploadInput';
 
 type FormField =
   | LaborContractFormField
@@ -80,7 +81,7 @@ export const renderField = <
               <div className="w-full flex flex-col items-start justify-start">
                 <div className="w-full flex flex-col items-center justify-start">
                   <textarea
-                    className="w-full h-[10vh] px-[1rem] py-[0.75rem] border border-border-alternative rounded-[0.75rem] body-2 outline-none resize-none"
+                    className={`w-full ${field.textareaHeight} px-[1rem] py-[0.75rem] border border-border-alternative rounded-[0.75rem] body-2 outline-none resize-none`}
                     placeholder={field.placeholder}
                     value={value as string}
                     onChange={onChange}
@@ -255,6 +256,19 @@ export const renderField = <
           format={field.format}
           inputType={field.inputType}
         />
+      );
+    case 'image_upload':
+      return (
+        <div className="w-full">
+          <div className="w-full relative body-3 px-1 pb-1.5 text-text-strong text-left">
+            {field.placeholder}
+          </div>
+          <ImageUploadInput
+            control={control}
+            name={name}
+            isEdit={field.isEdit as boolean}
+          />
+        </div>
       );
     default:
       return null;
