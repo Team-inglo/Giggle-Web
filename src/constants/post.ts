@@ -178,7 +178,8 @@ export type PostFormField = {
     | 'work_day_time'
     | 'number'
     | 'address'
-    | 'date_with_checkbox';
+    | 'value_with_checkbox'
+    | 'visa_dropdown';
   name: string; // body.title, body.job_category 등의 경로
   title: string;
   placeholder: string;
@@ -195,6 +196,8 @@ export type PostFormField = {
   label?: string;
   format?: string;
   transformer?: ValueTransformer;
+  isDate?: boolean;
+  checkboxLabel?: string;
 };
 
 // Step1에 해당하는 폼 필드 정의
@@ -262,16 +265,65 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       label: '상세 주소',
     },
     {
-      type: 'date_with_checkbox',
+      type: 'value_with_checkbox',
       name: 'body.recruitment_dead_line',
       title: '공고 종료일',
       placeholder: '공고 종료일을 입력해주세요',
       inputType: InputType.TEXT,
       isRequired: true,
       format: 'date',
+      isDate: true,
+      checkboxLabel: '상시모집',
     },
   ],
-  // 다른 step들도 필요에 따라 추가
+  step3: [
+    {
+      type: 'text',
+      name: 'body.recruitment_number',
+      title: '모집인원',
+      placeholder: '모집 인원을 입력해주세요',
+      inputType: InputType.TEXT,
+      isRequired: true,
+      isUnit: true,
+      unit: '명',
+      format: 'number',
+    },
+    {
+      type: 'radio',
+      name: 'body.gender',
+      title: '성별',
+      placeholder: '',
+      options: GenderList,
+      isRequired: true,
+      transformer: transformers.gender,
+    },
+    {
+      type: 'value_with_checkbox',
+      name: 'body.age_restriction',
+      title: '연령제한',
+      placeholder: '연령제한을 입력해주세요',
+      inputType: InputType.TEXT,
+      isRequired: true,
+      isUnit: true,
+      unit: '살 이상',
+      checkboxLabel: '무관',
+    },
+    {
+      type: 'dropdown',
+      name: 'body.education_level',
+      title: '학력',
+      placeholder: '학력을 선택해주세요',
+      options: EducationList,
+      isRequired: true,
+    },
+    {
+      type: 'visa_dropdown',
+      name: 'body.visa',
+      title: '비자',
+      placeholder: '비자를 선택해 주세요',
+      isRequired: true,
+    },
+  ],
 };
 
 // Step별 필수 필드 정의
@@ -291,5 +343,11 @@ export const POST_REQUIRED_FIELDS = {
     'body.address.latitude',
     'body.address.longitude',
   ],
-  // 다른 step별 필수 필드도 필요에 따라 추가
+  step3: [
+    'body.recruitment_number',
+    'body.gender',
+    'body.age_restriction',
+    'body.education_level',
+    'body.visa',
+  ],
 };
