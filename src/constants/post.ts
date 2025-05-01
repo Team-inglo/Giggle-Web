@@ -177,9 +177,12 @@ export type PostFormField = {
     | 'radio'
     | 'work_day_time'
     | 'number'
+    | 'phone'
     | 'address'
     | 'value_with_checkbox'
-    | 'visa_dropdown';
+    | 'visa_dropdown'
+    | 'image_upload'
+    | 'textarea';
   name: string; // body.title, body.job_category 등의 경로
   title: string;
   placeholder: string;
@@ -198,6 +201,9 @@ export type PostFormField = {
   transformer?: ValueTransformer;
   isDate?: boolean;
   checkboxLabel?: string;
+  isEdit?: boolean;
+  isImage?: boolean;
+  textareaHeight?: string;
 };
 
 // Step1에 해당하는 폼 필드 정의
@@ -218,6 +224,7 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       placeholder: '업직종을 선택해주세요',
       options: JobCategoryList,
       isRequired: true,
+      transformer: transformers.jobCategory,
     },
     {
       type: 'work_day_time',
@@ -253,6 +260,7 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       placeholder: '근무 기간을 선택해주세요',
       options: WorkPeriodNames,
       isRequired: true,
+      transformer: transformers.workPeriod,
     },
   ],
   step2: [
@@ -315,6 +323,7 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       placeholder: '학력을 선택해주세요',
       options: EducationList,
       isRequired: true,
+      transformer: transformers.educationLevel,
     },
     {
       type: 'visa_dropdown',
@@ -322,6 +331,49 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       title: '비자',
       placeholder: '비자를 선택해 주세요',
       isRequired: true,
+    },
+  ],
+  step4: [
+    {
+      name: 'body.recruiter_name',
+      type: 'text',
+      title: '담당자 이름',
+      placeholder: '채용 담당자 이름을 입력해주세요',
+    },
+    {
+      name: 'body.recruiter_email',
+      type: 'text',
+      title: '담당자 이메일',
+      placeholder: '채용 담당자 이메일을 입력해주세요',
+    },
+    {
+      name: 'body.recruiter_phone',
+      type: 'phone',
+      title: '담당자 전화번호',
+      placeholder: '채용 담당자 전화번호를 입력해주세요',
+    },
+    {
+      name: 'images',
+      type: 'image_upload',
+      title: '근무 회사 사진',
+      placeholder: '사진이 있으면 관심 확률이 올라가요 !',
+      isEdit: false,
+      isImage: true,
+    },
+  ],
+  step5: [
+    {
+      name: 'body.description',
+      type: 'textarea',
+      title: '상세요강',
+      placeholder: '상세요강을 작성해주세요',
+      textareaHeight: 'h-[20vh]',
+    },
+    {
+      name: 'body.preferred_conditions',
+      type: 'text',
+      title: '우대조건',
+      placeholder: '우대조건을 입력해주세요',
     },
   ],
 };
@@ -350,4 +402,11 @@ export const POST_REQUIRED_FIELDS = {
     'body.education_level',
     'body.visa',
   ],
+  step4: [
+    'body.recruiter_name',
+    'body.recruiter_email',
+    'body.recruiter_phone',
+    'images',
+  ],
+  step5: ['body.description'],
 };
