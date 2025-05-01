@@ -97,7 +97,7 @@ const EmployerCreatePostPage = () => {
             )}
             {currentStep === 3 && (
               <Step3
-                postInfo={postInfo}
+                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
