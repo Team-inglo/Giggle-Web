@@ -23,7 +23,8 @@ import {
 } from '@/constants/documents';
 import { PostFormField } from '@/constants/post';
 import WorkDayTimeInput from './input/WorkDayTimeInput';
-import DateWithCheckboxInput from './input/DateWithCheckboxInput';
+import VisaDropdown from '@/components/Common/VisaDropdown';
+import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
 
 type FormField =
   | LaborContractFormField
@@ -226,8 +227,35 @@ export const renderField = <
           />
         </div>
       );
-    case 'date_with_checkbox':
-      return <DateWithCheckboxInput control={control} name={name} />;
+    case 'visa_dropdown':
+      return (
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { value, onChange } }) => (
+            <VisaDropdown
+              value={value}
+              placeholder={field.placeholder}
+              setValue={onChange}
+            />
+          )}
+        />
+      );
+    case 'value_with_checkbox':
+      return (
+        <ValueWithCheckboxInput
+          control={control}
+          name={name}
+          placeholder={field.placeholder}
+          description={field.description}
+          checkboxLabel={field.checkboxLabel}
+          isUnit={field.isUnit}
+          unit={field.unit}
+          isDate={field.isDate}
+          format={field.format}
+          inputType={field.inputType}
+        />
+      );
     default:
       return null;
   }
