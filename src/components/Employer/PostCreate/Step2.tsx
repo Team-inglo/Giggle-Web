@@ -24,19 +24,23 @@ const Step2 = ({
 }) => {
   const validatePostInfo = (data: JobPostingForm) => {
     const {
-      body: { address },
+      body: { address, recruitment_dead_line },
     } = data;
 
+    // 빈 문자열, null, 유효한 날짜 모두 처리
     const isDeadLineValid =
-      data.body.recruitment_dead_line === null ||
-      validateDateInput(data.body.recruitment_dead_line);
+      recruitment_dead_line === null || // 상시모집
+      (typeof recruitment_dead_line === 'string' &&
+        (recruitment_dead_line !== '' &&
+          validateDateInput(recruitment_dead_line)));
 
     const isFormValid =
       !!address.address_name &&
       !!address.address_detail &&
       address.address_detail.length <= 50 &&
       isDeadLineValid;
-    return isFormValid;
+
+    return !!isFormValid;
   };
 
   // 폼 필드 렌더링 함수
