@@ -1,13 +1,41 @@
 import { PaymentMethod } from '@/types/api/document';
+import { Gender } from '@/types/api/users';
 import { EmploymentType } from '@/types/postCreate/postCreate';
 
 // 라디오버튼 그룹 공통 케이스를 위한 헬퍼 함수들
 export const transformers = {
-  // 성별을 대문자로 저장하는 변환기
+  // 성별 변환기 (한글/영어 모두 지원)
   gender: {
-    transformValue: (option: string) => option.toUpperCase(),
-    compareValue: (value: string, option: string) =>
-      typeof value === 'string' && value.toUpperCase() === option.toUpperCase(),
+    transformValue: (option: string) => {
+      switch (option) {
+        case '남':
+        case 'Male':
+          return Gender.MALE;
+        case '여':
+        case 'Female':
+          return Gender.FEMALE;
+        case '무관':
+        case 'None':
+          return Gender.NONE;
+        default:
+          return Gender.NONE;
+      }
+    },
+    compareValue: (value: Gender, option: string) => {
+      switch (option) {
+        case '남':
+        case 'Male':
+          return value === Gender.MALE;
+        case '여':
+        case 'Female':
+          return value === Gender.FEMALE;
+        case '무관':
+        case 'None':
+          return value === Gender.NONE;
+        default:
+          return false;
+      }
+    },
   },
 
   // Boolean 값으로 저장하는 변환기
