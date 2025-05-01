@@ -171,7 +171,14 @@ export const WorkTypeInfo = {
 
 // 공고 폼 필드 타입 정의
 export type PostFormField = {
-  type: 'text' | 'dropdown' | 'radio' | 'work_day_time' | 'number';
+  type:
+    | 'text'
+    | 'dropdown'
+    | 'radio'
+    | 'work_day_time'
+    | 'number'
+    | 'address'
+    | 'date_with_checkbox';
   name: string; // body.title, body.job_category 등의 경로
   title: string;
   placeholder: string;
@@ -245,6 +252,25 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       isRequired: true,
     },
   ],
+  step2: [
+    {
+      type: 'address',
+      name: 'body.address',
+      title: '근무 장소',
+      placeholder: '근무 장소를 입력해주세요',
+      isRequired: true,
+      label: '상세 주소',
+    },
+    {
+      type: 'date_with_checkbox',
+      name: 'body.recruitment_dead_line',
+      title: '공고 종료일',
+      placeholder: '공고 종료일을 입력해주세요',
+      inputType: InputType.TEXT,
+      isRequired: true,
+      format: 'date',
+    },
+  ],
   // 다른 step들도 필요에 따라 추가
 };
 
@@ -257,6 +283,13 @@ export const POST_REQUIRED_FIELDS = {
     'body.hourly_rate',
     'body.work_period',
     'body.employment_type',
+  ],
+  step2: [
+    'body.recruitment_dead_line',
+    'body.address.address_name',
+    'body.address.address_detail',
+    'body.address.latitude',
+    'body.address.longitude',
   ],
   // 다른 step별 필수 필드도 필요에 따라 추가
 };
