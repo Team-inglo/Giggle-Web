@@ -1061,6 +1061,7 @@ export type LaborContractEmployerFormField = {
   isUnit?: boolean;
   variant?: 'checkbox' | 'button';
   label?: string;
+  textareaHeight?: string;
 };
 
 // 고용주 표준근로계약서 필수 검증 필드 목록
@@ -1170,6 +1171,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
         ].ko,
       placeholder: '업무의 내용을 작성해주세요',
       isRequired: true,
+      textareaHeight: 'h-[10vh]',
     },
     {
       type: 'work_schedule',
