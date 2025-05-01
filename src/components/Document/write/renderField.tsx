@@ -23,6 +23,7 @@ import {
 } from '@/constants/documents';
 import { PostFormField } from '@/constants/post';
 import WorkDayTimeInput from './input/WorkDayTimeInput';
+import DateWithCheckboxInput from './input/DateWithCheckboxInput';
 
 type FormField =
   | LaborContractFormField
@@ -225,6 +226,8 @@ export const renderField = <
           />
         </div>
       );
+    case 'date_with_checkbox':
+      return <DateWithCheckboxInput control={control} name={name} />;
     default:
       return null;
   }
