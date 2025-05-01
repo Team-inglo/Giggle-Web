@@ -8,11 +8,13 @@ import Step4 from '@/components/Employer/PostCreate/Step4';
 import Step5 from '@/components/Employer/PostCreate/Step5';
 import { useCreatePost } from '@/hooks/api/usePost';
 import { useCurrentPostIdStore } from '@/store/url';
+import { Phone } from '@/types/api/document';
 import {
   initialJobPostingState,
   JobPostingForm,
 } from '@/types/postCreate/postCreate';
 import { smartNavigate } from '@/utils/application';
+import { formatPhoneNumber } from '@/utils/information';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -24,11 +26,7 @@ const EmployerCreatePostPage = () => {
 
   const { updateCurrentPostId } = useCurrentPostIdStore();
 
-  const [currentStep, setCurrentStep] = useState(2);
-  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
-  const [postInfo, setPostInfo] = useState<JobPostingForm>(
-    initialJobPostingState,
-  );
+  const [currentStep, setCurrentStep] = useState(1);
   const [devIsModal, setDevIsModal] = useState(false);
 
   const { mutate } = useCreatePost({
@@ -52,10 +50,56 @@ const EmployerCreatePostPage = () => {
   const handleNext = () => {
     setCurrentStep((prev) => prev + 1);
   };
+
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
-  const handleSubmit = (newPost: FormData) => {
-    mutate(newPost);
+  const handleSubmit = () => {
+    const formData = new FormData();
+
+    // 폼 데이터 가져오기
+    const values = form.getValues();
+
+    // 이미지 처리
+    values.images
+      .filter((image): image is File => image instanceof File)
+      .forEach((image) => {
+        formData.append('image', image);
+      });
+
+    // work_day_times 처리
+    const updatedWorkDayTimes = values.body.work_day_times.map((workday) => ({
+      ...workday,
+      work_start_time:
+        workday.work_start_time === '협의가능' ? null : workday.work_start_time,
+      work_end_time:
+        workday.work_end_time === '협의가능' ? null : workday.work_end_time,
+    }));
+
+    // recruiter_phone 처리
+    const updatedRecruiterPhone = formatPhoneNumber(
+      values.body.recruiter_phone as Phone,
+    );
+
+    // body 추가
+    formData.append(
+      'body',
+      new Blob(
+        [
+          JSON.stringify({
+            ...values.body,
+            work_day_times: updatedWorkDayTimes,
+            recruiter_phone_number: updatedRecruiterPhone,
+          }),
+        ],
+        {
+          type: 'application/json',
+        },
+      ),
+    );
+
+    // 제출
+    mutate(formData);
   };
+
   return (
     <div>
       <BaseHeader
@@ -104,15 +148,16 @@ const EmployerCreatePostPage = () => {
             )}
             {currentStep === 4 && (
               <Step4
-                postInfo={postInfo}
+                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
+                isEdit={isEdit}
               />
             )}
             {currentStep === 5 && (
               <Step5
-                postInfo={postInfo}
-                onSubmit={(newPost) => handleSubmit(newPost)}
+                control={form.control}
+                onSubmit={handleSubmit}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}

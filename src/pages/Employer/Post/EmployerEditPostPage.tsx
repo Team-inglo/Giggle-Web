@@ -7,33 +7,32 @@ import Step3 from '@/components/Employer/PostCreate/Step3';
 import Step4 from '@/components/Employer/PostCreate/Step4';
 import Step5 from '@/components/Employer/PostCreate/Step5';
 import { useEditPost, useGetPostDetail } from '@/hooks/api/usePost';
-import { WorkDayTime } from '@/types/api/document';
+import { Phone, WorkDayTime } from '@/types/api/document';
 import {
   initialJobPostingState,
   JobPostingForm,
 } from '@/types/postCreate/postCreate';
 import { smartNavigate } from '@/utils/application';
-import { useEffect, useState } from 'react';
+import { formatPhoneNumber } from '@/utils/information';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
 const EmployerEditPostPage = () => {
   const location = useLocation();
-  const { isEdit } = location.state || {};
+  const { isEdit } = location.state || { isEdit: true }; // 수정 페이지이므로 기본값은 true
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
-  const [postInfo, setPostInfo] = useState<JobPostingForm>(
-    initialJobPostingState,
-  );
+  const [devIsModal, setDevIsModal] = useState(false);
 
   const { data, isPending } = useGetPostDetail(Number(id), true);
   const { mutate: editPost } = useEditPost({
     onSuccess: () => {
       setDevIsModal(true);
     },
-  }); //  공고 수정 시 호출하는 훅
+  });
 
   const form = useForm<JobPostingForm>({
     values: isEdit
@@ -42,21 +41,62 @@ const EmployerEditPostPage = () => {
     shouldUnregister: false, // step 간 데이터 유지
     mode: 'onChange',
   });
-  const [devIsModal, setDevIsModal] = useState(false);
-  const [isDataMapped, setIsDataMapped] = useState(false);
-  const navigate = useNavigate();
 
-  // 다음 step으로 넘어갈 때 호출되며, 각 step에서 입력한 정보를 userInfo에 저장, 다음 step으로 이동한다.
+  // 다음 step으로 이동
   const handleNext = () => {
     setCurrentStep((prev) => prev + 1);
   };
-  // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
-  const handleSubmit = (newPost: FormData) => {
-    if (isEdit) {
-      editPost({ newPost: newPost, id: Number(id) });
-    }
+
+  // 폼 제출 처리
+  const handleSubmit = () => {
+    const formData = new FormData();
+
+    // 폼 데이터 가져오기
+    const values = form.getValues();
+
+    // 이미지 처리
+    values.images
+      .filter((image): image is File => image instanceof File)
+      .forEach((image) => {
+        formData.append('image', image);
+      });
+
+    // work_day_times 처리
+    const updatedWorkDayTimes = values.body.work_day_times.map((workday) => ({
+      ...workday,
+      work_start_time:
+        workday.work_start_time === '협의가능' ? null : workday.work_start_time,
+      work_end_time:
+        workday.work_end_time === '협의가능' ? null : workday.work_end_time,
+    }));
+
+    // recruiter_phone 처리
+    const updatedRecruiterPhone = formatPhoneNumber(
+      values.body.recruiter_phone as Phone,
+    );
+
+    // body 추가
+    formData.append(
+      'body',
+      new Blob(
+        [
+          JSON.stringify({
+            ...values.body,
+            work_day_times: updatedWorkDayTimes,
+            recruiter_phone_number: updatedRecruiterPhone,
+          }),
+        ],
+        {
+          type: 'application/json',
+        },
+      ),
+    );
+
+    // 제출
+    editPost({ newPost: formData, id: Number(id) });
   };
 
+  // 서버 데이터를 폼에 맞게 변환
   function mapServerDataToFormData(
     serverData: typeof data.data,
   ): JobPostingForm {
@@ -115,19 +155,6 @@ const EmployerEditPostPage = () => {
     };
   }
 
-  useEffect(() => {
-    if (data?.data) {
-      try {
-        const mappedData = mapServerDataToFormData(data.data);
-        setPostInfo(mappedData);
-        setIsDataMapped(true);
-        console.log('데이터 매핑 완료:', mappedData);
-      } catch (error) {
-        console.error('데이터 매핑 중 오류 발생:', error);
-        setIsDataMapped(false);
-      }
-    }
-  }, [data?.data]);
   return (
     <div>
       <BaseHeader
@@ -161,42 +188,43 @@ const EmployerEditPostPage = () => {
             className="w-full flex justify-center px-4"
             onSubmit={(e) => e.preventDefault()}
           >
-            {!isPending && isDataMapped && currentStep === 1 && (
+            {!isPending && currentStep === 1 && (
               <Step1
-                key={data?.data.id} // 또는 다른 유니크한 값
+                key={`${data?.data.id}-step1`}
                 control={form.control}
                 onNext={handleNext}
               />
             )}
-            {!isPending && isDataMapped && currentStep === 2 && (
+            {!isPending && currentStep === 2 && (
               <Step2
+                key={`${data?.data.id}-step2`}
                 control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}
-            {!isPending && isDataMapped && currentStep === 3 && (
+            {!isPending && currentStep === 3 && (
               <Step3
-                key={`${data?.data.id}3`} // 또는 다른 유니크한 값
-                postInfo={postInfo}
+                key={`${data?.data.id}-step3`}
+                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}
-            {!isPending && isDataMapped && currentStep === 4 && (
+            {!isPending && currentStep === 4 && (
               <Step4
-                key={`${data?.data.id}4`} // 또는 다른 유니크한 값
-                postInfo={postInfo}
+                key={`${data?.data.id}-step4`}
+                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
                 isEdit={isEdit}
               />
             )}
-            {!isPending && isDataMapped && currentStep === 5 && (
+            {!isPending && currentStep === 5 && (
               <Step5
-                key={`${data?.data.id}5`} // 또는 다른 유니크한 값
-                postInfo={postInfo}
-                onSubmit={(newPost) => handleSubmit(newPost)}
+                key={`${data?.data.id}-step5`}
+                control={form.control}
+                onSubmit={handleSubmit}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}
