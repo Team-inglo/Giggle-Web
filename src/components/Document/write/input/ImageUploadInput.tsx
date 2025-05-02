@@ -17,7 +17,6 @@ interface ImageUploadInputProps<
 > {
   name: TName;
   isEdit?: boolean;
-  onStoreImageDelete?: (imageId: number) => void;
 }
 
 const ImageUploadInput = <

@@ -249,13 +249,7 @@ export const renderField = <
           <div className="w-full relative body-3 px-1 pb-1.5 text-text-strong text-left">
             {field.placeholder}
           </div>
-          <ImageUploadInput
-            name={name}
-            isEdit={field.isEdit as boolean}
-            onStoreImageDelete={(imageId) => {
-              console.log('이미지 삭제:', imageId);
-            }}
-          />
+          <ImageUploadInput name={name} isEdit={field.isEdit as boolean} />
         </div>
       );
     default:
