@@ -8,15 +8,13 @@ import {
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import { MINIMUM_HOURLY_RATE } from '@/utils/document';
-import { Control, Path } from 'react-hook-form';
+import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 
 const Step1 = ({
-  control,
   onNext,
 }: {
-  control: Control<JobPostingForm>;
   onNext: () => void;
 }) => {
   const validatePostInfo = (data: JobPostingForm) => {
@@ -29,8 +27,7 @@ const Step1 = ({
       job_category !== '' &&
       work_day_times?.length > 0 &&
       work_period !== '' &&
-      typeof hourly_rate === 'number' &&
-      !Number.isNaN(hourly_rate) &&
+      !Number.isNaN(Number(hourly_rate)) &&
       hourly_rate >= MINIMUM_HOURLY_RATE;
 
     return isFormValid;
@@ -40,7 +37,6 @@ const Step1 = ({
   const renderFormField = (field: PostFormField) => {
     return renderField<JobPostingForm>({
       field,
-      control,
       name: field.name as Path<JobPostingForm>,
     });
   };
@@ -57,7 +53,6 @@ const Step1 = ({
       <BottomButtonPanel>
         {/* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */}
         <ValidatedSubmitButton
-          control={control}
           fieldNames={POST_REQUIRED_FIELDS.step1 as (keyof JobPostingForm)[]}
           validationFn={validatePostInfo}
           onClick={() => onNext()}

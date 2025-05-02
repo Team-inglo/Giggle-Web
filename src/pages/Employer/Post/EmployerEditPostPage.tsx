@@ -13,9 +13,9 @@ import {
   JobPostingForm,
 } from '@/types/postCreate/postCreate';
 import { smartNavigate } from '@/utils/application';
-import { formatPhoneNumber } from '@/utils/information';
+import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
 const EmployerEditPostPage = () => {
@@ -148,6 +148,7 @@ const EmployerEditPostPage = () => {
         recruiter_name: serverData.company_information.recruiter,
         recruiter_email: serverData.company_information.email,
         recruiter_phone_number: serverData.company_information.contact,
+        recruiter_phone: parsePhoneNumber(serverData.company_information.contact),
         description: serverData.detailed_overview,
         preferred_conditions:
           serverData.recruitment_conditions.preferred_conditions,
@@ -179,7 +180,7 @@ const EmployerEditPostPage = () => {
           onNext={() => smartNavigate(navigate, `/employer/post/${id}`)}
         />
       ) : (
-        <>
+        <FormProvider {...form}>
           <PageTitle
             title="공고를 수정해주세요 ✍"
             content="필요한 정보만 빠르게 입력하고, 바로 시작하세요!"
@@ -229,7 +230,7 @@ const EmployerEditPostPage = () => {
               />
             )}
           </form>
-        </>
+        </FormProvider>
       )}
     </div>
   );

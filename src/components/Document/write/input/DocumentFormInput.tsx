@@ -6,6 +6,7 @@ import {
   UseControllerProps,
   FieldValues,
   FieldPath,
+  useFormContext,
 } from 'react-hook-form';
 
 type DocumentFormInputProps<
@@ -16,8 +17,6 @@ type DocumentFormInputProps<
   placeholder: string;
   canDelete: boolean;
   name: TName; // UseControllerProps에서 필수 prop
-  control: UseControllerProps<TFieldValues, TName>['control']; // UseControllerProps에서 필수 prop
-  rules?: UseControllerProps<TFieldValues, TName>['rules']; // 선택적 유효성 검사 규칙
   defaultValue?: UseControllerProps<TFieldValues, TName>['defaultValue']; // 선택적 기본값
   format?: string | string[];
   description?: string;
@@ -39,8 +38,6 @@ const DocumentFormInput = <
   placeholder,
   canDelete,
   name,
-  control,
-  rules,
   defaultValue,
   format,
   clearInvalid,
@@ -52,10 +49,10 @@ const DocumentFormInput = <
   unit,
   description,
 }: DocumentFormInputProps<TFieldValues, TName>) => {
+  const { control } = useFormContext();
   const { field, fieldState } = useController({
     name,
     control,
-    rules,
     defaultValue: (defaultValue ?? '') as typeof defaultValue,
   });
 

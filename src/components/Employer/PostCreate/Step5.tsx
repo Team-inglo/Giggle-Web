@@ -8,16 +8,14 @@ import {
   PostFormFields,
 } from '@/constants/post';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
-import { Control, Path } from 'react-hook-form';
+import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 
 const Step5 = ({
-  control,
   onSubmit,
   onPrev,
 }: {
-  control: Control<JobPostingForm>;
   onSubmit: () => void;
   onPrev: () => void;
 }) => {
@@ -33,7 +31,6 @@ const Step5 = ({
   const renderFormField = (field: PostFormField) => {
     return renderField<JobPostingForm>({
       field,
-      control,
       name: field.name as Path<JobPostingForm>,
     });
   };
@@ -68,7 +65,6 @@ const Step5 = ({
             onClick={() => onPrev()}
           />
           <ValidatedSubmitButton
-            control={control}
             fieldNames={POST_REQUIRED_FIELDS.step5 as (keyof JobPostingForm)[]}
             validationFn={validatePostInfo}
             onClick={handleSubmit}

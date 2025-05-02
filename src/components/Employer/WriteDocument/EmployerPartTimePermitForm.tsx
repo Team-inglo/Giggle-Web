@@ -19,6 +19,7 @@ import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitBu
 import { useForm } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '@/components/Common/Button';
+import { FormProvider } from 'react-hook-form';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -33,11 +34,13 @@ const EmployerPartTimePermitForm = ({
 }: PartTimePermitFormProps) => {
   const currentDocumentId = useParams().id;
   // useForm 훅 사용
-  const { control, handleSubmit } = useForm<EmployerInformation>({
+  const methods = useForm<EmployerInformation>({
     values: document?.employer_information
       ? createInitialValues(document.employer_information)
       : initialPartTimePermitEmployerForm,
   });
+
+  const { handleSubmit } = methods;
 
   // 초기값 생성 함수
   function createInitialValues(doc: EmployerInformation): EmployerInformation {
@@ -78,12 +81,11 @@ const EmployerPartTimePermitForm = ({
   const renderFormField = (field: PartTimePermitEmployerFormField) => {
     return renderField<EmployerInformation>({
       field,
-      control,
       name: field.name as keyof EmployerInformation,
     });
   };
   return (
-    <>
+    <FormProvider {...methods}>
       <div
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
@@ -98,7 +100,6 @@ const EmployerPartTimePermitForm = ({
         <BottomButtonPanel>
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
           <ValidatedSubmitButton
-            control={control}
             fieldNames={EMPLOYER_PART_TIME_PERMIT_REQUIRED_FIELDS}
             validationFn={validateEmployerInformation}
             onClick={handleSubmit(handleNext)}
@@ -113,7 +114,7 @@ const EmployerPartTimePermitForm = ({
           </ValidatedSubmitButton>
         </BottomButtonPanel>
       </div>
-    </>
+    </FormProvider>
   );
 };
 

@@ -11,7 +11,6 @@ import CheckboxGroup from '@/components/Document/write/input/CheckboxGroup';
 import WorkDayTimeWithRestInput from '@/components/Document/write/input/WorkDayTimeWithRestInput';
 import SignaturePad from '@/components/Document/write/SignaturePad';
 import Input from '@/components/Common/Input';
-import { Control } from 'react-hook-form';
 import {
   LaborContractFormField,
   PartTimePermitFormField,
@@ -39,7 +38,6 @@ type RenderFieldProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   field: FormField;
-  control: Control<TFieldValues>;
   name: TName;
   onSchoolNameClick?: () => void;
 };
@@ -49,7 +47,6 @@ export const renderField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   field,
-  control,
   name,
   onSchoolNameClick,
 }: RenderFieldProps<TFieldValues, TName>) => {
@@ -61,7 +58,6 @@ export const renderField = <
           placeholder={field.placeholder}
           canDelete={false}
           name={name}
-          control={control}
           format={field.format}
           description={field.description}
           isUnit={field.isUnit}
@@ -73,7 +69,6 @@ export const renderField = <
     case 'textarea':
       return (
         <Controller
-          control={control}
           name={name}
           render={({ field: { value, onChange } }) => (
             <div className="w-full self-stretch flex flex-col items-center justify-start body-3">
@@ -92,11 +87,10 @@ export const renderField = <
         />
       );
     case 'phone':
-      return <PhoneNumberInput control={control} name={name} />;
+      return <PhoneNumberInput name={name} />;
     case 'address':
       return (
         <AddressInput
-          control={control}
           name={name}
           placeholder={field.placeholder}
           label={field.label}
@@ -111,7 +105,6 @@ export const renderField = <
       ) {
         return (
           <KeyValueDropdownInput
-            control={control}
             name={name}
             placeholder={field.placeholder}
             options={convertToDropdownOption(
@@ -126,7 +119,6 @@ export const renderField = <
 
       return (
         <DropdownInput
-          control={control}
           name={name}
           placeholder={field.placeholder}
           options={Array.isArray(field.options) ? field.options : []}
@@ -135,7 +127,6 @@ export const renderField = <
     case 'signature':
       return (
         <Controller
-          control={control}
           name={name}
           render={({ field: { value, onChange } }) => (
             <div
@@ -153,7 +144,6 @@ export const renderField = <
     case 'radio':
       return (
         <RadioGroup
-          control={control}
           name={name}
           options={Array.isArray(field.options) ? field.options : []}
           description={field.description}
@@ -163,7 +153,6 @@ export const renderField = <
     case 'checkbox':
       return (
         <CheckboxGroup
-          control={control}
           name={name}
           options={field.checkboxOptions || []}
           description={field.description}
@@ -171,11 +160,10 @@ export const renderField = <
         />
       );
     case 'work_schedule':
-      return <WorkDayTimeWithRestInput control={control} name={name} />;
+      return <WorkDayTimeWithRestInput name={name} />;
     case 'work_day_time':
       return (
         <WorkDayTimeInput
-          control={control}
           name={name}
           placeholder={field.placeholder}
           description={field.description}
@@ -184,7 +172,6 @@ export const renderField = <
     case 'school_name':
       return (
         <Controller
-          control={control}
           name={name}
           render={({ field: { value } }) => (
             <>
@@ -205,12 +192,10 @@ export const renderField = <
       return (
         <div>
           <Controller
-            control={control}
             name={name}
             render={({ field: { value } }) => (
               <div className="flex flex-col gap-2">
                 <RadioGroup
-                  control={control}
                   name={name}
                   options={Array.isArray(field.options) ? field.options : []}
                   description={field.description}
@@ -222,7 +207,6 @@ export const renderField = <
                     placeholder={field.placeholder}
                     canDelete={false}
                     name={name}
-                    control={control}
                     isUnit={field.isUnit}
                     unit={field.unit}
                   />
@@ -235,7 +219,6 @@ export const renderField = <
     case 'visa_dropdown':
       return (
         <Controller
-          control={control}
           name={name}
           render={({ field: { value, onChange } }) => (
             <VisaDropdown
@@ -249,7 +232,6 @@ export const renderField = <
     case 'value_with_checkbox':
       return (
         <ValueWithCheckboxInput
-          control={control}
           name={name}
           placeholder={field.placeholder}
           description={field.description}
@@ -268,9 +250,11 @@ export const renderField = <
             {field.placeholder}
           </div>
           <ImageUploadInput
-            control={control}
             name={name}
             isEdit={field.isEdit as boolean}
+            onStoreImageDelete={(imageId) => {
+              console.log('이미지 삭제:', imageId);
+            }}
           />
         </div>
       );

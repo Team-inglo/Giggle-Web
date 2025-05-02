@@ -15,7 +15,7 @@ import { usePutLaborContractEmployer } from '@/hooks/api/useDocument';
 import { validateLaborContractEmployerInformation } from '@/utils/document';
 import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '@/components/Common/Button';
@@ -33,11 +33,13 @@ const EmployerLaborContractForm = ({
 }: LaborContractFormProps) => {
   const currentDocumentId = useParams().id;
   // useForm 훅 사용
-  const { control, handleSubmit } = useForm<LaborContractEmployerInfo>({
+  const methods = useForm<LaborContractEmployerInfo>({
     values: document?.employer_information
       ? createInitialValues(document.employer_information)
       : initialLaborContractEmployerInfo,
   });
+
+  const { handleSubmit } = methods;
 
   // 초기값 생성 함수
   function createInitialValues(
@@ -78,17 +80,15 @@ const EmployerLaborContractForm = ({
   };
 
   // 폼 필드 렌더링 함수
-  // 폼 필드 렌더링 함수
   const renderFormField = (field: LaborContractEmployerFormField) => {
     return renderField<LaborContractEmployerInfo>({
       field,
-      control,
       name: field.name as keyof LaborContractEmployerInfo,
     });
   };
 
   return (
-    <>
+    <FormProvider {...methods}>
       <div
         className={`w-full flex flex-col ${isPending ? 'overflow-hidden pointer-events-none' : ''}`}
       >
@@ -103,7 +103,6 @@ const EmployerLaborContractForm = ({
         <BottomButtonPanel>
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
           <ValidatedSubmitButton
-            control={control}
             fieldNames={EMPLOYER_LABOR_CONTRACT_REQUIRED_FIELDS}
             validationFn={validateLaborContractEmployerInformation}
             onClick={handleSubmit(handleNext)}
@@ -118,7 +117,7 @@ const EmployerLaborContractForm = ({
           </ValidatedSubmitButton>
         </BottomButtonPanel>
       </div>
-    </>
+    </FormProvider>
   );
 };
 

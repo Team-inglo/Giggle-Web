@@ -1,5 +1,10 @@
 // WorkDayTimeInput.tsx
-import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
+import {
+  Controller,
+  FieldValues,
+  FieldPath,
+  useFormContext,
+} from 'react-hook-form';
 import { useState } from 'react';
 import WorkDayTimeBottomSheet from '@/components/Common/WorkDayTimeBottomSheet';
 import { WorkDayTime } from '@/types/api/document';
@@ -10,7 +15,6 @@ interface WorkDayTimeInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > {
-  control: Control<TFieldValues>;
   name: TName;
   placeholder?: string;
   description?: string;
@@ -20,11 +24,11 @@ const WorkDayTimeInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-  control,
   name,
   description,
 }: WorkDayTimeInputProps<TFieldValues, TName>) => {
   const [isModal, setIsModal] = useState(false);
+  const { control } = useFormContext<TFieldValues>();
 
   return (
     <Controller

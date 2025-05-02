@@ -8,18 +8,16 @@ import {
   PostFormFields,
 } from '@/constants/post';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
-import { Control, Path } from 'react-hook-form';
+import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import { isValidPhoneNumber } from '@/utils/information';
 
 const Step4 = ({
-  control,
   onNext,
   onPrev,
   isEdit,
 }: {
-  control: Control<JobPostingForm>;
   onNext: () => void;
   onPrev: () => void;
   isEdit?: boolean;
@@ -34,9 +32,6 @@ const Step4 = ({
 
     // 전화번호 유효성 검사
     const isPhoneValid = recruiter_phone && isValidPhoneNumber(recruiter_phone);
-
-    console.log(isPhoneValid);
-    console.log(data);
     const isFormValid =
       recruiter_name !== '' &&
       basicEmailRegex.test(recruiter_email) &&
@@ -54,8 +49,7 @@ const Step4 = ({
 
     return renderField<JobPostingForm>({
       field: updatedField,
-      control,
-      name: field.name as Path<JobPostingForm>,
+      name: field.name as Path<JobPostingForm>
     });
   };
 
@@ -79,7 +73,6 @@ const Step4 = ({
             onClick={() => onPrev()}
           />
           <ValidatedSubmitButton
-            control={control}
             fieldNames={POST_REQUIRED_FIELDS.step4 as (keyof JobPostingForm)[]}
             validationFn={validatePostInfo}
             onClick={() => onNext()}

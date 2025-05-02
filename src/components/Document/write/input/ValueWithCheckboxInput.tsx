@@ -1,5 +1,10 @@
 // src/components/Document/write/input/ValueWithCheckboxInput.tsx
-import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
+import {
+  Controller,
+  FieldValues,
+  FieldPath,
+  useFormContext,
+} from 'react-hook-form';
 import Input from '@/components/Common/Input';
 import { InputType } from '@/types/common/input';
 import { formatDateInput } from '@/utils/information';
@@ -10,7 +15,6 @@ interface ValueWithCheckboxInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > {
-  control: Control<TFieldValues>;
   name: TName;
   placeholder?: string;
   description?: string;
@@ -26,7 +30,6 @@ const ValueWithCheckboxInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-  control,
   name,
   placeholder = '',
   description,
@@ -36,6 +39,8 @@ const ValueWithCheckboxInput = <
   isDate = false,
   inputType = InputType.TEXT,
 }: ValueWithCheckboxInputProps<TFieldValues, TName>) => {
+  const { control } = useFormContext<TFieldValues>();
+
   return (
     <Controller
       control={control}

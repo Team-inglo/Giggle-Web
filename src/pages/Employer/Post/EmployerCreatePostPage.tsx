@@ -16,7 +16,7 @@ import {
 import { smartNavigate } from '@/utils/application';
 import { formatPhoneNumber } from '@/utils/information';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const EmployerCreatePostPage = () => {
@@ -123,32 +123,27 @@ const EmployerCreatePostPage = () => {
           title={`${isEdit ? '공고 수정' : '공고 등록'}을 완료했어요!.`}
         />
       ) : (
-        <>
+        <FormProvider {...form}>
           <PageTitle
             title="공고를 등록해주세요 ✍"
             content="필요한 정보만 빠르게 입력하고, 바로 시작하세요!"
           />
           <div className="w-full flex justify-center px-4">
-            {currentStep === 1 && (
-              <Step1 control={form.control} onNext={handleNext} />
-            )}
+            {currentStep === 1 && <Step1 onNext={handleNext} />}
             {currentStep === 2 && (
               <Step2
-                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}
             {currentStep === 3 && (
               <Step3
-                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}
             {currentStep === 4 && (
               <Step4
-                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
                 isEdit={isEdit}
@@ -156,13 +151,12 @@ const EmployerCreatePostPage = () => {
             )}
             {currentStep === 5 && (
               <Step5
-                control={form.control}
                 onSubmit={handleSubmit}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
             )}
           </div>
-        </>
+        </FormProvider>
       )}
     </div>
   );

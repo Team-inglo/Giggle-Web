@@ -19,7 +19,7 @@ import {
 } from '@/hooks/api/useDocument';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '../Common/Button';
@@ -47,11 +47,13 @@ const LaborContractWriteForm = ({
   const currentDocumentId = useParams().id;
 
   // useForm 훅 사용
-  const { control, handleSubmit } = useForm<LaborContractEmployeeInfo>({
+  const methods = useForm<LaborContractEmployeeInfo>({
     values: document
       ? createInitialValues(document)
       : initialLaborContractEmployeeInfo,
   });
+
+  const { handleSubmit } = methods;
 
   // 초기값 생성 함수
   function createInitialValues(
@@ -97,7 +99,6 @@ const LaborContractWriteForm = ({
   const renderFormField = (field: LaborContractFormField) => {
     return renderField<LaborContractEmployeeInfo>({
       field,
-      control,
       name: field.name as keyof LaborContractEmployeeInfo,
     });
   };
@@ -106,7 +107,7 @@ const LaborContractWriteForm = ({
   const isFormDisabled = postPending || updatePending;
 
   return (
-    <>
+    <FormProvider {...methods}>
       <form
         className={`w-full flex flex-col px-4 ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
         onSubmit={(e) => e.preventDefault()}
@@ -130,7 +131,6 @@ const LaborContractWriteForm = ({
         <BottomButtonPanel>
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
           <ValidatedSubmitButton
-            control={control}
             fieldNames={REQUIRED_FIELDS}
             validationFn={validateLaborContract}
             onClick={handleSubmit(handleNext)}
@@ -145,7 +145,7 @@ const LaborContractWriteForm = ({
           </ValidatedSubmitButton>
         </BottomButtonPanel>
       </form>
-    </>
+    </FormProvider>
   );
 };
 

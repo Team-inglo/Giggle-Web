@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cloneElement, ReactElement, useMemo } from 'react';
-import { Control, FieldValues, useWatch } from 'react-hook-form';
+import {
+  FieldValues,
+  useWatch,
+} from 'react-hook-form';
 
 // 범용적인 유효성 검사 버튼 컴포넌트
 type ValidatedSubmitButtonProps<T extends FieldValues> = {
-  control: Control<T>; // React Hook Form의 control 객체
   fieldNames: (keyof T)[]; // 감시할 필드 이름 배열
   validationFn: (data: any) => boolean; // 유효성 검사 함수
   formatData?: (data: any) => any; // 선택적: 데이터 포맷팅 함수
@@ -14,7 +16,6 @@ type ValidatedSubmitButtonProps<T extends FieldValues> = {
 };
 
 const ValidatedSubmitButton = <T extends FieldValues>({
-  control,
   fieldNames,
   validationFn,
   formatData = (data) => data,
@@ -23,7 +24,6 @@ const ValidatedSubmitButton = <T extends FieldValues>({
 }: ValidatedSubmitButtonProps<T>) => {
   // 필요한 모든 필드를 한 번에 감시
   const watchedFields = useWatch({
-    control,
     name: fieldNames as any[], // TypeScript 타입 문제 해결을 위한 캐스팅
   });
 

@@ -1,4 +1,9 @@
-import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
+import {
+  Controller,
+  FieldValues,
+  FieldPath,
+  useFormContext,
+} from 'react-hook-form';
 import { useState } from 'react';
 import WorkDayTimeWithRestBottomSheet from '@/components/Common/WorkDayTimeWithRestBottomSheet';
 import { WorkDayTimeWithRest } from '@/types/api/document';
@@ -9,7 +14,6 @@ interface WorkDayTimeWithRestInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > {
-  control: Control<TFieldValues>;
   name: TName;
   placeholder?: string;
   description?: string;
@@ -19,11 +23,11 @@ const WorkDayTimeWithRestInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-  control,
   name,
   description,
 }: WorkDayTimeWithRestInputProps<TFieldValues, TName>) => {
   const [isModal, setIsModal] = useState(false);
+  const { control } = useFormContext<TFieldValues>();
 
   return (
     <Controller
