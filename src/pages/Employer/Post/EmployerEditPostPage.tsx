@@ -192,14 +192,12 @@ const EmployerEditPostPage = () => {
             {!isPending && currentStep === 1 && (
               <Step1
                 key={`${data?.data.id}-step1`}
-                control={form.control}
                 onNext={handleNext}
               />
             )}
             {!isPending && currentStep === 2 && (
               <Step2
                 key={`${data?.data.id}-step2`}
-                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
@@ -207,7 +205,6 @@ const EmployerEditPostPage = () => {
             {!isPending && currentStep === 3 && (
               <Step3
                 key={`${data?.data.id}-step3`}
-                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
@@ -215,7 +212,6 @@ const EmployerEditPostPage = () => {
             {!isPending && currentStep === 4 && (
               <Step4
                 key={`${data?.data.id}-step4`}
-                control={form.control}
                 onNext={handleNext}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
                 isEdit={isEdit}
@@ -224,7 +220,6 @@ const EmployerEditPostPage = () => {
             {!isPending && currentStep === 5 && (
               <Step5
                 key={`${data?.data.id}-step5`}
-                control={form.control}
                 onSubmit={handleSubmit}
                 onPrev={() => setCurrentStep((prev) => prev - 1)}
               />
