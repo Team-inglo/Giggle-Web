@@ -8,7 +8,7 @@ import {
   PostFormFields,
 } from '@/constants/post';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
-import { Control } from 'react-hook-form';
+import { Control, Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import { isValidPhoneNumber } from '@/utils/information';
@@ -55,7 +55,7 @@ const Step4 = ({
     return renderField<JobPostingForm>({
       field: updatedField,
       control,
-      name: field.name as keyof JobPostingForm,
+      name: field.name as Path<JobPostingForm>,
     });
   };
 

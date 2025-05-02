@@ -5,7 +5,7 @@ import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { buttonTypeKeys } from '@/constants/components';
 import { validateDateInput } from '@/utils/information';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
-import { Control } from 'react-hook-form';
+import { Control, Path } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
 import {
   POST_REQUIRED_FIELDS,
@@ -48,7 +48,7 @@ const Step2 = ({
     return renderField<JobPostingForm>({
       field,
       control,
-      name: field.name as keyof JobPostingForm,
+      name: field.name as Path<JobPostingForm>,
     });
   };
 
