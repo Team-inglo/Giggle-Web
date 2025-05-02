@@ -29,6 +29,8 @@ const Step1 = ({
       job_category !== '' &&
       work_day_times?.length > 0 &&
       work_period !== '' &&
+      typeof hourly_rate === 'number' &&
+      !Number.isNaN(hourly_rate) &&
       hourly_rate >= MINIMUM_HOURLY_RATE;
 
     return isFormValid;

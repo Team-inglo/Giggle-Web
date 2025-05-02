@@ -26,7 +26,7 @@ const Step5 = ({
     const { body } = data;
     const { description } = body;
 
-    return description !== '';
+    return description.trim() !== '';
   };
 
   // 폼 필드 렌더링 함수

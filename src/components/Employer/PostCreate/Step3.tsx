@@ -30,6 +30,7 @@ const Step3 = ({
       (age_restriction === null ||
         (typeof age_restriction === 'number' && age_restriction !== 0)) &&
       education_level !== '' &&
+      Array.isArray(visa) &&
       visa.length > 0;
 
     return !!isFormValid;
