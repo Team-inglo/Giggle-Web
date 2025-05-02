@@ -1,11 +1,13 @@
 import {
-  Control,
   FieldPath,
   FieldValues,
+  Path,
+  PathValue,
   useController,
+  useFormContext,
 } from 'react-hook-form';
-import { Image, JobPostingForm } from '@/types/postCreate/postCreate';
-import { ChangeEvent, useState } from 'react';
+import { Image } from '@/types/postCreate/postCreate';
+import { ChangeEvent, useState, useEffect } from 'react';
 import AddFileIcon from '@/assets/icons/FileAddIcon.svg?react';
 import CircleDeleteIcon from '@/assets/icons/CircleDeleteIcon.svg?react';
 
@@ -13,19 +15,20 @@ interface ImageUploadInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > {
-  control: Control<TFieldValues>;
   name: TName;
   isEdit?: boolean;
+  onStoreImageDelete?: (imageId: number) => void;
 }
 
 const ImageUploadInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-  control,
   name,
   isEdit,
 }: ImageUploadInputProps<TFieldValues, TName>) => {
+  const { control, getValues, setValue } = useFormContext<TFieldValues>();
+
   const { field } = useController({
     control,
     name,
@@ -38,6 +41,28 @@ const ImageUploadInput = <
         )
       : [],
   );
+
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    const images = Array.isArray(field.value) ? field.value : [];
+
+    const fileImages: File[] = [];
+    images.forEach((img: unknown) => {
+      if (img instanceof File) {
+        fileImages.push(img);
+      }
+    });
+
+    const urls = fileImages.map((file) => URL.createObjectURL(file));
+
+    setPreviewUrls(urls);
+
+    // cleanup: 컴포넌트 언마운트 또는 의존성 변경 시 URL 해제
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [field.value]);
 
   // 이미지 선택
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,18 +99,28 @@ const ImageUploadInput = <
     field.onChange(updatedImages);
   };
 
-  // 기존 이미지 삭제 (수정 모드에서)
   const handleDeleteStoredImage = (idx: number, imageId: number) => {
-    const formData = control._formValues as JobPostingForm;
-    const deletedImgIds = formData.body.deleted_img_ids || [];
+    // deleted_img_ids 업데이트
+    const prev = getValues(`body.deleted_img_ids` as Path<TFieldValues>) ?? [];
+    setValue(
+      `body.deleted_img_ids` as Path<TFieldValues>,
+      [...prev, imageId] as PathValue<TFieldValues, Path<TFieldValues>>,
+      {
+        shouldDirty: true,
+      },
+    );
 
-    // 삭제된 이미지 ID 추가
-    deletedImgIds.push(imageId);
+    // images 배열에서도 제거
+    const currentImages =
+      getValues(`images` as Path<TFieldValues>)?.filter(
+        (img: Image, i: number) =>
+          !(i === idx && 'id' in img && img.id === imageId),
+      ) || [];
+    setValue(`images` as Path<TFieldValues>, currentImages, {
+      shouldDirty: true,
+    });
 
-    // body 업데이트
-    formData.body.deleted_img_ids = deletedImgIds;
-
-    // 화면에서 이미지 제거
+    // UI 상태 동기화
     setStoredImageUrls((prev) => prev.filter((_, i) => i !== idx));
   };
 
@@ -133,28 +168,26 @@ const ImageUploadInput = <
       ))}
 
       {/* 새로 업로드한 이미지들 */}
-      {images
-        .filter((img: File) => img instanceof File)
-        .map((image: File, idx: number) => (
-          <div
-            key={`new-${idx}`}
-            className="w-[7.5rem] h-[7.5rem] relative rounded-lg flex flex-row items-center justify-center bg-no-repeat bg-top text-left text-gray-400"
-          >
-            <div className="w-[7.5rem] h-[7.5rem] flex items-center justify-center rounded-lg">
-              <img
-                src={URL.createObjectURL(image)}
-                className="w-[7.5rem] h-[7.5rem] rounded-lg object-cover"
-                alt={`새 이미지 ${idx + 1}`}
-              />
-              <div
-                className="absolute top-[0.625rem] right-[0.625rem] cursor-pointer"
-                onClick={() => handleDeleteImage(idx)}
-              >
-                <CircleDeleteIcon />
-              </div>
+      {previewUrls.map((url, idx) => (
+        <div
+          key={`new-${idx}`}
+          className="w-[7.5rem] h-[7.5rem] relative rounded-lg flex flex-row items-center justify-center bg-no-repeat bg-top text-left text-gray-400"
+        >
+          <div className="w-[7.5rem] h-[7.5rem] flex items-center justify-center rounded-lg">
+            <img
+              src={url}
+              className="w-[7.5rem] h-[7.5rem] rounded-lg object-cover"
+              alt={`새 이미지 ${idx + 1}`}
+            />
+            <div
+              className="absolute top-[0.625rem] right-[0.625rem] cursor-pointer"
+              onClick={() => handleDeleteImage(idx)}
+            >
+              <CircleDeleteIcon />
             </div>
           </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };
