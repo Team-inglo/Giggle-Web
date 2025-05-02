@@ -228,7 +228,6 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       useKeyValue: true,
       options: JobCategoryInfo,
       isRequired: true,
-      transformer: transformers.jobCategory,
     },
     {
       type: 'work_day_time',
@@ -265,7 +264,6 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       useKeyValue: true,
       options: WorkPeriodInfo,
       isRequired: true,
-      transformer: transformers.workPeriod,
     },
   ],
   step2: [
