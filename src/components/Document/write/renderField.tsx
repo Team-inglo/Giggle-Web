@@ -4,7 +4,6 @@ import DocumentFormInput from '@/components/Document/write/input/DocumentFormInp
 import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
 import AddressInput from '@/components/Document/write/input/AddressInput';
 import DropdownInput, {
-  DropdownOption,
   KeyValueDropdownInput,
 } from '@/components/Document/write/input/DropdownInput';
 import RadioGroup from '@/components/Document/write/input/RadioGroup';
@@ -19,13 +18,13 @@ import {
   IntegratedApplicationFormField,
   LaborContractEmployerFormField,
   PartTimePermitEmployerFormField,
-  WorkPeriodInfo,
 } from '@/constants/documents';
 import { PostFormField } from '@/constants/post';
 import WorkDayTimeInput from './input/WorkDayTimeInput';
 import VisaDropdown from '@/components/Common/VisaDropdown';
 import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
 import ImageUploadInput from './input/ImageUploadInput';
+import { convertToDropdownOption } from '../../../utils/document';
 
 type FormField =
   | LaborContractFormField
@@ -104,28 +103,33 @@ export const renderField = <
         />
       );
     case 'dropdown':
-      if (field.name === 'work_period') {
-        const workPeriodOptions: DropdownOption[] = Object.entries(
-          WorkPeriodInfo,
-        ).map(([key, value]) => ({
-          key,
-          name: (value as { name: string }).name,
-        }));
+      if (
+        field.useKeyValue &&
+        field.options &&
+        typeof field.options === 'object' &&
+        !Array.isArray(field.options)
+      ) {
         return (
           <KeyValueDropdownInput
             control={control}
             name={name}
             placeholder={field.placeholder}
-            options={workPeriodOptions}
+            options={convertToDropdownOption(
+              field.options as Record<
+                string,
+                { name: string; [key: string]: unknown }
+              >,
+            )}
           />
         );
       }
+
       return (
         <DropdownInput
           control={control}
           name={name}
           placeholder={field.placeholder}
-          options={field.options || []}
+          options={Array.isArray(field.options) ? field.options : []}
         />
       );
     case 'signature':
@@ -151,7 +155,7 @@ export const renderField = <
         <RadioGroup
           control={control}
           name={name}
-          options={field.options || []}
+          options={Array.isArray(field.options) ? field.options : []}
           description={field.description}
           transformer={field.transformer}
         />
@@ -208,7 +212,7 @@ export const renderField = <
                 <RadioGroup
                   control={control}
                   name={name}
-                  options={field.options || []}
+                  options={Array.isArray(field.options) ? field.options : []}
                   description={field.description}
                   transformer={field.transformer}
                 />

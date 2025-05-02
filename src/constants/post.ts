@@ -9,6 +9,7 @@ import {
 import { EducationCategoryNames, JobCategoryNames } from '@/utils/post';
 import { ValueTransformer } from '@/types/api/document';
 import { transformers } from '@/utils/transformers';
+import { WorkPeriodInfo } from './documents';
 
 // 근무 기간 리스트
 export const WorkPeriodNames = [
@@ -54,7 +55,7 @@ export const JobCategoryInfo = {
     name: '제조업',
     key: 'MANUFACTURING',
   },
-} as const;
+};
 
 export const JobCategoryList: JobCategoryNames[] = [
   '일반통역/번역',
@@ -91,7 +92,7 @@ export const EducationLevelInfo = {
     name: '무관',
     key: 'NONE',
   },
-} as const;
+};
 
 export const VisaInfo = {
   [VisaGroup.D_2]: {
@@ -139,7 +140,7 @@ export const VisaInfo = {
     en: 'H-1 : Working Holiday Visa',
     key: 'H_1',
   },
-} as const;
+};
 
 export const GenderList = ['남', '여', '무관'];
 
@@ -156,7 +157,7 @@ export const genderInfo = {
     name: '무관',
     key: 'NONE',
   },
-} as const;
+};
 
 export const WorkTypeInfo = {
   [EmploymentType.INTERNSHIP]: {
@@ -187,7 +188,7 @@ export type PostFormField = {
   title: string;
   placeholder: string;
   description?: string;
-  options?: string[];
+  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   inputType?: InputType;
   isRequired?: boolean;
   isUnit?: boolean;
@@ -204,6 +205,8 @@ export type PostFormField = {
   isEdit?: boolean;
   isImage?: boolean;
   textareaHeight?: string;
+  useKeyValue?: boolean;
+  keyValueOptions?: { key: string; name: string }[];
 };
 
 // Step1에 해당하는 폼 필드 정의
@@ -222,7 +225,8 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       name: 'body.job_category',
       title: '업직종',
       placeholder: '업직종을 선택해주세요',
-      options: JobCategoryList,
+      useKeyValue: true,
+      options: JobCategoryInfo,
       isRequired: true,
       transformer: transformers.jobCategory,
     },
@@ -258,7 +262,8 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       name: 'body.work_period',
       title: '근무기간',
       placeholder: '근무 기간을 선택해주세요',
-      options: WorkPeriodNames,
+      useKeyValue: true,
+      options: WorkPeriodInfo,
       isRequired: true,
       transformer: transformers.workPeriod,
     },
@@ -321,9 +326,9 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       name: 'body.education_level',
       title: '학력',
       placeholder: '학력을 선택해주세요',
-      options: EducationList,
+      useKeyValue: true,
+      options: EducationLevelInfo,
       isRequired: true,
-      transformer: transformers.educationLevel,
     },
     {
       type: 'visa_dropdown',

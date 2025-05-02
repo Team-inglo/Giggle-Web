@@ -689,7 +689,7 @@ export type PartTimePermitFormField = {
   name: keyof PartTimePermitFormRequest | 'phone';
   title: string;
   placeholder: string;
-  options?: string[];
+  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   format?: string;
   description?: string;
   isUnit?: boolean;
@@ -697,6 +697,8 @@ export type PartTimePermitFormField = {
   isPrefix?: boolean;
   prefix?: string;
   label?: string;
+  useKeyValue?: boolean;
+  keyValueOptions?: { key: string; name: string }[];
 };
 
 // 시간제 근로 허가서 폼 필드 정의
@@ -748,7 +750,7 @@ export type LaborContractFormField = {
   name: keyof LaborContractEmployeeInfo | 'phone';
   title: string;
   placeholder: string;
-  options?: string[];
+  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   format?: string;
   description?: string;
   isUnit?: boolean;
@@ -756,6 +758,8 @@ export type LaborContractFormField = {
   isPrefix?: boolean;
   prefix?: string;
   label?: string;
+  useKeyValue?: boolean;
+  keyValueOptions?: { key: string; name: string }[];
 };
 
 // 표준근로계약서 폼 필드 정의
@@ -837,7 +841,7 @@ export type IntegratedApplicationFormField = {
   title: string;
   placeholder: string;
   description?: string;
-  options?: string[];
+  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   format?: string;
   transformer?: ValueTransformer;
   isRequired?: boolean;
@@ -846,6 +850,8 @@ export type IntegratedApplicationFormField = {
   isPrefix?: boolean;
   prefix?: string;
   label?: string;
+  useKeyValue?: boolean;
+  keyValueOptions?: { key: string; name: string }[];
 };
 
 // 통합신청서 폼 필드 정의
@@ -1050,7 +1056,7 @@ export type LaborContractEmployerFormField = {
   title: string;
   placeholder: string;
   description?: string;
-  options?: string[];
+  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   checkboxOptions?: CheckboxOption[];
   format?: string;
   transformer?: ValueTransformer;
@@ -1062,6 +1068,8 @@ export type LaborContractEmployerFormField = {
   variant?: 'checkbox' | 'button';
   label?: string;
   textareaHeight?: string;
+  useKeyValue?: boolean;
+  keyValueOptions?: { key: string; name: string }[];
 };
 
 // 고용주 표준근로계약서 필수 검증 필드 목록
@@ -1324,7 +1332,7 @@ export type PartTimePermitEmployerFormField = {
   title: string;
   placeholder: string;
   description?: string;
-  options?: string[];
+  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   format?: string;
   isRequired?: boolean;
   isUnit?: boolean;
@@ -1332,6 +1340,8 @@ export type PartTimePermitEmployerFormField = {
   isPrefix?: boolean;
   prefix?: string;
   label?: string;
+  useKeyValue?: boolean;
+  keyValueOptions?: { key: string; name: string }[];
 };
 
 // 고용주 시간제 근로 허가서 필수 검증 필드 목록
@@ -1409,6 +1419,7 @@ export const PartTimePermitEmployerFormFields: PartTimePermitEmployerFormField[]
       title:
         PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.WORK_PERIOD].ko,
       placeholder: '근무 기간을 선택해주세요',
+      useKeyValue: true,
       options: WorkPeriodNames,
       isRequired: true,
     },

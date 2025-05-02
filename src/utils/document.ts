@@ -11,6 +11,7 @@ import {
 import { GiggleAddress } from '@/types/api/users';
 import { extractNumbersAsNumber } from './post';
 import { InsuranceInfo } from '@/constants/documents';
+import { DropdownOption } from '@/components/Document/write/input/DropdownInput';
 
 export const MINIMUM_HOURLY_RATE = 10030;
 
@@ -436,4 +437,15 @@ export const applyFormat = (
   }
 
   return result;
+};
+
+export const convertToDropdownOption = <
+  T extends Record<string, { name: string; [key: string]: unknown }>,
+>(
+  keyNameInfo: T,
+): DropdownOption[] => {
+  return Object.entries(keyNameInfo).map(([key, value]) => ({
+    key,
+    name: value.name,
+  }));
 };
