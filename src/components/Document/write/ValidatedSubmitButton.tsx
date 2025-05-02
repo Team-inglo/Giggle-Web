@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cloneElement, ReactElement, useMemo } from 'react';
-import {
-  FieldValues,
-  useWatch,
-} from 'react-hook-form';
+import { FieldValues, useWatch } from 'react-hook-form';
 
 // 범용적인 유효성 검사 버튼 컴포넌트
 type ValidatedSubmitButtonProps<T extends FieldValues> = {
@@ -58,13 +55,13 @@ const ValidatedSubmitButton = <T extends FieldValues>({
 
   // Button 컴포넌트에 맞는 props 설정
   return cloneElement(children, {
+    ...children.props,
     onClick: isValid ? onClick : () => {},
     disabled: !isValid,
     bgColor: isValid ? 'bg-surface-primary' : 'bg-surface-secondary',
     fontColor: isValid ? 'text-text-normal' : 'text-text-disabled',
-    ...children.props,
     style: {
-      ...children.props.style,
+      ...(children.props?.style || {}),
     },
   });
 };

@@ -40,7 +40,7 @@ const AddressInput = <T extends FieldValues>({
         <div className="w-full h-screen fixed inset-0 bg-white z-20">
           <Controller
             control={control}
-            name={name as any}
+            name={name as FieldPath<T>}
             render={({ field: { onChange } }) => (
               <DaumPostcodeEmbed
                 style={{
@@ -75,7 +75,7 @@ const AddressInput = <T extends FieldValues>({
       ) : (
         <Controller
           control={control}
-          name={name as any}
+          name={name as FieldPath<T>}
           render={({ field: { value } }) => (
             <>
               <div onClick={() => setIsAddressSearch(true)}>
