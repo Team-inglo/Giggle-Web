@@ -1420,7 +1420,7 @@ export const PartTimePermitEmployerFormFields: PartTimePermitEmployerFormField[]
         PartTimeEmployPermitEmployerInfo[EmployerInfoProperty.WORK_PERIOD].ko,
       placeholder: '근무 기간을 선택해주세요',
       useKeyValue: true,
-      options: WorkPeriodNames,
+      options: WorkPeriodInfo,
       isRequired: true,
     },
     {
