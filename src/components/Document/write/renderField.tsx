@@ -1,5 +1,5 @@
 import { InputType } from '@/types/common/input';
-import { Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { Controller, FieldPath, FieldValues, useFormContext } from 'react-hook-form';
 import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
 import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
 import AddressInput from '@/components/Document/write/input/AddressInput';
@@ -52,6 +52,7 @@ export const RenderField = <
   name,
   onSchoolNameClick,
 }: RenderFieldProps<TFieldValues, TName>) => {
+  const { control } = useFormContext<TFieldValues>();
   const { account_type } = useUserStore();
 
   switch (field.type) {
@@ -74,6 +75,7 @@ export const RenderField = <
       return (
         <Controller
           name={name}
+          control={control}
           render={({ field: { value, onChange } }) => (
             <div className="w-full self-stretch flex flex-col items-center justify-start body-3">
               <div className="w-full flex flex-col items-start justify-start">
@@ -132,6 +134,7 @@ export const RenderField = <
       return (
         <Controller
           name={name}
+          control={control}
           render={({ field: { value, onChange } }) => (
             <div
               className={`w-full relative shadow rounded-xl box-border h-[120px] mb-40`}
@@ -178,6 +181,7 @@ export const RenderField = <
       return (
         <Controller
           name={name}
+          control={control}
           render={({ field: { value } }) => (
             <>
               <div onClick={onSchoolNameClick}>
@@ -225,6 +229,7 @@ export const RenderField = <
       return (
         <Controller
           name={name}
+          control={control}
           render={({ field: { value, onChange } }) => (
             <VisaDropdown
               value={value}
