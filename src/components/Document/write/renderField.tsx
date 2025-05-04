@@ -24,6 +24,8 @@ import VisaDropdown from '@/components/Common/VisaDropdown';
 import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
 import ImageUploadInput from './input/ImageUploadInput';
 import { convertToDropdownOption } from '../../../utils/document';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type FormField =
   | LaborContractFormField
@@ -42,7 +44,7 @@ type RenderFieldProps<
   onSchoolNameClick?: () => void;
 };
 
-export const renderField = <
+export const RenderField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
@@ -50,6 +52,8 @@ export const renderField = <
   name,
   onSchoolNameClick,
 }: RenderFieldProps<TFieldValues, TName>) => {
+  const { account_type } = useUserStore();
+
   switch (field.type) {
     case 'text':
       return (
@@ -136,6 +140,7 @@ export const renderField = <
                 onSave={onChange}
                 onReset={() => onChange('')}
                 previewImg={value as string}
+                isKorean={account_type === UserType.OWNER}
               />
             </div>
           )}
@@ -255,4 +260,13 @@ export const renderField = <
     default:
       return null;
   }
+};
+
+export const renderField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(
+  props: RenderFieldProps<TFieldValues, TName>,
+) => {
+  return <RenderField {...props} />;
 };
