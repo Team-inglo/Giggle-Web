@@ -3,18 +3,23 @@ import Input from '@/components/Common/Input';
 import { phone } from '@/constants/information';
 import { InputType } from '@/types/common/input';
 import { applyFormat } from '@/utils/document';
-import { Control, Controller, FieldPath, FieldValues, PathValue } from 'react-hook-form';
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  PathValue,
+  useFormContext,
+} from 'react-hook-form';
 
 // 전화번호 입력을 위한 커스텀 컴포넌트
 type PhoneNumberInputProps<T extends FieldValues = FieldValues> = {
-  control: Control<T>;
   name?: FieldPath<T>;
 };
 
 const PhoneNumberInput = <T extends FieldValues>({
-  control,
   name,
 }: PhoneNumberInputProps<T>) => {
+  const { control } = useFormContext<T>();
   return (
     <div className="w-full flex flex-row gap-2 justify-between mb-[0rem]">
       <div className="w-full h-[2.75rem]">

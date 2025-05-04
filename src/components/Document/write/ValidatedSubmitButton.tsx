@@ -1,30 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Button from '@/components/Common/Button';
-import { useMemo } from 'react';
-import { Control, FieldValues, useWatch } from 'react-hook-form';
+import { cloneElement, ReactElement, useMemo } from 'react';
+import { FieldValues, useWatch } from 'react-hook-form';
 
 // 범용적인 유효성 검사 버튼 컴포넌트
 type ValidatedSubmitButtonProps<T extends FieldValues> = {
-  control: Control<T>; // React Hook Form의 control 객체
   fieldNames: (keyof T)[]; // 감시할 필드 이름 배열
   validationFn: (data: any) => boolean; // 유효성 검사 함수
   formatData?: (data: any) => any; // 선택적: 데이터 포맷팅 함수
-  buttonText: string;
+  children: ReactElement; // 버튼 컴포넌트를 받습니다
   // 기타 Button 컴포넌트에 전달할 props
   onClick: () => void;
 };
 
 const ValidatedSubmitButton = <T extends FieldValues>({
-  control,
   fieldNames,
   validationFn,
   formatData = (data) => data,
-  buttonText,
+  children,
   onClick,
 }: ValidatedSubmitButtonProps<T>) => {
   // 필요한 모든 필드를 한 번에 감시
   const watchedFields = useWatch({
-    control,
     name: fieldNames as any[], // TypeScript 타입 문제 해결을 위한 캐스팅
   });
 
@@ -34,9 +30,16 @@ const ValidatedSubmitButton = <T extends FieldValues>({
     fieldNames.forEach((name, index) => {
       // 중첩 객체 속성 처리 (예: 'phone.start')
       if (String(name).includes('.')) {
-        const [parent, child] = String(name).split('.');
-        if (!data[parent]) data[parent] = {};
-        data[parent][child] = watchedFields[index];
+        const parts = String(name).split('.');
+        let current = data;
+
+        for (let i = 0; i < parts.length - 1; i++) {
+          const part = parts[i];
+          if (!current[part]) current[part] = {};
+          current = current[part];
+        }
+
+        current[parts[parts.length - 1]] = watchedFields[index];
       } else {
         data[name as string] = watchedFields[index];
       }
@@ -50,25 +53,17 @@ const ValidatedSubmitButton = <T extends FieldValues>({
     [formData, validationFn],
   );
 
-  return isValid ? (
-    <Button
-      type="large"
-      bgColor="bg-[#fef387]"
-      fontColor="text-[#222]"
-      isBorder={false}
-      title={buttonText}
-      onClick={onClick}
-    />
-  ) : (
-    <Button
-      type="large"
-      bgColor="bg-[#F4F4F9]"
-      fontColor=""
-      isBorder={false}
-      title={buttonText}
-      onClick={() => {}}
-    />
-  );
+  // Button 컴포넌트에 맞는 props 설정
+  return cloneElement(children, {
+    ...children.props,
+    onClick: isValid ? onClick : () => {},
+    disabled: !isValid,
+    bgColor: isValid ? 'bg-surface-primary' : 'bg-surface-secondary',
+    fontColor: isValid ? 'text-text-normal' : 'text-text-disabled',
+    style: {
+      ...(children.props?.style || {}),
+    },
+  });
 };
 
 export default ValidatedSubmitButton;

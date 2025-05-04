@@ -1,5 +1,5 @@
 import { Gender } from '@/types/api/users';
-import { WorkDayTime } from '../api/document';
+import { Phone, WorkDayTime } from '@/types/api/document';
 
 // Enums
 export enum JobCategory {
@@ -97,11 +97,14 @@ export type JobPostingForm = {
     recruiter_name: string;
     recruiter_email: string;
     recruiter_phone_number: string;
+    recruiter_phone?: Phone;
     description: string;
     preferred_conditions: string;
     deleted_img_ids?: number[];
   };
 };
+
+export type JobPostingFormField = keyof JobPostingForm['body'];
 
 // Initial State
 export const initialJobPostingState: JobPostingForm = {
@@ -138,6 +141,11 @@ export const initialJobPostingState: JobPostingForm = {
     recruiter_name: '',
     recruiter_email: '',
     recruiter_phone_number: '',
+    recruiter_phone: {
+      start: '010',
+      middle: '',
+      end: '',
+    },
     description: '',
     preferred_conditions: '',
   },

@@ -17,9 +17,10 @@ import {
 import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
+import Button from '../Common/Button';
 
 // 상수 정의
 type IntegratedApplicationFormProps = {
@@ -34,13 +35,14 @@ const IntegratedApplicationWriteForm = ({
   userOwnerPostId,
 }: IntegratedApplicationFormProps) => {
   const currentDocumentId = useParams().id;
-  const { control, handleSubmit, getValues, setValue } =
-    useForm<IntegratedApplicationData>({
-      // 문서 편집일 시 기존 값 자동 입력
-      values: document
-        ? createInitialValues(document)
-        : initialIntegratedApplication,
-    });
+  const methods = useForm<IntegratedApplicationData>({
+    // 문서 편집일 시 기존 값 자동 입력
+    values: document
+      ? createInitialValues(document)
+      : initialIntegratedApplication,
+  });
+
+  const { handleSubmit, getValues, setValue } = methods;
 
   // 초기값 생성 함수
   function createInitialValues(
@@ -107,7 +109,6 @@ const IntegratedApplicationWriteForm = ({
   const renderFormField = (field: IntegratedApplicationFormField) => {
     return renderField<IntegratedApplicationData>({
       field,
-      control,
       name: field.name as keyof IntegratedApplicationData,
       onSchoolNameClick:
         field.type === 'school_name' ? () => setIsModalOpen(true) : undefined,
@@ -119,7 +120,7 @@ const IntegratedApplicationWriteForm = ({
 
   // 최종 ui 렌더링
   return (
-    <>
+    <FormProvider {...methods}>
       <form
         className={`w-full flex flex-col px-4 ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
         onSubmit={(e) => e.preventDefault()}
@@ -156,15 +157,21 @@ const IntegratedApplicationWriteForm = ({
         <BottomButtonPanel>
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
           <ValidatedSubmitButton
-            control={control}
             fieldNames={REQUIRED_FIELDS}
             validationFn={validateIntegratedApplication}
-            buttonText={isEdit ? 'Modify' : 'Create'}
             onClick={handleSubmit(handleNext)}
-          />
+          >
+            <Button
+              type="large"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
+              isBorder={false}
+              title={isEdit ? 'Modify' : 'Create'}
+            />
+          </ValidatedSubmitButton>
         </BottomButtonPanel>
       </form>
-    </>
+    </FormProvider>
   );
 };
 

@@ -1,3 +1,4 @@
+// WorkDayTimeInput.tsx
 import {
   Controller,
   FieldValues,
@@ -5,12 +6,12 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import { useState } from 'react';
-import WorkDayTimeWithRestBottomSheet from '@/components/Common/WorkDayTimeWithRestBottomSheet';
-import { WorkDayTimeWithRest } from '@/types/api/document';
+import WorkDayTimeBottomSheet from '@/components/Common/WorkDayTimeBottomSheet';
+import { WorkDayTime } from '@/types/api/document';
 import { workDayTimeToString } from '@/utils/post';
 import AddIcon from '@/assets/icons/FileAddIcon.svg?react';
 
-interface WorkDayTimeWithRestInputProps<
+interface WorkDayTimeInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > {
@@ -19,13 +20,13 @@ interface WorkDayTimeWithRestInputProps<
   description?: string;
 }
 
-const WorkDayTimeWithRestInput = <
+const WorkDayTimeInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   name,
   description,
-}: WorkDayTimeWithRestInputProps<TFieldValues, TName>) => {
+}: WorkDayTimeInputProps<TFieldValues, TName>) => {
   const [isModal, setIsModal] = useState(false);
   const { control } = useFormContext<TFieldValues>();
 
@@ -40,24 +41,22 @@ const WorkDayTimeWithRestInput = <
               {description}
             </p>
           )}
-          {/* 트리거 버튼 */}
-          {value?.length > 0 && (
-            <div className="w-full h-8 overflow-x-auto flex items-center gap-2 mb-1">
-              {value.map((workdaytime: WorkDayTimeWithRest, index: number) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0"
-                  style={{ width: '124px' }}
-                >
-                  <div className="w-full h-6 flex items-center justify-center px-3 py-1 bg-primary-normal button-2 rounded-[1.125rem] whitespace-nowrap">
+          {/* 선택된 근무 시간 표시 */}
+          <div className="w-full h-8">
+            <div className="w-full h-full overflow-x-auto flex items-center gap-2">
+              {(value as WorkDayTime[])?.map((workdaytime, index) => (
+                <div key={index} className="flex-shrink-0">
+                  <div className="w-full h-6 flex items-center justify-center px-3 py-1 bg-surface-primary button-2 rounded-[1.125rem] whitespace-nowrap">
                     {workDayTimeToString(workdaytime)}
                   </div>
                 </div>
               ))}
             </div>
-          )}
+          </div>
+
+          {/* 근무 시간 추가 버튼 */}
           <button
-            className="w-full flex gap-2 items-center justify-center text-left body-2 border rounded-xl shadow-sm border-border-alternative [--input-color:text-alternative] bg-white py-[10px] pl-4 pr-[14px] cursor-pointer"
+            className="w-full flex gap-2 items-center justify-center text-left body-2 border rounded-xl shadow-sm border-border-alternative [--input-color:text-text-alternative] bg-white py-[0.625rem] pl-4 pr-[0.875rem] cursor-pointer"
             onClick={() => setIsModal(true)}
           >
             <span className="text-text-alternative">
@@ -65,12 +64,12 @@ const WorkDayTimeWithRestInput = <
             </span>
           </button>
 
-          {/* 모달 */}
+          {/* 근무 시간 선택 모달 */}
           {isModal && (
-            <WorkDayTimeWithRestBottomSheet
+            <WorkDayTimeBottomSheet
               isShowBottomsheet={isModal}
               setIsShowBottomSheet={setIsModal}
-              onClose={(selected: WorkDayTimeWithRest[]) => {
+              onClose={(selected: WorkDayTime[]) => {
                 onChange(selected);
                 setIsModal(false);
               }}
@@ -82,4 +81,4 @@ const WorkDayTimeWithRestInput = <
   );
 };
 
-export default WorkDayTimeWithRestInput;
+export default WorkDayTimeInput;

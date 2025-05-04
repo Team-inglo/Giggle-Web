@@ -17,11 +17,12 @@ import {
 } from '@/hooks/api/useDocument';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import Button from '../Common/Button';
 
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof PartTimePermitFormRequest> = [
@@ -45,11 +46,13 @@ const PartTimePermitWriteForm = ({
   userOwnerPostId,
 }: PartTimePermitFormProps) => {
   const currentDocumentId = useParams().id;
-  const { control, handleSubmit } = useForm<PartTimePermitFormRequest>({
+  const methods = useForm<PartTimePermitFormRequest>({
     values: document
       ? createInitialValues(document)
       : initialPartTimePermitForm,
   });
+
+  const { handleSubmit } = methods;
 
   // 초기값 생성 함수
   function createInitialValues(
@@ -95,7 +98,6 @@ const PartTimePermitWriteForm = ({
   const renderFormField = (field: PartTimePermitFormField) => {
     return renderField<PartTimePermitFormRequest>({
       field,
-      control,
       name: field.name as keyof PartTimePermitFormRequest,
     });
   };
@@ -104,7 +106,7 @@ const PartTimePermitWriteForm = ({
   const isFormDisabled = postPending || updatePending;
 
   return (
-    <>
+    <FormProvider {...methods}>
       <form
         className={`w-full p-4 flex flex-col ${isFormDisabled ? 'overflow-hidden pointer-events-none' : ''}`}
         onSubmit={(e) => e.preventDefault()}
@@ -128,15 +130,21 @@ const PartTimePermitWriteForm = ({
         <BottomButtonPanel>
           {/* 입력된 정보의 유효성 검사 통과 시 활성화 */}
           <ValidatedSubmitButton
-            control={control}
             fieldNames={REQUIRED_FIELDS}
             validationFn={validatePartTimePermit}
-            buttonText={isEdit ? 'Modify' : 'Create'}
             onClick={handleSubmit(handleNext)}
-          />
+          >
+            <Button
+              type="large"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
+              isBorder={false}
+              title={'Complete'}
+            />
+          </ValidatedSubmitButton>
         </BottomButtonPanel>
       </form>
-    </>
+    </FormProvider>
   );
 };
 

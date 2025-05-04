@@ -1,9 +1,9 @@
 import Dropdown from '@/components/Common/Dropdown';
 import {
   useController,
-  Control,
   FieldValues,
   FieldPath,
+  useFormContext,
 } from 'react-hook-form';
 
 // key-value 쌍을 위한 타입 정의
@@ -17,7 +17,6 @@ type BaseDropdownProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
-  control: Control<TFieldValues>;
   name: TName;
   placeholder: string;
 };
@@ -43,11 +42,11 @@ const DropdownInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-  control,
   name,
   placeholder,
   options,
 }: DropdownProps<TFieldValues, TName>) => {
+  const { control } = useFormContext<TFieldValues>();
   const { field } = useController({
     name,
     control,
@@ -68,11 +67,12 @@ const KeyValueDropdownInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-  control,
   name,
   placeholder,
   options,
 }: KeyValueDropdownProps<TFieldValues, TName>) => {
+  const { control } = useFormContext<TFieldValues>();
+
   const { field } = useController({
     name,
     control,

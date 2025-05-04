@@ -1,11 +1,15 @@
-import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import { CheckboxOption } from '@/constants/documents';
 import { ValueTransformer } from '@/types/api/document';
 
 // CheckboxGroup 컴포넌트 타입 정의
 type CheckboxGroupProps<T extends FieldValues = FieldValues> = {
-  control: Control<T>;
   name: FieldPath<T>;
   options: CheckboxOption[];
   description?: string;
@@ -16,12 +20,12 @@ type CheckboxGroupProps<T extends FieldValues = FieldValues> = {
 
 // 체크박스 그룹을 핸들링하는 공용 컴포넌트
 const CheckboxGroup = <T extends FieldValues = FieldValues>({
-  control,
   name,
   options,
   description,
   variant = 'checkbox',
 }: CheckboxGroupProps<T>) => {
+  const { control } = useFormContext<T>();
   return (
     <>
       {description && (

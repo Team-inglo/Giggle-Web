@@ -1,10 +1,9 @@
 import { InputType } from '@/types/common/input';
-import { Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { Controller, FieldPath, FieldValues, useFormContext } from 'react-hook-form';
 import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
 import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
 import AddressInput from '@/components/Document/write/input/AddressInput';
 import DropdownInput, {
-  DropdownOption,
   KeyValueDropdownInput,
 } from '@/components/Document/write/input/DropdownInput';
 import RadioGroup from '@/components/Document/write/input/RadioGroup';
@@ -12,42 +11,50 @@ import CheckboxGroup from '@/components/Document/write/input/CheckboxGroup';
 import WorkDayTimeWithRestInput from '@/components/Document/write/input/WorkDayTimeWithRestInput';
 import SignaturePad from '@/components/Document/write/SignaturePad';
 import Input from '@/components/Common/Input';
-import { Control } from 'react-hook-form';
 import {
   LaborContractFormField,
   PartTimePermitFormField,
   IntegratedApplicationFormField,
   LaborContractEmployerFormField,
   PartTimePermitEmployerFormField,
-  WorkPeriodInfo,
 } from '@/constants/documents';
+import { PostFormField } from '@/constants/post';
+import WorkDayTimeInput from './input/WorkDayTimeInput';
+import VisaDropdown from '@/components/Common/VisaDropdown';
+import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
+import ImageUploadInput from './input/ImageUploadInput';
+import { convertToDropdownOption } from '../../../utils/document';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type FormField =
   | LaborContractFormField
   | PartTimePermitFormField
   | IntegratedApplicationFormField
   | LaborContractEmployerFormField
-  | PartTimePermitEmployerFormField;
+  | PartTimePermitEmployerFormField
+  | PostFormField;
 
 type RenderFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   field: FormField;
-  control: Control<TFieldValues>;
   name: TName;
   onSchoolNameClick?: () => void;
 };
 
-export const renderField = <
+export const RenderField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   field,
-  control,
   name,
   onSchoolNameClick,
 }: RenderFieldProps<TFieldValues, TName>) => {
+  const { control } = useFormContext<TFieldValues>();
+  const { account_type } = useUserStore();
+
   switch (field.type) {
     case 'text':
       return (
@@ -56,7 +63,6 @@ export const renderField = <
           placeholder={field.placeholder}
           canDelete={false}
           name={name}
-          control={control}
           format={field.format}
           description={field.description}
           isUnit={field.isUnit}
@@ -68,14 +74,14 @@ export const renderField = <
     case 'textarea':
       return (
         <Controller
-          control={control}
           name={name}
+          control={control}
           render={({ field: { value, onChange } }) => (
             <div className="w-full self-stretch flex flex-col items-center justify-start body-3">
               <div className="w-full flex flex-col items-start justify-start">
                 <div className="w-full flex flex-col items-center justify-start">
                   <textarea
-                    className="w-full h-[10vh] px-[1rem] py-[0.75rem] border border-border-alternative rounded-[0.75rem] body-2 outline-none resize-none"
+                    className={`w-full ${field.textareaHeight} px-[1rem] py-[0.75rem] border border-border-alternative rounded-[0.75rem] body-2 outline-none resize-none`}
                     placeholder={field.placeholder}
                     value={value as string}
                     onChange={onChange}
@@ -87,46 +93,48 @@ export const renderField = <
         />
       );
     case 'phone':
-      return <PhoneNumberInput control={control} name={name} />;
+      return <PhoneNumberInput name={name} />;
     case 'address':
       return (
         <AddressInput
-          control={control}
           name={name}
           placeholder={field.placeholder}
           label={field.label}
         />
       );
     case 'dropdown':
-      if (field.name === 'work_period') {
-        const workPeriodOptions: DropdownOption[] = Object.entries(
-          WorkPeriodInfo,
-        ).map(([key, value]) => ({
-          key,
-          name: (value as { name: string }).name,
-        }));
+      if (
+        field.useKeyValue &&
+        field.options &&
+        typeof field.options === 'object' &&
+        !Array.isArray(field.options)
+      ) {
         return (
           <KeyValueDropdownInput
-            control={control}
             name={name}
             placeholder={field.placeholder}
-            options={workPeriodOptions}
+            options={convertToDropdownOption(
+              field.options as Record<
+                string,
+                { name: string; [key: string]: unknown }
+              >,
+            )}
           />
         );
       }
+
       return (
         <DropdownInput
-          control={control}
           name={name}
           placeholder={field.placeholder}
-          options={field.options || []}
+          options={Array.isArray(field.options) ? field.options : []}
         />
       );
     case 'signature':
       return (
         <Controller
-          control={control}
           name={name}
+          control={control}
           render={({ field: { value, onChange } }) => (
             <div
               className={`w-full relative shadow rounded-xl box-border h-[120px] mb-40`}
@@ -135,6 +143,7 @@ export const renderField = <
                 onSave={onChange}
                 onReset={() => onChange('')}
                 previewImg={value as string}
+                isKorean={account_type === UserType.OWNER}
               />
             </div>
           )}
@@ -143,9 +152,8 @@ export const renderField = <
     case 'radio':
       return (
         <RadioGroup
-          control={control}
           name={name}
-          options={field.options || []}
+          options={Array.isArray(field.options) ? field.options : []}
           description={field.description}
           transformer={field.transformer}
         />
@@ -153,7 +161,6 @@ export const renderField = <
     case 'checkbox':
       return (
         <CheckboxGroup
-          control={control}
           name={name}
           options={field.checkboxOptions || []}
           description={field.description}
@@ -161,12 +168,20 @@ export const renderField = <
         />
       );
     case 'work_schedule':
-      return <WorkDayTimeWithRestInput control={control} name={name} />;
+      return <WorkDayTimeWithRestInput name={name} />;
+    case 'work_day_time':
+      return (
+        <WorkDayTimeInput
+          name={name}
+          placeholder={field.placeholder}
+          description={field.description}
+        />
+      );
     case 'school_name':
       return (
         <Controller
-          control={control}
           name={name}
+          control={control}
           render={({ field: { value } }) => (
             <>
               <div onClick={onSchoolNameClick}>
@@ -186,14 +201,12 @@ export const renderField = <
       return (
         <div>
           <Controller
-            control={control}
             name={name}
             render={({ field: { value } }) => (
               <div className="flex flex-col gap-2">
                 <RadioGroup
-                  control={control}
                   name={name}
-                  options={field.options || []}
+                  options={Array.isArray(field.options) ? field.options : []}
                   description={field.description}
                   transformer={field.transformer}
                 />
@@ -203,7 +216,6 @@ export const renderField = <
                     placeholder={field.placeholder}
                     canDelete={false}
                     name={name}
-                    control={control}
                     isUnit={field.isUnit}
                     unit={field.unit}
                   />
@@ -213,7 +225,53 @@ export const renderField = <
           />
         </div>
       );
+    case 'visa_dropdown':
+      return (
+        <Controller
+          name={name}
+          control={control}
+          render={({ field: { value, onChange } }) => (
+            <VisaDropdown
+              value={value}
+              placeholder={field.placeholder}
+              setValue={onChange}
+            />
+          )}
+        />
+      );
+    case 'value_with_checkbox':
+      return (
+        <ValueWithCheckboxInput
+          name={name}
+          placeholder={field.placeholder}
+          description={field.description}
+          checkboxLabel={field.checkboxLabel}
+          isUnit={field.isUnit}
+          unit={field.unit}
+          isDate={field.isDate}
+          format={field.format}
+          inputType={field.inputType}
+        />
+      );
+    case 'image_upload':
+      return (
+        <div className="w-full">
+          <div className="w-full relative body-3 px-1 pb-1.5 text-text-strong text-left">
+            {field.placeholder}
+          </div>
+          <ImageUploadInput name={name} isEdit={field.isEdit as boolean} />
+        </div>
+      );
     default:
       return null;
   }
+};
+
+export const renderField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(
+  props: RenderFieldProps<TFieldValues, TName>,
+) => {
+  return <RenderField {...props} />;
 };

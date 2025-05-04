@@ -30,6 +30,8 @@ import {
 } from '@tanstack/react-query';
 import { smartNavigate } from '@/utils/application';
 import { useNavigate } from 'react-router-dom';
+import { initialJobPostingState } from '@/types/postCreate/postCreate';
+import { mapPostDetailDataToFormData } from '@/utils/post';
 
 // 4.1 (게스트) 공고 리스트 조회 훅
 export const useGetPostGuestList = (
@@ -304,4 +306,19 @@ export const useGetEmployerPostList = ({
     hasNextPage: data?.pages[data?.pages.length - 1].data.has_next,
     isFetchingNextPage,
   };
+};
+
+// 4.4 (유학생/고용주) 폼을 위한 공고 상세 조회하기 훅 (useMutation 버전)
+export const useGetPostDetailForForm = () => {
+  return useMutation({
+    mutationFn: async ({ id, isEdit }: { id?: number; isEdit?: boolean }) => {
+      if (!id || !isEdit) return { data: initialJobPostingState };
+
+      const response = await getPostDetail(id);
+      return {
+        data: mapPostDetailDataToFormData(response.data),
+        originalData: response.data,
+      };
+    },
+  });
 };

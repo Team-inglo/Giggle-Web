@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Controller, Control, FieldValues } from 'react-hook-form';
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
@@ -11,30 +16,31 @@ import { convertToAddress, getAddressCoords } from '@/utils/map';
 import { useState } from 'react';
 import { GiggleAddress } from '@/types/api/users';
 
-interface AddressInputProps<T extends FieldValues = FieldValues> {
-  control: Control<T>;
-  name: string;
+interface AddressInputProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> {
+  name: TName;
   placeholder: string;
   label?: string;
   isEssential?: boolean;
 }
 
 const AddressInput = <T extends FieldValues>({
-  control,
   name,
   placeholder,
   label = 'Detailed Address',
   isEssential = true,
 }: AddressInputProps<T>) => {
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
-
+  const { control } = useFormContext<T>();
   return (
     <>
       {isAddressSearch ? (
         <div className="w-full h-screen fixed inset-0 bg-white z-20">
           <Controller
             control={control}
-            name={name as any}
+            name={name as FieldPath<T>}
             render={({ field: { onChange } }) => (
               <DaumPostcodeEmbed
                 style={{
@@ -69,7 +75,7 @@ const AddressInput = <T extends FieldValues>({
       ) : (
         <Controller
           control={control}
-          name={name as any}
+          name={name as FieldPath<T>}
           render={({ field: { value } }) => (
             <>
               <div onClick={() => setIsAddressSearch(true)}>

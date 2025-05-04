@@ -1,11 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 import RadioButton from '@/components/Information/RadioButton';
 import { ValueTransformer } from '@/types/api/document';
 
 // RadioGroup 컴포넌트 타입 정의
 type RadioGroupProps<T extends FieldValues = FieldValues> = {
-  control: Control<T>;
   name: FieldPath<T>;
   options: string[];
   description?: string;
@@ -15,12 +18,12 @@ type RadioGroupProps<T extends FieldValues = FieldValues> = {
 
 // 라디오 버튼 그룹을 핸들링하는 공용 컴포넌트
 const RadioGroup = <T extends FieldValues = FieldValues>({
-  control,
   name,
   options,
   description,
   transformer,
 }: RadioGroupProps<T>) => {
+  const { control } = useFormContext<T>();
   // 긴 옵션인지 확인 (레이아웃 결정)
   const isLongOption = options.some((option) => option.length > 10);
 
