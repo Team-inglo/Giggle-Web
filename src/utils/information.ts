@@ -27,7 +27,6 @@ export const countNormalizedNameLength = (name: string): number => {
  * @returns 유효성 검사 결과
  */
 export const isValidName = (name: string): boolean => {
-
   const normalizedName = name.replace(/\s+/g, ' ').trim();
 
   const normalizedLength = normalizedName.length;
@@ -109,17 +108,31 @@ export const formatCompanyRegistrationNumber = (value: string) => {
   return formatValue;
 };
 
-// 날짜값 입력 시 YYYY-MM-DD 형식으로 만들기
-const validateDateInput = (value: string) => {
-  if (value.length > 10) return false;
+export const validateDateInput = (value: string) => {
+  // 빈 문자열이면 무효
+  if (value === '') return false;
 
-  for (let i = 0; i < value.length; i++) {
-    if (i === 4 || i === 7) {
-      if (value[i] !== '-') return false;
-    } else if (!/^\d$/.test(value[i])) {
-      return false;
-    }
-  }
+  // 완전한 YYYY-MM-DD 형식(길이 10)이 아니면 무효
+  if (value.length !== 10) return false;
+
+  // 형식 검사 (YYYY-MM-DD)
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+  if (!datePattern.test(value)) return false;
+
+  // 날짜 유효성 검사
+  const parts = value.split('-');
+  const year = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10);
+  const day = parseInt(parts[2], 10);
+
+  // 연도, 월, 일 범위 검사
+  if (year < 1900 || year > 2100) return false;
+  if (month < 1 || month > 12) return false;
+
+  // 각 월의 일수 확인
+  const daysInMonth = new Date(year, month, 0).getDate();
+  if (day < 1 || day > daysInMonth) return false;
+
   return true;
 };
 
