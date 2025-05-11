@@ -5,12 +5,13 @@ import {
   JobCategoryInfo,
 } from '@/constants/post';
 import { ApplicationDetailItem } from '@/types/api/application';
-import { DayOfWeek, WorkDayTime, WorkPeriod } from '@/types/api/document';
+import { DayOfWeek, Phone, WorkDayTime, WorkPeriod } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { PostSummaryItemType } from '@/types/post/postSummaryItem';
-import { EducationLevel, JobCategory } from '@/types/postCreate/postCreate';
+import { EducationLevel, initialJobPostingState, JobCategory, JobPostingForm } from '@/types/postCreate/postCreate';
 import { PostDetailItemType } from '@/types/postDetail/postDetailItem';
+import { formatPhoneNumber, parsePhoneNumber } from './information';
 
 // 입력 데이터에서 한글을 제거, 숫자만 남겨 반환하는 함수
 export const extractNumbersAsNumber = (str: string): number => {
@@ -188,5 +189,129 @@ export const transformApplicationDetailToJobPostingItemType = (
     hourly_rate: data.hourly_rate,
     recruitment_dead_line: '',
     created_at: '',
+  };
+};
+
+// 서버 데이터를 폼에 맞게 변환하는 함수
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const mapPostDetailDataToFormData = (postDetailData: any): JobPostingForm => {
+  if (!postDetailData) return initialJobPostingState;
+
+  const {
+    company_img_url_list = [],
+    title = '',
+    tags = {},
+    working_conditions = {},
+    workplace_information = {},
+    recruitment_conditions = {},
+    company_information = {},
+    detailed_overview = '',
+  } = postDetailData;
+
+  // 주소 데이터 처리
+  const address = {
+    region_1depth_name: workplace_information?.region_1depth_name || '',
+    region_2depth_name: workplace_information?.region_2depth_name || '',
+    region_3depth_name: workplace_information?.region_3depth_name || '',
+    region_4depth_name: workplace_information?.region_4depth_name || '',
+    address_name: workplace_information?.main_address || '',
+    latitude: workplace_information?.latitude || 0,
+    longitude: workplace_information?.longitude || 0,
+    address_detail: workplace_information?.detailed_address || '',
+  };
+
+  // 근무 일정 데이터 처리
+  const work_day_times = Array.isArray(working_conditions?.work_day_times)
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      working_conditions.work_day_times.map((workDayTime: any) => ({
+        ...workDayTime,
+        work_start_time:
+          workDayTime?.work_start_time === '협의가능'
+            ? null
+            : workDayTime?.work_start_time,
+        work_end_time:
+          workDayTime?.work_end_time === '협의가능'
+            ? null
+            : workDayTime?.work_end_time,
+      }))
+    : initialJobPostingState.body.work_day_times;
+
+  // 마감일 처리
+  const recruitment_dead_line =
+    recruitment_conditions?.recruitment_deadline === '상시모집'
+      ? null
+      : recruitment_conditions?.recruitment_deadline;
+
+  return {
+    images: company_img_url_list || [],
+    body: {
+      title: title || '',
+      job_category: tags?.job_category || '',
+      work_day_times,
+      work_period: working_conditions?.work_period || '',
+      hourly_rate: working_conditions?.hourly_rate || 0,
+      employment_type:
+        working_conditions?.employment_type ||
+        initialJobPostingState.body.employment_type,
+      address,
+      recruitment_dead_line,
+      recruitment_number: recruitment_conditions?.number_of_recruits || 0,
+      gender:
+        recruitment_conditions?.gender || initialJobPostingState.body.gender,
+      age_restriction: recruitment_conditions?.age_restriction || 0,
+      education_level: recruitment_conditions?.education || '',
+      visa: recruitment_conditions?.visa || [],
+      recruiter_name: company_information?.recruiter || '',
+      recruiter_email: company_information?.email || '',
+      recruiter_phone_number: company_information?.contact || '',
+      recruiter_phone: company_information?.contact
+        ? parsePhoneNumber(company_information.contact)
+        : initialJobPostingState.body.recruiter_phone,
+      description: detailed_overview || '',
+      preferred_conditions: recruitment_conditions?.preferred_conditions || '',
+    },
+  };
+};
+
+// 폼 데이터 전송 전 가공 함수
+export const preparePostDataForSubmission = (
+  values: JobPostingForm,
+  id?: number,
+) => {
+  const formData = new FormData();
+
+  // 이미지 처리
+  values.images
+    .filter((image): image is File => image instanceof File)
+    .forEach((image) => {
+      formData.append('image', image);
+    });
+
+  // body 데이터 준비
+  const bodyData = {
+    ...values.body,
+    // work_day_times 처리
+    work_day_times: values.body.work_day_times.map((workday) => ({
+      ...workday,
+      work_start_time:
+        workday.work_start_time === '협의가능' ? null : workday.work_start_time,
+      work_end_time:
+        workday.work_end_time === '협의가능' ? null : workday.work_end_time,
+    })),
+    // recruiter_phone 처리
+    recruiter_phone_number: formatPhoneNumber(
+      values.body.recruiter_phone as Phone,
+    ),
+  };
+
+  // body 데이터 추가
+  formData.append(
+    'body',
+    new Blob([JSON.stringify(bodyData)], { type: 'application/json' }),
+  );
+
+  return {
+    formData,
+    id,
   };
 };

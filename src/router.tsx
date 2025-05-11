@@ -33,12 +33,11 @@ import DocumentPreview from '@/pages/WriteDocuments/DocumentPreviewPage';
 import EmployerPostPage from '@/pages/Employer/Post/EmployerPostPage';
 import EmployerApplicantListPage from '@/pages/Employer/ApplicantList/EmployerApplicantListPage';
 import EmployerProfilePage from '@/pages/Employer/Profile/EmployerProfilePage';
-import EmployerSignupInfoPage from '@/pages/Employer/signup/EmployerSignupInfoPage';
+import EmployerSignupInfoPage from '@/pages/Employer/Signup/EmployerSignupInfoPage';
 import PostLanguagePage from '@/pages/PostLanguage/PostLanguagePage';
 import EmployerApplicantDetailPage from '@/pages/Employer/ApplicantDetail/EmployerApplicantDetailPage';
 import EmployerApplicantResumePage from '@/pages/Employer/ApplicantResume/EmployerApplicantResumePage';
 import EmployerApplicantResumeAcceptPage from '@/pages/Employer/ApplicantResumeAccept/EmployerApplicantResumeAcceptPage';
-import EmployerCreatePostPage from '@/pages/Employer/Post/EmployerCreatePostPage';
 import EmployerEditProfilePage from '@/pages/Employer/EditProfile/EmployerEditProfilePage';
 import EmployerSignupPage from '@/pages/Employer/Signup/EmployerSignupPage';
 import AlarmPage from '@/pages/Alarm/AlarmPage';
@@ -46,7 +45,6 @@ import ChatBotPage from '@/pages/ChatBot/ChatBotPage';
 import Splash from '@/components/Splash/Splash';
 import ApplicantDocumentsDetailPage from '@/pages/Employer/WriteDocuments/ApplicantDocumentsDetailPage';
 import EmployerWriteDocumentsPage from '@/pages/Employer/WriteDocuments/EmployerWriteDocumentsPage';
-import EmployerEditPostPage from '@/pages/Employer/Post/EmployerEditPostPage';
 import DocumentViewerPage from '@/pages/WriteDocuments/DocumentViewerPage';
 import PostSearchFilterPage from '@/pages/PostSearch/PostSearchFilterPage';
 import { useEffect } from 'react';
@@ -58,6 +56,7 @@ import EditResumePage from '@/pages/ManageResumePage/EditResumePage';
 import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
 import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
+import EmployerPostFormPage from './pages/Employer/Post/EmployerPostFormPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -176,11 +175,11 @@ const Router = () => {
         <Route path="/employer/post" element={<EmployerPostPage />} />
         <Route
           path="/employer/post/create/"
-          element={<EmployerCreatePostPage />}
+          element={<EmployerPostFormPage />}
         />
         <Route
           path="/employer/post/edit/:id"
-          element={<EmployerEditPostPage />}
+          element={<EmployerPostFormPage />}
         />
         <Route path="/employer/post/:id" element={<EmployerPostDetailPage />} />
         <Route

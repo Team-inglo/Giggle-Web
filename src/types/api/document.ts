@@ -42,6 +42,13 @@ export type EmployDocumentsSummaryResponse = {
   standard_labor_contract: EmployDocumentInfo | null;
 };
 
+// 전화번호 state 타입
+export type Phone = {
+  start: string;
+  middle: string;
+  end: string;
+};
+
 // 문서 종류 property와 이름 mapping
 export enum DocumentType {
   PART_TIME_PERMIT = 'part_time_employment_permits',
@@ -104,6 +111,7 @@ export type EmployerInformation = {
   company_registration_number: string | null;
   job_type: string | null;
   name: string | null;
+  phone?: Phone;
   phone_number: string | null;
   signature_base64: string;
   work_period: WorkPeriod | null;
@@ -127,6 +135,7 @@ export type PartTimePermitFormRequest = {
   term_of_completion: number;
   phone_number: string;
   email: string;
+  phone?: Phone;
 };
 
 // 근로 계약서 조회 응답 양식
@@ -140,6 +149,7 @@ export type LaborContractEmployeeInfo = {
   first_name: string;
   last_name: string;
   address: GiggleAddress;
+  phone?: Phone;
   phone_number: string;
   signature_base64: string; // base64 문자열
 };
@@ -191,7 +201,7 @@ export type WorkDayTimeWithRest = {
 // 근로 계약서 고용주 정보
 export type LaborContractEmployerInfo = {
   company_name: string;
-  company_registration_number: string | null;
+  company_registration_number: string;
   phone_number: string;
   name: string;
   start_date: string; // yyyy-MM-dd 형식
@@ -208,6 +218,7 @@ export type LaborContractEmployerInfo = {
   payment_method: PaymentMethod;
   insurance: Insurance[];
   signature_base64: string; // base64 문자열
+  phone?: Phone;
 };
 
 // 근로계약서 고용주 정보 속성명 enum
@@ -252,6 +263,10 @@ export type IntegratedApplicationData = {
   email: string;
   signature_base64: string;
   address: GiggleAddress;
+  tele_phone?: Phone;
+  cell_phone?: Phone;
+  new_work_place_phone?: Phone;
+  school_phone?: Phone;
 };
 
 export enum IntegratedApplicationField {
@@ -295,3 +310,12 @@ export enum WorkPeriod {
   SIX_MONTHS_TO_ONE_YEAR = 'SIX_MONTHS_TO_ONE_YEAR',
   MORE_THAN_ONE_YEAR = 'MORE_THAN_ONE_YEAR',
 }
+
+// 값 변환 핸들러 타입 정의
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ValueTransformer<T = any> = {
+  // 화면에 표시될 값을 저장 형식으로 변환 (예: 'Male' → 'MALE' 또는 'Accredited...' → true)
+  transformValue: (selectedOption: string) => T;
+  // 저장된 값과 옵션 항목을 비교하는 함수 (예: 'MALE'과 'Male' 비교, true와 'Accredited...' 비교)
+  compareValue: (currentValue: T, option: string) => boolean;
+};

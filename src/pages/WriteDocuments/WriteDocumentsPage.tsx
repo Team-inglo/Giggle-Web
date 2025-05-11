@@ -20,13 +20,15 @@ const WriteDocumentsPage = () => {
         title="Fill in document"
         onClickBackButton={handleClickBackButton}
       />
-      <DocumentSubHeader type={type as DocumentType} />
-      <DocumentFormDispenser
-        type={type as DocumentType}
-        isEdit={isEdit}
-        applicant_id={Number(id)}
-        userOwnerPostId={Number(userOwnerPostId)}
-      />
+      <div className="relative">
+        <DocumentSubHeader type={type as DocumentType} />
+        <DocumentFormDispenser
+          type={type as DocumentType}
+          isEdit={isEdit}
+          applicant_id={Number(id)}
+          userOwnerPostId={Number(userOwnerPostId)}
+        />
+      </div>
     </div>
   );
 };
