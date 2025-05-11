@@ -22,7 +22,7 @@ const PostSearchFilterButtons = ({
   };
 
   return (
-    <section className="w-full flex justify-center items-center gap-[0.5rem] pt-[0.75rem] pb-[2.5rem] px-[1.5rem]">
+    <section className="w-full flex justify-center items-center gap-2 pt-3 pb-10 px-6">
       <Button
         type={buttonTypeKeys.BACK}
         bgColor="bg-surface-secondary"
@@ -34,7 +34,7 @@ const PostSearchFilterButtons = ({
       <Button
         type={buttonTypeKeys.CONTINUE}
         bgColor="bg-surface-primary"
-        fontColor="text-[#1E1926] button-1"
+        fontColor="text-text-strong button-1"
         title={buttonTranslation.apply[isEmployerByAccountType(account_type)]}
         isBorder={false}
         onClick={onClickApply}

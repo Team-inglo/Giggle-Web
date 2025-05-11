@@ -25,7 +25,7 @@ const PostSearchFilterList = memo(
     const onClickSearchFilter = useCallback(
       (category: FILTER_CATEGORY, value: string) => {
         setFilterList((prevFilterList) => {
-          const selectedValues = prevFilterList[category];
+          const selectedValues = prevFilterList[category] ?? [];
 
           const updatedValues = selectedValues.includes(value)
             ? selectedValues.filter((item) => item !== value)
@@ -73,7 +73,8 @@ const FilterCategory = memo(
     onClickSearchFilter,
     accountType,
   }: FilterCategoryProps) => {
-    const isSelected = (value: string) => selectedOptions.includes(value);
+    const isSelected = (value: string) =>
+      (selectedOptions ?? []).includes(value);
 
     return (
       <PostSearchFilterToggle
