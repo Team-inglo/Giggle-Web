@@ -1,6 +1,6 @@
 import { Dispatch, RefObject, SetStateAction } from 'react';
-import InputLayout from '../WorkExperience/InputLayout';
-import Input from '../Common/Input';
+import InputLayout from '@/components/WorkExperience/InputLayout';
+import Input from '@/components/Common/Input';
 import { InputType } from '@/types/common/input';
 import { IntroDuctionRequest } from '@/types/api/resumes';
 import { limitInputValueLength } from '@/utils/information';
