@@ -27,9 +27,12 @@ const IntroductionInput = ({
         <Input
           inputType={InputType.TEXT}
           placeholder="ex. Friendly barista with a passion for coffee ☕"
-          value={data.title as string}
+          value={data.title ?? ''}
           onChange={(value) =>
-            handleChange({ ...data, title: limitInputValueLength(value, 50) })
+            handleChange((prev) => ({
+              ...prev,
+              title: limitInputValueLength(value, 50),
+            }))
           }
           canDelete={false}
         />
@@ -48,12 +51,12 @@ const IntroductionInput = ({
           <textarea
             ref={textareaRef}
             placeholder="Who are you? What are your skills? Keep it short & engaging!"
-            value={data.introduction as string}
+            value={data.introduction ?? ''}
             onChange={(e) =>
-              handleChange({
-                ...data,
+              handleChange((prev) => ({
+                ...prev,
                 introduction: limitInputValueLength(e.target.value, 200),
-              })
+              }))
             }
             className="h-auto body-2 placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
           />

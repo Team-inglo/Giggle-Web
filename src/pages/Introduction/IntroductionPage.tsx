@@ -19,7 +19,7 @@ const IntroductionPage = () => {
     () =>
       location.state?.data || {
         title: '',
-        content: '',
+        introduction: '',
       },
     [location.state?.data],
   );
@@ -52,10 +52,8 @@ const IntroductionPage = () => {
     }
     // 편집 중인지 여부 확인
     const isValidEdit =
-      data.title !== undefined &&
-      data.title?.trim().length > 0 &&
-      data.introduction !== undefined &&
-      data.introduction?.trim().length > 0;
+      (data.title?.trim().length ?? 0) > 0 &&
+      (data.introduction?.trim().length ?? 0) > 0;
     setIsValid(isValidEdit);
   }, [data, initialData]);
 
