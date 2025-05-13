@@ -7,6 +7,7 @@ import { buttonTypeKeys } from '@/constants/components';
 import { usePatchIntroduction } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { IntroDuctionRequest } from '@/types/api/resumes';
+import { smartNavigate } from '@/utils/application';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -38,9 +39,13 @@ const IntroductionPage = () => {
 
   const { mutate } = usePatchIntroduction();
 
+  const isEqual = (a: IntroDuctionRequest, b: IntroDuctionRequest) => {
+    return a.title === b.title && a.introduction === b.introduction;
+  };
   const handleSubmit = () => {
     // API - 7.8 (유학생) 자기소개 수정하기
-    if (initialData === data) navigate('/profile/edit-resume');
+    if (isEqual(data, initialData))
+      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true });
     else mutate({ introduction: data.introduction, title: data.title });
   };
 
