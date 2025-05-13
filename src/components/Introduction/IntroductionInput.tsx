@@ -2,14 +2,14 @@ import { Dispatch, RefObject, SetStateAction } from 'react';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import Input from '@/components/Common/Input';
 import { InputType } from '@/types/common/input';
-import { IntroDuctionRequest } from '@/types/api/resumes';
+import { IntroductionRequest } from '@/types/api/resumes';
 import { limitInputValueLength } from '@/utils/information';
 
 type IntroductionInputProps = {
-  data: IntroDuctionRequest;
+  data: IntroductionRequest;
   textareaRef: RefObject<HTMLTextAreaElement>;
   handleFocusTextArea: () => void;
-  handleChange: Dispatch<SetStateAction<IntroDuctionRequest>>;
+  handleChange: Dispatch<SetStateAction<IntroductionRequest>>;
 };
 
 const IntroductionInput = ({

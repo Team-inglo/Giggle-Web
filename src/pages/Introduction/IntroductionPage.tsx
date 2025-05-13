@@ -6,7 +6,7 @@ import IntroductionInput from '@/components/Introduction/IntroductionInput';
 import { buttonTypeKeys } from '@/constants/components';
 import { usePatchIntroduction } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
-import { IntroDuctionRequest } from '@/types/api/resumes';
+import { IntroductionRequest } from '@/types/api/resumes';
 import { smartNavigate } from '@/utils/application';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ const IntroductionPage = () => {
       },
     [location.state?.data],
   );
-  const [data, setData] = useState<IntroDuctionRequest>(initialData);
+  const [data, setData] = useState<IntroductionRequest>(initialData);
 
   // 초기 값에서 수정된 내용이 있는지 확인
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -39,7 +39,7 @@ const IntroductionPage = () => {
 
   const { mutate } = usePatchIntroduction();
 
-  const isEqual = (a: IntroDuctionRequest, b: IntroDuctionRequest) => {
+  const isEqual = (a: IntroductionRequest, b: IntroductionRequest) => {
     return a.title === b.title && a.introduction === b.introduction;
   };
   const handleSubmit = () => {
