@@ -9,6 +9,7 @@ import { VisaType } from '@/types/postDetail/postDetailItem';
 
 // 자기소개 요청 타입
 export type IntroDuctionRequest = {
+  title?: string;
   introduction?: string;
 };
 
