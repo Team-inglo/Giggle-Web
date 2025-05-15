@@ -14,6 +14,7 @@ import {
   patchIntroduction,
   patchLanguagesLevel,
   patchWorkExperience,
+  patchWorkPreference,
   postEducation,
   postEtcLanguageLevel,
   postWorkExperience,
@@ -21,6 +22,7 @@ import {
 import {
   AdditionalLanguageRequest,
   LanguagesLevelType,
+  WorkPreferenceRequest,
 } from '@/types/api/resumes';
 import { smartNavigate } from '@/utils/application';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -278,5 +280,19 @@ export const useGetSearchSchools = (
         size: size.toString(),
       }),
     enabled: !!search, // 검색어가 있을 때만 쿼리 활성화
+  });
+};
+
+// TODO: API 명세 나오는대로 넘버링 추가, 위치 조정
+// 희망 근로 조건 업데이트 훅
+export const usePatchWorkPreference = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: WorkPreferenceRequest) => patchWorkPreference(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
+      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true }); // 성공시 편집 페이지로 이동
+    },
   });
 };

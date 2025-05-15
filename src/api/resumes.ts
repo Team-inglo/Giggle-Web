@@ -7,6 +7,7 @@ import {
   UserResumeDetailResponse,
   WorkExperienctRequest,
   WorkExperienctResponse,
+  WorkPreferenceRequest,
 } from '@/types/api/resumes';
 import { api } from '.';
 import { RESTYPE } from '@/types/api/common';
@@ -185,5 +186,11 @@ export const getSearchSchools = async ({
   const response = await api.get(
     `/users/schools/briefs?search=${search}&page=${page}&size=${size}`,
   );
+  return response.data;
+};
+
+// TODO: API 나오는대로 넘버링 추가, 위치 조정
+export const patchWorkPreference = async (data: WorkPreferenceRequest) => {
+  const response = await api.patch('/users/resumes/work-preference', data);
   return response.data;
 };
