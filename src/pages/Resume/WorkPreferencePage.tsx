@@ -148,7 +148,7 @@ const WorkPreferencePage = () => {
         title="Work Preferences"
       />
       <PageTitle
-        title="Tell us what you're looking for 🎯"
+        title={`Tell us what you're\nlooking for 🎯`}
         content="Set your work preferences to get better job matches!"
       />
 
@@ -200,10 +200,7 @@ const WorkPreferencePage = () => {
           />
         </InputLayout>
         <Divider />
-        <InputLayout
-          title="What kind of job are you looking for?"
-          isEssential={false}
-        >
+        <InputLayout title="What industries interest you?" isEssential={false}>
           <WorkPreferenceIndustrySelect
             selectedIndustries={selectedIndustries}
             onIndustriesChange={handleIndustriesChange}
