@@ -54,8 +54,8 @@ import EditResumePage from '@/pages/ManageResumePage/EditResumePage';
 import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
 import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
-import EmployerPostFormPage from './pages/Employer/Post/EmployerPostFormPage';
-import EducationPage from './pages/SetEducation/EducationPage';
+import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
+import EducationPage from '@/pages/SetEducation/EducationPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
