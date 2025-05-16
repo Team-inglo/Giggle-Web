@@ -5,7 +5,6 @@ import EducationForm from '@/components/SetEducation/EducationForm';
 import { buttonTypeKeys } from '@/constants/components';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import {
-  InitailEducationType,
   InitialEducationData,
   PostEducationType,
   SchoolSummary,
@@ -38,9 +37,7 @@ const EducationPage = () => {
   const { mutate: patchMutate } = usePatchEducation();
 
   // 공통 상태 - mode에 따라 타입을 명확히 구분
-  const [educationData, setEducationData] = useState<
-    InitailEducationType | PostEducationType
-  >(
+  const [educationData, setEducationData] = useState<PostEducationType>(
     mode === 'post'
       ? InitialEducationData
       : {
@@ -63,11 +60,11 @@ const EducationPage = () => {
   const handleSubmit = () => {
     if (mode === 'post') {
       // 유효성 검사
-      if (!educationDataValidation(educationData as InitailEducationType))
-        return;
+      if (!educationDataValidation(educationData)) return;
       // API - 7.6 학력 생성하기
       const formattedEducationData = {
         ...educationData,
+        education_level: educationData.education_level as EducationLevelType,
         gpa: educationData.gpa ? parseFloat(String(educationData.gpa)) : 0,
         grade: educationData.grade ? Number(educationData.grade) : 0,
       };
@@ -75,8 +72,18 @@ const EducationPage = () => {
     } else {
       // patch 모드
       if (educationData === initialData) navigate('/profile/edit-resume');
-      else
-        patchMutate({ id: id!, education: educationData as PostEducationType });
+      else {
+        const formattedPatchData = {
+          ...educationData,
+          education_level: educationData.education_level as EducationLevelType,
+          gpa: educationData.gpa ? parseFloat(String(educationData.gpa)) : 0,
+          grade: educationData.grade ? Number(educationData.grade) : 0,
+        };
+        patchMutate({
+          id: id!,
+          education: formattedPatchData as EducationRequest,
+        });
+      }
     }
   };
 
@@ -108,9 +115,7 @@ const EducationPage = () => {
   // 유효성 검사
   useEffect(() => {
     if (mode === 'post') {
-      setIsValid(
-        educationDataValidation(educationData as InitailEducationType),
-      );
+      setIsValid(educationDataValidation(educationData));
     } else {
       // patch 모드 유효성 검사
       const isValidEducationData = () => {

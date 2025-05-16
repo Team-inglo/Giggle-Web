@@ -2,7 +2,6 @@ import { EducationLevels } from '@/constants/manageResume';
 import { MypageCardData } from '@/types/manageResume/manageResume';
 import {
   GetEducationType,
-  InitailEducationType,
   PostEducationType,
 } from '@/types/postResume/postEducation';
 
@@ -42,18 +41,19 @@ export const transformToPatchEducation = (
 };
 
 // 학력 추가 데이터 유효성 검사
-export const educationDataValidation = (
-  data: InitailEducationType,
-): boolean => {
+export const educationDataValidation = (data: PostEducationType): boolean => {
   if (!data) return false;
 
   // 1. education_level은 EducationLevels 배열 안에 있는 값이어야 함
-  if (data.education_level && !EducationLevels.includes(data.education_level)) {
+  if (
+    data.education_level &&
+    !EducationLevels.includes(data.education_level as string)
+  ) {
     return false;
   }
 
   // 2. school_id는 0 이상의 숫자 값이어야 함
-  if (typeof data.school_id !== 'number' || data.school_id < 0) {
+  if (typeof data.school_id === 'number' && data.school_id < 0) {
     return false;
   }
 
@@ -62,8 +62,11 @@ export const educationDataValidation = (
     return false;
   }
 
-  // 4. gpa는 string 형태이지만, 숫자여야 함
-  if (typeof data.gpa !== 'string' || isNaN(Number(data.gpa))) {
+  // 4. gpa는 string 또는 number 형태이지만, 숫자여야 함
+  if (
+    (typeof data.gpa === 'string' && isNaN(Number(data.gpa))) ||
+    (typeof data.gpa === 'number' && isNaN(data.gpa))
+  ) {
     return false;
   }
 
@@ -79,7 +82,10 @@ export const educationDataValidation = (
   }
 
   // 7. grade는 숫자여야 함
-  if (typeof data.grade !== 'string') {
+  if (
+    (typeof data.grade === 'string' && isNaN(Number(data.grade))) ||
+    (typeof data.grade === 'number' && isNaN(data.grade))
+  ) {
     return false;
   }
 

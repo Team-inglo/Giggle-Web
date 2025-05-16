@@ -4,7 +4,6 @@ import Dropdown from '@/components/Common/Dropdown';
 import {
   PostEducationType,
   SchoolSummary,
-  InitailEducationType,
 } from '@/types/postResume/postEducation';
 import { EducationLevels, MajorsEn } from '@/constants/manageResume';
 import GraySearchIcon from '@/assets/icons/ManageResume/GraySearchIcon.svg?react';
@@ -16,10 +15,8 @@ import InputLayout from '../WorkExperience/InputLayout';
 
 type EducationFormProps = {
   mode: 'post' | 'patch';
-  educationData: PostEducationType | InitailEducationType;
-  setEducationData: Dispatch<
-    SetStateAction<PostEducationType | InitailEducationType>
-  >;
+  educationData: PostEducationType;
+  setEducationData: Dispatch<SetStateAction<PostEducationType>>;
   initialSchool?: SchoolSummary | School;
 };
 
@@ -78,7 +75,9 @@ const EducationForm = ({
             <GraySearchIcon />
             {/* 선택되었다면, 선택한 학교명 */}
             <p
-              className={`body-2 ${school ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}`}
+              className={`body-2 ${
+                school ? 'text-[#1E1926]' : 'text-[#BDBDBD]'
+              }`}
             >
               {school ? school.name : 'Search Name of school'}
             </p>
