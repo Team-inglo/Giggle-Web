@@ -16,13 +16,13 @@ import {
 } from '@/hooks/api/useResume';
 import {
   educationDataValidation,
+  isObjectEqual,
   transformToPatchEducation,
 } from '@/utils/editResume';
 import { EducationRequest } from '@/types/api/resumes';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EducationLevelType } from '@/types/postApply/resumeDetailItem';
-import { EducationLevels } from '@/constants/manageResume';
 
 const EducationPage = () => {
   const { id } = useParams();
@@ -36,20 +36,9 @@ const EducationPage = () => {
   const { mutate: postMutate } = usePostEducation();
   const { mutate: patchMutate } = usePatchEducation();
 
-  // 공통 상태 - mode에 따라 타입을 명확히 구분
-  const [educationData, setEducationData] = useState<PostEducationType>(
-    mode === 'post'
-      ? InitialEducationData
-      : {
-          education_level: 'BACHELOR' as EducationLevelType,
-          school_id: 0,
-          major: '',
-          gpa: 0,
-          start_date: '',
-          end_date: '',
-          grade: 2,
-        },
-  );
+  // 초기값
+  const [educationData, setEducationData] =
+    useState<PostEducationType>(InitialEducationData);
 
   // patch 모드일 때 필요한 상태
   const [initialData, setInitialData] = useState<PostEducationType>();
@@ -71,19 +60,23 @@ const EducationPage = () => {
       postMutate(formattedEducationData as EducationRequest);
     } else {
       // patch 모드
-      if (educationData === initialData) navigate('/profile/edit-resume');
-      else {
-        const formattedPatchData = {
-          ...educationData,
-          education_level: educationData.education_level as EducationLevelType,
-          gpa: educationData.gpa ? parseFloat(String(educationData.gpa)) : 0,
-          grade: educationData.grade ? Number(educationData.grade) : 0,
-        };
-        patchMutate({
-          id: id!,
-          education: formattedPatchData as EducationRequest,
-        });
+      const isUnchanged = isObjectEqual(educationData, initialData);
+      if (isUnchanged) {
+        //TODO: 이력서 페이지 리팩토링 후 이동 경로 수정
+        navigate('/profile/edit-resume');
+        return;
       }
+
+      const formattedPatchData = {
+        ...educationData,
+        education_level: educationData.education_level as EducationLevelType,
+        gpa: educationData.gpa ? parseFloat(String(educationData.gpa)) : 0,
+        grade: educationData.grade ? Number(educationData.grade) : 0,
+      };
+      patchMutate({
+        id: id!,
+        education: formattedPatchData as EducationRequest,
+      });
     }
   };
 
@@ -93,7 +86,6 @@ const EducationPage = () => {
   };
 
   // patch 모드일 때만 데이터 가져오기
-  // useGetEducation 훅은 내부에 enabled: !!id 옵션이 있음
   const { data: getEducationData } = useGetEducation(id || '');
 
   useEffect(() => {
@@ -114,22 +106,8 @@ const EducationPage = () => {
 
   // 유효성 검사
   useEffect(() => {
-    if (mode === 'post') {
-      setIsValid(educationDataValidation(educationData));
-    } else {
-      // patch 모드 유효성 검사
-      const isValidEducationData = () => {
-        return Object.entries(educationData).every(([key, value]) => {
-          if (key === 'education_level')
-            return EducationLevels.includes(value as EducationLevelType);
-          else if (typeof value === 'string') return value.trim().length > 0;
-          else if (typeof value === 'number') return value >= 0;
-          return false;
-        });
-      };
-      setIsValid(isValidEducationData());
-    }
-  }, [educationData, mode]);
+    setIsValid(educationDataValidation(educationData));
+  }, [educationData]);
 
   return (
     <>
@@ -177,7 +155,9 @@ const EducationPage = () => {
             ) : (
               <Button
                 type={buttonTypeKeys.LARGE}
-                bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
+                bgColor={
+                  isValid ? 'bg-surface-primary' : 'bg-surface-secondary'
+                }
                 fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
                 title="Save"
                 isBorder={false}

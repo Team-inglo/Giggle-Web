@@ -92,3 +92,13 @@ export const educationDataValidation = (data: PostEducationType): boolean => {
   // 모든 조건을 통과하면 true 반환
   return true;
 };
+
+//두 객체가 동일한지 비교하는 함수
+
+export const isObjectEqual = <T>(
+  obj1: T | undefined,
+  obj2: T | undefined,
+): boolean => {
+  if (obj1 === undefined || obj2 === undefined) return false;
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+};
