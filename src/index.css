@@ -62,8 +62,9 @@ body {
 
   .head-3 {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1.25rem;
+    color: #17181a;
   }
 
   .body-1 {
@@ -93,7 +94,7 @@ body {
 
   .button-2 {
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     line-height: 1rem;
   }
 
