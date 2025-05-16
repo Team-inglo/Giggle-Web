@@ -8,7 +8,8 @@ import {
 import { VisaType } from '@/types/postDetail/postDetailItem';
 
 // 자기소개 요청 타입
-export type IntroDuctionRequest = {
+export type IntroductionRequest = {
+  title?: string;
   introduction?: string;
 };
 
