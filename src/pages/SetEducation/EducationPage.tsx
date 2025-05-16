@@ -177,8 +177,8 @@ const EducationPage = () => {
             ) : (
               <Button
                 type={buttonTypeKeys.LARGE}
-                bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-                fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+                bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
+                fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
                 title="Save"
                 isBorder={false}
                 onClick={isValid ? handleSubmit : undefined}

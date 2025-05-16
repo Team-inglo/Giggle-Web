@@ -69,14 +69,14 @@ const EducationForm = ({
         {/* 학교명 선택 */}
         <InputLayout title="Name Of School" isEssential={true}>
           <div
-            className="w-full py-2.5 px-4 flex items-center gap-2.5 border border-solid border-[#EBEEF1] rounded-xl"
+            className="w-full py-2.5 px-4 flex items-center gap-2.5 border border-solid border-surface-tertiary rounded-xl"
             onClick={() => setSearchOpen(true)}
           >
             <GraySearchIcon />
             {/* 선택되었다면, 선택한 학교명 */}
             <p
               className={`body-2 ${
-                school ? 'text-[#1E1926]' : 'text-[#BDBDBD]'
+                school ? 'text-text-normal' : 'text-text-disabled'
               }`}
             >
               {school ? school.name : 'Search Name of school'}
