@@ -1,7 +1,7 @@
 import {
   AdditionalLanguageRequest,
   EducationRequest,
-  IntroDuctionRequest,
+  IntroductionRequest,
   LanguagesLevelType,
   LanguagesSummariesResponse,
   UserResumeDetailResponse,
@@ -75,7 +75,7 @@ export const postEtcLanguageLevel = async (
 };
 
 // 7.8 (유학생) 자기소개 수정하기
-export const patchIntroduction = async (introduction: IntroDuctionRequest) => {
+export const patchIntroduction = async (introduction: IntroductionRequest) => {
   const response = await api.patch('/users/resumes/introduction', introduction);
   return response.data;
 };
