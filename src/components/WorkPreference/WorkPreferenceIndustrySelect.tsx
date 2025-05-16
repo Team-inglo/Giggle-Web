@@ -70,6 +70,8 @@ const WorkPreferenceIndustrySelect = memo(
             <button
               key={industry.enumValue}
               onClick={() => onClickPreferences(industry.enumValue)}
+              data-industry
+              data-industry-value={industry.enumValue}
             >
               <Tag
                 value={industry.displayName}

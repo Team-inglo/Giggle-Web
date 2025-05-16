@@ -1,10 +1,14 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
-import { usePatchWorkPreference } from '@/hooks/api/useResume';
+import {
+  usePatchWorkPreference,
+  usePostWorkPreference,
+  useGetWorkPreference,
+} from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import PageTitle from '@/components/Common/PageTitle';
 import InputLayout from '@/components/WorkExperience/InputLayout';
@@ -18,10 +22,16 @@ import WorkPreferenceIndustrySelect, {
 } from '@/components/WorkPreference/WorkPreferenceIndustrySelect';
 import Divider from '@/components/Common/Divider';
 import Tag from '@/components/Common/Tag';
+import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
+import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 
 const WorkPreferencePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const handleBackButtonClick = useNavigateBack();
+
+  // location.state에서 isEdit 플래그 확인
+  const isEdit = location.state?.isEdit === true;
 
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const [isAreaSelectOpen, setIsAreaSelectOpen] = useState(false);
@@ -34,6 +44,61 @@ const WorkPreferencePage = () => {
     industry: false,
   });
 
+  // 기존 데이터 조회
+  const { data: workPreferenceData, isSuccess } = useGetWorkPreference();
+
+  // 기존 데이터가 있는 경우 초기 데이터 설정
+  useEffect(() => {
+    if (isEdit && isSuccess && workPreferenceData) {
+      // 지역 데이터 변환
+      const areas = workPreferenceData.areas.map(
+        (area: {
+          region_1depth_name: string;
+          region_2depth_name: string | null;
+          region_3depth_name: string | null;
+        }) => {
+          const parts = [];
+          if (area.region_1depth_name) parts.push(area.region_1depth_name);
+          if (area.region_2depth_name) parts.push(area.region_2depth_name);
+          if (area.region_3depth_name) parts.push(area.region_3depth_name);
+          return parts.join(' ');
+        },
+      );
+
+      setSelectedAreas(areas);
+
+      // jobType과 industry 초기값 설정은 다음 렌더링 사이클에서 처리
+      setTimeout(() => {
+        // 근무 형태 설정
+        const jobTypeStrings = workPreferenceData.jobTypes.map(
+          (jobType: EmploymentType) => jobType.toLowerCase(),
+        );
+
+        // 컴포넌트 내부 상태 업데이트
+        const jobTypeSelectElement =
+          document.querySelectorAll('[data-job-type]');
+        jobTypeStrings.forEach((jobType: string) => {
+          jobTypeSelectElement.forEach((element) => {
+            if (element.textContent?.trim().toLowerCase() === jobType) {
+              (element as HTMLElement).click();
+            }
+          });
+        });
+
+        // 업직종 설정
+        const industrySelectElement =
+          document.querySelectorAll('[data-industry]');
+        workPreferenceData.industries.forEach((industry: JobCategory) => {
+          industrySelectElement.forEach((element) => {
+            if (element.getAttribute('data-industry-value') === industry) {
+              (element as HTMLElement).click();
+            }
+          });
+        });
+      }, 0);
+    }
+  }, [isEdit, isSuccess, workPreferenceData]);
+
   // 근무 지역 포함 전체 유효성 계산
   const isFormValid = useMemo(() => {
     return (
@@ -45,13 +110,11 @@ const WorkPreferencePage = () => {
 
   // 근무 선호 사항 화면 <=> 지역 선택 화면
   const handleAreaSelectOpen = useCallback((areas?: string[]) => {
-    console.log('handleAreaSelectOpen', areas);
     if (areas) {
       setSelectedAreas(areas);
       setIsAreaSelectOpen(false);
       return;
     }
-    console.log('handleAreaSelectOpen');
     setIsAreaSelectOpen(true);
   }, []);
 
@@ -67,7 +130,8 @@ const WorkPreferencePage = () => {
   );
 
   // API 훅 사용
-  const { mutate } = usePatchWorkPreference();
+  const { mutate: patchMutate } = usePatchWorkPreference();
+  const { mutate: postMutate } = usePostWorkPreference();
 
   // 저장 버튼 클릭 핸들러
   const handleSubmit = () => {
@@ -77,16 +141,35 @@ const WorkPreferencePage = () => {
       return;
     }
 
+    // 지역 데이터를 AreaType 배열로 변환
+    const areas = selectedAreas.map((area) => {
+      const parts = area.split(' ');
+      return {
+        region_1depth_name: parts[0] || '',
+        region_2depth_name: parts[1] || null,
+        region_3depth_name: parts[2] || null,
+        region_4depth_name: null,
+      };
+    });
+
+    // 문자열 배열을 EmploymentType 배열로 변환
+    const jobTypes = (jobTypeRef.current?.getSelectedJobs() || []).map(
+      (jobType) => jobType.toUpperCase() as EmploymentType,
+    );
+
     // 데이터 형식 변환
-    const requestData = {
-      preferred_work_type: jobTypeRef.current?.getSelectedJobs().join(', '),
-      preferred_location: selectedAreas.join(', '),
-      preferred_industries: industryRef.current
-        ?.getSelectedIndustries()
-        .join(', '),
+    const requestData: WorkPreferenceType = {
+      areas: areas,
+      jobTypes: jobTypes,
+      industries: industryRef.current?.getSelectedIndustries() || [],
     };
 
-    mutate(requestData);
+    // isEdit 플래그에 따라 적절한 API 호출
+    if (isEdit) {
+      patchMutate(requestData);
+    } else {
+      postMutate(requestData);
+    }
   };
 
   if (isAreaSelectOpen) {
@@ -167,7 +250,7 @@ const WorkPreferencePage = () => {
         >
           <WorkPreferenceIndustrySelect
             ref={industryRef}
-            onValidityChange={updateValidity('jobType')}
+            onValidityChange={updateValidity('industry')}
           />
         </InputLayout>
       </div>
