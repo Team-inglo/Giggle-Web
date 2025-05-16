@@ -3,12 +3,14 @@ import {
   deleteEtcLanguageLevel,
   deleteIntroduction,
   deleteWorkExperience,
+  deleteWorkPreference,
   getApplicantResume,
   getEducation,
   getLanguagesSummaries,
   getResume,
   getSearchSchools,
   getWorkExperience,
+  getWorkPreference,
   patchEducation,
   patchEtcLanguageLevel,
   patchIntroduction,
@@ -18,12 +20,13 @@ import {
   postEducation,
   postEtcLanguageLevel,
   postWorkExperience,
+  postWorkPreference,
 } from '@/api/resumes';
 import {
   AdditionalLanguageRequest,
   LanguagesLevelType,
-  WorkPreferenceRequest,
 } from '@/types/api/resumes';
+import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 import { smartNavigate } from '@/utils/application';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -265,6 +268,54 @@ export const useGetApplicantResume = (id: number, isEnabled: boolean) => {
   });
 };
 
+// 7.21 (유학생) 희망 근로 조건 상세 조회하기
+export const useGetWorkPreference = () => {
+  return useQuery({
+    queryKey: ['workPreference'],
+    queryFn: getWorkPreference,
+  });
+};
+
+// 7.22 (유학생) 희망 근로 조건 생성하기
+export const usePostWorkPreference = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (data: WorkPreferenceType) => postWorkPreference(data),
+    onSuccess: () => {
+      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true });
+    },
+    onError: (error) => {
+      console.error('희망 근로 조건 생성 실패', error);
+    },
+  });
+};
+
+// 7.23 (유학생) 희망 근로 조건 수정하기
+export const usePatchWorkPreference = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: WorkPreferenceType) => patchWorkPreference(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
+      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true }); // 성공시 편집 페이지로 이동
+    },
+  });
+};
+
+// 7.24 (유학생) 희망 근로 조건 삭제하기
+export const useDeleteWorkPreference = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteWorkPreference,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['resume'],
+      });
+    },
+  });
+};
+
 // 9.1 (유학생) 학교 검색하기
 export const useGetSearchSchools = (
   search: string,
@@ -280,19 +331,5 @@ export const useGetSearchSchools = (
         size: size.toString(),
       }),
     enabled: !!search, // 검색어가 있을 때만 쿼리 활성화
-  });
-};
-
-// TODO: API 명세 나오는대로 넘버링 추가, 위치 조정
-// 희망 근로 조건 업데이트 훅
-export const usePatchWorkPreference = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: WorkPreferenceRequest) => patchWorkPreference(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['resume'] });
-      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true }); // 성공시 편집 페이지로 이동
-    },
   });
 };

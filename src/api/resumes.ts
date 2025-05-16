@@ -7,11 +7,11 @@ import {
   UserResumeDetailResponse,
   WorkExperienctRequest,
   WorkExperienctResponse,
-  WorkPreferenceRequest,
 } from '@/types/api/resumes';
 import { api } from '.';
 import { RESTYPE } from '@/types/api/common';
 import { GetEducationType } from '@/types/postResume/postEducation';
+import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 
 // 7.1 (유학생) 이력서 조회하기
 export const getResume = async (): Promise<
@@ -173,6 +173,30 @@ export const getApplicantResume = async (id: number) => {
   return response.data;
 };
 
+// 7.21 (유학생) 희망 근로 조건 상세 조회하기
+export const getWorkPreference = async () => {
+  const response = await api.get('/users/resumes/work-preferences/details');
+  return response.data;
+};
+
+// 7.22 (유학생) 희망 근로 조건 생성하기
+export const postWorkPreference = async (data: WorkPreferenceType) => {
+  const response = await api.post('/users/resumes/work-preferences', data);
+  return response.data;
+};
+
+// 7.23 (유학생) 희망 근로 조건 수정하기
+export const patchWorkPreference = async (data: WorkPreferenceType) => {
+  const response = await api.patch('/users/resumes/work-preferences', data);
+  return response.data;
+};
+
+// 7.24 (유학생) 희망 근로 조건 삭제하기
+export const deleteWorkPreference = async () => {
+  const response = await api.delete('/users/resumes/work-preferences');
+  return response.data;
+};
+
 // 9.1 (유학생) 학교 검색하기
 export const getSearchSchools = async ({
   search,
@@ -186,11 +210,5 @@ export const getSearchSchools = async ({
   const response = await api.get(
     `/users/schools/briefs?search=${search}&page=${page}&size=${size}`,
   );
-  return response.data;
-};
-
-// TODO: API 나오는대로 넘버링 추가, 위치 조정
-export const patchWorkPreference = async (data: WorkPreferenceRequest) => {
-  const response = await api.patch('/users/resumes/work-preference', data);
   return response.data;
 };
