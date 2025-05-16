@@ -6,9 +6,10 @@ import {
   useImperativeHandle,
   useState,
 } from 'react';
-import Tag from '../Common/Tag';
+import Tag from '@/components/Common/Tag';
+import { EmploymentType } from '@/types/postCreate/postCreate';
 
-const jobTypes = ['Part-time', 'Internship'];
+const jobTypes = Object.values(EmploymentType).map((jobType) => jobType.toLowerCase());
 
 interface WorkPreferenceJobTypeSelectProps {
   onValidityChange: (isValid: boolean) => void;

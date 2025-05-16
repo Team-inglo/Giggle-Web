@@ -6,7 +6,7 @@ import {
   useImperativeHandle,
   useState,
 } from 'react';
-import Tag from '../Common/Tag';
+import Tag from '@/components/Common/Tag';
 import { JobCategory } from '@/types/postCreate/postCreate';
 
 // enum 값을 표시 이름으로 변환하는 함수
