@@ -18,8 +18,12 @@ import WorkPreferenceJobTypeSelect from '@/components/WorkPreference/WorkPrefere
 import WorkPreferenceIndustrySelect from '@/components/WorkPreference/WorkPreferenceIndustrySelect';
 import Divider from '@/components/Common/Divider';
 import Tag from '@/components/Common/Tag';
+import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
-import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
+import {
+  convertApiAreasToStrings,
+  prepareWorkPreferenceData,
+} from '@/utils/editResume';
 
 const WorkPreferencePage = () => {
   const navigate = useNavigate();
@@ -38,27 +42,20 @@ const WorkPreferencePage = () => {
   );
 
   // 기존 데이터 조회
-  const { data: workPreferenceData, isSuccess } = useGetWorkPreference(isEdit);
+  const {
+    data: workPreferenceData,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useGetWorkPreference(isEdit);
+
+  // 로딩 상태 표시 여부
+  const isShowLoading = isEdit && (isLoading || isFetching);
 
   // 기존 데이터가 있는 경우 초기 데이터 설정
   useEffect(() => {
     if (isEdit && isSuccess && workPreferenceData) {
-      // 지역 데이터 변환
-      const areas = workPreferenceData.areas.map(
-        (area: {
-          region_1depth_name: string;
-          region_2depth_name: string | null;
-          region_3depth_name: string | null;
-        }) => {
-          const parts = [];
-          if (area.region_1depth_name) parts.push(area.region_1depth_name);
-          if (area.region_2depth_name) parts.push(area.region_2depth_name);
-          if (area.region_3depth_name) parts.push(area.region_3depth_name);
-          return parts.join(' ');
-        },
-      );
-
-      setSelectedAreas(areas);
+      setSelectedAreas(convertApiAreasToStrings(workPreferenceData.areas));
 
       // 근무 형태 설정
       const jobTypeStrings = workPreferenceData.jobTypes.map(
@@ -108,7 +105,7 @@ const WorkPreferencePage = () => {
   const { mutate: patchMutate } = usePatchWorkPreference();
   const { mutate: postMutate } = usePostWorkPreference();
 
-  // 저장 버튼 클릭 핸들러
+  // 저장 버튼 클릭 시
   const handleSubmit = () => {
     if (!isFormValid) {
       // 변경사항이 없으면 이전 페이지로 이동
@@ -116,30 +113,12 @@ const WorkPreferencePage = () => {
       return;
     }
 
-    // 지역 데이터를 AreaType 배열로 변환
-    const areas = selectedAreas.map((area) => {
-      const parts = area.split(' ');
-      return {
-        region_1depth_name: parts[0] || '',
-        region_2depth_name: parts[1] || null,
-        region_3depth_name: parts[2] || null,
-        region_4depth_name: null,
-      };
-    });
-
-    // 문자열 배열을 EmploymentType 배열로 변환
-    const jobTypes = selectedJobTypes.map(
-      (jobType) => jobType.toUpperCase() as EmploymentType,
+    const requestData = prepareWorkPreferenceData(
+      selectedAreas,
+      selectedJobTypes,
+      selectedIndustries,
     );
 
-    // 데이터 형식 변환
-    const requestData: WorkPreferenceType = {
-      areas: areas,
-      jobTypes: jobTypes,
-      industries: selectedIndustries,
-    };
-
-    // isEdit 플래그에 따라 적절한 API 호출
     if (isEdit) {
       patchMutate(requestData);
     } else {
@@ -159,6 +138,9 @@ const WorkPreferencePage = () => {
 
   return (
     <div>
+      {/* 로딩 오버레이 - 데이터 로딩 또는 저장 중일 때 표시 */}
+      {isShowLoading && <LoadingOverLay />}
+
       <BaseHeader
         hasBackButton={true}
         onClickBackButton={handleBackButtonClick}
