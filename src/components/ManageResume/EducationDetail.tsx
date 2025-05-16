@@ -68,9 +68,7 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
             {/* 수정, 삭제 아이콘 */}
             <div className="flex justify-center items-center gap-2 ml-1">
               <EditIcon
-                onClick={() =>
-                  navigate(`/resume/education/edit/${education.id}`)
-                }
+                onClick={() => navigate(`/resume/education/${education.id}`)}
                 className="cursor-pointer"
               />
               <DeleteIcon

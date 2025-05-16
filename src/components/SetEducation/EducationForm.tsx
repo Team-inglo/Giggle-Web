@@ -4,40 +4,47 @@ import Dropdown from '@/components/Common/Dropdown';
 import {
   PostEducationType,
   SchoolSummary,
+  InitailEducationType,
 } from '@/types/postResume/postEducation';
-import { EducationLevels } from '@/constants/manageResume';
+import { EducationLevels, MajorsEn } from '@/constants/manageResume';
 import GraySearchIcon from '@/assets/icons/ManageResume/GraySearchIcon.svg?react';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import SearchSchools from '@/components/SetEducation/SearchSchools';
+import { School } from '@/types/api/document';
 import { formatDateInput } from '@/utils/information';
+import InputLayout from '../WorkExperience/InputLayout';
 
-type EducationPatchProps = {
-  educationData: PostEducationType;
-  setEducationData: React.Dispatch<React.SetStateAction<PostEducationType>>;
-  schoolData: SchoolSummary;
+type EducationFormProps = {
+  mode: 'post' | 'patch';
+  educationData: PostEducationType | InitailEducationType;
+  setEducationData: Dispatch<
+    SetStateAction<PostEducationType | InitailEducationType>
+  >;
+  initialSchool?: SchoolSummary | School;
 };
 
-const EducationPatch = ({
+const EducationForm = ({
+  mode,
   educationData,
   setEducationData,
-  schoolData,
-}: EducationPatchProps) => {
+  initialSchool,
+}: EducationFormProps) => {
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
-  const [school, setSchool] = useState<SchoolSummary>(schoolData);
+  const [school, setSchool] = useState<SchoolSummary | School | undefined>(
+    initialSchool,
+  );
 
-  const handleSchoolChange = (school: SchoolSummary) => {
+  const handleSchoolChange = (school: SchoolSummary | School) => {
     setSchool(school);
   };
 
-  const handleInputChange = (
-    field: keyof PostEducationType,
-    value: string | number,
-  ) => {
+  const handleInputChange = (field: string, value: string | number) => {
     setEducationData((prev) => ({ ...prev, [field]: value }));
   };
+
   const handleNumberChange = (field: 'grade' | 'gpa', value: string) => {
-    const formmateedvalue = value == 'null' ? '' : value;
-    handleInputChange(field, formmateedvalue);
+    const formattedValue = value === 'null' ? '' : value;
+    handleInputChange(field, formattedValue);
   };
 
   return (
@@ -49,28 +56,21 @@ const EducationPatch = ({
           handleInputChange={handleInputChange}
         />
       )}
-      <div className="p-6 flex flex-col gap-3">
-        <div className="head-1 mb-6 text-[#1E1926]">Modify Education</div>
-        {/* 교육 기관 타입 선택 */}
-        <div className="relative">
-          <p className="body-3 text-[#1E1926] px-1 py-2">
-            Education Levels<span className="text-[#EE4700] body-1">*</span>
-          </p>
-          <div className="absolute">
-            <Dropdown
-              value={educationData.education_level}
-              placeholder="2-Year university"
-              options={EducationLevels}
-              setValue={(value) => handleInputChange('education_level', value)}
-            />
-          </div>
-          <div className="h-11" /> {/* absolute 만큼의 공간 차지 */}
+      <div className="p-4 flex flex-col gap-3">
+        <div className="head-1 mb-6 text-text-strong">
+          {mode === 'post' ? 'Add Education' : 'Modify Education'}
         </div>
+        {/* 교육 기관 타입 선택 */}
+        <InputLayout title="Education Levels" isEssential={true}>
+          <Dropdown
+            value={educationData.education_level}
+            placeholder="2-Year university"
+            options={EducationLevels}
+            setValue={(value) => handleInputChange('education_level', value)}
+          />
+        </InputLayout>
         {/* 학교명 선택 */}
-        <div>
-          <p className="body-3 text-[#1E1926] px-1 py-2">
-            Name Of School<span className="text-[#EE4700] body-1">*</span>
-          </p>
+        <InputLayout title="Name Of School" isEssential={true}>
           <div
             className="w-full py-2.5 px-4 flex items-center gap-2.5 border border-solid border-[#EBEEF1] rounded-xl"
             onClick={() => setSearchOpen(true)}
@@ -83,42 +83,32 @@ const EducationPatch = ({
               {school ? school.name : 'Search Name of school'}
             </p>
           </div>
-        </div>
+        </InputLayout>
         {/* 전공 입력 */}
-        <div>
-          <p className="body-3 text-[#1E1926] px-1 py-2">
-            Department (major)<span className="text-[#EE4700] body-1">*</span>
-          </p>
-          <Input
-            inputType={InputType.TEXT}
-            placeholder="Education Title"
+        <InputLayout title="Department (major)" isEssential={true}>
+          <Dropdown
             value={educationData.major}
-            onChange={(value) => handleInputChange('major', value)}
-            canDelete={false}
+            placeholder="Education Title"
+            options={MajorsEn}
+            setValue={(value) => handleInputChange('major', value)}
           />
-        </div>
+        </InputLayout>
         {/* 학년 입력 */}
-        <div>
-          <p className="body-3 text-[#1E1926] px-1 py-2">
-            Grade<span className="text-[#EE4700] body-1">*</span>
-          </p>
+        <InputLayout title="Grade" isEssential={true}>
           <Input
             inputType={InputType.TEXT}
             placeholder="Grade"
             value={
-              String(educationData.grade) == 'null'
+              String(educationData.grade) === 'null'
                 ? ''
                 : String(educationData.grade)
             }
             onChange={(value) => handleNumberChange('grade', value)}
             canDelete={false}
           />
-        </div>
+        </InputLayout>
         {/* 학점 입력 */}
-        <div>
-          <p className="body-3 text-[#1E1926] px-1 py-2">
-            Credit<span className="text-[#EE4700] body-1">*</span>
-          </p>
+        <InputLayout title="Credit" isEssential={true}>
           <Input
             inputType={InputType.TEXT}
             placeholder="0.0"
@@ -126,12 +116,9 @@ const EducationPatch = ({
             onChange={(value) => handleNumberChange('gpa', value)}
             canDelete={false}
           />
-        </div>
+        </InputLayout>
         {/* 입학 날짜 입력 */}
-        <div className="w-full">
-          <p className="body-3 text-[#1E1926] px-1 py-2">
-            Entrance Date <span className="text-[#EE4700] body-1">*</span>
-          </p>
+        <InputLayout title="Entrance Date" isEssential={true}>
           <Input
             inputType={InputType.TEXT}
             placeholder="YYYY-MM-DD"
@@ -141,12 +128,9 @@ const EducationPatch = ({
             }
             canDelete={false}
           />
-        </div>
+        </InputLayout>
         {/* 졸업 날짜 입력 */}
-        <div className="w-full">
-          <p className="body-3 text-[#1E1926] px-1 py-2">
-            Graduation Date <span className="text-[#EE4700] body-1">*</span>
-          </p>
+        <InputLayout title="Graduation Date" isEssential={true}>
           <Input
             inputType={InputType.TEXT}
             placeholder="YYYY-MM-DD"
@@ -156,10 +140,10 @@ const EducationPatch = ({
             }
             canDelete={false}
           />
-        </div>
+        </InputLayout>
       </div>
     </>
   );
 };
 
-export default EducationPatch;
+export default EducationForm;
