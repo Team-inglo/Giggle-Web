@@ -25,9 +25,8 @@ const WorkPreferenceAreaSelect = ({
     depth3: [],
   };
 
-  // 간단한 변환 로직 (실제로는 더 정교한 처리 필요)
   selectedAreas.forEach((area) => {
-    const parts = area.split(' ');
+    const parts = area.trim().split(/\s+/);
     selectedRegions.depth1.push(parts[0] || '');
     selectedRegions.depth2.push(parts[1] || '');
     selectedRegions.depth3.push(parts[2] || '');

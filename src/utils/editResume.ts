@@ -95,7 +95,7 @@ export function convertApiAreasToStrings(
     region_1depth_name: string;
     region_2depth_name: string | null;
     region_3depth_name: string | null;
-  }>
+  }>,
 ): string[] {
   return areas.map((area) => {
     const parts = [];
@@ -114,18 +114,20 @@ export function convertStringsToApiAreas(areas: string[]): Array<{
   region_4depth_name: string | null;
 }> {
   return areas.map((area) => {
-    const parts = area.split(' ');
+    const parts = area.trim().split(/\s+/);
     return {
       region_1depth_name: parts[0] || '',
       region_2depth_name: parts[1] || null,
       region_3depth_name: parts[2] || null,
-      region_4depth_name: null,
+      region_4depth_name: parts[3] || null,
     };
   });
 }
 
 // 소문자 직무 문자열 배열을 API 요청용 EmploymentType 배열로 변환
-export function convertJobTypesToApiFormat(jobTypes: string[]): EmploymentType[] {
+export function convertJobTypesToApiFormat(
+  jobTypes: string[],
+): EmploymentType[] {
   return jobTypes.map((jobType) => jobType.toUpperCase() as EmploymentType);
 }
 
@@ -133,7 +135,7 @@ export function convertJobTypesToApiFormat(jobTypes: string[]): EmploymentType[]
 export function prepareWorkPreferenceData(
   areas: string[],
   jobTypes: string[],
-  industries: JobCategory[]
+  industries: JobCategory[],
 ): WorkPreferenceType {
   return {
     areas: convertStringsToApiAreas(areas),
