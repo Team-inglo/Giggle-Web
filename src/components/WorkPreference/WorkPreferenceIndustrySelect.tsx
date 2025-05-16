@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  memo,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import { memo, useCallback } from 'react';
 import Tag from '@/components/Common/Tag';
 import { JobCategory } from '@/types/postCreate/postCreate';
 
@@ -21,82 +14,61 @@ const industryOptions = Object.values(JobCategory).map((enumValue) => ({
 }));
 
 interface WorkPreferenceIndustrySelectProps {
-  onValidityChange: (isValid: boolean) => void;
+  selectedIndustries: JobCategory[];
+  onIndustriesChange: (industries: JobCategory[]) => void;
 }
 
-export type IndustrySelectRef = {
-  getSelectedIndustries: () => JobCategory[];
-};
-
 const WorkPreferenceIndustrySelect = memo(
-  forwardRef<IndustrySelectRef, WorkPreferenceIndustrySelectProps>(
-    ({ onValidityChange }, ref) => {
-      const [selectedIndustries, setSelectedIndustries] = useState<
-        JobCategory[]
-      >([]);
+  ({
+    selectedIndustries,
+    onIndustriesChange,
+  }: WorkPreferenceIndustrySelectProps) => {
+    const onClickPreferences = useCallback(
+      (enumValue: JobCategory) => {
+        const updatedValues = selectedIndustries.includes(enumValue)
+          ? selectedIndustries.filter((item) => item !== enumValue)
+          : [...selectedIndustries, enumValue];
 
-      // 외부에서 접근 가능한 메서드 노출
-      useImperativeHandle(ref, () => ({
-        getSelectedIndustries: () => selectedIndustries,
-      }));
+        onIndustriesChange(updatedValues);
+      },
+      [selectedIndustries, onIndustriesChange],
+    );
 
-      // 상태가 변경될 때마다 유효성 보고
-      useEffect(() => {
-        onValidityChange(selectedIndustries.length > 0);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [selectedIndustries]);
+    const isSelected = (enumValue: JobCategory) =>
+      selectedIndustries.includes(enumValue);
 
-      const onClickPreferences = useCallback(
-        (enumValue: JobCategory) => {
-          setSelectedIndustries((prevList) => {
-            const selectedValues = prevList ?? [];
-
-            const updatedValues = selectedValues.includes(enumValue)
-              ? selectedValues.filter((item) => item !== enumValue)
-              : [...selectedValues, enumValue];
-
-            return updatedValues;
-          });
-        },
-        [setSelectedIndustries],
-      );
-
-      const isSelected = (enumValue: JobCategory) =>
-        (selectedIndustries ?? []).includes(enumValue);
-
-      return (
-        <div className="flex flex-row flex-wrap gap-2 w-full">
-          {industryOptions.map((industry) => (
-            <button
-              key={industry.enumValue}
-              onClick={() => onClickPreferences(industry.enumValue)}
-              data-industry
-              data-industry-value={industry.enumValue}
-            >
-              <Tag
-                value={industry.displayName}
-                padding="py-[0.375rem] px-[0.675rem]"
-                isRounded={true}
-                hasCheckIcon={false}
-                color={
-                  isSelected(industry.enumValue)
-                    ? 'text-text-normal'
-                    : 'text-text-alternative'
-                }
-                backgroundColor={
-                  isSelected(industry.enumValue)
-                    ? 'bg-surface-secondary'
-                    : 'bg-surface-base'
-                }
-                borderColor="border-border-alternative"
-                fontStyle="body-2"
-              />
-            </button>
-          ))}
-        </div>
-      );
-    },
-  ),
+    return (
+      <div className="flex flex-row flex-wrap gap-2 w-full">
+        {industryOptions.map((industry) => (
+          <button
+            key={industry.enumValue}
+            onClick={() => onClickPreferences(industry.enumValue)}
+            data-industry
+            data-industry-value={industry.enumValue}
+          >
+            <Tag
+              value={industry.displayName}
+              padding="py-[0.375rem] px-[0.675rem]"
+              isRounded={true}
+              hasCheckIcon={false}
+              color={
+                isSelected(industry.enumValue)
+                  ? 'text-text-normal'
+                  : 'text-text-alternative'
+              }
+              backgroundColor={
+                isSelected(industry.enumValue)
+                  ? 'bg-surface-secondary'
+                  : 'bg-surface-base'
+              }
+              borderColor="border-border-alternative"
+              fontStyle="body-2"
+            />
+          </button>
+        ))}
+      </div>
+    );
+  },
 );
 
 export default WorkPreferenceIndustrySelect;

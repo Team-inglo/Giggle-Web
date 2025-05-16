@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
@@ -14,12 +14,8 @@ import PageTitle from '@/components/Common/PageTitle';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import Dropdown from '@/components/Common/Dropdown';
 import WorkPreferenceAreaSelect from '@/components/WorkPreference/WorkPreferenceAreaSelect';
-import WorkPreferenceJobTypeSelect, {
-  JobTypeSelectRef,
-} from '@/components/WorkPreference/WorkPreferenceJobTypeSelect';
-import WorkPreferenceIndustrySelect, {
-  IndustrySelectRef,
-} from '@/components/WorkPreference/WorkPreferenceIndustrySelect';
+import WorkPreferenceJobTypeSelect from '@/components/WorkPreference/WorkPreferenceJobTypeSelect';
+import WorkPreferenceIndustrySelect from '@/components/WorkPreference/WorkPreferenceIndustrySelect';
 import Divider from '@/components/Common/Divider';
 import Tag from '@/components/Common/Tag';
 import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
@@ -30,22 +26,19 @@ const WorkPreferencePage = () => {
   const location = useLocation();
   const handleBackButtonClick = useNavigateBack();
 
-  // location.state에서 isEdit 플래그 확인
+  // 수정 여부 확인
   const isEdit = location.state?.isEdit === true;
 
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const [isAreaSelectOpen, setIsAreaSelectOpen] = useState(false);
-  const jobTypeRef = useRef<JobTypeSelectRef>(null);
-  const industryRef = useRef<IndustrySelectRef>(null);
 
-  // 근무 형태와 업직종의 유효성 검사 state
-  const [validityState, setValidityState] = useState({
-    jobType: false,
-    industry: false,
-  });
+  const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
+  const [selectedIndustries, setSelectedIndustries] = useState<JobCategory[]>(
+    [],
+  );
 
   // 기존 데이터 조회
-  const { data: workPreferenceData, isSuccess } = useGetWorkPreference();
+  const { data: workPreferenceData, isSuccess } = useGetWorkPreference(isEdit);
 
   // 기존 데이터가 있는 경우 초기 데이터 설정
   useEffect(() => {
@@ -67,46 +60,29 @@ const WorkPreferencePage = () => {
 
       setSelectedAreas(areas);
 
-      // jobType과 industry 초기값 설정은 다음 렌더링 사이클에서 처리
-      setTimeout(() => {
-        // 근무 형태 설정
-        const jobTypeStrings = workPreferenceData.jobTypes.map(
-          (jobType: EmploymentType) => jobType.toLowerCase(),
-        );
+      // 근무 형태 설정
+      const jobTypeStrings = workPreferenceData.jobTypes.map(
+        (jobType: EmploymentType) => jobType.toLowerCase(),
+      );
+      setSelectedJobTypes(jobTypeStrings);
 
-        // 컴포넌트 내부 상태 업데이트
-        const jobTypeSelectElement =
-          document.querySelectorAll('[data-job-type]');
-        jobTypeStrings.forEach((jobType: string) => {
-          jobTypeSelectElement.forEach((element) => {
-            if (element.textContent?.trim().toLowerCase() === jobType) {
-              (element as HTMLElement).click();
-            }
-          });
-        });
-
-        // 업직종 설정
-        const industrySelectElement =
-          document.querySelectorAll('[data-industry]');
-        workPreferenceData.industries.forEach((industry: JobCategory) => {
-          industrySelectElement.forEach((element) => {
-            if (element.getAttribute('data-industry-value') === industry) {
-              (element as HTMLElement).click();
-            }
-          });
-        });
-      }, 0);
+      // 업직종 설정
+      setSelectedIndustries(workPreferenceData.industries);
     }
   }, [isEdit, isSuccess, workPreferenceData]);
 
-  // 근무 지역 포함 전체 유효성 계산
+  // 폼 유효성 계산
   const isFormValid = useMemo(() => {
     return (
       selectedAreas.length > 0 ||
-      validityState.jobType ||
-      validityState.industry
+      selectedJobTypes.length > 0 ||
+      selectedIndustries.length > 0
     );
-  }, [selectedAreas, validityState]);
+  }, [
+    selectedAreas.length,
+    selectedJobTypes.length,
+    selectedIndustries.length,
+  ]);
 
   // 근무 선호 사항 화면 <=> 지역 선택 화면
   const handleAreaSelectOpen = useCallback((areas?: string[]) => {
@@ -118,16 +94,15 @@ const WorkPreferencePage = () => {
     setIsAreaSelectOpen(true);
   }, []);
 
-  // 상태 보고 패턴 핸들러
-  const updateValidity = useCallback(
-    (field: 'jobType' | 'industry') => (isValid: boolean) => {
-      setValidityState((prev) => ({
-        ...prev,
-        [field]: isValid,
-      }));
-    },
-    [],
-  );
+  // 직무 변경 핸들러
+  const handleJobTypesChange = useCallback((jobTypes: string[]) => {
+    setSelectedJobTypes(jobTypes);
+  }, []);
+
+  // 업직종 변경 핸들러
+  const handleIndustriesChange = useCallback((industries: JobCategory[]) => {
+    setSelectedIndustries(industries);
+  }, []);
 
   // API 훅 사용
   const { mutate: patchMutate } = usePatchWorkPreference();
@@ -153,7 +128,7 @@ const WorkPreferencePage = () => {
     });
 
     // 문자열 배열을 EmploymentType 배열로 변환
-    const jobTypes = (jobTypeRef.current?.getSelectedJobs() || []).map(
+    const jobTypes = selectedJobTypes.map(
       (jobType) => jobType.toUpperCase() as EmploymentType,
     );
 
@@ -161,7 +136,7 @@ const WorkPreferencePage = () => {
     const requestData: WorkPreferenceType = {
       areas: areas,
       jobTypes: jobTypes,
-      industries: industryRef.current?.getSelectedIndustries() || [],
+      industries: selectedIndustries,
     };
 
     // isEdit 플래그에 따라 적절한 API 호출
@@ -200,16 +175,15 @@ const WorkPreferencePage = () => {
           title="Select one or multiple areas where you want to work"
           isEssential={false}
         >
-          <div
-            className="w-full flex flex-col gap-2"
-            onClick={() => handleAreaSelectOpen()}
-          >
-            <Dropdown
-              value={''}
-              placeholder="Select Areas"
-              options={[]}
-              setValue={() => {}}
-            />
+          <div className="w-full flex flex-col gap-2">
+            <div onClick={() => handleAreaSelectOpen()}>
+              <Dropdown
+                value={''}
+                placeholder="Select Areas"
+                options={[]}
+                setValue={() => {}}
+              />
+            </div>
             <div className="w-full flex flex-row flex-wrap gap-2">
               {selectedAreas.length > 0 &&
                 selectedAreas.map((region, index) => (
@@ -239,8 +213,8 @@ const WorkPreferencePage = () => {
           isEssential={false}
         >
           <WorkPreferenceJobTypeSelect
-            ref={jobTypeRef}
-            onValidityChange={updateValidity('jobType')}
+            selectedJobTypes={selectedJobTypes}
+            onJobTypesChange={handleJobTypesChange}
           />
         </InputLayout>
         <Divider />
@@ -249,8 +223,8 @@ const WorkPreferencePage = () => {
           isEssential={false}
         >
           <WorkPreferenceIndustrySelect
-            ref={industryRef}
-            onValidityChange={updateValidity('industry')}
+            selectedIndustries={selectedIndustries}
+            onIndustriesChange={handleIndustriesChange}
           />
         </InputLayout>
       </div>
