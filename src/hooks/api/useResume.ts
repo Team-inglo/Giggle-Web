@@ -269,10 +269,11 @@ export const useGetApplicantResume = (id: number, isEnabled: boolean) => {
 };
 
 // 7.21 (유학생) 희망 근로 조건 상세 조회하기
-export const useGetWorkPreference = () => {
+export const useGetWorkPreference = (isEnabled: boolean = true) => {
   return useQuery({
     queryKey: ['workPreference'],
     queryFn: getWorkPreference,
+    enabled: isEnabled,
   });
 };
 
