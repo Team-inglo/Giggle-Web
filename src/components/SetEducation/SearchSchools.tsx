@@ -5,13 +5,12 @@ import { InputType } from '@/types/common/input';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
 import { School } from '@/types/api/document';
-import { InitailEducationType } from '@/types/postResume/postEducation';
 import { useGetSearchSchools } from '@/hooks/api/useResume';
 
 type SearchSchoolsProps = {
   setSchool: (school: School) => void;
   setSearchOpen: (value: boolean) => void;
-  handleInputChange: (field: keyof InitailEducationType, value: number) => void;
+  handleInputChange: (field: string, value: number) => void;
 };
 
 const SearchSchools = ({
