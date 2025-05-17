@@ -5,6 +5,7 @@ export const enum ManageResumeType {
   WORKEXPERIENCE = 'Work Experience',
   EDUCATION = 'Education',
   LANGUAGE = 'Language',
+  WORKPREFERENCES = 'Work Preferences',
 }
 
 export const EducationLevels = [

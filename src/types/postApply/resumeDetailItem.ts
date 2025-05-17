@@ -73,7 +73,7 @@ export type ResumeDetailItemType = {
   languages: LanguageListType;
 };
 
-type AreaType = {
+export type AreaType = {
   region_1depth_name: string;
   region_2depth_name: string | null;
   region_3depth_name: string | null;
