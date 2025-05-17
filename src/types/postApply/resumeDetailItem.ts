@@ -81,7 +81,7 @@ export type AreaType = {
 };
 
 export type WorkPreferenceType = {
-  areas: AreaType[];
-  jobTypes: EmploymentType[];
-  industries: JobCategory[];
+  preference_addresses: AreaType[];
+  employment_types: EmploymentType[];
+  job_categories: JobCategory[];
 };

@@ -138,8 +138,8 @@ export function prepareWorkPreferenceData(
   industries: JobCategory[],
 ): WorkPreferenceType {
   return {
-    areas: convertStringsToApiAreas(areas),
-    jobTypes: convertJobTypesToApiFormat(jobTypes),
-    industries,
+    preference_addresses: convertStringsToApiAreas(areas),
+    employment_types: convertJobTypesToApiFormat(jobTypes),
+    job_categories: industries,
   };
 }

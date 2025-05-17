@@ -29,7 +29,7 @@ const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
           Preferred Work Area
         </div>
         <div className="flex flex-wrap gap-2">
-          {data.areas.map((area, idx) => (
+          {data.preference_addresses.map((area, idx) => (
             <span
               key={idx}
               className="px-3 py-1 rounded bg-surface-secondary text-text-normal body-3"
@@ -46,7 +46,7 @@ const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
           Preferred Job Type
         </div>
         <div className="flex flex-wrap gap-2">
-          {data.jobTypes.map((type, idx) => (
+          {data.employment_types.map((type, idx) => (
             <span
               key={idx}
               className="px-3 py-1 rounded bg-surface-secondary text-text-normal body-3"
@@ -63,7 +63,7 @@ const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
           Preferred Job Position
         </div>
         <div className="flex flex-wrap gap-2">
-          {data.industries.map((industry, idx) => (
+          {data.job_categories.map((industry, idx) => (
             <span
               key={idx}
               className="px-3 py-1 rounded bg-surface-secondary text-text-normal body-3"
