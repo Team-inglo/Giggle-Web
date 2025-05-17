@@ -1,25 +1,13 @@
 import {
-  AreaType,
   WorkPreferenceType,
 } from '@/types/postApply/resumeDetailItem';
+import { formatArea, formatEnumValue } from '@/utils/editResume';
 
 type WorkPreferenceProps = {
   data: WorkPreferenceType;
 };
 
 const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
-  // 고용 형태와 업종 이름을 보기 좋게 변환하는 함수
-  const formatEnumValue = (value: string) => {
-    return value
-      .split('_')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
-  };
-
-  // 지역 표시 형식
-  const formatArea = (area: AreaType) => {
-    return area.region_2depth_name || area.region_1depth_name;
-  };
 
   return (
     <div className="flex flex-col gap-4">
