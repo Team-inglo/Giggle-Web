@@ -23,49 +23,69 @@ export const WorkPeriodNames = [
 ];
 
 export const JobCategoryInfo = {
-  [JobCategory.GENERAL_INTERPRETATION_TRANSLATION]: {
-    name: '일반통역/번역',
-    key: 'GENERAL_INTERPRETATION_TRANSLATION',
+  [JobCategory.FOOD_BEVERAGE]: {
+    name: '외식/음료',
+    key: 'FOOD_BEVERAGE',
   },
-  [JobCategory.FOOD_SERVICE_ASSISTANT]: {
-    name: '음식업보조',
-    key: 'FOOD_SERVICE_ASSISTANT',
+  [JobCategory.STORE_SALES]: {
+    name: '매장관리/판매',
+    key: 'STORE_SALES',
   },
-  [JobCategory.GENERAL_ADMINISTRATIVE_SUPPORT]: {
-    name: '일반 사무보조',
-    key: 'GENERAL_ADMINISTRATIVE_SUPPORT',
+  [JobCategory.SERVICE]: {
+    name: '서비스',
+    key: 'SERVICE',
   },
-  [JobCategory.ENGLISH_KIDS_CAFE]: {
-    name: '영어키즈카페',
-    key: 'ENGLISH_KIDS_CAFE',
+  [JobCategory.OFFICE_WORK]: {
+    name: '사무직',
+    key: 'OFFICE_WORK',
   },
-  [JobCategory.GENERAL_CAFE]: {
-    name: '일반카페',
-    key: 'GENERAL_CAFE',
+  [JobCategory.CUSTOMER_SERVICE_RESEARCH_SALES]: {
+    name: '고객상담/리서치/영업',
+    key: 'CUSTOMER_SERVICE_RESEARCH_SALES',
   },
-  [JobCategory.PART_TIME_WORK]: {
-    name: '놀이보조',
-    key: 'PART_TIME_WORK',
+  [JobCategory.PRODUCTION_CONSTRUCTION_LABOR]: {
+    name: '생산/건설/노무',
+    key: 'PRODUCTION_CONSTRUCTION_LABOR',
   },
-  [JobCategory.TOUR_GUIDE_AND_DUTY_FREE_ASSISTANT]: {
-    name: '관광안내보조 및 면세점판매보조',
-    key: 'TOUR_GUIDE_AND_DUTY_FREE_ASSISTANT',
+  [JobCategory.IT_TECHNOLOGY]: {
+    name: 'IT/기술',
+    key: 'IT_TECHNOLOGY',
   },
-  [JobCategory.MANUFACTURING]: {
-    name: '제조업',
-    key: 'MANUFACTURING',
+  [JobCategory.DESIGN]: {
+    name: '디자인',
+    key: 'DESIGN',
+  },
+  [JobCategory.MEDIA]: {
+    name: '미디어',
+    key: 'MEDIA',
+  },
+  [JobCategory.DRIVING_DELIVERY]: {
+    name: '운전/배달',
+    key: 'DRIVING_DELIVERY',
+  },
+  [JobCategory.HOSPITAL_NURSING_RESEARCH]: {
+    name: '병원/간호/연구',
+    key: 'HOSPITAL_NURSING_RESEARCH',
+  },
+  [JobCategory.EDUCATION_INSTRUCTOR]: {
+    name: '교육/강사',
+    key: 'EDUCATION_INSTRUCTOR',
   },
 };
 
 export const JobCategoryList: JobCategoryNames[] = [
-  '일반통역/번역',
-  '음식업보조',
-  '일반 사무보조',
-  '영어키즈카페',
-  '일반카페',
-  '놀이보조',
-  '관광안내보조 및 면세점판매보조',
-  '제조업',
+  '외식/음료',
+  '매장관리/판매',
+  '서비스',
+  '사무직',
+  '고객상담/리서치/영업',
+  '생산/건설/노무',
+  'IT/기술',
+  '디자인',
+  '미디어',
+  '운전/배달',
+  '병원/간호/연구',
+  '교육/강사',
 ];
 
 export const EducationList: EducationCategoryNames[] = [

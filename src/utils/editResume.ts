@@ -1,5 +1,7 @@
 import { EducationLevels } from '@/constants/manageResume';
 import { MypageCardData } from '@/types/manageResume/manageResume';
+import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
+import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
 import {
   GetEducationType,
   InitailEducationType,
@@ -86,3 +88,58 @@ export const educationDataValidation = (
   // 모든 조건을 통과하면 true 반환
   return true;
 };
+
+// API 응답 데이터에서 지역 문자열 배열로 변환
+export function convertApiAreasToStrings(
+  areas: Array<{
+    region_1depth_name: string;
+    region_2depth_name: string | null;
+    region_3depth_name: string | null;
+  }>,
+): string[] {
+  return areas.map((area) => {
+    const parts = [];
+    if (area.region_1depth_name) parts.push(area.region_1depth_name);
+    if (area.region_2depth_name) parts.push(area.region_2depth_name);
+    if (area.region_3depth_name) parts.push(area.region_3depth_name);
+    return parts.join(' ');
+  });
+}
+
+// 지역 문자열 배열을 API 요청용 AreaType 배열로 변환
+export function convertStringsToApiAreas(areas: string[]): Array<{
+  region_1depth_name: string;
+  region_2depth_name: string | null;
+  region_3depth_name: string | null;
+  region_4depth_name: string | null;
+}> {
+  return areas.map((area) => {
+    const parts = area.trim().split(/\s+/);
+    return {
+      region_1depth_name: parts[0] || '',
+      region_2depth_name: parts[1] || null,
+      region_3depth_name: parts[2] || null,
+      region_4depth_name: parts[3] || null,
+    };
+  });
+}
+
+// 소문자 직무 문자열 배열을 API 요청용 EmploymentType 배열로 변환
+export function convertJobTypesToApiFormat(
+  jobTypes: string[],
+): EmploymentType[] {
+  return jobTypes.map((jobType) => jobType.toUpperCase() as EmploymentType);
+}
+
+// 전체 데이터를 API 요청 형식으로 변환
+export function prepareWorkPreferenceData(
+  areas: string[],
+  jobTypes: string[],
+  industries: JobCategory[],
+): WorkPreferenceType {
+  return {
+    areas: convertStringsToApiAreas(areas),
+    jobTypes: convertJobTypesToApiFormat(jobTypes),
+    industries,
+  };
+}

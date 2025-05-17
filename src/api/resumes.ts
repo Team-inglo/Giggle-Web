@@ -11,6 +11,7 @@ import {
 import { api } from '.';
 import { RESTYPE } from '@/types/api/common';
 import { GetEducationType } from '@/types/postResume/postEducation';
+import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 
 // 7.1 (유학생) 이력서 조회하기
 export const getResume = async (): Promise<
@@ -169,6 +170,30 @@ export const getApplicantResume = async (id: number) => {
   const response = await api.get(
     `/owners/user-owner-job-postings/${id}/users/resumes/details`,
   );
+  return response.data;
+};
+
+// 7.21 (유학생) 희망 근로 조건 상세 조회하기
+export const getWorkPreference = async () => {
+  const response = await api.get('/users/resumes/work-preferences/details');
+  return response.data;
+};
+
+// 7.22 (유학생) 희망 근로 조건 생성하기
+export const postWorkPreference = async (data: WorkPreferenceType) => {
+  const response = await api.post('/users/resumes/work-preferences', data);
+  return response.data;
+};
+
+// 7.23 (유학생) 희망 근로 조건 수정하기
+export const patchWorkPreference = async (data: WorkPreferenceType) => {
+  const response = await api.patch('/users/resumes/work-preferences', data);
+  return response.data;
+};
+
+// 7.24 (유학생) 희망 근로 조건 삭제하기
+export const deleteWorkPreference = async () => {
+  const response = await api.delete('/users/resumes/work-preferences');
   return response.data;
 };
 

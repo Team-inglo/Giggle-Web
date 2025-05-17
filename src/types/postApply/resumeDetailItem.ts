@@ -1,3 +1,5 @@
+import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
+
 type VisaType =
   | 'D_2'
   | 'D_4'
@@ -57,6 +59,7 @@ export type PersonalInformationType = {
   gender?: string;
   birth?: string | null;
   nationality?: string | null;
+  work_preference?: WorkPreferenceType;
 };
 
 export type ResumeDetailItemType = {
@@ -68,4 +71,17 @@ export type ResumeDetailItemType = {
   work_experience: WorkExperienceType[];
   education: EducationType[];
   languages: LanguageListType;
+};
+
+type AreaType = {
+  region_1depth_name: string;
+  region_2depth_name: string | null;
+  region_3depth_name: string | null;
+  region_4depth_name: string | null;
+};
+
+export type WorkPreferenceType = {
+  areas: AreaType[];
+  jobTypes: EmploymentType[];
+  industries: JobCategory[];
 };
