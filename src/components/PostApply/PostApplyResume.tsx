@@ -10,6 +10,7 @@ import InfoCard from '@/components/ManageResume/InfoCard';
 import { ManageResumeType } from '@/constants/manageResume';
 import MypageCard from '@/components/ManageResume/MypageCard';
 import ResumeProfileCard from '@/components/ManageResume/ResumeProfileCard';
+import { useCallback } from 'react';
 
 const PostApplyResume = () => {
   const { pathname } = useLocation();
@@ -32,6 +33,25 @@ const PostApplyResume = () => {
   const data = account_type === UserType.OWNER ? ownerData : userData;
   const isPending =
     account_type === UserType.OWNER ? ownerDataPending : userDataPending;
+
+  // 재사용 가능한 네비게이션 핸들러
+  const navigateToSection = useCallback(
+    (path: string, stateData: string | null = null) => {
+      navigate(path, stateData ? { state: { data: stateData } } : undefined);
+    },
+    [navigate],
+  );
+
+  // 주로 사용되는 네비게이션 핸들러들
+  const handleIntroductionClick = useCallback(
+    () => navigateToSection('/resume/introduction', data?.data?.introduction),
+    [navigateToSection, data?.data?.introduction],
+  );
+
+  const handleVisaClick = useCallback(
+    () => navigateToSection('/profile/edit'),
+    [navigateToSection],
+  );
 
   if (isPending) return <LoadingItem />;
   else if (!data?.success) return <></>;
@@ -57,27 +77,20 @@ const PostApplyResume = () => {
           rightElement={
             <button
               className="body-3 text-text-alternative"
-              onClick={() =>
-                navigate(`/resume/introduction`, {
-                  state: { data: data.data?.introduction },
-                })
-              }
+              onClick={handleIntroductionClick}
             >
-              {data.data?.introduction && 'Edit'}
-              {!data.data?.introduction && 'Add'}
+              {data.data?.introduction ? 'Edit' : 'Add'}
             </button>
           }
         />
         <InfoCard
           title={profileTranslation.visa[isEmployer(pathname)]}
           data={data.data?.visa}
-          onAddClick={() => {
-            navigate(`/`);
-          }}
+          onAddClick={() => navigateToSection('/')}
           rightElement={
             <button
               className="body-3 text-text-alternative"
-              onClick={() => navigate(`/resume/visa`)}
+              onClick={handleVisaClick}
             >
               Edit
             </button>
@@ -101,7 +114,7 @@ const PostApplyResume = () => {
           rightElement={
             <button
               className="body-3 text-text-alternative"
-              onClick={() => navigate(`/resume/work-experience`)}
+              onClick={() => navigateToSection('/resume/work-experience')}
             >
               Add
             </button>
@@ -113,7 +126,7 @@ const PostApplyResume = () => {
           rightElement={
             <button
               className="body-3 text-text-alternative"
-              onClick={() => navigate(`/resume/education`)}
+              onClick={() => navigateToSection('/resume/education')}
             >
               Add
             </button>
@@ -125,7 +138,7 @@ const PostApplyResume = () => {
           rightElement={
             <button
               className="body-3 text-text-alternative"
-              onClick={() => navigate(`/resume/language/add`)}
+              onClick={() => navigateToSection('/resume/language/add')}
             >
               Add
             </button>
@@ -137,7 +150,7 @@ const PostApplyResume = () => {
           rightElement={
             <button
               className="body-3 text-text-alternative"
-              onClick={() => navigate(`/resume/work-preference`)}
+              onClick={() => navigateToSection('/resume/work-preference')}
             >
               Add
             </button>
