@@ -71,17 +71,18 @@ const PostSearchResult = ({
         >
           <JobPostingCard {...value}>
             <JobPostingCard.Box>
-              <JobPostingCard.Header isBookMarkButton={true} />
-              <div className="w-full flex flex-col gap-2">
-                <JobPostingCard.Title isTwoLine={true} />
-                <div className="w-full flex flex-col gap-[0.125rem]">
-                  <JobPostingCard.Address />
-                  <JobPostingCard.WorkPeriod />
-                  <JobPostingCard.WorkDaysPerWeek />
-                </div>
-                <JobPostingCard.TagList />
-                <JobPostingCard.Footer />
+              <div className="flex flex-col gap-1 pb-4">
+                <JobPostingCard.DeadLineTag />
+                <JobPostingCard.Header isBookMarkButton={true} />
+                <JobPostingCard.CompanyInfo />
               </div>
+              <JobPostingCard.HourlyRate />
+              <p className="pt-[0.125rem] pb-2 caption text-text-alternative whitespace-normal">
+                <JobPostingCard.Visa />
+                <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
+                <JobPostingCard.WorkDayInfo />
+              </p>
+              <JobPostingCard.TagList />
             </JobPostingCard.Box>
           </JobPostingCard>
         </article>

@@ -44,8 +44,8 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         </h3>
         <p className="caption text-text-alternative whitespace-normal">
           {jobPostingData.company_name}
-          <span className="mx-1 px-[0.063rem] h-3 bg-border-alternative"></span>
-          {jobPostingData.summaries.address.split(' ').slice(0, 2).join(' ')}
+          <span className="mx-1 inline-block align-middle border h-3 bg-border-alternative"></span>
+          {jobPostingData.summaries.address.split(' ').slice(0, 2).join(' ')}{' '}
         </p>
       </div>
       <div className="flex items-center flex-wrap gap-1">
