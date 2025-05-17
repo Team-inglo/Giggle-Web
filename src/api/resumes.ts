@@ -8,7 +8,7 @@ import {
   WorkExperienctRequest,
   WorkExperienctResponse,
 } from '@/types/api/resumes';
-import { api } from '.';
+import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
 import { GetEducationType } from '@/types/postResume/postEducation';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
@@ -17,7 +17,7 @@ import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 export const getResume = async (): Promise<
   RESTYPE<UserResumeDetailResponse>
 > => {
-  const response = await api.get('/users/resumes/details');
+  const response = await apiV2.get('/users/resumes/details');
   return response.data;
 };
 
@@ -77,7 +77,10 @@ export const postEtcLanguageLevel = async (
 
 // 7.8 (유학생) 자기소개 수정하기
 export const patchIntroduction = async (introduction: IntroductionRequest) => {
-  const response = await api.patch('/users/resumes/introduction', introduction);
+  const response = await apiV2.patch(
+    '/users/resumes/introduction',
+    introduction,
+  );
   return response.data;
 };
 
@@ -179,21 +182,9 @@ export const getWorkPreference = async () => {
   return response.data;
 };
 
-// 7.22 (유학생) 희망 근로 조건 생성하기
-export const postWorkPreference = async (data: WorkPreferenceType) => {
-  const response = await api.post('/users/resumes/work-preferences', data);
-  return response.data;
-};
-
-// 7.23 (유학생) 희망 근로 조건 수정하기
-export const patchWorkPreference = async (data: WorkPreferenceType) => {
-  const response = await api.patch('/users/resumes/work-preferences', data);
-  return response.data;
-};
-
-// 7.24 (유학생) 희망 근로 조건 삭제하기
-export const deleteWorkPreference = async () => {
-  const response = await api.delete('/users/resumes/work-preferences');
+// 7.22 (유학생) 희망 근로 조건 수정하기
+export const putWorkPreference = async (data: WorkPreferenceType) => {
+  const response = await api.put('/users/resumes/work-preferences', data);
   return response.data;
 };
 

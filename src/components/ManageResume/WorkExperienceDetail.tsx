@@ -46,23 +46,23 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
         {data.map((work) => (
           <div
             key={work.id}
-            className="w-full p-4 flex justify-between items-start bg-[#F4F4F9] rounded-lg"
+            className="w-full flex justify-between items-start rounded-lg"
           >
-            <div>
-              <h5 className="pb-[0.125rem] button-2 text-[#252525]">
+            <div className="flex flex-col gap-0.5">
+              <h5 className="pb-[0.125rem] button-1 text-[#252525]">
                 {work.title}
               </h5>
-              <p className="pb-2 caption text-[#252525] whitespace-pre-wrap break-all">
+              <p className="pb-2 body-3 text-[#252525] whitespace-pre-wrap break-all">
                 {work.description !== '-'
                   ? work.description
                   : infoTranslation.notEntered[isEmployer(pathname)]}
               </p>
               <div className="flex gap-[0.5rem] caption">
-                <p className="text-[#656565]">
+                <p className="text-text-alternative">
                   {formatDate(work.start_date)}~
                   {work?.end_date ? formatDate(work.end_date) : ''}
                 </p>
-                <p className="text-[#5592FC]">{work.duration} months</p>
+                <p className="text-text-alternative">{work.duration} months</p>
               </div>
             </div>
             <div className="flex justify-center items-center gap-2 ml-1">

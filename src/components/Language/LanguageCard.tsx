@@ -115,7 +115,7 @@ const LanguageCard = ({
         </BottomSheetLayout>
       )}
       {/* 컴포넌트 시작 */}
-      <div className="flex justify-between items-center w-full p-4 rounded-lg bg-[#F4F4F9]">
+      <div className="flex justify-between items-center w-full py-4">
         <div className="flex items-center gap-2">
           <h5 className="pb-[0.125rem] button-2 text-[#464646]">{title}</h5>
           <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">

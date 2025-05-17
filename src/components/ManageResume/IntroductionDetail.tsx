@@ -37,9 +37,9 @@ const IntroductionDetail = ({ data }: IntroductionDetailProps) => {
           onDeleteButton={handleDelete}
         />
       )}
-      <div className="px-3 flex justify-between items-start">
-        <div className="text-[#656565] flex flex-col">
-          <p className="pb-2 body-3 text-[#9397A1]">
+      <div className="flex justify-between items-start">
+        <div className="text-text-normal flex flex-col">
+          <p className="pb-2 body-3 text-text-alternative">
             {profileTranslation.introductionQuestion[isEmployer(pathname)]}
           </p>
           <p className="pb-2 body-3 text-[#252525] whitespace-pre-wrap break-all">

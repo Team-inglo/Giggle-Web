@@ -5,9 +5,8 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
 import {
-  usePatchWorkPreference,
-  usePostWorkPreference,
   useGetWorkPreference,
+  usePutWorkPreference,
 } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import PageTitle from '@/components/Common/PageTitle';
@@ -102,8 +101,7 @@ const WorkPreferencePage = () => {
   }, []);
 
   // API 훅 사용
-  const { mutate: patchMutate } = usePatchWorkPreference();
-  const { mutate: postMutate } = usePostWorkPreference();
+  const { mutate: putMutate } = usePutWorkPreference();
 
   // 저장 버튼 클릭 시
   const handleSubmit = () => {
@@ -119,11 +117,7 @@ const WorkPreferencePage = () => {
       selectedIndustries,
     );
 
-    if (isEdit) {
-      patchMutate(requestData);
-    } else {
-      postMutate(requestData);
-    }
+    putMutate(requestData);
   };
 
   if (isAreaSelectOpen) {

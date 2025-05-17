@@ -8,7 +8,7 @@ type LanguageManageDetailProps = {
 const LanguageManageDetail = ({ data }: LanguageManageDetailProps) => {
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col divide-y divide-surface-secondary">
         <LanguageCard title="TOPIK" level={data.topik} maxLevel={6} />
         <LanguageCard
           title="Social Integration"

@@ -7,9 +7,9 @@ import EtcLevelSection from '@/components/Language/EtcLevelSection';
 import { buttonTypeKeys } from '@/constants/components';
 import { LanguageList } from '@/constants/language_data';
 import { usePostEtcLanguageLevel } from '@/hooks/api/useResume';
+import useNavigateBack from '@/hooks/useNavigateBack';
 import { EtcLanguageData } from '@/types/manageResume/manageResume';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // 초기 값
 const initialLanguage = {
@@ -20,7 +20,7 @@ const initialLanguage = {
 };
 
 const PostLanguagePage = () => {
-  const navigate = useNavigate();
+  const handleBackButtonClick = useNavigateBack();
 
   const languageList = LanguageList;
   // 선택한 언어 상태 관리
@@ -41,7 +41,7 @@ const PostLanguagePage = () => {
     <div>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={() => navigate('/profile/edit-resume')}
+        onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
         title="Add Language"
       />

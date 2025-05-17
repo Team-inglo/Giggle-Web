@@ -3,7 +3,6 @@ import {
   deleteEtcLanguageLevel,
   deleteIntroduction,
   deleteWorkExperience,
-  deleteWorkPreference,
   getApplicantResume,
   getEducation,
   getLanguagesSummaries,
@@ -16,11 +15,10 @@ import {
   patchIntroduction,
   patchLanguagesLevel,
   patchWorkExperience,
-  patchWorkPreference,
   postEducation,
   postEtcLanguageLevel,
   postWorkExperience,
-  postWorkPreference,
+  putWorkPreference,
 } from '@/api/resumes';
 import {
   AdditionalLanguageRequest,
@@ -137,7 +135,7 @@ export const usePatchIntroduction = () => {
   return useMutation({
     mutationFn: patchIntroduction,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/edit-resume');
+      smartNavigate(navigate, '/profile/manage-resume');
     },
     onError: (error) => {
       console.error('자기소개 작성 실패', error);
@@ -277,46 +275,18 @@ export const useGetWorkPreference = (isEnabled: boolean = true) => {
   });
 };
 
-// 7.22 (유학생) 희망 근로 조건 생성하기
-export const usePostWorkPreference = () => {
-  const navigate = useNavigate();
-  return useMutation({
-    mutationFn: (data: WorkPreferenceType) => postWorkPreference(data),
-    onSuccess: () => {
-      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true });
-    },
-    onError: (error) => {
-      console.error('희망 근로 조건 생성 실패', error);
-    },
-  });
-};
-
-// 7.23 (유학생) 희망 근로 조건 수정하기
-export const usePatchWorkPreference = () => {
+// 7.22 (유학생) 희망 근로 조건 수정하기
+export const usePutWorkPreference = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: WorkPreferenceType) => patchWorkPreference(data),
+    mutationFn: (data: WorkPreferenceType) => putWorkPreference(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
       smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true }); // 성공시 편집 페이지로 이동
     },
   });
 };
-
-// 7.24 (유학생) 희망 근로 조건 삭제하기
-export const useDeleteWorkPreference = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: deleteWorkPreference,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['resume'],
-      });
-    },
-  });
-};
-
 // 9.1 (유학생) 학교 검색하기
 export const useGetSearchSchools = (
   search: string,

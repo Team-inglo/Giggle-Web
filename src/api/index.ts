@@ -145,7 +145,17 @@ function createInstance(type: string) {
     baseURL:
       type === 'kakao'
         ? import.meta.env.VITE_APP_KAKAO_API_BASE_URL
-        : import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL,
+        : import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v1',
+  });
+  return setInterceptors(instance, type);
+}
+
+function createInstanceV2(type: string) {
+  const instance = axios.create({
+    baseURL:
+      type === 'kakao'
+        ? import.meta.env.VITE_APP_KAKAO_API_BASE_URL
+        : import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v2',
   });
   return setInterceptors(instance, type);
 }
@@ -163,7 +173,7 @@ function createInstance(type: string) {
 // Todo: .env 파일에서 환경변수로 api 주소를 가져오고 있지만, 서버 주소가 나오면 env 파일 없이도 사용 가능하게 수정해야 함.
 function createInstanceWithoutAuth() {
   const instance = axios.create({
-    baseURL: import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL,
+    baseURL: import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v1',
   });
   return instance;
 }
@@ -173,6 +183,8 @@ function createInstanceWithoutAuth() {
  * @const {AxiosInstance}
  */
 export const api = createInstance('server');
+
+export const apiV2 = createInstanceV2('server');
 
 /**
  * 인증이 필요하지 않은 API 요청에 사용할 Axios 인스턴스
