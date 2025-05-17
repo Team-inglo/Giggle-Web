@@ -1,4 +1,3 @@
-import ProfilePicture from '@/components/ManageResume/ProfilePicture';
 import { useGetApplicantResume, useGetResume } from '@/hooks/api/useResume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
@@ -10,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import InfoCard from '../ManageResume/InfoCard';
 import { ManageResumeType } from '@/constants/manageResume';
 import MypageCard from '../ManageResume/MypageCard';
+import ResumeProfileCard from '../ManageResume/ResumeProfileCard';
 
 const PostApplyResume = () => {
   const { pathname } = useLocation();
@@ -38,10 +38,16 @@ const PostApplyResume = () => {
 
   return (
     <>
-      <section className="py-5 px-4">
-        <ProfilePicture
+      <section className="py-5">
+        <ResumeProfileCard
+          profileImgUrl={data.data.profile_img_url}
           name={data.data.name}
-          profileImg={data.data.profile_img_url}
+          gender={data.data.personal_information.gender}
+          nationality={data.data.personal_information.nationality}
+          birth={data.data.personal_information.birth}
+          main_address={data.data.personal_information.main_address}
+          phone={data.data.personal_information.phone}
+          email={data.data.personal_information.email}
         />
       </section>
       <section className="flex flex-col gap-2 bg-surface-secondary pt-2 pb-2">
@@ -129,7 +135,12 @@ const PostApplyResume = () => {
           type={ManageResumeType.WORKPREFERENCES}
           workPreferencesData={data.data?.work_preference}
           rightElement={
-            <button className="body-3 text-text-alternative">Add</button>
+            <button
+              className="body-3 text-text-alternative"
+              onClick={() => navigate(`/resume/work-preference`)}
+            >
+              Add
+            </button>
           }
         />
       </section>
