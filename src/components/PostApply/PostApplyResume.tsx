@@ -6,10 +6,10 @@ import { LoadingItem } from '@/components/Common/LoadingItem';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation, useNavigate } from 'react-router-dom';
-import InfoCard from '../ManageResume/InfoCard';
+import InfoCard from '@/components/ManageResume/InfoCard';
 import { ManageResumeType } from '@/constants/manageResume';
-import MypageCard from '../ManageResume/MypageCard';
-import ResumeProfileCard from '../ManageResume/ResumeProfileCard';
+import MypageCard from '@/components/ManageResume/MypageCard';
+import ResumeProfileCard from '@/components/ManageResume/ResumeProfileCard';
 
 const PostApplyResume = () => {
   const { pathname } = useLocation();
