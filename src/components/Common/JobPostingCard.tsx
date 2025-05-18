@@ -86,7 +86,7 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
   }, [setIsBookmark, is_book_marked]);
 
   return (
-    <div className="w-full flex justify-between">
+    <div className="w-full flex justify-between items-center">
       <h3 className="head-3 text-text-strong line-clamp-2">{title}</h3>
       <div className="w-6 h-6">
         {account_type === UserType.USER && isBookMarkButton && (

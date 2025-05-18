@@ -91,7 +91,7 @@ const CareerCardList = ({
             color="text-text-error"
             fontStyle="caption"
           />
-          <div className="w-full py-1 flex justify-between">
+          <div className="w-full py-1 flex justify-between items-center">
             <h3 className="head-3 text-text-strong line-clamp-2">
               {value.title}
             </h3>
