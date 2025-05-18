@@ -20,6 +20,7 @@ import { EN_FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
 import { WorkPeriodInfo } from '@/constants/documents';
 import { WorkPeriod } from '@/types/api/document';
 import { calculateDays } from '@/utils/calculateDDay';
+import { workDaysPerWeekToText } from '@/utils/post';
 
 const CardContext = createContext<JobPostingItemType | null>(null);
 
@@ -131,21 +132,6 @@ const CardVisa = () => {
       {tags.visa.sort().join(', ').replace(/_/g, '-')}
     </span>
   );
-};
-
-const workDaysPerWeekToText = (
-  workDaysPerWeek: string,
-  accountType: UserType | undefined,
-) => {
-  if (workDaysPerWeek === '협의 가능') {
-    return accountType !== UserType.OWNER ? 'Negotiable' : workDaysPerWeek;
-  }
-
-  if (accountType !== UserType.OWNER) {
-    return workDaysPerWeek;
-  }
-
-  return `주 ${workDaysPerWeek[0]}일 근무`;
 };
 
 const CardWorkDayInfo = () => {

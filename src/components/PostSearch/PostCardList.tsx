@@ -10,17 +10,17 @@ import { useCurrentPostIdStore } from '@/store/url';
 import { useNavigate } from 'react-router-dom';
 import { UserType } from '@/constants/user';
 
-type PostSearchResultProps = {
+type PostCardListProps = {
   postData: JobPostingItemType[];
   isLoading: boolean;
   isInitialLoading: boolean;
 };
 
-const PostSearchResult = ({
+const PostCardList = ({
   postData,
   isLoading,
   isInitialLoading,
-}: PostSearchResultProps) => {
+}: PostCardListProps) => {
   const { account_type } = useUserStore();
   const { updateCurrentPostId } = useCurrentPostIdStore();
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const PostSearchResult = ({
     <>
       {postData.map((value: JobPostingItemType) => (
         <article
-          className="w-full border-t border-b border-[#f8f8f8]"
+          className="w-full border-t border-border-disabled"
           key={value.id}
           onClick={() => goToPostDetailPage(value)}
         >
@@ -92,4 +92,4 @@ const PostSearchResult = ({
   );
 };
 
-export default PostSearchResult;
+export default PostCardList;

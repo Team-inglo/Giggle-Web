@@ -8,15 +8,20 @@ import {
   PostSortingType,
 } from '@/types/PostSearchFilter/PostSearchFilterItem';
 
-export const formatSearchFilter = (
-  searchText: string = '',
-  sortType: string = 'POPULAR',
-  filterList: PostSearchFilterItemType = initialFilterList,
-) => {
+// 공고 검색 시에 request 형식으로 변경
+export const formatPostSearchFilter = ({
+  searchText = '',
+  postSortType = 'POPULAR',
+  filterList = initialFilterList,
+}: {
+  searchText: string;
+  postSortType: string;
+  filterList: PostSearchFilterItemType;
+}) => {
   const newSearchFilter = {
     size: 5,
     search: searchText ?? null,
-    sorting: sortType as PostSortingType | POST_SEARCH_MENU,
+    sorting: postSortType as PostSortingType | POST_SEARCH_MENU,
     region_1depth: filterList[FILTER_CATEGORY.REGION_1DEPTH].join(','),
     region_2depth: filterList[FILTER_CATEGORY.REGION_2DEPTH]
       .map((value) => (value === '전체' ? 'none' : value))
@@ -52,6 +57,26 @@ export const formatSearchFilter = (
       filterList[FILTER_CATEGORY.EMPLOYMENT_TYPE]?.[0]?.toUpperCase() ?? null,
     visa:
       filterList[FILTER_CATEGORY.VISA]?.join(',')?.replace(/-/g, '_') ?? null,
+  };
+
+  return newSearchFilter;
+};
+
+// 커리어 검색 시에 request 형식으로 변경
+export const formatCareerSearchFilter = ({
+  searchText = '',
+  careerSortType = 'POPULAR',
+  careerCategory = [],
+}: {
+  searchText: string;
+  careerSortType: string;
+  careerCategory: string[];
+}) => {
+  const newSearchFilter = {
+    size: 5,
+    search: searchText ?? null,
+    sorting: careerSortType as PostSortingType | POST_SEARCH_MENU,
+    category: careerCategory.join(','),
   };
 
   return newSearchFilter;

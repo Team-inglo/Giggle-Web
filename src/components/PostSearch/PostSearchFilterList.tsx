@@ -117,12 +117,10 @@ const PostSearchFilterList = ({
     }
   };
 
-  if (formatFilterListToTag().length === 0) return <></>;
-
   return (
-    <section className="w-full py-2">
-      <div className="w-full min-h-6 px-4 flex items-center gap-1 overflow-x-scroll whitespace-nowrap no-scrollbar">
-        {formatFilterListToTag().map((filter, index) => (
+    <section className="flex-1 w-full py-2">
+      <div className="w-full min-h-8 pl-4 pr-14 flex items-center gap-1 overflow-x-scroll whitespace-nowrap no-scrollbar">
+        {formatFilterListToTag()?.map((filter, index) => (
           <Tag
             key={`${index}_${filter.category}`}
             value={

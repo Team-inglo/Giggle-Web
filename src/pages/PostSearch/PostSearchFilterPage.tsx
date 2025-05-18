@@ -17,7 +17,7 @@ const PostSearchFilterPage = () => {
   const { state } = useLocation();
 
   const { account_type } = useUserStore();
-  const { searchOption, updateFilterList } = usePostSearch(state);
+  const { searchOption, updateSearchOption } = usePostSearch(state);
 
   const [filterList, setFilterList] = useState<PostSearchFilterItemType>(
     searchOption.filterList,
@@ -46,7 +46,7 @@ const PostSearchFilterPage = () => {
   };
 
   const onClickApply = () => {
-    updateFilterList(filterList);
+    updateSearchOption('filterList', filterList);
     navigate(`/search`, { state: { ...searchOption, filterList: filterList } });
   };
 
