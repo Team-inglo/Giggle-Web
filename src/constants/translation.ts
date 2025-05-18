@@ -545,6 +545,17 @@ export const postTranslation = {
   },
 };
 
+export const careerDetailTranslation = {
+  description: {
+    ko: '상세요강',
+    en: 'Description',
+  },
+  preferredConditions: {
+    ko: '우대사항',
+    en: 'Preferred Conditions',
+  },
+};
+
 export const postSearchTranslation = {
   searchResults: {
     ko: ' 개의 검색 결과',

@@ -108,9 +108,9 @@ const CareerCardList = ({
             </div>
           </div>
           <p className="pb-4 caption text-text-alternative whitespace-normal">
-            {CAREER_CATEGORY[value.career_category]}
+            {value.career_category && CAREER_CATEGORY[value.career_category]}
             <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
-            {value.visa.join(', ').replace(/_/g, '-')}
+            {value.visa?.join(', ')?.replace(/_/g, '-')}
           </p>
           <p className="pb-1 button-2 text-text-normal whitespace-normal">
             {value.organizer_name}
@@ -122,7 +122,8 @@ const CareerCardList = ({
               {value.recruitment_start_date} ~ {value.recruitment_end_date}
             </p>
             <p className="caption text-text-alternative">
-              {calculateTimeAgo(value.created_at, account_type)}
+              {value.created_at &&
+                calculateTimeAgo(value.created_at, account_type)}
             </p>
           </div>
         </article>

@@ -57,6 +57,7 @@ import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
 import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
 import EmployerPostFormPage from './pages/Employer/Post/EmployerPostFormPage';
+import CareerDetailPage from './pages/PostDetail/CareerDetailPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -146,7 +147,7 @@ const Router = () => {
           path="/resume/work-experience/edit/:id"
           element={<PatchWorkExperiencePage />}
         />
-
+        <Route path="/career/:id" element={<CareerDetailPage />} />
         <Route path="/post/:id" element={<PostDetailPage />} />
         <Route path="/post/apply/:id" element={<PostApplyPage />} />
         <Route path="/write-documents/:id" element={<WriteDocumentsPage />} />
