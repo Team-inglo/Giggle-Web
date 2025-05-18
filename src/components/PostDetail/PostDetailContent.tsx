@@ -4,12 +4,6 @@ import { PostDetailContentMenu } from '@/constants/postDetail';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { PostDetailItemType } from '@/types/postDetail/postDetailItem';
 import { formatMoney } from '@/utils/formatMoney';
-import CompanyInformationIcon from '@/assets/icons/Post/CompanyInformationIcon.svg?react';
-import DetailedOverviewIcon from '@/assets/icons/Post/DetailedOverviewIcon.svg?react';
-import RecruitmentConditionsIcon from '@/assets/icons/Post/RecruitmentConditionsIcon.svg?react';
-import WorkingConditionsIcon from '@/assets/icons/Post/WorkingConditionsIcon.svg?react';
-import WorkplaceInformationIcon from '@/assets/icons/Post/WorkplaceInformationIcon.svg?react';
-import InfoCardLayout from '@/components/Common/InfoCardLayout';
 import { infoTranslation, postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
@@ -29,6 +23,7 @@ import { DayOfWeek, WorkPeriod } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { UserType } from '@/constants/user';
 import { dayOfWeekToKorean } from '@/utils/post';
+import { calculateDays } from '@/utils/calculateDDay';
 
 type PostDetailContentProps = {
   postDetailData: PostDetailItemType;
@@ -58,43 +53,48 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
   };
 
   return (
-    <section className="w-full pb-[8rem] bg-surface-secondary">
+    <section className="w-full pb-[8rem] bg-surface-base">
       <PostDetailContentMenuBar
         selectedMenu={selectedMenu}
         scrollToSelectedMenu={scrollToSelectedMenu}
       />
-      <div className="flex flex-col gap-2 w-full p-4">
+      <div className="flex flex-col gap-2 w-full bg-surface-secondary">
         <div ref={(e) => (scrollRef.current[0] = e)}>
-          <InfoCardLayout
-            icon={<RecruitmentConditionsIcon />}
-            title={
-              postTranslation.recruitmentConditions[
-                isEmployerByAccountType(account_type)
-              ]
-            }
-          >
-            <div className="flex flex-col gap-4 w-full">
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+          <article className="w-full px-4 py-6 bg-surface-base">
+            <h3 className="pb-5 head-3 text-text-strong">
+              {
+                postTranslation.recruitmentConditions[
+                  isEmployerByAccountType(account_type)
+                ]
+              }
+            </h3>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.recruitmentPeriod[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
-                  {postDetailData.recruitment_conditions?.recruitment_deadline}
+                <p className="body-3 text-text-strong">
+                  {postDetailData.recruitment_conditions
+                    ?.recruitment_deadline === '상시모집'
+                    ? postTranslation.dDay[
+                        isEmployerByAccountType(account_type)
+                      ]
+                    : `${calculateDays(postDetailData.recruitment_conditions?.recruitment_deadline)}days left`}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.ageRestriction[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.recruitment_conditions.age_restriction ===
                   null
                     ? postTranslation.none[
@@ -103,15 +103,32 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                     : `${postDetailData.recruitment_conditions.age_restriction}${postTranslation.ageRestrictionAdditional[isEmployerByAccountType(account_type)]}`}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
+                  {
+                    postTranslation.numberOfRecruits[
+                      isEmployerByAccountType(account_type)
+                    ]
+                  }
+                </h5>
+                <p className="body-3 text-text-strong">
+                  {postDetailData.recruitment_conditions.number_of_recruits}{' '}
+                  {
+                    postTranslation.people[
+                      isEmployerByAccountType(account_type)
+                    ]
+                  }
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.education[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {account_type === UserType.OWNER
                     ? EducationLevelInfo[
                         postDetailData.recruitment_conditions
@@ -125,42 +142,25 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                   }
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
-                  {
-                    postTranslation.numberOfRecruits[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
-                </h5>
-                <p className="text-text-alternative caption">
-                  {postDetailData.recruitment_conditions.number_of_recruits}{' '}
-                  {
-                    postTranslation.people[
-                      isEmployerByAccountType(account_type)
-                    ]
-                  }
-                </p>
-              </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {postTranslation.visa[isEmployerByAccountType(account_type)]}
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.recruitment_conditions.visa
                     .join(', ')
                     .replace(/_/g, '-')}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.gender[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {account_type === UserType.OWNER
                     ? genderInfo[
                         postDetailData.recruitment_conditions.gender as Gender
@@ -168,15 +168,15 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                     : postDetailData.recruitment_conditions.gender.toLowerCase()}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.preferredConditions[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.recruitment_conditions
                     .preferred_conditions === ''
                     ? infoTranslation.notEntered[
@@ -187,20 +187,20 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 </p>
               </div>
             </div>
-          </InfoCardLayout>
+          </article>
         </div>
-        <InfoCardLayout
-          icon={<DetailedOverviewIcon />}
-          title={
-            postTranslation.detailedOverview[
-              isEmployerByAccountType(account_type)
-            ]
-          }
-        >
+        <article className="w-full px-4 py-6 bg-surface-base">
+          <h3 className="pb-5 head-3 text-text-strong">
+            {
+              postTranslation.detailedOverview[
+                isEmployerByAccountType(account_type)
+              ]
+            }
+          </h3>
           <div className="flex flex-col gap-3 w-full">
             {postDetailData.detailed_overview.length > 255 ? (
               <>
-                <p className="text-text-alternative caption whitespace-pre-wrap break-all">
+                <p className="text-text-strong body-2 whitespace-pre-wrap break-all">
                   {showDetailOverview
                     ? postDetailData.detailed_overview
                     : postDetailData.detailed_overview.slice(0, 255) + '...'}
@@ -208,7 +208,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 {!showDetailOverview && (
                   <button
                     onClick={() => setShowDetailOverview(true)}
-                    className="self-end text-text-alternative caption"
+                    className="w-full py-3 px-[0.625rem] border border-border-disabled rounded-[0.625rem]"
                   >
                     {
                       postTranslation.seeMore[
@@ -219,73 +219,96 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 )}
               </>
             ) : (
-              <p className="text-text-alternative caption whitespace-pre-wrap break-all">
+              <p className="text-text-strong body-2 whitespace-pre-wrap break-all">
                 {postDetailData.detailed_overview}
               </p>
             )}
           </div>
-        </InfoCardLayout>
+        </article>
         <div ref={(e) => (scrollRef.current[1] = e)}>
-          <InfoCardLayout
-            icon={<WorkplaceInformationIcon />}
-            title={
-              postTranslation.workplaceInformation[
-                isEmployerByAccountType(account_type)
-              ]
-            }
-          >
-            <>
-              <h5 className="pb-1 text-text-normal button-2">
-                {postDetailData.workplace_information.main_address ?? ''}
-              </h5>
-              <p className="pb-2 text-text-alternative caption">
-                {postDetailData.workplace_information.detailed_address ?? ''}
-              </p>
-              <Map
-                center={{
+          <article className="w-full px-4 py-6 bg-surface-base">
+            <h3 className="pb-5 head-3 text-text-strong">
+              {
+                postTranslation.workplaceInformation[
+                  isEmployerByAccountType(account_type)
+                ]
+              }
+            </h3>
+            <p className="pb-3 text-text-strong body-3">
+              {postDetailData.workplace_information.main_address ?? ''}{' '}
+              {postDetailData.workplace_information.detailed_address ?? ''}
+            </p>
+            <Map
+              center={{
+                lat: postDetailData.workplace_information.latitude,
+                lng: postDetailData.workplace_information.longitude,
+              }}
+              style={{ width: '100%', height: '151px' }}
+              className="rounded-xl"
+            >
+              <MapMarker
+                position={{
                   lat: postDetailData.workplace_information.latitude,
                   lng: postDetailData.workplace_information.longitude,
                 }}
-                style={{ width: '100%', height: '151px' }}
-                className="rounded-xl"
-              >
-                <MapMarker
-                  position={{
-                    lat: postDetailData.workplace_information.latitude,
-                    lng: postDetailData.workplace_information.longitude,
-                  }}
-                ></MapMarker>
-              </Map>
-            </>
-          </InfoCardLayout>
+              ></MapMarker>
+            </Map>
+          </article>
         </div>
-        <InfoCardLayout
-          icon={<WorkingConditionsIcon />}
-          title={
-            postTranslation.workplaceConditions[
-              isEmployerByAccountType(account_type)
-            ]
-          }
-        >
-          <div className="flex flex-col gap-4 w-full">
-            <div>
-              <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {postTranslation.salary[isEmployerByAccountType(account_type)]}
+        <article className="w-full px-4 py-6 bg-surface-base">
+          <h3 className="pb-5 head-3 text-text-strong">
+            {
+              postTranslation.workplaceConditions[
+                isEmployerByAccountType(account_type)
+              ]
+            }
+          </h3>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-3">
+              <h5 className="body-3 text-text-alternative">
+                {
+                  postTranslation.employmentType[
+                    isEmployerByAccountType(account_type)
+                  ]
+                }
               </h5>
-              <p className="text-text-alternative caption">
-                {formatMoney(postDetailData.working_conditions.hourly_rate)}{' '}
-                {postTranslation.KRW[isEmployerByAccountType(account_type)]}
+              <p className="body-3 text-text-strong">
+                {account_type === UserType.OWNER
+                  ? WorkTypeInfo[
+                      postDetailData.working_conditions
+                        .employment_type as EmploymentType
+                    ].name
+                  : postDetailData.working_conditions.employment_type.toLowerCase()}
               </p>
             </div>
-            <div>
-              <h5 className="pb-[0.125rem] text-text-normal button-2">
+            <div className="flex gap-3">
+              <h5 className="body-3 text-text-alternative">
+                {
+                  postTranslation.jobCategory[
+                    isEmployerByAccountType(account_type)
+                  ]
+                }
+              </h5>
+              <p className="body-3 text-text-strong">
+                {account_type === UserType.OWNER
+                  ? JobCategoryInfo[
+                      postDetailData.working_conditions
+                        .job_category as JobCategory
+                    ].name
+                  : postDetailData.working_conditions.job_category
+                      .replace(/_/g, ' ')
+                      .toLowerCase()}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <h5 className="body-3 text-text-alternative">
                 {
                   postTranslation.workPeriod[
                     isEmployerByAccountType(account_type)
                   ]
                 }
               </h5>
-              <p className="text-text-alternative caption">
+              <p className="body-3 text-text-strong">
                 {account_type === UserType.OWNER
                   ? WorkPeriodInfo[
                       postDetailData.working_conditions
@@ -296,20 +319,29 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                       .toLowerCase()}
               </p>
             </div>
-            <div>
-              <h5 className="pb-[0.125rem] text-text-normal button-2">
+            <div className="flex gap-3">
+              <h5 className="body-3 text-text-alternative">
+                {postTranslation.salary[isEmployerByAccountType(account_type)]}
+              </h5>
+              <p className="body-3 text-text-strong">
+                {formatMoney(postDetailData.working_conditions.hourly_rate)}{' '}
+                {postTranslation.KRW[isEmployerByAccountType(account_type)]}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <h5 className="body-3 text-text-alternative">
                 {
                   postTranslation.workingDaysHours[
                     isEmployerByAccountType(account_type)
                   ]
                 }
               </h5>
-              <div className="flex flex-col gap-[0.125rem] text-text-alternative caption">
+              <div className="flex flex-wrap body-3 text-text-strong">
                 {postDetailData.working_conditions.work_day_times.map(
                   (value, index) => (
                     <p key={`${value}_${index}`}>
                       {value.day_of_week !== 'NEGOTIABLE' && (
-                        <span className="button-2 pr-2">
+                        <span className="pr-2">
                           {account_type === UserType.OWNER
                             ? dayOfWeekToKorean(value.day_of_week as DayOfWeek)
                             : value.day_of_week.toLowerCase()}
@@ -321,112 +353,76 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 )}
               </div>
             </div>
-            <div>
-              <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {
-                  postTranslation.jobCategory[
-                    isEmployerByAccountType(account_type)
-                  ]
-                }
-              </h5>
-              <p className="text-text-alternative caption">
-                {account_type === UserType.OWNER
-                  ? JobCategoryInfo[
-                      postDetailData.working_conditions
-                        .job_category as JobCategory
-                    ].name
-                  : postDetailData.working_conditions.job_category
-                      .replace(/_/g, ' ')
-                      .toLowerCase()}
-              </p>
-            </div>
-            <div>
-              <h5 className="pb-[0.125rem] text-text-normal button-2">
-                {
-                  postTranslation.employmentType[
-                    isEmployerByAccountType(account_type)
-                  ]
-                }
-              </h5>
-              <p className="text-text-alternative caption">
-                {account_type === UserType.OWNER
-                  ? WorkTypeInfo[
-                      postDetailData.working_conditions
-                        .employment_type as EmploymentType
-                    ].name
-                  : postDetailData.working_conditions.employment_type.toLowerCase()}
-              </p>
-            </div>
           </div>
-        </InfoCardLayout>
+        </article>
         <div ref={(e) => (scrollRef.current[2] = e)}>
-          <InfoCardLayout
-            icon={<CompanyInformationIcon />}
-            title={
-              postTranslation.companyInformation[
-                isEmployerByAccountType(account_type)
-              ]
-            }
-          >
-            <div className="flex flex-col gap-4 w-full">
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+          <article className="w-full px-4 py-6 bg-surface-base">
+            <h3 className="pb-5 head-3 text-text-strong">
+              {
+                postTranslation.companyInformation[
+                  isEmployerByAccountType(account_type)
+                ]
+              }
+            </h3>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.companyAddress[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.company_information.company_address}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.representativeName[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.company_information.representative_name}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.recruiter[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.company_information.recruiter}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {
                     postTranslation.contact[
                       isEmployerByAccountType(account_type)
                     ]
                   }
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.company_information.contact}
                 </p>
               </div>
-              <div>
-                <h5 className="pb-[0.125rem] text-text-normal button-2">
+              <div className="flex gap-3">
+                <h5 className="body-3 text-text-alternative">
                   {postTranslation.email[isEmployerByAccountType(account_type)]}
                 </h5>
-                <p className="text-text-alternative caption">
+                <p className="body-3 text-text-strong">
                   {postDetailData.company_information.email}
                 </p>
               </div>
             </div>
-          </InfoCardLayout>
+          </article>
         </div>
       </div>
     </section>
