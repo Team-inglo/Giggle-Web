@@ -34,7 +34,7 @@ type InputProps = {
 const inputStyler = (status: InputStatus) => {
   switch (status) {
     case INPUT_STATUS.DISABLED:
-      return 'border-border-disabled [--input-color:#bdbdbd]';
+      return 'border-border-assistive [--input-color:#bdbdbd]';
     case INPUT_STATUS.TYPING:
       return 'border-black text-black';
     case INPUT_STATUS.INVALID:

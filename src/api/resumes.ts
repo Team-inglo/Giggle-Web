@@ -1,22 +1,23 @@
 import {
   AdditionalLanguageRequest,
   EducationRequest,
-  IntroDuctionRequest,
+  IntroductionRequest,
   LanguagesLevelType,
   LanguagesSummariesResponse,
   UserResumeDetailResponse,
   WorkExperienctRequest,
   WorkExperienctResponse,
 } from '@/types/api/resumes';
-import { api } from '.';
+import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
 import { GetEducationType } from '@/types/postResume/postEducation';
+import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 
 // 7.1 (유학생) 이력서 조회하기
 export const getResume = async (): Promise<
   RESTYPE<UserResumeDetailResponse>
 > => {
-  const response = await api.get('/users/resumes/details');
+  const response = await apiV2.get('/users/resumes/details');
   return response.data;
 };
 
@@ -75,8 +76,11 @@ export const postEtcLanguageLevel = async (
 };
 
 // 7.8 (유학생) 자기소개 수정하기
-export const patchIntroduction = async (introduction: IntroDuctionRequest) => {
-  const response = await api.patch('/users/resumes/introduction', introduction);
+export const patchIntroduction = async (introduction: IntroductionRequest) => {
+  const response = await apiV2.patch(
+    '/users/resumes/introduction',
+    introduction,
+  );
   return response.data;
 };
 
@@ -169,6 +173,18 @@ export const getApplicantResume = async (id: number) => {
   const response = await api.get(
     `/owners/user-owner-job-postings/${id}/users/resumes/details`,
   );
+  return response.data;
+};
+
+// 7.21 (유학생) 희망 근로 조건 상세 조회하기
+export const getWorkPreference = async () => {
+  const response = await api.get('/users/resumes/work-preferences/details');
+  return response.data;
+};
+
+// 7.22 (유학생) 희망 근로 조건 수정하기
+export const putWorkPreference = async (data: WorkPreferenceType) => {
+  const response = await api.put('/users/resumes/work-preferences', data);
   return response.data;
 };
 

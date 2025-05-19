@@ -1,13 +1,13 @@
 import { EducationLevelType } from '@/types/postApply/resumeDetailItem';
 
 export type PostEducationType = {
-  education_level: EducationLevelType; // Enum(BACHELOR, ASSOCIATE, HIGHSCHOOL),
-  school_id: number;
-  major: string;
-  gpa: number;
-  start_date: string; // yyyy-MM-dd
-  end_date: string; // yyyy-MM-dd
-  grade: number;
+  education_level: EducationLevelType | string | null; // Enum(BACHELOR, ASSOCIATE, HIGHSCHOOL),
+  school_id: number | null;
+  major: string | null;
+  gpa: number | string | null;
+  start_date: string | null; // yyyy-MM-dd
+  end_date: string | null; // yyyy-MM-dd
+  grade: number | string | null;
 };
 
 export type SchoolSummary = {
@@ -25,17 +25,7 @@ export type GetEducationType = {
   grade: number;
 };
 
-export type InitailEducationType = {
-  education_level: string | null; // Enum(BACHELOR, ASSOCIATE, HIGHSCHOOL),
-  school_id: number | null;
-  major: string | null;
-  gpa: string | null;
-  start_date: string | null; // yyyy-MM-dd
-  end_date: string | null; // yyyy-MM-dd
-  grade: string | null;
-};
-
-export const InitialEducationData = {
+export const InitialEducationData: PostEducationType = {
   education_level: '', // Enum(BACHELOR, ASSOCIATE, HIGHSCHOOL),
   school_id: null,
   major: '',

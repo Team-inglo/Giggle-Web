@@ -38,7 +38,7 @@ const SearchSortDropdown = ({ options, value, onSelect }: DropdownProps) => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 text-text-normal caption"
+        className="flex items-center gap-1 text-text-strong body-3"
       >
         {value}
         <div

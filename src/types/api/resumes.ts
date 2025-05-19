@@ -8,7 +8,8 @@ import {
 import { VisaType } from '@/types/postDetail/postDetailItem';
 
 // 자기소개 요청 타입
-export type IntroDuctionRequest = {
+export type IntroductionRequest = {
+  title?: string;
   introduction?: string;
 };
 
@@ -78,4 +79,10 @@ export type UserResumeDetailResponse = {
   work_experience: WorkExperienceType[];
   education: EducationType[];
   languages: LanguageListType;
+};
+
+//TODO: API 명세 나오는대로 타입 형태와 이름 수정
+export type WorkPreferenceRequest = {
+  preferred_work_type?: string;
+  preferred_location?: string;
 };

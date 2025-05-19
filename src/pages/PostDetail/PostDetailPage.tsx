@@ -1,5 +1,4 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import { JobPostingCard } from '@/components/Common/JobPostingCard';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import PostDetailApplyButton from '@/components/PostDetail/PostDetailApplyButton';
 import PostDetailCompanyImageList from '@/components/PostDetail/PostDetailCompanyImageList';
@@ -7,9 +6,15 @@ import PostDetailContent from '@/components/PostDetail/PostDetailContent';
 import { UserType } from '@/constants/user';
 import { useGetPostDetail, useGetPostDetailGuest } from '@/hooks/api/usePost';
 import { useUserStore } from '@/store/user';
-import { transformDetailToJobPostingItemType } from '@/utils/post';
+import { workDaysPerWeekToText } from '@/utils/post';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import GlobalIcon from '@/assets/icons/GlobalIcon.svg?react';
+import MoneyIcon from '@/assets/icons/MoneyIcon.svg?react';
+import CalendarIcon from '@/assets/icons/CalendarIcon.svg?react';
+import { formatMoney } from '@/utils/formatMoney';
+import { WorkPeriodInfo } from '@/constants/documents';
+import { WorkPeriod } from '@/types/api/document';
 
 const PostDetailPage = () => {
   const { account_type } = useUserStore();
@@ -54,23 +59,48 @@ const PostDetailPage = () => {
       <PostDetailCompanyImageList
         companyImageData={postDetailData.data?.company_img_url_list}
       />
-      <JobPostingCard
-        key={postDetailData.data.id}
-        {...transformDetailToJobPostingItemType(postDetailData.data)}
-      >
-        <JobPostingCard.Box>
-          <JobPostingCard.Header />
-          <JobPostingCard.Title isTwoLine={true} />
-          <JobPostingCard.TagList className="pt-2" />
-          <JobPostingCard.DeadLine />
-          <div className="w-full flex flex-col gap-[0.125rem]">
-            <JobPostingCard.Address />
-            <JobPostingCard.WorkPeriod />
-            <JobPostingCard.WorkDaysPerWeek />
-            <JobPostingCard.HourlyRate />
+      <article className="w-full px-4 py-5 bg-surface-base">
+        <h3 className="pb-1 head-3 text-text-strong line-clamp-2">
+          {postDetailData.data?.title}
+        </h3>
+        <p className="pb-4 body-3 text-text-normal whitespace-normal">
+          {postDetailData.data?.company_name}ㆍ
+          {postDetailData.data?.summaries.address}
+        </p>
+        <div className="flex flex-col gap-1">
+          <div className="flex gap-2 items-center">
+            <CalendarIcon />
+            <p className="body-3 text-text-strong">
+              {account_type === UserType.OWNER
+                ? WorkPeriodInfo[
+                    postDetailData.data?.summaries.work_period as WorkPeriod
+                  ].name
+                : postDetailData.data?.summaries.work_period
+                    ?.replace(/_/g, ' ')
+                    .toLowerCase()}
+              ,{' '}
+              {workDaysPerWeekToText(
+                postDetailData.data?.summaries.work_days_per_week as string,
+                account_type,
+              )}
+            </p>
           </div>
-        </JobPostingCard.Box>
-      </JobPostingCard>
+          <div className="flex gap-2 items-center">
+            <GlobalIcon />
+            <p className="body-3 text-text-strong">
+              {postDetailData.data?.tags.visa.join(', ').replace(/_/g, '-')}
+            </p>
+          </div>
+          <div className="flex gap-2 items-center">
+            <MoneyIcon />
+            <p className="body-3 text-text-strong">
+              {account_type === UserType.OWNER
+                ? `시급 ${formatMoney(postDetailData.data?.summaries.hourly_rate)}원`
+                : `Hr ${formatMoney(postDetailData.data?.summaries.hourly_rate)}KRW`}
+            </p>
+          </div>
+        </div>
+      </article>
       <PostDetailContent postDetailData={postDetailData.data} />
       {account_type !== UserType.OWNER && (
         <PostDetailApplyButton

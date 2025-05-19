@@ -54,6 +54,20 @@ export const handleGoExternalWeb = (type: string) => {
   }
 };
 
+// 서버에서 받은 Url로 이동시키는 함수
+export const handleGoExternalWebByDynamicUrl = (url: string) => {
+  const isWebView = Boolean(window.ReactNativeWebView);
+
+  if (isWebView) {
+    sendReactNativeMessage({
+      type: 'GO_EXTERNAL_SITE',
+      payload: url,
+    });
+  } else {
+    window.location.href = url;
+  }
+};
+
 // 페이지 이동 후 뒤로가기 시 이전 페이지로 건너뛰는 헬퍼 함수
 export const navigateWithSkipHistory = (
   navigate: NavigateFunction,

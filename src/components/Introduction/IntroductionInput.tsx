@@ -1,8 +1,15 @@
+import { Dispatch, RefObject, SetStateAction } from 'react';
+import InputLayout from '@/components/WorkExperience/InputLayout';
+import Input from '@/components/Common/Input';
+import { InputType } from '@/types/common/input';
+import { IntroductionRequest } from '@/types/api/resumes';
+import { limitInputValueLength } from '@/utils/information';
+
 type IntroductionInputProps = {
-  data: string;
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  data: IntroductionRequest;
+  textareaRef: RefObject<HTMLTextAreaElement>;
   handleFocusTextArea: () => void;
-  handleChange: (value: string) => void;
+  handleChange: Dispatch<SetStateAction<IntroductionRequest>>;
 };
 
 const IntroductionInput = ({
@@ -12,25 +19,49 @@ const IntroductionInput = ({
   handleChange,
 }: IntroductionInputProps) => {
   return (
-    <div className="p-6 flex flex-col gap-6 pb-28">
-      <div className="pr-4 head-1 text-[#1E1926]">
-        Standard labor contract for short-time workers
-      </div>
-      <div
-        onClick={handleFocusTextArea}
-        className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow p-2"
+    <div className="px-4 py-6 flex flex-col gap-6 pb-28">
+      <InputLayout
+        title="Introduce yourself in one sentence!"
+        isEssential={false}
       >
-        <textarea
-          ref={textareaRef}
-          placeholder="Please write an article that introduces you."
-          value={data}
-          onChange={(e) => handleChange(e.target.value)}
-          className="h-auto body-2 placeholder:text-[#abb0b9] text-[#1E1926] w-full resize-none outline-none"
+        <Input
+          inputType={InputType.TEXT}
+          placeholder="ex. Friendly barista with a passion for coffee ☕"
+          value={data.title ?? ''}
+          onChange={(value) =>
+            handleChange((prev) => ({
+              ...prev,
+              title: limitInputValueLength(value, 50),
+            }))
+          }
+          canDelete={false}
         />
-        <span className="caption text-[#464646] text-end">
-          {data.length}/200
-        </span>
-      </div>
+        <div className="w-full flex justify-end p-2">
+          <span className="w-full caption text-text-assistive text-end">
+            {data.title?.length}/50
+          </span>
+        </div>
+      </InputLayout>
+
+      <InputLayout title="Tell us about yourself" isEssential={false}>
+        <div
+          onClick={handleFocusTextArea}
+          className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-border-alternative shadow-inputFieldShadow p-2"
+        >
+          <textarea
+            ref={textareaRef}
+            placeholder="Who are you? What are your skills? Keep it short & engaging!"
+            value={data.introduction ?? ''}
+            onChange={(e) =>
+              handleChange((prev) => ({
+                ...prev,
+                introduction: limitInputValueLength(e.target.value, 200),
+              }))
+            }
+            className="h-auto body-2 placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
+          />
+        </div>
+      </InputLayout>
     </div>
   );
 };

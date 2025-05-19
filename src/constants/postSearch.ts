@@ -182,3 +182,11 @@ export const initialFilterList: PostSearchFilterItemType = {
   [FILTER_CATEGORY.EMPLOYMENT_TYPE]: [],
   [FILTER_CATEGORY.VISA]: [],
 };
+
+// 커리어 검색 카테고리
+export const CAREER_CATEGORY = {
+  ACTIVITY: 'Activity',
+  PROGRAM: 'Program',
+  CONTEST: 'Contest',
+  CLUB: 'Club',
+} as const;
