@@ -19,12 +19,10 @@ import PostApplyPage from '@/pages/PostApply/PostApplyPage';
 import ApplicationPage from '@/pages/Application/ApplicationPage';
 import ManageResumePage from '@/pages/ManageResumePage/ManageResumePage';
 import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
-import ScrappedJobPostsPage from '@/pages/ScrappedJobPosts/ScrappedJobPostsPage';
-import PostEducationPage from '@/pages/SetEducation/PostEducationPage';
-import PatchEducationPage from '@/pages/SetEducation/PatchEducationPage';
-import PostWorkExperiencePage from '@/pages/SetWorkExperience/PostWorkExperiencePage';
-import IntroductionPage from '@/pages/Introduction/IntroductionPage';
-import PatchWorkExperiencePage from '@/pages/SetWorkExperience/PatchWorkExperiencePage';
+import ScrappedJobPostsPage from '@/pages/Resume/ScrappedJobPostsPage';
+import PostWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PostWorkExperiencePage';
+import IntroductionPage from '@/pages/Resume/IntroductionPage';
+import PatchWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PatchWorkExperiencePage';
 import ApplicationDetailPage from '@/pages/ApplicationDetail/ApplicationDetailPage';
 import ApplicationResultPage from '@/pages/ApplicationResult/ApplicationResultPage';
 import EmployerPostDetailPage from '@/pages/Employer/PostDetail/EmployerPostDetailPage';
@@ -34,7 +32,7 @@ import EmployerPostPage from '@/pages/Employer/Post/EmployerPostPage';
 import EmployerApplicantListPage from '@/pages/Employer/ApplicantList/EmployerApplicantListPage';
 import EmployerProfilePage from '@/pages/Employer/Profile/EmployerProfilePage';
 import EmployerSignupInfoPage from '@/pages/Employer/Signup/EmployerSignupInfoPage';
-import PostLanguagePage from '@/pages/PostLanguage/PostLanguagePage';
+import PostLanguagePage from '@/pages/Resume/PostLanguagePage';
 import EmployerApplicantDetailPage from '@/pages/Employer/ApplicantDetail/EmployerApplicantDetailPage';
 import EmployerApplicantResumePage from '@/pages/Employer/ApplicantResume/EmployerApplicantResumePage';
 import EmployerApplicantResumeAcceptPage from '@/pages/Employer/ApplicantResumeAccept/EmployerApplicantResumeAcceptPage';
@@ -52,12 +50,13 @@ import { setRedirectToLogin } from '@/api';
 import AccountPage from '@/pages/Profile/AccountPage';
 import AboutPage from '@/pages/Profile/AboutPage';
 import ChangePasswordPage from '@/pages/Profile/ChangePasswordPage';
-import EditResumePage from '@/pages/ManageResumePage/EditResumePage';
 import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
 import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
-import EmployerPostFormPage from './pages/Employer/Post/EmployerPostFormPage';
-import CareerDetailPage from './pages/PostDetail/CareerDetailPage';
+import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
+import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
+import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
+import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -124,7 +123,6 @@ const Router = () => {
         <Route path="/profile/account" element={<AccountPage />} />
         <Route path="/profile/edit" element={<EditProfilePage />} />
         <Route path="/profile/manage-resume" element={<ManageResumePage />} />
-        <Route path="/profile/edit-resume" element={<EditResumePage />} />
         <Route path="/profile/language" element={<LanguageSettingPage />} />
         <Route
           path="/profile/change-password"
@@ -134,11 +132,8 @@ const Router = () => {
         <Route path="/resume/introduction" element={<IntroductionPage />} />
         <Route path="/resume/language/add" element={<PostLanguagePage />} />
         <Route path="/resume/scrapped" element={<ScrappedJobPostsPage />} />
-        <Route path="/resume/education" element={<PostEducationPage />} />
-        <Route
-          path="/resume/education/edit/:id"
-          element={<PatchEducationPage />}
-        />
+        <Route path="/resume/education" element={<EducationPage />} />
+        <Route path="/resume/education/:id" element={<EducationPage />} />
         <Route
           path="/resume/work-experience"
           element={<PostWorkExperiencePage />}
@@ -148,6 +143,11 @@ const Router = () => {
           element={<PatchWorkExperiencePage />}
         />
         <Route path="/career/:id" element={<CareerDetailPage />} />
+        <Route
+          path="/resume/work-preference"
+          element={<WorkPreferencePage />}
+        />
+
         <Route path="/post/:id" element={<PostDetailPage />} />
         <Route path="/post/apply/:id" element={<PostApplyPage />} />
         <Route path="/write-documents/:id" element={<WriteDocumentsPage />} />

@@ -45,7 +45,7 @@ const IntroductionPage = () => {
   const handleSubmit = () => {
     // API - 7.8 (유학생) 자기소개 수정하기
     if (isEqual(data, initialData))
-      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true });
+      smartNavigate(navigate, '/profile/manage-resume', { forceSkip: true });
     else mutate({ introduction: data.introduction, title: data.title });
   };
 

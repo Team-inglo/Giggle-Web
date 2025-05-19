@@ -1,8 +1,9 @@
 import { EducationLevels } from '@/constants/manageResume';
 import { MypageCardData } from '@/types/manageResume/manageResume';
+import { AreaType, WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
+import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
 import {
   GetEducationType,
-  InitailEducationType,
   PostEducationType,
 } from '@/types/postResume/postEducation';
 
@@ -42,18 +43,19 @@ export const transformToPatchEducation = (
 };
 
 // 학력 추가 데이터 유효성 검사
-export const educationDataValidation = (
-  data: InitailEducationType,
-): boolean => {
+export const educationDataValidation = (data: PostEducationType): boolean => {
   if (!data) return false;
 
   // 1. education_level은 EducationLevels 배열 안에 있는 값이어야 함
-  if (data.education_level && !EducationLevels.includes(data.education_level)) {
+  if (
+    data.education_level &&
+    !EducationLevels.includes(data.education_level as string)
+  ) {
     return false;
   }
 
   // 2. school_id는 0 이상의 숫자 값이어야 함
-  if (typeof data.school_id !== 'number' || data.school_id < 0) {
+  if (typeof data.school_id === 'number' && data.school_id < 0) {
     return false;
   }
 
@@ -62,8 +64,11 @@ export const educationDataValidation = (
     return false;
   }
 
-  // 4. gpa는 string 형태이지만, 숫자여야 함
-  if (typeof data.gpa !== 'string' || isNaN(Number(data.gpa))) {
+  // 4. gpa는 string 또는 number 형태이지만, 숫자여야 함
+  if (
+    (typeof data.gpa === 'string' && isNaN(Number(data.gpa))) ||
+    (typeof data.gpa === 'number' && isNaN(data.gpa))
+  ) {
     return false;
   }
 
@@ -79,10 +84,90 @@ export const educationDataValidation = (
   }
 
   // 7. grade는 숫자여야 함
-  if (typeof data.grade !== 'string') {
+  if (
+    (typeof data.grade === 'string' && isNaN(Number(data.grade))) ||
+    (typeof data.grade === 'number' && isNaN(data.grade))
+  ) {
     return false;
   }
 
   // 모든 조건을 통과하면 true 반환
   return true;
 };
+
+//두 객체가 동일한지 비교하는 함수
+
+export const isObjectEqual = <T>(
+  obj1: T | undefined,
+  obj2: T | undefined,
+): boolean => {
+  if (obj1 === undefined || obj2 === undefined) return false;
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+};
+// API 응답 데이터에서 지역 문자열 배열로 변환
+export function convertApiAreasToStrings(
+  areas: Array<{
+    region_1depth_name: string;
+    region_2depth_name: string | null;
+    region_3depth_name: string | null;
+  }>,
+): string[] {
+  return areas.map((area) => {
+    const parts = [];
+    if (area.region_1depth_name) parts.push(area.region_1depth_name);
+    if (area.region_2depth_name) parts.push(area.region_2depth_name);
+    if (area.region_3depth_name) parts.push(area.region_3depth_name);
+    return parts.join(' ');
+  });
+}
+
+// 지역 문자열 배열을 API 요청용 AreaType 배열로 변환
+export function convertStringsToApiAreas(areas: string[]): Array<{
+  region_1depth_name: string;
+  region_2depth_name: string | null;
+  region_3depth_name: string | null;
+  region_4depth_name: string | null;
+}> {
+  return areas.map((area) => {
+    const parts = area.trim().split(/\s+/);
+    return {
+      region_1depth_name: parts[0] || '',
+      region_2depth_name: parts[1] || null,
+      region_3depth_name: parts[2] || null,
+      region_4depth_name: parts[3] || null,
+    };
+  });
+}
+
+// 소문자 직무 문자열 배열을 API 요청용 EmploymentType 배열로 변환
+export function convertJobTypesToApiFormat(
+  jobTypes: string[],
+): EmploymentType[] {
+  return jobTypes.map((jobType) => jobType.toUpperCase() as EmploymentType);
+}
+
+// 전체 데이터를 API 요청 형식으로 변환
+export function prepareWorkPreferenceData(
+  areas: string[],
+  jobTypes: string[],
+  industries: JobCategory[],
+): WorkPreferenceType {
+  return {
+    preference_addresses: convertStringsToApiAreas(areas),
+    employment_types: convertJobTypesToApiFormat(jobTypes),
+    job_categories: industries,
+  };
+}
+
+  // 고용 형태와 업종 이름을 보기 좋게 변환하는 함수
+  export const formatEnumValue = (value: string) => {
+    return value
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  // 지역 표시 형식
+  export const formatArea = (area: AreaType) => {
+    return area.region_2depth_name || area.region_1depth_name;
+  };
