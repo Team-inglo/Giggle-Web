@@ -41,11 +41,11 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
       )}
       <div className="flex flex-col gap-2">
         {data.map((education) => (
-          <div key={education.id} className="flex justify-between items-start'">
+          <div key={education.id} className="flex justify-between items-start">
             <div>
               {/* 학력 정보 */}
               <div className="flex items-center gap-1 pb-[0.125rem]">
-                <h5 className="button-2 text-text-strong]">
+                <h5 className="button-2 text-text-strong">
                   {education.school_name}
                 </h5>
               </div>
@@ -55,7 +55,9 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
                   {formatDate(education.start_date)}~
                   {formatDate(education.end_date)}
                 </p>
-                <p className="text-text-alternative">{education.grade}th grade</p>
+                <p className="text-text-alternative">
+                  {education.grade}th grade
+                </p>
               </div>
             </div>
             {/* 수정, 삭제 아이콘 */}
