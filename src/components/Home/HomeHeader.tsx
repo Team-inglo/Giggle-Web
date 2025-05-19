@@ -1,6 +1,5 @@
 import AlarmIcon from '@/assets/icons/Home/AlarmIcon.svg?react';
 import HeaderLogoIcon from '@/assets/icons/Home/HeaderLogoIcon.svg?react';
-import SearchIcon from '@/assets/icons/Home/SearchIcon.svg?react';
 import { useGetAlarms } from '@/hooks/api/useAlarm';
 import { useUserStore } from '@/store/user';
 import { AlarmItemType } from '@/types/api/alarm';
@@ -39,11 +38,6 @@ const HomeHeader = () => {
 
         {/* 아이콘 영역 */}
         <div className="flex items-center gap-1">
-          {/* 검색 아이콘 */}
-          <button className="w-[2.25rem] h-[2.25rem] flex justify-center items-center rounded-full">
-            <SearchIcon />
-          </button>
-
           {/* 알림 아이콘 */}
           <button
             className="w-[2.25rem] h-[2.25rem] flex justify-center items-center relative rounded-full"
