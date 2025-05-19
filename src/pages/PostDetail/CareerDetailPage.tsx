@@ -37,7 +37,7 @@ const CareerDetailPage = () => {
 
   const { data: userData, isLoading: userLoading } = useGetCareerDetail(
     Number(id),
-    account_type && !isNaN(Number(id)) ? true : false,
+    account_type === UserType.USER && !isNaN(Number(id)) ? true : false,
   );
 
   const postDetailData = account_type ? userData : guestData;

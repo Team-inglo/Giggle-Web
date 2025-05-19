@@ -58,7 +58,7 @@ const CareerSearchSection = ({
     isLoading: careerIsInitialLoading,
   } = useInfiniteGetCareerList(
     formatCareerSearchFilter(searchOption),
-    account_type ? true : false,
+    account_type === UserType.USER ? true : false,
   );
 
   const data = account_type ? userCareerData : guestCareerData;
