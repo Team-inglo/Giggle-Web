@@ -1,5 +1,6 @@
 import { GenderType } from '@/constants/profile';
 import { useNavigate } from 'react-router-dom';
+import defaultProfileImg from '@/assets/images/GiggleLogo.png';
 
 type ResumeProfileCardProps = {
   profileImgUrl: string;
@@ -42,6 +43,9 @@ const ResumeProfileCard = ({
             src={profileImgUrl}
             alt="profile"
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = defaultProfileImg;
+            }}
           />
         </div>
 
@@ -74,9 +78,9 @@ const ResumeProfileCard = ({
 
           {/* 개인정보 두 번째 줄 */}
           <div className="caption text-text-alternative mt-0.5">
-            <span>{phone}</span>
-            <span className="mx-1">|</span>
-            <span>{email}</span>
+            {phone && <span>{phone}</span>}
+            {phone && email && <span className="mx-1">|</span>}
+            {email && <span>{email}</span>}
           </div>
         </div>
       </div>
