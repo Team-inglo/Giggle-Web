@@ -39,7 +39,7 @@ const HomeHeader = () => {
 
         {/* 아이콘 영역 */}
         <div className="flex items-center gap-1">
-          {/* 검색 아이콘 예시 */}
+          {/* 검색 아이콘 */}
           <button className="w-[2.25rem] h-[2.25rem] flex justify-center items-center rounded-full">
             <SearchIcon />
           </button>
