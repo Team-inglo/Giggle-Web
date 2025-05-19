@@ -86,14 +86,12 @@ const CareerSearchSection = ({
   }, [data]);
 
   const handleUpdateCareerCategory = (category: CareerCategoryKey) => {
-    const prev = searchOption.careerCategory;
-    if (prev.includes(category)) {
-      updateSearchOption('careerCategory', [
-        ...prev.filter((key) => key !== category),
-      ]);
-    } else {
-      updateSearchOption('careerCategory', [...prev, category]);
-    }
+    const categorySet = new Set(searchOption.careerCategory);
+
+    if (categorySet.has(category)) categorySet.delete(category);
+    else categorySet.add(category);
+
+    updateSearchOption('careerCategory', [...categorySet]);
   };
 
   const onChangeSortType = (selectedSortType: PostSortingType) => {
