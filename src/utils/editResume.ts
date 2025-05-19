@@ -1,6 +1,6 @@
 import { EducationLevels } from '@/constants/manageResume';
 import { MypageCardData } from '@/types/manageResume/manageResume';
-import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
+import { AreaType, WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
 import {
   GetEducationType,
@@ -153,8 +153,21 @@ export function prepareWorkPreferenceData(
   industries: JobCategory[],
 ): WorkPreferenceType {
   return {
-    areas: convertStringsToApiAreas(areas),
-    jobTypes: convertJobTypesToApiFormat(jobTypes),
-    industries,
+    preference_addresses: convertStringsToApiAreas(areas),
+    employment_types: convertJobTypesToApiFormat(jobTypes),
+    job_categories: industries,
   };
 }
+
+  // 고용 형태와 업종 이름을 보기 좋게 변환하는 함수
+  export const formatEnumValue = (value: string) => {
+    return value
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  // 지역 표시 형식
+  export const formatArea = (area: AreaType) => {
+    return area.region_2depth_name || area.region_1depth_name;
+  };

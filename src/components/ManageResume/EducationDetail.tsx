@@ -4,7 +4,6 @@ import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
 import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteEducation } from '@/hooks/api/useResume';
-import { EDUCATION_PERIOD } from '@/constants/profile';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { useState } from 'react';
 
@@ -42,27 +41,23 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
       )}
       <div className="flex flex-col gap-2">
         {data.map((education) => (
-          <div
-            key={education.id}
-            className="p-4 flex justify-between items-start bg-[#F4F4F9] rounded-lg"
-          >
+          <div key={education.id} className="flex justify-between items-start">
             <div>
               {/* 학력 정보 */}
               <div className="flex items-center gap-1 pb-[0.125rem]">
-                <h5 className="button-2 text-[#252525]">
+                <h5 className="button-2 text-text-strong">
                   {education.school_name}
                 </h5>
-                <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-                  {EDUCATION_PERIOD[education.education_level]} years program
-                </div>
               </div>
-              <p className="pb-2 caption text-[#252525]">{education.major}</p>
+              <p className="pb-2 caption text-text-normal">{education.major}</p>
               <div className="flex gap-[0.5rem] caption">
-                <p className="text-[#656565]">
+                <p className="text-text-alternative">
                   {formatDate(education.start_date)}~
                   {formatDate(education.end_date)}
                 </p>
-                <p className="text-[#5592FC]">{education.grade}th grade</p>
+                <p className="text-text-alternative">
+                  {education.grade}th grade
+                </p>
               </div>
             </div>
             {/* 수정, 삭제 아이콘 */}

@@ -50,7 +50,6 @@ import { setRedirectToLogin } from '@/api';
 import AccountPage from '@/pages/Profile/AccountPage';
 import AboutPage from '@/pages/Profile/AboutPage';
 import ChangePasswordPage from '@/pages/Profile/ChangePasswordPage';
-import EditResumePage from '@/pages/ManageResumePage/EditResumePage';
 import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
 import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
@@ -123,7 +122,6 @@ const Router = () => {
         <Route path="/profile/account" element={<AccountPage />} />
         <Route path="/profile/edit" element={<EditProfilePage />} />
         <Route path="/profile/manage-resume" element={<ManageResumePage />} />
-        <Route path="/profile/edit-resume" element={<EditResumePage />} />
         <Route path="/profile/language" element={<LanguageSettingPage />} />
         <Route
           path="/profile/change-password"

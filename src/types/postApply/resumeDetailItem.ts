@@ -73,7 +73,7 @@ export type ResumeDetailItemType = {
   languages: LanguageListType;
 };
 
-type AreaType = {
+export type AreaType = {
   region_1depth_name: string;
   region_2depth_name: string | null;
   region_3depth_name: string | null;
@@ -81,7 +81,7 @@ type AreaType = {
 };
 
 export type WorkPreferenceType = {
-  areas: AreaType[];
-  jobTypes: EmploymentType[];
-  industries: JobCategory[];
+  preference_addresses: AreaType[];
+  employment_types: EmploymentType[];
+  job_categories: JobCategory[];
 };

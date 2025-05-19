@@ -36,7 +36,7 @@ const PatchWorkExperiencePage = () => {
 
   const handleSubmit = () => {
     if (workExperienceData == initialData) {
-      navigate('/profile/edit-resume');
+      navigate('/profile/manage-resume');
       return;
     }
 

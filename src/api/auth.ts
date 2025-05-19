@@ -57,7 +57,7 @@ export const logout = async (): Promise<RESTYPE<null>> => {
 // 1.3 JWT 재발급
 // (1) refresh token을 헤더에 포함하여 axios instance 생성
 const apiWithRefreshToken = axios.create({
-  baseURL: import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL, // 기본 URL을 api와 동일하게 설정
+  baseURL: import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v1', // 기본 URL을 api와 동일하게 설정
 });
 // (2) 재발급 api 호출
 export const reIssueToken = async (
