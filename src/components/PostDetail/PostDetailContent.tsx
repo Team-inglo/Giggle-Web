@@ -35,13 +35,13 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
   const { account_type } = useUserStore();
 
   const [selectedMenu, setSelectedMenu] = useState<PostDetailContentMenu>(
-    PostDetailContentMenu.RECUITMENT,
+    PostDetailContentMenu.RECRUITMENT,
   );
   const [showDetailOverview, setShowDetailOverview] = useState<boolean>(false);
 
   const scrollToSelectedMenu = (menu: PostDetailContentMenu) => {
     const scrollIndex: { [key: string]: number } = {
-      RECUITMENT: 0,
+      RECRUITMENT: 0,
       WORPLACE: 1,
       COMPANY: 2,
     };
@@ -83,7 +83,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                     ? postTranslation.dDay[
                         isEmployerByAccountType(account_type)
                       ]
-                    : `${calculateDays(postDetailData.recruitment_conditions?.recruitment_deadline)}days left`}
+                    : `${calculateDays(postDetailData.recruitment_conditions?.recruitment_deadline)}${postTranslation.daysLeft[isEmployerByAccountType(account_type)]}`}
                 </p>
               </div>
               <div className="flex gap-3">

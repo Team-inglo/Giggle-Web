@@ -21,13 +21,13 @@ const CareerDetailContent = ({ postDetailData }: CareerDetailContentProps) => {
   const { account_type } = useUserStore();
 
   const [selectedMenu, setSelectedMenu] = useState<CareerDetailContentMenu>(
-    CareerDetailContentMenu.RECUITMENT,
+    CareerDetailContentMenu.RECRUITMENT,
   );
   const [showDetailOverview, setShowDetailOverview] = useState<boolean>(false);
 
   const scrollToSelectedMenu = (menu: CareerDetailContentMenu) => {
     const scrollIndex: { [key: string]: number } = {
-      RECUITMENT: 0,
+      RECRUITMENT: 0,
       DESCRIPTION: 1,
     };
 
@@ -42,9 +42,9 @@ const CareerDetailContent = ({ postDetailData }: CareerDetailContentProps) => {
       <nav className="flex w-full bg-surface-base">
         <button
           onClick={() =>
-            scrollToSelectedMenu(CareerDetailContentMenu.RECUITMENT)
+            scrollToSelectedMenu(CareerDetailContentMenu.RECRUITMENT)
           }
-          className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === CareerDetailContentMenu.RECUITMENT ? 'text-text-strong border-b-2 border-b-primary-dark' : 'text-text-assistive'}`}
+          className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === CareerDetailContentMenu.RECRUITMENT ? 'text-text-strong border-b-2 border-b-primary-dark' : 'text-text-assistive'}`}
         >
           {postTranslation.recruitment[isEmployerByAccountType(account_type)]}
         </button>

@@ -17,8 +17,8 @@ const PostDetailContentMenuBar = ({
   return (
     <nav className="flex w-full bg-surface-base">
       <button
-        onClick={() => scrollToSelectedMenu(PostDetailContentMenu.RECUITMENT)}
-        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.RECUITMENT ? 'text-text-strong border-b-2 border-b-primary-dark' : 'text-text-assistive'}`}
+        onClick={() => scrollToSelectedMenu(PostDetailContentMenu.RECRUITMENT)}
+        className={`flex-1 py-[0.875rem] button-2 ${selectedMenu === PostDetailContentMenu.RECRUITMENT ? 'text-text-strong border-b-2 border-b-primary-dark' : 'text-text-assistive'}`}
       >
         {postTranslation.recruitment[isEmployerByAccountType(account_type)]}
       </button>

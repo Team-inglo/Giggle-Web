@@ -51,7 +51,7 @@ const CardDeadLineTag = () => {
   const formattedRecruitmentDeadLine =
     recruitment_dead_line === '상시모집'
       ? postTranslation.dDay[isEmployerByAccountType(account_type)]
-      : `${calculateDays(recruitment_dead_line)}days left`;
+      : `${calculateDays(recruitment_dead_line)}${postTranslation.daysLeft[isEmployerByAccountType(account_type)]}`;
 
   return (
     <Tag
@@ -106,7 +106,7 @@ const CardCompanyInfo = () => {
     <p className="caption text-text-alternative whitespace-normal">
       {company_name}
       <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
-      {summaries.address.split(' ').slice(0, 2).join(' ')}
+      {summaries?.address?.split(' ')?.slice(0, 2)?.join(' ') ?? ''}
     </p>
   );
 };

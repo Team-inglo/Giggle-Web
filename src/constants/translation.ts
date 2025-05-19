@@ -543,6 +543,10 @@ export const postTranslation = {
     ko: '년 전',
     en: 'years ago',
   },
+  daysLeft: {
+    ko: '일 남음',
+    en: 'days left',
+  },
 };
 
 export const careerDetailTranslation = {
