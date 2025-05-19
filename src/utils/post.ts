@@ -5,13 +5,23 @@ import {
   JobCategoryInfo,
 } from '@/constants/post';
 import { ApplicationDetailItem } from '@/types/api/application';
-import { DayOfWeek, Phone, WorkDayTime, WorkPeriod } from '@/types/api/document';
+import {
+  DayOfWeek,
+  Phone,
+  WorkDayTime,
+  WorkPeriod,
+} from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { PostSummaryItemType } from '@/types/post/postSummaryItem';
-import { EducationLevel, initialJobPostingState, JobCategory, JobPostingForm } from '@/types/postCreate/postCreate';
-import { PostDetailItemType } from '@/types/postDetail/postDetailItem';
+import {
+  EducationLevel,
+  initialJobPostingState,
+  JobCategory,
+  JobPostingForm,
+} from '@/types/postCreate/postCreate';
 import { formatPhoneNumber, parsePhoneNumber } from './information';
+import { UserType } from '@/constants/user';
 
 // 입력 데이터에서 한글을 제거, 숫자만 남겨 반환하는 함수
 export const extractNumbersAsNumber = (str: string): number => {
@@ -97,6 +107,22 @@ export const dayOfWeekToKorean = (day: DayOfWeek): string => {
   }
 };
 
+// 주 몇일 근무인지 변환하기
+export const workDaysPerWeekToText = (
+  workDaysPerWeek: string,
+  accountType: UserType | undefined,
+) => {
+  if (workDaysPerWeek === '협의 가능') {
+    return accountType !== UserType.OWNER ? 'Negotiable' : workDaysPerWeek;
+  }
+
+  if (accountType !== UserType.OWNER) {
+    return workDaysPerWeek;
+  }
+
+  return `주 ${workDaysPerWeek[0]}일 근무`;
+};
+
 export const workDayTimeToString = (workDayTime: WorkDayTime): string => {
   const days = dayOfWeekToKorean(workDayTime.day_of_week);
 
@@ -112,33 +138,6 @@ export const workDayTimeToString = (workDayTime: WorkDayTime): string => {
 
   // 일반적인 경우
   return `${days} / ${workDayTime.work_start_time} - ${workDayTime.work_end_time}`;
-};
-
-// 공고 상세 조회 데이터를 JobPostingItemType으로 변환하기
-export const transformDetailToJobPostingItemType = (
-  data: PostDetailItemType,
-): JobPostingItemType => {
-  return {
-    id: data.id,
-    company_name: data.company_name,
-    title: data.title,
-    icon_img_url: data.icon_img_url,
-    representative_img_url: data.company_img_url_list?.[0]?.img_url,
-    summaries: {
-      address: data.summaries.address,
-      work_period: data.summaries.work_period,
-      work_days_per_week: data.summaries.work_days_per_week,
-    },
-    tags: {
-      is_recruiting: data.tags.is_recruiting,
-      visa: data.tags.visa,
-      job_category: data.tags.job_category,
-      employment_type: data.working_conditions.employment_type,
-    },
-    hourly_rate: data.summaries.hourly_rate,
-    recruitment_dead_line: data.recruitment_conditions.recruitment_deadline,
-    created_at: data.created_at,
-  };
 };
 
 // 공고 요약 조회 데이터를 JobPostingItemType으로 변환하기
@@ -193,8 +192,10 @@ export const transformApplicationDetailToJobPostingItemType = (
 };
 
 // 서버 데이터를 폼에 맞게 변환하는 함수
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mapPostDetailDataToFormData = (postDetailData: any): JobPostingForm => {
+
+export const mapPostDetailDataToFormData = (
+  postDetailData: any,
+): JobPostingForm => {
   if (!postDetailData) return initialJobPostingState;
 
   const {

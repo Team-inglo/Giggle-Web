@@ -29,14 +29,14 @@ const PostDetailCompanyImageList = ({
     <>
       {companyImageData?.length ? (
         <section
-          className="w-full h-[10.5rem] bg-cover bg-center"
+          className="w-full h-[15.625rem] bg-cover bg-center"
           style={{
             backgroundImage: `url(${companyImageData[0].img_url})`,
           }}
           onClick={() => setIsOpen(true)}
         ></section>
       ) : (
-        <section className="w-full h-[10.5rem] bg-cover bg-center bg-surface-secondary"></section>
+        <section className="w-full h-[15.625rem] bg-cover bg-center bg-surface-secondary"></section>
       )}
       {/* 모든 회사 사진 목록을 보여주는 리스트 */}
       {isOpen && (

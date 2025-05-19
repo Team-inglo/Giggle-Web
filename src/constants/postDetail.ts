@@ -1,5 +1,10 @@
 export const enum PostDetailContentMenu {
-  RECUITMENT = 'RECUITMENT',
+  RECRUITMENT = 'RECRUITMENT',
   WORPLACE = 'WORPLACE',
   COMPANY = 'COMPANY',
+}
+
+export const enum CareerDetailContentMenu {
+  RECRUITMENT = 'RECRUITMENT',
+  DESCRIPTION = 'DESCRIPTION',
 }

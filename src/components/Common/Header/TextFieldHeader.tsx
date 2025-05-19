@@ -1,17 +1,14 @@
-import FilterIcon from '@/assets/icons/FilterIcon.svg?react';
 import CircleDeleteIcon from '@/assets/icons/CircleDeleteIcon.svg?react';
 import { useState } from 'react';
 
 type HeaderProps = {
   handleSearch: (value: string) => void;
-  handleClickFilter?: () => void;
   initialValue?: string;
   placeholder: string;
 };
 
 const TextFieldHeader = ({
   handleSearch,
-  handleClickFilter,
   initialValue,
   placeholder,
 }: HeaderProps) => {
@@ -19,6 +16,7 @@ const TextFieldHeader = ({
 
   const onClickDeleteButton = () => {
     setValue('');
+    handleSearch('');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -26,8 +24,8 @@ const TextFieldHeader = ({
   };
 
   return (
-    <section className="w-full mt-2 py-2 px-4 flex justify-between items-center gap-2 bg-white sticky top-0 z-40">
-      <div className="flex-1 flex items-center p-3 rounded bg-surface-secondary border border-border-alternative">
+    <section className="w-full mt-2 py-2 px-4 bg-white sticky top-0 z-40">
+      <div className="w-full flex items-center p-3 rounded bg-surface-secondary">
         <input
           className="flex-1 body-2 text-text-strong rounded bg-transparent focus:outline-none"
           value={value}
@@ -41,12 +39,6 @@ const TextFieldHeader = ({
           </button>
         )}
       </div>
-      <button
-        className="w-[2.875rem] h-[2.875rem] flex justify-center items-center rounded bg-surface-secondary border border-border-alternative"
-        onClick={handleClickFilter}
-      >
-        <FilterIcon />
-      </button>
     </section>
   );
 };

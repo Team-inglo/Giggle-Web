@@ -33,7 +33,11 @@ const ApplicationDetailPage = () => {
       case 2:
         return <ApplicationDetailStep2 />;
       case 3:
-        return <ApplicationDetailStep3 applicant_id={Number(currentEmployeePostId)} />;
+        return (
+          <ApplicationDetailStep3
+            applicant_id={Number(currentEmployeePostId)}
+          />
+        );
       case 4:
         return <ApplicationDetailStep4 />;
       case 5:
@@ -69,14 +73,12 @@ const ApplicationDetailPage = () => {
             )}
           >
             <JobPostingCard.Box>
-              <JobPostingCard.Header />
-              <JobPostingCard.Title isTwoLine={true} />
-              <div className="w-full py-2 flex flex-col gap-[0.125rem]">
-                <JobPostingCard.Address />
-                <JobPostingCard.WorkPeriod />
-                <JobPostingCard.WorkDaysPerWeek />
+              <JobPostingCard.Header isBookMarkButton={false} />
+              <JobPostingCard.CompanyInfo />
+              <div className="pt-4">
+                <JobPostingCard.HourlyRate />
               </div>
-              <JobPostingCard.Footer />
+              <JobPostingCard.WorkDayInfo />
             </JobPostingCard.Box>
           </JobPostingCard>
           <div className="w-full h-4 bg-surface-secondary"></div>

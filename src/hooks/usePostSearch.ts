@@ -10,34 +10,31 @@ import {
 } from '@/types/PostSearchFilter/PostSearchFilterItem';
 
 export type PostSearchType = {
-  sortType: PostSortingType | POST_SEARCH_MENU;
   searchText: string;
+  postSortType: PostSortingType | POST_SEARCH_MENU;
+  careerSortType: PostSortingType | POST_SEARCH_MENU;
   filterList: PostSearchFilterItemType;
+  careerCategory: string[];
 };
 
 export const usePostSearch = (initialState: Partial<PostSearchType> = {}) => {
   const [state, setState] = useState<PostSearchType>({
-    sortType: initialState?.sortType ?? POST_SORTING.RECENT,
     searchText: initialState?.searchText ?? '',
+    postSortType: initialState?.postSortType ?? POST_SORTING.RECENT,
+    careerSortType: initialState?.careerSortType ?? POST_SORTING.RECENT,
     filterList: initialState?.filterList ?? initialFilterList,
+    careerCategory: initialState?.careerCategory ?? [],
   });
 
-  const updateSortType = (value: PostSortingType | POST_SEARCH_MENU) => {
-    setState((prev) => ({ ...prev, sortType: value }));
-  };
-
-  const updateSearchText = (value: string) => {
-    setState((prev) => ({ ...prev, searchText: value }));
-  };
-
-  const updateFilterList = (value: PostSearchFilterItemType) => {
-    setState((prev) => ({ ...prev, filterList: value }));
+  const updateSearchOption = <K extends keyof PostSearchType>(
+    key: K,
+    value: PostSearchType[K],
+  ) => {
+    setState((prev) => ({ ...prev, [key]: value }));
   };
 
   return {
     searchOption: state,
-    updateSortType,
-    updateSearchText,
-    updateFilterList,
+    updateSearchOption,
   };
 };

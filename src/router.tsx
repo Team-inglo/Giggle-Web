@@ -54,6 +54,7 @@ import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
 import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
 import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
+import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
 import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
 
@@ -141,6 +142,7 @@ const Router = () => {
           path="/resume/work-experience/edit/:id"
           element={<PatchWorkExperiencePage />}
         />
+        <Route path="/career/:id" element={<CareerDetailPage />} />
         <Route
           path="/resume/work-preference"
           element={<WorkPreferencePage />}
