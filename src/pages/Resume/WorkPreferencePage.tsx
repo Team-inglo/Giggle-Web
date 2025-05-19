@@ -107,7 +107,7 @@ const WorkPreferencePage = () => {
   const handleSubmit = () => {
     if (!isFormValid) {
       // 변경사항이 없으면 이전 페이지로 이동
-      navigate('/profile/edit-resume');
+      navigate('/profile/manage-resume');
       return;
     }
 

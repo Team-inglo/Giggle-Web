@@ -92,7 +92,7 @@ export const usePostWorkExperience = () => {
   return useMutation({
     mutationFn: postWorkExperience,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/edit-resume');
+      smartNavigate(navigate, '/profile/manage-resume');
     },
     onError: (error) => {
       console.error('경력 작성 실패', error);
@@ -106,7 +106,7 @@ export const usePostEducation = () => {
   return useMutation({
     mutationFn: postEducation,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/edit-resume');
+      smartNavigate(navigate, '/profile/manage-resume');
     },
     onError: (error) => {
       console.error('학력 작성 실패', error);
@@ -120,7 +120,7 @@ export const usePostEtcLanguageLevel = () => {
   return useMutation({
     mutationFn: postEtcLanguageLevel,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/edit-resume');
+      smartNavigate(navigate, '/profile/manage-resume');
     },
     onError: (error) => {
       alert('이미 존재하는 언어입니다');
@@ -149,7 +149,7 @@ export const usePatchWorkExperience = () => {
   return useMutation({
     mutationFn: patchWorkExperience,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/edit-resume');
+      smartNavigate(navigate, '/profile/manage-resume');
     },
     onError: (error) => {
       console.error('경력 수정 실패', error);
@@ -163,7 +163,7 @@ export const usePatchEducation = () => {
   return useMutation({
     mutationFn: patchEducation,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/edit-resume');
+      smartNavigate(navigate, '/profile/manage-resume');
     },
     onError: (error) => {
       console.error('학력 수정 실패', error);
@@ -283,7 +283,7 @@ export const usePutWorkPreference = () => {
     mutationFn: (data: WorkPreferenceType) => putWorkPreference(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
-      smartNavigate(navigate, '/profile/edit-resume', { forceSkip: true }); // 성공시 편집 페이지로 이동
+      smartNavigate(navigate, '/profile/manage-resume', { forceSkip: true }); // 성공시 편집 페이지로 이동
     },
   });
 };

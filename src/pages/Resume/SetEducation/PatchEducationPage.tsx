@@ -36,7 +36,7 @@ const PatchEducationPage = () => {
 
   // API - 7.10 학력 수정하기
   const handleSubmit = () => {
-    if (educationData == initialData) navigate('/profile/edit-resume');
+    if (educationData == initialData) navigate('/profile/manage-resume');
     else mutate({ id: id!, education: educationData });
   };
 
