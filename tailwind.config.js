@@ -93,7 +93,7 @@ export default {
           invert: '#FFFFFF', // neutral.0
           error: '#FF4D5F', // statusRed.300
           success: '#0066FF', // statusBlue.300
-          priamry: '#FEF387', // brand.500 (오타 주의: priamry → primary?)
+          primary: '#FEF387', // brand.500
         },
         surface: {
           primary: '#FEF387', // brand.500
