@@ -80,3 +80,9 @@ export type UserResumeDetailResponse = {
   education: EducationType[];
   languages: LanguageListType;
 };
+
+//TODO: API 명세 나오는대로 타입 형태와 이름 수정
+export type WorkPreferenceRequest = {
+  preferred_work_type?: string;
+  preferred_location?: string;
+};
