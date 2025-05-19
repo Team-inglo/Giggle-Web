@@ -53,6 +53,7 @@ export const useGetEducation = (id: string) => {
   return useQuery({
     queryKey: ['education', id],
     queryFn: () => getEducation(id),
+    enabled: !!id,
   });
 };
 

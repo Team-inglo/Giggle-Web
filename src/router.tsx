@@ -20,8 +20,6 @@ import ApplicationPage from '@/pages/Application/ApplicationPage';
 import ManageResumePage from '@/pages/ManageResumePage/ManageResumePage';
 import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
 import ScrappedJobPostsPage from '@/pages/Resume/ScrappedJobPostsPage';
-import PostEducationPage from '@/pages/Resume/SetEducation/PostEducationPage';
-import PatchEducationPage from '@/pages/Resume/SetEducation/PatchEducationPage';
 import PostWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PostWorkExperiencePage';
 import IntroductionPage from '@/pages/Resume/IntroductionPage';
 import PatchWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PatchWorkExperiencePage';
@@ -57,6 +55,7 @@ import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
 import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
 import HomeBannerPage from '@/pages/Home/HomeBannerPage';
 import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
+import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
 
 const Layout = () => {
@@ -134,11 +133,8 @@ const Router = () => {
         <Route path="/resume/introduction" element={<IntroductionPage />} />
         <Route path="/resume/language/add" element={<PostLanguagePage />} />
         <Route path="/resume/scrapped" element={<ScrappedJobPostsPage />} />
-        <Route path="/resume/education" element={<PostEducationPage />} />
-        <Route
-          path="/resume/education/edit/:id"
-          element={<PatchEducationPage />}
-        />
+        <Route path="/resume/education" element={<EducationPage />} />
+        <Route path="/resume/education/:id" element={<EducationPage />} />
         <Route
           path="/resume/work-experience"
           element={<PostWorkExperiencePage />}
