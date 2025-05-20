@@ -1,15 +1,11 @@
 import { memo, useCallback } from 'react';
 import Tag from '@/components/Common/Tag';
 import { JobCategory } from '@/types/postCreate/postCreate';
-
-// enum 값을 표시 이름으로 변환하는 함수
-const formatEnumToDisplayName = (enumValue: string): string => {
-  return enumValue.toLowerCase().replace(/_/g, ' ');
-};
+import { formatEnumValue } from '@/utils/editResume';
 
 // 업직종 표시 이름과 Enum 값을 매핑
 const industryOptions = Object.values(JobCategory).map((enumValue) => ({
-  displayName: formatEnumToDisplayName(enumValue), // 영어 표시 이름 (소문자, 공백)
+  displayName: formatEnumValue(enumValue), // 영어 표시 이름 (소문자, 공백)
   enumValue: enumValue as JobCategory, // enum 값
 }));
 
