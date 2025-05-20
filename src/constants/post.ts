@@ -23,13 +23,13 @@ export const WorkPeriodNames = [
 ];
 
 export const JobCategoryInfo = {
-  [JobCategory.FOOD_BEVERAGE]: {
+  [JobCategory.FOOD_SERVICE]: {
     name: '외식/음료',
-    key: 'FOOD_BEVERAGE',
+    key: 'FOOD_SERVICE',
   },
-  [JobCategory.STORE_SALES]: {
+  [JobCategory.STORE_MANAGEMENT]: {
     name: '매장관리/판매',
-    key: 'STORE_SALES',
+    key: 'STORE_MANAGEMENT',
   },
   [JobCategory.SERVICE]: {
     name: '서비스',
@@ -39,17 +39,17 @@ export const JobCategoryInfo = {
     name: '사무직',
     key: 'OFFICE_WORK',
   },
-  [JobCategory.CUSTOMER_SERVICE_RESEARCH_SALES]: {
+  [JobCategory.CUSTOMER_SALES]: {
     name: '고객상담/리서치/영업',
-    key: 'CUSTOMER_SERVICE_RESEARCH_SALES',
+    key: 'CUSTOMER_SALES',
   },
-  [JobCategory.PRODUCTION_CONSTRUCTION_LABOR]: {
+  [JobCategory.PRODUCTION_CONSTRUCTION]: {
     name: '생산/건설/노무',
-    key: 'PRODUCTION_CONSTRUCTION_LABOR',
+    key: 'PRODUCTION_CONSTRUCTION',
   },
-  [JobCategory.IT_TECHNOLOGY]: {
+  [JobCategory.IT_TECH]: {
     name: 'IT/기술',
-    key: 'IT_TECHNOLOGY',
+    key: 'IT_TECH',
   },
   [JobCategory.DESIGN]: {
     name: '디자인',
@@ -63,13 +63,13 @@ export const JobCategoryInfo = {
     name: '운전/배달',
     key: 'DRIVING_DELIVERY',
   },
-  [JobCategory.HOSPITAL_NURSING_RESEARCH]: {
+  [JobCategory.HEALTHCARE_RESEARCH]: {
     name: '병원/간호/연구',
-    key: 'HOSPITAL_NURSING_RESEARCH',
+    key: 'HEALTHCARE_RESEARCH',
   },
-  [JobCategory.EDUCATION_INSTRUCTOR]: {
+  [JobCategory.EDUCATION]: {
     name: '교육/강사',
-    key: 'EDUCATION_INSTRUCTOR',
+    key: 'EDUCATION',
   },
 };
 
