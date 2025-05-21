@@ -77,25 +77,6 @@ export const transformToEmployerProfileRequest = (
   };
 };
 
-export const validateChanges = (
-  originalData: UserEditRequestBody,
-  userData: UserEditRequestBody,
-  phoneNum: { start: string; middle: string; end: string },
-) => {
-  const formattedPhoneNumber = `${phoneNum.start}-${phoneNum.middle}-${phoneNum.end}`;
-
-  return Object.entries(userData).some(([key, value]) => {
-    const typedKey = key as keyof UserEditRequestBody;
-    if (typedKey === 'phone_number') {
-      return (
-        originalData[typedKey] !== formattedPhoneNumber || // input 필드에서 입력받은 데이터
-        originalData[typedKey] !== value // api 수정 요청으로 포맷팅된 데이터
-      );
-    }
-    return value !== originalData[typedKey];
-  });
-};
-
 export const validateFieldValues = (
   userData: UserEditRequestBody,
   phoneNum: { start: string; middle: string; end: string },

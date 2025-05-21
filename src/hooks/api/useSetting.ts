@@ -1,5 +1,4 @@
 import {
-  getBookmarks,
   patchNotificationAllowed,
   patchUserLanguage,
 } from '@/api/mypage';
@@ -27,16 +26,6 @@ export const usePatchUserLanguage = () => {
     },
     onError: (error) => {
       console.error('언어 수정 실패', error);
-    },
-  });
-};
-
-// 5.1 (유학생) 북마크한 공고 리스트 조회하기
-export const useGetBookmarks = () => {
-  return useMutation({
-    mutationFn: getBookmarks,
-    onError: (error) => {
-      console.error('북마크 실패', error);
     },
   });
 };

@@ -1,5 +1,4 @@
 import { EducationLevels } from '@/constants/manageResume';
-import { MypageCardData } from '@/types/manageResume/manageResume';
 import {
   AreaType,
   WorkPreferenceType,
@@ -10,14 +9,6 @@ import {
   PostEducationType,
 } from '@/types/postResume/postEducation';
 
-// 비어있는지 확인
-export const isEmptyData = (data: MypageCardData) => {
-  return (
-    data === null ||
-    (Array.isArray(data) && data.length === 0) ||
-    (typeof data === 'string' && data.trim() === '')
-  );
-};
 // 날짜 형식 변경
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -28,7 +19,6 @@ export const formatDate = (dateString: string) => {
 
 // 날짜 형식 포맷팅(서버 데이터와 랜딩되는 데이터간의 변환
 export const formatDateToDash = (date: string) => date.replace(/\//g, '-');
-export const formatDateToSlash = (date: string) => date.replace(/-/g, '/');
 
 // 학력 get 데이터에서 patch 데이터로 타입 변환하는 함수
 export const transformToPatchEducation = (

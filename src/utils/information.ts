@@ -37,15 +37,6 @@ export const isValidName = (name: string): boolean => {
   return nameRegexWithSpaces.test(normalizedName);
 };
 
-// 이름 유효성 검사 함수
-export const isValidFirstName = (name: string): boolean => {
-  return isValidName(name);
-};
-
-export const isValidLastName = (name: string): boolean => {
-  return isValidName(name);
-};
-
 // 전화번호 유효성 검사 함수
 export const isValidPhoneNumber = (phone: {
   start: string;

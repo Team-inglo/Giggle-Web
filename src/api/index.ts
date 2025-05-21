@@ -142,20 +142,14 @@ function setInterceptors(instance: AxiosInstance, type: string) {
  */
 function createInstance(type: string) {
   const instance = axios.create({
-    baseURL:
-      type === 'kakao'
-        ? import.meta.env.VITE_APP_KAKAO_API_BASE_URL
-        : import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v1',
+    baseURL: import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v1',
   });
   return setInterceptors(instance, type);
 }
 
 function createInstanceV2(type: string) {
   const instance = axios.create({
-    baseURL:
-      type === 'kakao'
-        ? import.meta.env.VITE_APP_KAKAO_API_BASE_URL
-        : import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v2',
+    baseURL: import.meta.env.VITE_APP_API_GIGGLE_API_BASE_URL + '/v2',
   });
   return setInterceptors(instance, type);
 }
@@ -191,12 +185,6 @@ export const apiV2 = createInstanceV2('server');
  * @const {AxiosInstance}
  */
 export const apiWithoutAuth = createInstanceWithoutAuth();
-
-/**
- * Kakao API 요청에 사용할 Axios 인스턴스
- * @const {AxiosInstance}
- */
-export const apiKaKao = createInstance('kakao');
 
 /**
  * Kakao API 요청에 사용할 Axios 인스턴스

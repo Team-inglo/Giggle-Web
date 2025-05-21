@@ -1,23 +1,14 @@
-import { WorkPeriodInfo } from '@/constants/documents';
 import {
   EducationLevelInfo,
   genderInfo,
   JobCategoryInfo,
 } from '@/constants/post';
 import { ApplicationDetailItem } from '@/types/api/application';
-import {
-  DayOfWeek,
-  Phone,
-  WorkDayTime,
-  WorkPeriod,
-} from '@/types/api/document';
-import { Gender } from '@/types/api/users';
+import { DayOfWeek, Phone, WorkDayTime } from '@/types/api/document';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { PostSummaryItemType } from '@/types/post/postSummaryItem';
 import {
-  EducationLevel,
   initialJobPostingState,
-  JobCategory,
   JobPostingForm,
 } from '@/types/postCreate/postCreate';
 import { formatPhoneNumber, parsePhoneNumber } from './information';
@@ -33,52 +24,13 @@ export const extractNumbersAsNumber = (str: string): number => {
 export type JobCategoryNames =
   (typeof JobCategoryInfo)[keyof typeof JobCategoryInfo]['name'];
 
-export const findJobCategoryByNameStrict = (
-  name: JobCategoryNames,
-): JobCategory | null => {
-  const entry = Object.entries(JobCategoryInfo).find(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_, value]) => value.name === name,
-  );
-  return entry ? (entry[1].key as JobCategory) : null;
-};
-
 // 학력 map에서 name으로 key를 찾는 함수
 export type EducationCategoryNames =
   (typeof EducationLevelInfo)[keyof typeof EducationLevelInfo]['name'];
 
-export const findEducationLevelByNameStrict = (
-  name: EducationCategoryNames,
-): EducationLevel | null => {
-  const entry = Object.entries(EducationLevelInfo).find(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_, value]) => value.name === name,
-  );
-  return entry ? (entry[1].key as EducationLevel) : null;
-};
-
-// 근무 기간 map에서 name으로 key를 찾는 함수
-export const getWorkPeriodKeyByName = (name: string): WorkPeriod | null => {
-  const entry = Object.entries(WorkPeriodInfo).find(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_, value]) => value.name === name,
-  );
-  return entry ? (entry[0] as WorkPeriod) : null;
-};
-
 // 성별 map에서 name으로 key를 찾는 함수
 export type GenderCategoryNames =
   (typeof genderInfo)[keyof typeof genderInfo]['name'];
-
-export const findGenderByNameStrict = (
-  name: GenderCategoryNames,
-): Gender | null => {
-  const entry = Object.entries(genderInfo).find(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_, value]) => value.name === name,
-  );
-  return entry ? (entry[1].key as Gender) : null;
-};
 
 export const dayOfWeekToKorean = (day: DayOfWeek): string => {
   switch (day) {

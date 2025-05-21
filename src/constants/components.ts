@@ -1,12 +1,3 @@
-// sub header 컴포넌트 타입
-export const subHeaderTypeKeys = {
-  SEARCH: 'search',
-  STATIC: 'static',
-  DETAIL: 'detail',
-} as const
-
-export type SubHeaderTypeUnion = typeof subHeaderTypeKeys[keyof typeof subHeaderTypeKeys]
-
 // button 컴포넌트 타입
 export const buttonTypeKeys = {
   LARGE: 'large',

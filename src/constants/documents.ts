@@ -634,17 +634,6 @@ export const WorkPeriodInfo = {
   },
 } as const;
 
-// 근무 기간 리스트
-export const WorkPeriodNames = [
-  '하루',
-  '1주 미만',
-  '1주 ~ 1개월',
-  '1개월 ~ 3개월',
-  '3개월 ~ 6개월',
-  '6개월 ~ 1년',
-  '1년 이상',
-];
-
 export const DAYS = {
   ['월요일']: 'MONDAY',
   ['화요일']: 'TUESDAY',
@@ -673,15 +662,6 @@ export const InsuranceInfo = {
     key: 'HEALTH_INSURANCE',
   },
 } as const;
-
-export const personalInfoList = [
-  'Applicant Signature',
-  'Passport number, passport issuance date, passport expiration date',
-  'Address, Phone Number, in Home Country',
-  'Current Workplace Of Name, Business Registration no., Phone Number',
-  'Spouse of applicant Signature',
-  'Parents of applicant',
-];
 
 // 시간제 근로 허가서 폼 필드 타입 정의
 export type PartTimePermitFormField = {
