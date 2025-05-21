@@ -547,6 +547,10 @@ export const postTranslation = {
     ko: '일 남음',
     en: 'days left',
   },
+  closed: {
+    ko: '모집 마감',
+    en: 'closed',
+  },
 };
 
 export const careerDetailTranslation = {
