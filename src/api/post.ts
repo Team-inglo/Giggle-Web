@@ -37,12 +37,6 @@ export const getPostDetail = async (id: number) => {
   return response.data;
 };
 
-// 4.5 (유학생) 추천 공고 리스트 조회하기
-export const getRecommendPostList = async () => {
-  const response = await api.get(`/users/job-postings/briefs`);
-  return response.data;
-};
-
 // 4.6 (고용주) 공고에 대한 지원자 리스트 조회
 export const getApplicantList = async (
   page: number,
@@ -93,14 +87,6 @@ export const deletePost = async (id: number) => {
   return response.data;
 };
 
-// 5.1 (유학생) 북마크한 공고 리스트 조회하기
-export const getBookmarkPostList = async (page: number, size: number) => {
-  const response = await api.get(
-    `/users/book-marks/overviews?page=${page}&size=${size}`,
-  );
-  return response.data;
-};
-
 // 6.1 (유학생) 지원한 공고 리스트 조회하기
 export const getApplyPostList = async ({
   page,
@@ -110,14 +96,6 @@ export const getApplyPostList = async ({
 }: GetApplyPostListReqType) => {
   const response = await api.get(
     `/users/user-owner-job-postings/overviews?page=${page}&size=${size}&sorting=${sorting.toUpperCase()}${!!status && `&status=${status}`}`,
-  );
-  return response.data;
-};
-
-// 6.3 (유학생) 현재 진행중인 인터뷰 리스트 조회하기
-export const getInterviewList = async (page: number, size: number) => {
-  const response = await api.get(
-    `/users/user-owner-job-postings/briefs?page=${page}&size=${size}`,
   );
   return response.data;
 };

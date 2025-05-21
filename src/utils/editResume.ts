@@ -115,7 +115,7 @@ export function convertApiAreasToStrings(
 }
 
 // 지역 문자열 배열을 API 요청용 AreaType 배열로 변환
-export function convertStringsToApiAreas(areas: string[]): Array<{
+function convertStringsToApiAreas(areas: string[]): Array<{
   region_1depth_name: string;
   region_2depth_name: string | null;
   region_3depth_name: string | null;
@@ -133,7 +133,7 @@ export function convertStringsToApiAreas(areas: string[]): Array<{
 }
 
 // 소문자 직무 문자열 배열을 API 요청용 EmploymentType 배열로 변환
-export function convertJobTypesToApiFormat(
+function convertJobTypesToApiFormat(
   jobTypes: string[],
 ): EmploymentType[] {
   return jobTypes.map((jobType) => jobType.toUpperCase() as EmploymentType);

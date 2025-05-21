@@ -65,16 +65,6 @@ export type EmployeeInformation = {
   email: string;
 };
 
-// 시간근무 허가서 유학생 정보 property와 이름 mapping
-export enum PartTimeEmployeeInfoProperty {
-  FIRST_NAME = 'first_name',
-  LAST_NAME = 'last_name',
-  MAJOR = 'major',
-  TERM_OF_COMPLETION = 'term_of_completion',
-  PHONE_NUMBER = 'phone_number',
-  EMAIL = 'email',
-}
-
 // 고용주 정보 property와 이름 mapping
 export enum EmployerInfoProperty {
   COMPANY_NAME = 'company_name',

@@ -3,7 +3,6 @@ import {
   EducationRequest,
   IntroductionRequest,
   LanguagesLevelType,
-  LanguagesSummariesResponse,
   UserResumeDetailResponse,
   WorkExperienctRequest,
   WorkExperienctResponse,
@@ -36,14 +35,6 @@ export const getEducation = async (
   id: string,
 ): Promise<RESTYPE<GetEducationType>> => {
   const response = await api.get(`/users/resumes/educations/${id}/details`);
-  return response.data;
-};
-
-// 7.4 언어 요약 조회하기
-export const getLanguagesSummaries = async (): Promise<
-  RESTYPE<LanguagesSummariesResponse>
-> => {
-  const response = await api.get('/users/resumes/languages/summaries');
   return response.data;
 };
 

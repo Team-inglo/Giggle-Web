@@ -53,19 +53,6 @@ export type AdditionalLanguageRequest = {
   level: number;
 };
 
-type LanguageSummaryType = {
-  id: number;
-  language_name: string;
-  level: number;
-};
-
-export type LanguagesSummariesResponse = {
-  topik_level: number;
-  social_integration_level: number;
-  sejong_institute: number;
-  additional_language: LanguageSummaryType[];
-};
-
 type visa = {
   visa: VisaType; //Enum(D_2_1, D_2_2, D_2_3, D_2_4, D_2_6, D_2_7, D_2_8, D_4_1, D_4_7, F_2),
   description: string;

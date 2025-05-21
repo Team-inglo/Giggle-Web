@@ -71,20 +71,6 @@ export const patchUserLanguage = async (language: UserLanguageRequest) => {
   return response.data;
 };
 
-// 5.1 (유학생) 북마크한 공고 리스트 조회하기
-export const getBookmarks = async ({
-  page,
-  size,
-}: {
-  page: number;
-  size: number;
-}) => {
-  const response = await api.get(
-    `/users/book-marks/overviews?page=${page}&size=${size}`,
-  );
-  return response.data;
-};
-
 // 5.2 (유학생) 북마크 현황(개수) 확인하기
 export const getBookmarksCounts = async (): Promise<
   RESTYPE<BookmarkCountType>
