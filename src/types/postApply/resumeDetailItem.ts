@@ -1,16 +1,5 @@
 import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
 
-type VisaType =
-  | 'D_2'
-  | 'D_4'
-  | 'D_10'
-  | 'C_4'
-  | 'F_2'
-  | 'F_4'
-  | 'F_5'
-  | 'F_6'
-  | 'H_1';
-
 export type EducationLevelType = 'BACHELOR' | 'ASSOCIATE' | 'HIGHSCHOOL';
 
 export type WorkExperienceType = {
@@ -33,7 +22,7 @@ export type EducationType = {
   grade: number;
 };
 
-export type LanguageType = {
+type LanguageType = {
   id: number;
   language_name: string;
   level: number;
@@ -46,11 +35,6 @@ export type LanguageListType = {
   etc: LanguageType[];
 };
 
-export type VisaListType = {
-  visa: VisaType;
-  description: string;
-};
-
 export type PersonalInformationType = {
   main_address: string | null;
   detailed_address: string | null;
@@ -60,17 +44,6 @@ export type PersonalInformationType = {
   birth?: string | null;
   nationality?: string | null;
   work_preference?: WorkPreferenceType;
-};
-
-export type ResumeDetailItemType = {
-  profile_img_url: string;
-  name: string;
-  visa: VisaListType;
-  personal_information: PersonalInformationType;
-  introduction: string;
-  work_experience: WorkExperienceType[];
-  education: EducationType[];
-  languages: LanguageListType;
 };
 
 export type AreaType = {

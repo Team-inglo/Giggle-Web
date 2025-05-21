@@ -10,7 +10,7 @@ export type ExternalRESTYPE = {
   data?: BusinessInfo[];
 };
 
-export interface BusinessInfo {
+interface BusinessInfo {
   b_no: string; // 사업자등록번호
   b_stt: string; // 사업자 상태 (예: "계속사업자")
   b_stt_cd: string; // 사업자 상태 코드

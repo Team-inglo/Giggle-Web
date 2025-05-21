@@ -17,7 +17,7 @@ export enum JobCategory {
   EDUCATION = 'EDUCATION',
 }
 
-export enum DayOfWeek {
+enum DayOfWeek {
   WEEKDAYS = 'WEEKDAYS',
   WEEKEND = 'WEEKEND',
   MONDAY = 'MONDAY',
@@ -30,7 +30,7 @@ export enum DayOfWeek {
   NEGOTIABLE = 'NEGOTIABLE',
 }
 
-export enum WorkPeriod {
+enum WorkPeriod {
   ONE_DAY = 'ONE_DAY',
   LESS_THAN_ONE_WEEK = 'LESS_THAN_ONE_WEEK',
   ONE_WEEK_TO_ONE_MONTH = 'ONE_WEEK_TO_ONE_MONTH',
@@ -66,7 +66,7 @@ export enum VisaGroup {
 
 // Types
 
-export type GiggleAddress = {
+type GiggleAddress = {
   address_name: string | null;
   region_1depth_name: string | null;
   region_2depth_name: string | null;
@@ -108,7 +108,6 @@ export type JobPostingForm = {
   };
 };
 
-export type JobPostingFormField = keyof JobPostingForm['body'];
 
 // Initial State
 export const initialJobPostingState: JobPostingForm = {

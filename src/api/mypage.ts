@@ -45,7 +45,6 @@ export const getOwnerSummaries = async (): Promise<
 
 // 3.5 (유학생) 프로필 수정
 export const patchUserProfile = async (userData: FormData) => {
-  // export const patchUserProfile = async (userData: UserEditProfileRequest) => {
   const response = await api.patch('/users', userData);
   return response.data;
 };

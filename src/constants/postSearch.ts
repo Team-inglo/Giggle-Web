@@ -48,7 +48,7 @@ export const FILTER_CATEGORY_KR = {
   [FILTER_CATEGORY.VISA]: '비자를 선택해주세요',
 };
 
-export type FilterOptionsType = {
+type FilterOptionsType = {
   [key in Exclude<
     FILTER_CATEGORY,
     | FILTER_CATEGORY.REGION_1DEPTH

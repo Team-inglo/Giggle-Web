@@ -5,7 +5,7 @@ import PostSearchFilterBottomSheet from '@/components/PostSearchFilter/PostSearc
 import { REGION_DATA } from '@/constants/regionData';
 
 // 공통 지역 선택기의 Props
-export interface RegionSelectProps {
+interface RegionSelectProps {
   title?: string;
   selectedRegions: {
     depth1: string[];

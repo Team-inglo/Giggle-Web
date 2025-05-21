@@ -1,8 +1,4 @@
-import {
-  DayOfWeekType,
-  VisaType,
-  WorkPeriodType,
-} from '@/types/postDetail/postDetailItem';
+import { VisaType } from '@/types/postDetail/postDetailItem';
 
 export type ApplicationStepType =
   | 'RESUME_UNDER_REVIEW' // 1
@@ -26,54 +22,6 @@ export type AppicationItemType = {
   step: ApplicationStepType;
   hourly_rate: number;
   duration_of_days: number;
-};
-
-type WorkDayTimeType = {
-  day_of_week: DayOfWeekType;
-  work_start_time: string; // HH:mm
-  work_end_time: string; // HH:mm
-};
-
-type JobInfoType = {
-  hourly_rate: number;
-  work_period: WorkPeriodType;
-  work_day_times: WorkDayTimeType[];
-};
-
-// 신청 상세 조회
-export type ApplicationDetailItemType = {
-  title: string;
-  icon_img_url: string;
-  address_name: string;
-  duration_of_days: number;
-  job_info: JobInfoType;
-  step: ApplicationStepType;
-};
-
-// 공고 담당자 정보
-export type ApplicationRecruiterItemType = {
-  recruiter_name: string;
-  recruiter_phone_number: string;
-};
-
-type SchoolAddressType = {
-  address_name: string;
-  region_1depth_name: string;
-  region_2depth_name: string;
-  region_3depth_name: string;
-  region_4depth_name?: string;
-  address_detail: string;
-  longitude: number;
-  latitude: number;
-};
-
-// 학교 정보
-export type ApplicationCoordinaterItemType = {
-  school_name?: string;
-  institute_name?: string;
-  coordinator_name?: string;
-  coordinator_phone_number?: string;
-  address: SchoolAddressType;
 };
 
 // 공고에 대한 지원자 리스트

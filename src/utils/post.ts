@@ -1,8 +1,3 @@
-import {
-  EducationLevelInfo,
-  genderInfo,
-  JobCategoryInfo,
-} from '@/constants/post';
 import { ApplicationDetailItem } from '@/types/api/application';
 import { DayOfWeek, Phone, WorkDayTime } from '@/types/api/document';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
@@ -19,18 +14,6 @@ export const extractNumbersAsNumber = (str: string): number => {
   const numbers = str.replace(/[^0-9]/g, '');
   return numbers ? parseInt(numbers) : 0;
 };
-
-// 업직종 map에서 name으로 key를 찾는 함수
-export type JobCategoryNames =
-  (typeof JobCategoryInfo)[keyof typeof JobCategoryInfo]['name'];
-
-// 학력 map에서 name으로 key를 찾는 함수
-export type EducationCategoryNames =
-  (typeof EducationLevelInfo)[keyof typeof EducationLevelInfo]['name'];
-
-// 성별 map에서 name으로 key를 찾는 함수
-export type GenderCategoryNames =
-  (typeof genderInfo)[keyof typeof genderInfo]['name'];
 
 export const dayOfWeekToKorean = (day: DayOfWeek): string => {
   switch (day) {

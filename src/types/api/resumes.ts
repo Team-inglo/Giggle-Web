@@ -53,7 +53,7 @@ export type AdditionalLanguageRequest = {
   level: number;
 };
 
-export type LanguageSummaryType = {
+type LanguageSummaryType = {
   id: number;
   language_name: string;
   level: number;
@@ -65,7 +65,8 @@ export type LanguagesSummariesResponse = {
   sejong_institute: number;
   additional_language: LanguageSummaryType[];
 };
-export type visa = {
+
+type visa = {
   visa: VisaType; //Enum(D_2_1, D_2_2, D_2_3, D_2_4, D_2_6, D_2_7, D_2_8, D_4_1, D_4_7, F_2),
   description: string;
 };
@@ -79,10 +80,4 @@ export type UserResumeDetailResponse = {
   work_experience: WorkExperienceType[];
   education: EducationType[];
   languages: LanguageListType;
-};
-
-//TODO: API 명세 나오는대로 타입 형태와 이름 수정
-export type WorkPreferenceRequest = {
-  preferred_work_type?: string;
-  preferred_location?: string;
 };
