@@ -48,14 +48,21 @@ const CardDeadLineTag = () => {
   const { recruitment_dead_line } = useCard();
   const { account_type } = useUserStore();
 
-  const formattedRecruitmentDeadLine =
-    recruitment_dead_line === '상시모집'
-      ? postTranslation.dDay[isEmployerByAccountType(account_type)]
-      : `${calculateDays(recruitment_dead_line)}${postTranslation.daysLeft[isEmployerByAccountType(account_type)]}`;
+  const formatRecruitmentDeadLine = () => {
+    if (recruitment_dead_line === '상시모집')
+      return postTranslation.dDay[isEmployerByAccountType(account_type)];
+
+    const leftDays = calculateDays(recruitment_dead_line);
+
+    if (leftDays < 0)
+      return postTranslation.closed[isEmployerByAccountType(account_type)];
+    else
+      return `${leftDays}${postTranslation.daysLeft[isEmployerByAccountType(account_type)]}`;
+  };
 
   return (
     <Tag
-      value={formattedRecruitmentDeadLine}
+      value={formatRecruitmentDeadLine()}
       padding="px-1 py-[0.188rem]"
       isRounded={false}
       hasCheckIcon={false}
