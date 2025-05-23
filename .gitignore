@@ -33,3 +33,8 @@ tsconfig.node.tsbuildinfocoverage
 
 # TypeScript 빌드 캐시 파일들
 *.tsbuildinfo
+
+# Playwright
+playwright-report/
+test-results/
+/e2e/screenshots/
