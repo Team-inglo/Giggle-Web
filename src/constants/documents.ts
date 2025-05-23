@@ -1,5 +1,4 @@
 import {
-  PartTimeEmployeeInfoProperty,
   Insurance,
   IntegratedApplicationData,
   LaborContractEmployerInfo,
@@ -463,47 +462,6 @@ export const initialIntegratedApplication: IntegratedApplicationData = {
   },
 };
 
-// 고용주 시간제 근무 허가서 작성 시 유학생 정보 name 매핑
-export const EmployeePropertyInfo = {
-  [PartTimeEmployeeInfoProperty.FIRST_NAME]: {
-    name: '이름',
-  },
-  [PartTimeEmployeeInfoProperty.LAST_NAME]: {
-    name: '성',
-  },
-  [PartTimeEmployeeInfoProperty.MAJOR]: {
-    name: '학과(전공)',
-  },
-  [PartTimeEmployeeInfoProperty.TERM_OF_COMPLETION]: {
-    name: '이수학기',
-  },
-  [PartTimeEmployeeInfoProperty.PHONE_NUMBER]: {
-    name: '전화번호',
-  },
-  [PartTimeEmployeeInfoProperty.EMAIL]: {
-    name: '이메일',
-  },
-} as const;
-
-// 고용주 근로계약서 작성 시 유학생 정보 name 매핑
-export const LaborContractEmployeePropertyInfo = {
-  [LaborContractEmployeeInfoProperty.FIRST_NAME]: {
-    name: '이름',
-  },
-  [LaborContractEmployeeInfoProperty.LAST_NAME]: {
-    name: '성',
-  },
-  [LaborContractEmployeeInfoProperty.ADDRESS]: {
-    name: '한국 주소',
-  },
-  [LaborContractEmployeeInfoProperty.PHONE_NUMBER]: {
-    name: '휴대전화',
-  },
-  [LaborContractEmployeeInfoProperty.SIGNATURE_BASE64]: {
-    name: '서명',
-  },
-} as const;
-
 // 통합신청서 작성 시 정보와 이름 매핑
 export const IntegratedApplicationPropertyInfo = {
   [IntegratedApplicationField.FIRST_NAME]: {
@@ -634,17 +592,6 @@ export const WorkPeriodInfo = {
   },
 } as const;
 
-// 근무 기간 리스트
-export const WorkPeriodNames = [
-  '하루',
-  '1주 미만',
-  '1주 ~ 1개월',
-  '1개월 ~ 3개월',
-  '3개월 ~ 6개월',
-  '6개월 ~ 1년',
-  '1년 이상',
-];
-
 export const DAYS = {
   ['월요일']: 'MONDAY',
   ['화요일']: 'TUESDAY',
@@ -655,7 +602,7 @@ export const DAYS = {
   ['일요일']: 'SUNDAY',
 } as const;
 
-export const InsuranceInfo = {
+const InsuranceInfo = {
   [Insurance.EMPLOYMENT_INSURANCE]: {
     name: '고용보험',
     key: 'EMPLOYMENT_INSURANCE',
@@ -673,15 +620,6 @@ export const InsuranceInfo = {
     key: 'HEALTH_INSURANCE',
   },
 } as const;
-
-export const personalInfoList = [
-  'Applicant Signature',
-  'Passport number, passport issuance date, passport expiration date',
-  'Address, Phone Number, in Home Country',
-  'Current Workplace Of Name, Business Registration no., Phone Number',
-  'Spouse of applicant Signature',
-  'Parents of applicant',
-];
 
 // 시간제 근로 허가서 폼 필드 타입 정의
 export type PartTimePermitFormField = {

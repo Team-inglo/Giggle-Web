@@ -7,11 +7,6 @@ export type OwnerInfo = {
   phone_number: string;
 };
 
-export type EmployerRegistrationRequest = {
-  image: File | undefined;
-  body: EmployerRegistrationRequestBody;
-};
-
 export type EmployerRegistrationRequestBody = {
   temporary_token: string;
   owner_info: OwnerInfo;

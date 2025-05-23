@@ -4,15 +4,12 @@ import {
   editPost,
   getApplicantList,
   getApplyPostList,
-  getBookmarkPostList,
   getEmployerPostList,
-  getInterviewList,
   getPostDetail,
   getPostDetailGuest,
   getPostList,
   getPostListGuest,
   getPostSummary,
-  getRecommendPostList,
   putPostBookmark,
 } from '@/api/post';
 import { RESTYPE } from '@/types/api/common';
@@ -131,14 +128,6 @@ export const useGetPostDetail = (id: number, isEnabled: boolean) => {
   });
 };
 
-// 4.5 (유학생) 추천 공고 리스트 조회하기 훅
-export const useGetRecommendPostList = () => {
-  return useQuery({
-    queryKey: ['post', 'recommend'],
-    queryFn: () => getRecommendPostList(),
-  });
-};
-
 // 4.6 (고용주) 공고에 대한 지원자 리스트 조회 훅
 export const useGetApplicantList = (
   id: number,
@@ -239,14 +228,6 @@ export const useDeletePost = () => {
   });
 };
 
-// 5.1 (유학생) 북마크한 공고 리스트 조회하기 훅
-export const useGetBookmarkPostList = (page: number, size: number) => {
-  return useQuery({
-    queryKey: ['post', 'bookmark'],
-    queryFn: () => getBookmarkPostList(page, size),
-  });
-};
-
 // 6.1 (유학생) 지원한 공고 리스트 조회하기 훅
 export const useGetApplyPostList = ({
   size,
@@ -272,14 +253,6 @@ export const useGetApplyPostList = ({
     hasNextPage: data?.pages[data?.pages.length - 1].data.has_next,
     isFetchingNextPage,
   };
-};
-
-// 6.3 (유학생) 현재 진행중인 인터뷰 리스트 조회하기 훅
-export const useGetInterviewList = (page: number, size: number) => {
-  return useQuery({
-    queryKey: ['post', 'interview'],
-    queryFn: () => getInterviewList(page, size),
-  });
 };
 
 // 6.6 (고용주) 등록한 공고 리스트 조회하기 훅

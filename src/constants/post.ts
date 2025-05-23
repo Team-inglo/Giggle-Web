@@ -6,21 +6,9 @@ import {
   JobCategory,
   VisaGroup,
 } from '@/types/postCreate/postCreate';
-import { EducationCategoryNames, JobCategoryNames } from '@/utils/post';
 import { ValueTransformer } from '@/types/api/document';
 import { transformers } from '@/utils/transformers';
 import { WorkPeriodInfo } from './documents';
-
-// 근무 기간 리스트
-export const WorkPeriodNames = [
-  '하루',
-  '1주 미만',
-  '1주 ~ 1개월',
-  '1개월 ~ 3개월',
-  '3개월 ~ 6개월',
-  '6개월 ~ 1년',
-  '1년 이상',
-];
 
 export const JobCategoryInfo = {
   [JobCategory.FOOD_SERVICE]: {
@@ -72,28 +60,6 @@ export const JobCategoryInfo = {
     key: 'EDUCATION',
   },
 };
-
-export const JobCategoryList: JobCategoryNames[] = [
-  '외식/음료',
-  '매장관리/판매',
-  '서비스',
-  '사무직',
-  '고객상담/리서치/영업',
-  '생산/건설/노무',
-  'IT/기술',
-  '디자인',
-  '미디어',
-  '운전/배달',
-  '병원/간호/연구',
-  '교육/강사',
-];
-
-export const EducationList: EducationCategoryNames[] = [
-  '대학(4년제)',
-  '대학(2년제)',
-  '고등학교졸업',
-  '무관',
-];
 
 export const EducationLevelInfo = {
   [EducationLevel.BACHELOR]: {
@@ -162,8 +128,6 @@ export const VisaInfo = {
   },
 };
 
-export const GenderList = ['남', '여', '무관'];
-
 export const genderInfo = {
   [Gender.MALE]: {
     name: '남',
@@ -178,6 +142,8 @@ export const genderInfo = {
     key: 'NONE',
   },
 };
+
+const GenderList = ['남', '여', '무관'];
 
 export const WorkTypeInfo = {
   [EmploymentType.INTERNSHIP]: {

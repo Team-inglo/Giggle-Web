@@ -5,14 +5,6 @@ export const enum Gender {
   NONE = 'NONE',
 }
 
-export const enum Nationality {
-  SOUTH_KOREA = 'SOUTH_KOREA',
-  JAPAN = 'JAPAN',
-  CHINA = 'CHINA',
-  VIETNAME = 'VIETNAME',
-  UZBEKISTAN = 'UZBEKISTAN',
-}
-
 export const enum Language {
   KOREAN = 'KOREAN',
   VIETNAMESE = 'VIETNAMESE',

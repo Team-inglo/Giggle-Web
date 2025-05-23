@@ -9,7 +9,7 @@ export type VisaType =
   | 'F_6'
   | 'H_1';
 
-export type JobCategoryType =
+type JobCategoryType =
   | 'GENERAL_INTERPRETATION_TRANSLATION'
   | 'FOOD_SERVICE_ASSISTANT'
   | 'GENERAL_ADMINISTRATIVE_SUPPORT'
@@ -19,7 +19,7 @@ export type JobCategoryType =
   | 'TOUR_GUIDE_AND_DUTY_FREE_ASSISTANT'
   | 'MANUFACTURING';
 
-export type WorkPeriodType =
+type WorkPeriodType =
   | 'ONE_DAY'
   | 'LESS_THAN_ONE_WEEK'
   | 'ONE_WEEK_TO_ONE_MONTH'
@@ -32,7 +32,7 @@ type GenderType = 'MALE' | 'FEMALE' | 'NONE';
 
 type EducationType = 'BACHELOR' | 'ASSOCIATE' | 'HIGHSCHOOL';
 
-export type DayOfWeekType =
+type DayOfWeekType =
   | 'WEEKDAYS'
   | 'WEEKEND'
   | 'MONDAY'

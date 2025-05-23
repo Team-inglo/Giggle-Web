@@ -1,21 +1,6 @@
 import { signInputTranclation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 
-// ID 유효성 검사 함수
-export const validateId = (
-  id: string,
-  setIdError: (error: string | null) => void,
-  pathname: string,
-): boolean => {
-  const idRegex = /^[a-zA-Z0-9]{5,20}$/;
-  if (!idRegex.test(id)) {
-    setIdError(signInputTranclation.invalidId[isEmployer(pathname)]);
-    return false;
-  }
-  setIdError(null);
-  return true;
-};
-
 // 비밀번호 유효성 검사 함수
 export const validatePassword = (
   password: string,
@@ -61,14 +46,5 @@ export const validateEmail = (
     return false;
   }
   setEmailError(null);
-  return true;
-};
-
-// 인증 코드 유횽성 검사 함수
-export const validateCode = (code: string): boolean => {
-  const codeRegex = /^\d$/;
-  if (!codeRegex.test(code)) {
-    return false;
-  }
   return true;
 };

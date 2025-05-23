@@ -22,18 +22,3 @@ export const useUserStore = create(
     },
   ),
 );
-
-type UserFcmTokenStore = {
-  token: string;
-  updateToken: (newToken: string) => void;
-};
-
-export const useUserFcmTokenStore = create(
-  persist<UserFcmTokenStore>(
-    (set) => ({
-      token: '',
-      updateToken: (token) => set(() => ({ token })),
-    }),
-    { name: 'UserFcmTokenStore' },
-  ),
-);

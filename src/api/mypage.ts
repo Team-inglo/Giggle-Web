@@ -45,7 +45,6 @@ export const getOwnerSummaries = async (): Promise<
 
 // 3.5 (유학생) 프로필 수정
 export const patchUserProfile = async (userData: FormData) => {
-  // export const patchUserProfile = async (userData: UserEditProfileRequest) => {
   const response = await api.patch('/users', userData);
   return response.data;
 };
@@ -69,20 +68,6 @@ export const patchNotificationAllowed = async (
 // 3.8 (유학생) 앱 내 언어 수정
 export const patchUserLanguage = async (language: UserLanguageRequest) => {
   const response = await api.patch('/users/languages', language);
-  return response.data;
-};
-
-// 5.1 (유학생) 북마크한 공고 리스트 조회하기
-export const getBookmarks = async ({
-  page,
-  size,
-}: {
-  page: number;
-  size: number;
-}) => {
-  const response = await api.get(
-    `/users/book-marks/overviews?page=${page}&size=${size}`,
-  );
   return response.data;
 };
 

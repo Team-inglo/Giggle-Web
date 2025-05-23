@@ -16,7 +16,7 @@ export const EducationLevels = [
   'DOCTOR',
 ];
 
-export type MajorType = {
+type MajorType = {
   ko: string;
   en: string;
 };

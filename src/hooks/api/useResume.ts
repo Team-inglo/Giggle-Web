@@ -5,7 +5,6 @@ import {
   deleteWorkExperience,
   getApplicantResume,
   getEducation,
-  getLanguagesSummaries,
   getResume,
   getSearchSchools,
   getWorkExperience,
@@ -52,14 +51,6 @@ export const useGetEducation = (id: string) => {
     queryKey: ['education', id],
     queryFn: () => getEducation(id),
     enabled: !!id,
-  });
-};
-
-// 7.4 언어 요약 조회하기
-export const useGetLanguagesSummaries = () => {
-  return useQuery({
-    queryKey: ['languagesSummaries'],
-    queryFn: getLanguagesSummaries,
   });
 };
 

@@ -1,10 +1,10 @@
-export type JobPostingSummariesType = {
+type JobPostingSummariesType = {
   address: string; // 위치 정보
   work_period: string; // 근무 기간
   work_days_per_week: number | string; // // 근무 일자
 };
 
-export type JobPostingTagType = {
+type JobPostingTagType = {
   is_recruiting: boolean; // “모집중/마감"
   visa: string[]; // “비자종류"
   job_category: string; // “업직종종류",
