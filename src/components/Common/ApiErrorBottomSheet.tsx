@@ -22,7 +22,6 @@ const ApiErrorBottomSheet = ({
 
   return (
     <BottomSheetLayout
-      hasHandlebar={false}
       isAvailableHidden={false}
       isShowBottomsheet={isShowBottomsheet}
     >

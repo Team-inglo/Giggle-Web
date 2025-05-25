@@ -16,7 +16,6 @@ const LevelBottomSheet = ({
 }: LevelBottomSheetProps) => {
   return (
     <BottomSheetLayout
-      hasHandlebar={true}
       isAvailableHidden={true}
       isShowBottomsheet={true}
       setIsShowBottomSheet={setBottomSheetOpen}

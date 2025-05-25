@@ -118,7 +118,6 @@ const InformationPage = () => {
       )}
       {isAgreeModal && (
         <BottomSheetLayout
-          hasHandlebar={true}
           isAvailableHidden={false}
           isShowBottomsheet={isAgreeModal}
         >

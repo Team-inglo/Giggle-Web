@@ -13,7 +13,6 @@ const LoginBottomSheet = ({
 }: LoginBottomSheetPropsType) => {
   return (
     <BottomSheetLayout
-      hasHandlebar={false}
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}

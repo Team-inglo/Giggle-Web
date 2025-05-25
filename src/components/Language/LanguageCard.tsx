@@ -78,7 +78,6 @@ const LanguageCard = ({
       {/* 언어 레벨 선택 바텀 시트 */}
       {levelBottomSheetOpen && (
         <BottomSheetLayout
-          hasHandlebar={true}
           isAvailableHidden={true}
           isShowBottomsheet={true}
           setIsShowBottomSheet={setLevelBottomSheetOpen}

@@ -17,7 +17,6 @@ const CommingSoonBottomSheet = ({
 
   return (
     <BottomSheetLayout
-      hasHandlebar={false}
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
