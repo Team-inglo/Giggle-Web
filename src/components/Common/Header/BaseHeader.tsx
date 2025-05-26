@@ -25,7 +25,11 @@ const BaseHeader = ({
       ) : (
         <div className="w-[2.5rem] h-[2.5rem]"></div>
       )}
-      {title ? <span className="head-3">{title}</span> : <div></div>}
+      {title ? (
+        <span className="heading-18-semibold">{title}</span>
+      ) : (
+        <div></div>
+      )}
       {hasMenuButton ? (
         <button
           className="p-[0.5rem] rounded-[0.75rem] border border-solid border-[#ECECEC]"

@@ -34,7 +34,7 @@ const EmployerProfileMenuList = ({
       </div>
       <div className="px-4">
         <button
-          className="grow w-full bg-surface-tertiary rounded-lg px-5 py-3 text-center button-2 text-text-strong"
+          className="grow w-full bg-surface-tertiary rounded-lg px-5 py-3 text-center button-14-semibold text-text-strong"
           onClick={handleBottomSheetOpen}
         >
           로그아웃

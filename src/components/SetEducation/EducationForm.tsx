@@ -54,7 +54,7 @@ const EducationForm = ({
         />
       )}
       <div className="p-4 flex flex-col gap-3">
-        <div className="head-1 mb-6 text-text-strong">
+        <div className="heading-24-semibold mb-6 text-text-strong">
           {mode === 'post' ? 'Add Education' : 'Modify Education'}
         </div>
         {/* 교육 기관 타입 선택 */}
@@ -75,7 +75,7 @@ const EducationForm = ({
             <GraySearchIcon />
             {/* 선택되었다면, 선택한 학교명 */}
             <p
-              className={`body-2 ${
+              className={`body-14-regular ${
                 school ? 'text-text-normal' : 'text-text-disabled'
               }`}
             >

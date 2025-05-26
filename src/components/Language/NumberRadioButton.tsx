@@ -15,7 +15,7 @@ const NumberRadioButton = ({
   return (
     <div
       className={
-        'relative flex flex-row items-center justify-start gap-[0.75rem] text-[#656565] body-2'
+        'relative flex flex-row items-center justify-start gap-[0.75rem] text-[#656565] body-14-regular'
       }
     >
       <div onClick={() => setValue(value)}>

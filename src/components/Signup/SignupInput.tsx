@@ -216,7 +216,7 @@ const SignupInput = ({
                 canDelete={false}
               />
               <button
-                className={`flex items-center justify-center button-2 min-w-[4.25rem] px-5 py-3 rounded-lg ${
+                className={`flex items-center justify-center button-14-semibold min-w-[4.25rem] px-5 py-3 rounded-lg ${
                   emailVerifyStatus === null &&
                   !emailError &&
                   debouncedEmail !== ''
@@ -259,7 +259,7 @@ const SignupInput = ({
                   />
                   {emailVerifyStatus !== 'verified' && (
                     <button
-                      className="caption text-blue-500 underline absolute right-[1rem] top-[1rem]"
+                      className="caption-12-regular text-blue-500 underline absolute right-[1rem] top-[1rem]"
                       onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
                     >
                       {signInputTranclation.resend[isEmployer(pathname)]}
@@ -267,7 +267,7 @@ const SignupInput = ({
                   )}
                 </div>
                 <button
-                  className={`flex items-center justify-center min-w-[5.5rem] button-2 px-5 py-3 rounded-lg ${
+                  className={`flex items-center justify-center min-w-[5.5rem] button-14-semibold px-5 py-3 rounded-lg ${
                     emailVerifyStatus === 'verified' &&
                     authenticationCode !== ''
                       ? 'bg-surface-secondary text-text-disabled'

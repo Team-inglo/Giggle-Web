@@ -31,7 +31,7 @@ const EmployeeInfoSection = ({
   const renderTitle = useCallback(
     (key: string) => (
       <div className="w-full flex flex-col gap-1">
-        <p className="button-2 text-text-alternative">
+        <p className="button-14-semibold text-text-alternative">
           {type === DocumentType.PART_TIME_PERMIT
             ? PartTimePermitFormInfo[key as PartTimePermitFormProperty][
                 language
@@ -47,7 +47,7 @@ const EmployeeInfoSection = ({
 
   const DefaultValueRenderer = useCallback(
     ({ value }: { value: unknown }) => (
-      <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
+      <div className="w-full self-stretch flex items-start justify-start body-14-regular text-primary-dark">
         {propertyToString(String(value)) === 'Null'
           ? 'none'
           : propertyToString(String(value))}
@@ -77,7 +77,7 @@ const EmployeeInfoSection = ({
           );
         case PartTimePermitFormProperty.EMAIL:
           return (
-            <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
+            <div className="w-full self-stretch flex items-start justify-start body-14-regular text-primary-dark">
               {propertyToString(String(value)) === 'Null'
                 ? 'none'
                 : String(value)}
@@ -104,10 +104,10 @@ const EmployeeInfoSection = ({
   );
 
   return (
-    <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left body-3 bg-white">
+    <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left caption-12-regular bg-white">
       <div className="w-full self-stretch flex flex-col items-start jusitfy-center">
         <section className="w-full flex flex-col gap-1 pb-4 border-b border-border-alternative">
-          <p className="w-full head-3 text-text-strong">
+          <p className="w-full heading-18-semibold text-text-strong">
             {isEmployer ? '유학생 정보 📋' : 'Employee Information 📋'}
           </p>
         </section>

@@ -36,8 +36,8 @@ const FindJourney = ({
             }`}
             onClick={() => handleClick(card.accountType)}
           >
-            <p className="head-3">{card.title}</p>
-            <p className="body-3">{card.description}</p>
+            <p className="heading-18-semibold">{card.title}</p>
+            <p className="caption-12-regular">{card.description}</p>
           </div>
         ))}
       </div>
@@ -46,7 +46,9 @@ const FindJourney = ({
         <BottomButtonPanel>
           <Button
             type="large"
-            bgColor={accountType ? 'bg-surface-primary' : 'bg-surface-secondary'}
+            bgColor={
+              accountType ? 'bg-surface-primary' : 'bg-surface-secondary'
+            }
             fontColor={accountType ? 'text-text-normal' : 'text-text-disabled'}
             isBorder={false}
             title="다음으로"

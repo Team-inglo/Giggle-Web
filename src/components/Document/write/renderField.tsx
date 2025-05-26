@@ -1,5 +1,10 @@
 import { InputType } from '@/types/common/input';
-import { Controller, FieldPath, FieldValues, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
 import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
 import AddressInput from '@/components/Document/write/input/AddressInput';
@@ -77,11 +82,11 @@ export const RenderField = <
           name={name}
           control={control}
           render={({ field: { value, onChange } }) => (
-            <div className="w-full self-stretch flex flex-col items-center justify-start body-3">
+            <div className="w-full self-stretch flex flex-col items-center justify-start caption-12-regular">
               <div className="w-full flex flex-col items-start justify-start">
                 <div className="w-full flex flex-col items-center justify-start">
                   <textarea
-                    className={`w-full ${field.textareaHeight} px-[1rem] py-[0.75rem] border border-border-alternative rounded-[0.75rem] body-2 outline-none resize-none`}
+                    className={`w-full ${field.textareaHeight} px-[1rem] py-[0.75rem] border border-border-alternative rounded-[0.75rem] body-14-regular outline-none resize-none`}
                     placeholder={field.placeholder}
                     value={value as string}
                     onChange={onChange}
@@ -256,7 +261,7 @@ export const RenderField = <
     case 'image_upload':
       return (
         <div className="w-full">
-          <div className="w-full relative body-3 px-1 pb-1.5 text-text-strong text-left">
+          <div className="w-full relative caption-12-regular px-1 pb-1.5 text-text-strong text-left">
             {field.placeholder}
           </div>
           <ImageUploadInput name={name} isEdit={field.isEdit as boolean} />

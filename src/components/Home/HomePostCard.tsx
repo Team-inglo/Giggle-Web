@@ -39,10 +39,10 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         <div className="w-full h-[6.75rem] rounded-lg border border-border-alternative bg-surface-secondary"></div>
       )}
       <div className="block">
-        <h3 className="min-h-10 button-1 text-text-normal line-clamp-2 whitespace-normal">
+        <h3 className="min-h-10 button-16-semibold text-text-normal line-clamp-2 whitespace-normal">
           {jobPostingData.title}
         </h3>
-        <p className="caption text-text-alternative whitespace-normal">
+        <p className="caption-12-regular text-text-alternative whitespace-normal">
           {jobPostingData.company_name}
           <span className="mx-1 inline-block align-middle border h-3 bg-border-alternative"></span>
           {jobPostingData.summaries.address.split(' ').slice(0, 2).join(' ')}{' '}
@@ -62,7 +62,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
           hasCheckIcon={false}
           backgroundColor="bg-[#0066FF1F]"
           color="text-text-success"
-          fontStyle="caption"
+          fontStyle="caption-12-regular"
         />
         <Tag
           value={jobPostingData.tags.visa.sort().join(', ').replace(/_/g, '-')}
@@ -71,7 +71,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
           hasCheckIcon={false}
           backgroundColor="bg-surface-secondary"
           color="text-text-alternative"
-          fontStyle="caption"
+          fontStyle="caption-12-regular"
         />
       </div>
     </article>

@@ -40,10 +40,10 @@ const RenderBannerList = ({
   if (!data?.length)
     return (
       <div className="w-full h-[10.5rem] rounded-lg flex flex-col justify-center items-center bg-primary-neutral text-center">
-        <p className="button-2 text-text-alternative">
+        <p className="button-14-semibold text-text-alternative">
           {bannerTranslation.emptyTitle[language]}
         </p>
-        <p className="caption text-text-alternative">
+        <p className="caption-12-regular text-text-alternative">
           {bannerTranslation.emptyContent[language]}
         </p>
       </div>
@@ -62,7 +62,7 @@ const RenderBannerList = ({
           />
         ))}
       </div>
-      <div className="absolute right-3 bottom-3 py-1 px-2 caption text-text-invert bg-[#121212B2] rounded-3xl">
+      <div className="absolute right-3 bottom-3 py-1 px-2 caption-12-regular text-text-invert bg-[#121212B2] rounded-3xl">
         {currentIndex + 1}/{data.length}
       </div>
     </>
@@ -114,10 +114,10 @@ const HomeBanner = () => {
   return (
     <div className="w-full px-4">
       <div className="pt-8">
-        <p className="pb-1 body-2 text-[#9397A1]">
+        <p className="pb-1 body-14-regular text-[#9397A1]">
           {getGreetingMessage(account_type)}
         </p>
-        <h2 className="head-2 text-[#0A0909]">
+        <h2 className="heading-20-semibold text-[#0A0909]">
           {account_type === UserType.OWNER
             ? '필요한 인재를 필요한 순간에 🤝'
             : 'Find your perfect job'}

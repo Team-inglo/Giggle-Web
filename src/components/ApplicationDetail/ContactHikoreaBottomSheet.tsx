@@ -31,20 +31,26 @@ const ContactHikoreaBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <main className="p-3 w-full flex flex-col items-center text-center">
-        <h3 className="pb-6 head-3 text-text-normal">
+        <h3 className="pb-6 heading-18-semibold text-text-normal">
           {`Please prepare the following documents\n before making contact`}
         </h3>
         <ul className="w-full p-4 flex flex-col gap-1 bg-primary-neutral rounded-lg text-start">
-          <li className="caption text-text-alternative">📌 Work Permit Form</li>
-          <li className="caption text-text-alternative">
+          <li className="caption-12-regular text-text-alternative">
+            📌 Work Permit Form
+          </li>
+          <li className="caption-12-regular text-text-alternative">
             📌 Employment Contract
           </li>
-          <li className="caption text-text-alternative">
+          <li className="caption-12-regular text-text-alternative">
             📌 Integrated Application Form
           </li>
-          <li className="caption text-text-alternative">📌 Residence Card</li>
-          <li className="caption text-text-alternative">📌 Passport</li>
-          <li className="caption text-text-alternative">
+          <li className="caption-12-regular text-text-alternative">
+            📌 Residence Card
+          </li>
+          <li className="caption-12-regular text-text-alternative">
+            📌 Passport
+          </li>
+          <li className="caption-12-regular text-text-alternative">
             📌 Business Registration Certificate
           </li>
         </ul>

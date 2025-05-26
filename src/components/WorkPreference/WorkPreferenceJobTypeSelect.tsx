@@ -51,7 +51,7 @@ const WorkPreferenceJobTypeSelect = memo(
                 isSelected(jobType) ? 'bg-surface-secondary' : 'bg-surface-base'
               }
               borderColor="border-border-alternative"
-              fontStyle="body-2"
+              fontStyle="body-14-regular"
             />
           </button>
         ))}

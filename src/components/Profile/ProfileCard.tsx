@@ -28,17 +28,17 @@ const ProfileCard = ({ data }: ProfileCardProps) => {
         </div>
         {/* 이름 */}
         <div className="grow flex flex-col gap-1">
-          <div className="head-2 text-text-strong">
+          <div className="heading-20-semibold text-text-strong">
             {data.first_name} {data.last_name}
           </div>
           {/* 생년월일 */}
-          <div className="caption-2 text-text-alternative">
+          <div className="caption-12-regular-2 text-text-alternative">
             {data.birth ? data.birth.replace(/-/g, '.') : 'not entered'}
           </div>
 
           {/* 교육 정보 */}
           {data.school_name === ' - ' ? (
-            <span className="caption-2 text-text-alternative">
+            <span className="caption-12-regular-2 text-text-alternative">
               Please register your
               <br />
               educational background
@@ -46,18 +46,20 @@ const ProfileCard = ({ data }: ProfileCardProps) => {
           ) : (
             <>
               <div>
-                <span className="body-2 text-text-strong">
+                <span className="body-14-regular text-text-strong">
                   {data.school_name}
                 </span>
-                <span className="body-2 text-text-strong">
+                <span className="body-14-regular text-text-strong">
                   Grade {data.grade}
                 </span>
               </div>
               <div className="flex gap-2">
-                <span className="body-3 text-text-alternative">
+                <span className="caption-12-regular text-text-alternative">
                   Grade Point Average
                 </span>
-                <span className="body-3 text-text-alternative">{data.gpa}</span>
+                <span className="caption-12-regular text-text-alternative">
+                  {data.gpa}
+                </span>
               </div>
             </>
           )}

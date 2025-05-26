@@ -44,10 +44,10 @@ const EmployerApplicantContactBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <main className="p-3 w-full flex flex-col items-center text-center">
-        <h3 className="pb-6 head-3 text-text-normal">
+        <h3 className="pb-6 heading-18-semibold text-text-normal">
           지원자에 먼저 연락할 수 있어요 💬📞
         </h3>
-        <p className="pb-4 body-2 text-text-normal">
+        <p className="pb-4 body-14-regular text-text-normal">
           지원자에게 연락 후 면접을 진행해보세요.
           <br />
           면접을 마쳤다면, 다음 단계로 넘어갈 수 있어요.
@@ -60,10 +60,10 @@ const EmployerApplicantContactBottomSheet = ({
         >
           <RecruiterIcon />
           <div>
-            <p className="pb-1 button-1 text-text-strong">
+            <p className="pb-1 button-16-semibold text-text-strong">
               {data?.data?.applicant_name}
             </p>
-            <p className="body-2 text-text-alternative">
+            <p className="body-14-regular text-text-alternative">
               {data?.data?.applicant_phone_number}
             </p>
           </div>
