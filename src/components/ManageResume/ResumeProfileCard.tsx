@@ -1,6 +1,8 @@
 import { GenderType } from '@/constants/profile';
 import { useNavigate } from 'react-router-dom';
 import defaultProfileImg from '@/assets/images/GiggleLogo.png';
+import { useState } from 'react';
+import { usePatchResumePublic } from '@/hooks/api/useResume';
 
 type ResumeProfileCardProps = {
   profileImgUrl: string;
@@ -11,6 +13,7 @@ type ResumeProfileCardProps = {
   main_address: string;
   phone: string;
   email: string;
+  isPublic: boolean;
 };
 
 const ResumeProfileCard = ({
@@ -22,9 +25,11 @@ const ResumeProfileCard = ({
   main_address,
   phone,
   email,
+  isPublic = true,
 }: ResumeProfileCardProps) => {
   const navigate = useNavigate();
-
+  const [toggleOn, setToggleOn] = useState<boolean>(isPublic);
+  const { mutate: patchResumePublic } = usePatchResumePublic();
   // 국적 포맷팅
   const formatNationality = (nationality: string) => {
     if (!nationality) return '';
@@ -34,8 +39,13 @@ const ResumeProfileCard = ({
       .join(' ');
   };
 
+  const handleToggleChange = () => {
+    setToggleOn(!toggleOn);
+    patchResumePublic({ is_public: !toggleOn });
+  };
+
   return (
-    <div className="w-full rounded-lg overflow-hidden bg-white p-4">
+    <div className="w-full rounded-lg overflow-hidden bg-white px-[1.125rem]">
       <div className="flex items-center gap-4">
         {/* 프로필 사진 */}
         <div className="w-16 h-16 rounded-full border overflow-hidden">
@@ -84,10 +94,26 @@ const ResumeProfileCard = ({
           </div>
         </div>
       </div>
-
+      {/* 이력서 공개 여부 수정하기 */}
+      <div className="flex justify-between items-center px-1 py-2 mt-4">
+        <span className="button-14-semibold text-text-strong">
+          Make Resume Public
+        </span>
+        <div
+          className="relative flex items-center"
+          onClick={handleToggleChange}
+        >
+          <div className={`w-[2.125rem] h-5 rounded-full bg-surface-invert`} />
+          <div
+            className={`w-[0.875rem] h-[0.875rem] rounded-full absolute bg-white transform transition-transform duration-300 ease-in-out ${
+              toggleOn ? 'translate-x-4' : 'translate-x-[0.25rem]'
+            }`}
+          />
+        </div>
+      </div>
       {/* 프로필 편집 버튼 */}
       <button
-        className="w-full mt-4 py-3 bg-surface-secondary rounded-md text-center button-2 text-text-strong"
+        className="w-full mt-2 py-3 bg-surface-secondary rounded-md text-center button-2 text-text-strong"
         onClick={() => navigate('/profile/edit')}
       >
         Edit Profile
