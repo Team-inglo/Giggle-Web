@@ -1,9 +1,10 @@
 import { GenderType } from '@/constants/profile';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ProfileImage from '@/components/Common/ProfileImage';
 import { useState } from 'react';
 import { usePatchResumePublic } from '@/hooks/api/useResume';
 import ToggleButton from '../Common/ToggleButton';
+import { isEmployer } from '@/utils/signup';
 
 type UserInfoProps = {
   name: string;
@@ -93,6 +94,7 @@ const ResumeProfileCard = ({
   isPublic = true,
 }: ResumeProfileCardProps) => {
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
   const [toggleOn, setToggleOn] = useState<boolean>(isPublic);
   const { mutate: patchResumePublic } = usePatchResumePublic();
 
@@ -115,20 +117,24 @@ const ResumeProfileCard = ({
           email={email}
         />
       </div>
-      <div className="flex justify-between items-center px-1 py-2 mt-4">
-        <span className="button-14-semibold text-text-strong">
-          Make Resume Public
-        </span>
-        <ToggleButton isOn={toggleOn} onChange={handleToggleChange} />
-      </div>
 
       {/* 단순한 버튼은 인라인 유지 */}
-      <button
-        className="w-full mt-4 py-3 bg-surface-secondary rounded-md text-center button-2 text-text-strong"
-        onClick={() => navigate('/profile/edit')}
-      >
-        Edit Profile
-      </button>
+      {!isEmployer(pathname) && (
+        <>
+          <div className="flex justify-between items-center px-1 py-2 mt-4">
+            <span className="button-14-semibold text-text-strong">
+              Make Resume Public
+            </span>
+            <ToggleButton isOn={toggleOn} onChange={handleToggleChange} />
+          </div>
+          <button
+            className="w-full mt-4 py-3 bg-surface-secondary rounded-md text-center button-2 text-text-strong"
+            onClick={() => navigate('/profile/edit')}
+          >
+            Edit Profile
+          </button>
+        </>
+      )}
     </div>
   );
 };
