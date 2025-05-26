@@ -88,12 +88,14 @@ const PostApplyResume = () => {
           data={data.data?.visa}
           onAddClick={() => navigateToSection('/')}
           rightElement={
-            <button
-              className="body-3 text-text-alternative"
-              onClick={handleVisaClick}
-            >
-              Edit
-            </button>
+            !isEmployer(pathname) && (
+              <button
+                className="body-3 text-text-alternative"
+                onClick={handleVisaClick}
+              >
+                Edit
+              </button>
+            )
           }
           renderContent={() => (
             <>
