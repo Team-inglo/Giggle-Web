@@ -11,6 +11,9 @@ import {
 import NumberRadioButton from '@/components/Language/NumberRadioButton';
 import { LanguagesLevelType } from '@/types/api/resumes';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
+import { profileTranslation } from '@/constants/translation';
+import { useLocation } from 'react-router-dom';
+import { isEmployer } from '@/utils/signup';
 
 type LanguageCardProps = {
   title: string;
@@ -25,6 +28,7 @@ const LanguageCard = ({
   etcLanguageId,
   maxLevel,
 }: LanguageCardProps) => {
+  const pathname = useLocation().pathname;
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(level);
@@ -119,23 +123,29 @@ const LanguageCard = ({
         <div className="flex items-center gap-2">
           <h5 className="pb-[0.125rem] button-2 text-[#464646]">{title}</h5>
           <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
-            LEVEL {level}
+            {isEmployer(pathname)
+              ? `${level} ${profileTranslation.level[isEmployer(pathname)]}`
+              : `LEVEL ${level}`}
           </div>
         </div>
-        {etcLanguageId ? (
-          <div className="flex justify-center items-center gap-2 ml-1">
+        {!isEmployer(pathname) &&
+          (etcLanguageId ? (
+            <div className="flex justify-center items-center gap-2 ml-1">
+              <EditIcon
+                onClick={openLevelBottomSheet}
+                className="cursor-pointer"
+              />
+              <DeleteIcon
+                onClick={() => setModalOpen(true)}
+                className="cursor-pointer"
+              />
+            </div>
+          ) : (
             <EditIcon
               onClick={openLevelBottomSheet}
               className="cursor-pointer"
             />
-            <DeleteIcon
-              onClick={() => setModalOpen(true)}
-              className="cursor-pointer"
-            />
-          </div>
-        ) : (
-          <EditIcon onClick={openLevelBottomSheet} className="cursor-pointer" />
-        )}
+          ))}
       </div>
     </>
   );

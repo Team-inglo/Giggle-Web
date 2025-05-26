@@ -42,10 +42,11 @@ const IntroductionDetail = ({ data }: IntroductionDetailProps) => {
           <p className="pb-2 body-3 text-text-alternative">
             {profileTranslation.introductionQuestion[isEmployer(pathname)]}
           </p>
-          <p className="pb-2 body-3 text-[#252525] whitespace-pre-wrap break-all">
+          <p className="pb-2 body-3 text-text-strong whitespace-pre-wrap break-all">
             {data}
           </p>
         </div>
+        {!isEmployer(pathname) && (
         <div className="flex justify-center items-center gap-2 ml-1">
           <EditIcon
             onClick={() =>
@@ -53,8 +54,9 @@ const IntroductionDetail = ({ data }: IntroductionDetailProps) => {
             }
             className="cursor-pointer"
           />
-          <DeleteIcon onClick={openModal} className="cursor-pointer" />
-        </div>
+            <DeleteIcon onClick={openModal} className="cursor-pointer" />
+          </div>
+        )}
       </div>
     </>
   );

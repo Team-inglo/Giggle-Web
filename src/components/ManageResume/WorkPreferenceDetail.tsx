@@ -1,20 +1,21 @@
-import {
-  WorkPreferenceType,
-} from '@/types/postApply/resumeDetailItem';
+import { profileTranslation } from '@/constants/translation';
+import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 import { formatArea, formatEnumValue } from '@/utils/editResume';
+import { isEmployer } from '@/utils/signup';
+import { useLocation } from 'react-router-dom';
 
 type WorkPreferenceProps = {
   data: WorkPreferenceType;
 };
 
 const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
-
+  const pathname = useLocation().pathname;
   return (
     <div className="flex flex-col gap-4">
       {/* Preferred Work Area */}
       <div>
         <div className="body-3 text-text-assistive mb-2">
-          Preferred Work Area
+          {profileTranslation.workPreferenceRegion[isEmployer(pathname)]}
         </div>
         <div className="flex flex-wrap gap-2">
           {data.preference_addresses.map((area, idx) => (
@@ -31,7 +32,7 @@ const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
       {/* Preferred Job Type */}
       <div>
         <div className="body-3 text-text-assistive mb-2">
-          Preferred Job Type
+          {profileTranslation.workPreferenceType[isEmployer(pathname)]}
         </div>
         <div className="flex flex-wrap gap-2">
           {data.employment_types.map((type, idx) => (
@@ -48,7 +49,7 @@ const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
       {/* Preferred Job Position */}
       <div>
         <div className="body-3 text-text-assistive mb-2">
-          Preferred Job Position
+          {profileTranslation.workPreferenceIndustry[isEmployer(pathname)]}
         </div>
         <div className="flex flex-wrap gap-2">
           {data.job_categories.map((industry, idx) => (

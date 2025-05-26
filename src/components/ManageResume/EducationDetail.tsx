@@ -2,16 +2,19 @@ import { EducationType } from '@/types/postApply/resumeDetailItem';
 import { formatDate } from '@/utils/editResume';
 import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
 import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDeleteEducation } from '@/hooks/api/useResume';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { useState } from 'react';
+import { profileTranslation } from '@/constants/translation';
+import { isEmployer } from '@/utils/signup';
 
 type EducationDetailProps = {
   data: EducationType[];
 };
 
 const EducationDetail = ({ data }: EducationDetailProps) => {
+  const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const { mutate } = useDeleteEducation();
 
@@ -56,11 +59,13 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
                   {formatDate(education.end_date)}
                 </p>
                 <p className="text-text-alternative">
-                  {education.grade}th grade
+                  {education.grade}
+                  {profileTranslation.thGrade[isEmployer(pathname)]}
                 </p>
               </div>
             </div>
             {/* 수정, 삭제 아이콘 */}
+            {!isEmployer(pathname) && (
             <div className="flex justify-center items-center gap-2 ml-1">
               <EditIcon
                 onClick={() => navigate(`/resume/education/${education.id}`)}
@@ -68,9 +73,10 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
               />
               <DeleteIcon
                 onClick={() => openModal(education.id)}
-                className="cursor-pointer"
-              />
-            </div>
+                  className="cursor-pointer"
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>
