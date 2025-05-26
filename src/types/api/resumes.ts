@@ -67,4 +67,5 @@ export type UserResumeDetailResponse = {
   work_experience: WorkExperienceType[];
   education: EducationType[];
   languages: LanguageListType;
+  //TODO: 이력서 공개 여부 추가 필요
 };
