@@ -17,7 +17,7 @@ import EditProfilePage from '@/pages/EditProfile/EditProfilePage';
 import PostDetailPage from '@/pages/PostDetail/PostDetailPage';
 import PostApplyPage from '@/pages/PostApply/PostApplyPage';
 import ApplicationPage from '@/pages/Application/ApplicationPage';
-import ManageResumePage from '@/pages/ManageResumePage/ManageResumePage';
+import ManageResumePage from '@/pages/Resume/ManageResumePage';
 import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
 import ScrappedJobPostsPage from '@/pages/Resume/ScrappedJobPostsPage';
 import PostWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PostWorkExperiencePage';
