@@ -27,7 +27,7 @@ const LogoutBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full flex flex-col py-10">
-        <div className="head-2 text-text-normal py-3 px-12 text-center">
+        <div className="heading-20-semibold text-text-normal py-3 px-12 text-center">
           {profileTranslation.wantLogout[isEmployer(pathname)]}
         </div>
         <div className="flex flex-col gap-2">

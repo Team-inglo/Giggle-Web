@@ -29,8 +29,10 @@ const EmployerPostCardList = ({
     return (
       <div className="mt-10 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
-        <h3 className="head-2 text-[#252525]">작성한 공고가 없어요.</h3>
-        <p className="body-2 text-[#9397A1] text-center">
+        <h3 className="heading-20-semibold text-[#252525]">
+          작성한 공고가 없어요.
+        </h3>
+        <p className="body-14-regular text-[#9397A1] text-center">
           새로운 공고를 작성해보세요!
         </p>
       </div>

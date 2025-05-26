@@ -107,7 +107,7 @@ const CareerSearchSection = ({
           return (
             <button
               key={key}
-              className={`py-2 px-[0.875rem] rounded-[3.125rem] body-3 ${isSelected ? 'text-text-invert bg-surface-invert' : 'text-text-strong bg-surface-secondary'}`}
+              className={`py-2 px-[0.875rem] rounded-[3.125rem] caption-12-regular ${isSelected ? 'text-text-invert bg-surface-invert' : 'text-text-strong bg-surface-secondary'}`}
               onClick={() =>
                 handleUpdateCareerCategory(key as CareerCategoryKey)
               }
@@ -119,7 +119,7 @@ const CareerSearchSection = ({
       </nav>
       <section className="flex-1 flex flex-col items-center w-full pb-24">
         <div className="w-full py-2 px-4 flex justify-between items-center">
-          <h3 className="body-3 text-text-normal">
+          <h3 className="caption-12-regular text-text-normal">
             {careerData.length}{' '}
             {
               postSearchTranslation.searchResults[

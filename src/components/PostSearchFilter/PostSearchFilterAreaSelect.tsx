@@ -18,7 +18,7 @@ const PostSearchFilterSelect = ({
       {regionData.map((region, index) => (
         <button
           key={`${index}_${region}`}
-          className={`w-full py-2 px-4 flex body-2 text-start ${selectedRegion === region || checkIsSelected?.(region) ? 'bg-surface-secondary text-text-strong' : 'text-text-alternative'}`}
+          className={`w-full py-2 px-4 flex body-14-regular text-start ${selectedRegion === region || checkIsSelected?.(region) ? 'bg-surface-secondary text-text-strong' : 'text-text-alternative'}`}
           onClick={() => onSelect(region)}
         >
           {checkIsSelected?.(region) ? (

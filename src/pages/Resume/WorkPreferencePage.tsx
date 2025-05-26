@@ -172,7 +172,7 @@ const WorkPreferencePage = () => {
                     borderColor={'border-border-alternative'}
                     backgroundColor={'bg-surface-base'}
                     color="text-text-normal"
-                    fontStyle="body-2"
+                    fontStyle="body-14-regular"
                     onDelete={() =>
                       setSelectedAreas(
                         selectedAreas.filter((_, i) => i !== index),

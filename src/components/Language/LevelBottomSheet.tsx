@@ -21,7 +21,7 @@ const LevelBottomSheet = ({
       isShowBottomsheet={true}
       setIsShowBottomSheet={setBottomSheetOpen}
     >
-      <div className="head-2 text-[#1E1926] py-3 pb-8 text-center">
+      <div className="heading-20-semibold text-[#1E1926] py-3 pb-8 text-center">
         Select your Language Level
       </div>
       {/* ETC 언어 등급 선택 0~10 */}
@@ -31,7 +31,9 @@ const LevelBottomSheet = ({
             key={grade}
             className="w-full flex items-center justify-between px-2.5 py-2.5"
           >
-            <div className="ml-2 body-2 text-[#656565]">Grade {grade}</div>
+            <div className="ml-2 body-14-regular text-[#656565]">
+              Grade {grade}
+            </div>
             <NumberRadioButton
               value={grade}
               setValue={() => setLevel(grade)}

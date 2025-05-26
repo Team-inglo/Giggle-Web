@@ -72,7 +72,7 @@ const PostSearchFilterAreaInput = memo(
         }
       >
         <div
-          className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-2 text-text-assistive cursor-pointer"
+          className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-14-regular text-text-assistive cursor-pointer"
           onClick={() => setIsOpenAreaFilter(true)}
         >
           <div className="flex-1 h-5 flex flex-row items-center justify-between">
@@ -104,7 +104,7 @@ const PostSearchFilterAreaInput = memo(
               borderColor={'border-border-alternative'}
               backgroundColor={'bg-surface-base'}
               color="text-text-normal"
-              fontStyle="body-2"
+              fontStyle="body-14-regular"
               onDelete={() => onClickDelete(index)}
             />
           ))}

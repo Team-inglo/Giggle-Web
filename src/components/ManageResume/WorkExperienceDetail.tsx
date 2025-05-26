@@ -49,15 +49,15 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
             className="w-full flex justify-between items-start rounded-lg"
           >
             <div className="flex flex-col gap-0.5">
-              <h5 className="pb-[0.125rem] button-1 text-[#252525]">
+              <h5 className="pb-[0.125rem] button-16-semibold text-[#252525]">
                 {work.title}
               </h5>
-              <p className="pb-2 body-3 text-[#252525] whitespace-pre-wrap break-all">
+              <p className="pb-2 caption-12-regular text-[#252525] whitespace-pre-wrap break-all">
                 {work.description !== '-'
                   ? work.description
                   : infoTranslation.notEntered[isEmployer(pathname)]}
               </p>
-              <div className="flex gap-[0.5rem] caption">
+              <div className="flex gap-[0.5rem] caption-12-regular">
                 <p className="text-text-alternative">
                   {formatDate(work.start_date)}~
                   {work?.end_date ? formatDate(work.end_date) : ''}

@@ -110,7 +110,7 @@ const SigninInputSection = () => {
         </InputLayout>
         <div className="flex w-full justify-center">
           <button
-            className="flex items-center justify-center px-2 py-1 text-text-alternative body-3 bg-surface-secondary rounded"
+            className="flex items-center justify-center px-2 py-1 text-text-alternative caption-12-regular bg-surface-secondary rounded"
             onClick={() => navigate('/find-password')} //TODO: 비밀번호 찾기 화면 이동
           >
             비밀번호를 모르겠어요 😓
@@ -122,14 +122,14 @@ const SigninInputSection = () => {
           </p>
           {/* 회원가입 화면 이동 */}
           <button
-            className="flex items-center justify-center px-2 py-1.5 border-border-alternative border text-text-normal caption rounded"
+            className="flex items-center justify-center px-2 py-1.5 border-border-alternative border text-text-normal caption-12-regular rounded"
             onClick={() => navigate('/signup')}
           >
             회원가입 하러가기
           </button>
         </div>
       </div>
-      <div className="w-full bg-gradient-to-b from-white/80 to-white flex flex-row items-start justify-start pb-[3.125rem] pt-3 box-border text-center button-1 text-[#1e1926] z-10">
+      <div className="w-full bg-gradient-to-b from-white/80 to-white flex flex-row items-start justify-start pb-[3.125rem] pt-3 box-border text-center button-16-semibold text-[#1e1926] z-10">
         <div className="w-full flex items-center justify-center">
           <div className="w-full flex flex-col items-center gap-6">
             <Button
