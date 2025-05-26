@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ProfileImage from '@/components/Common/ProfileImage';
 import { useState } from 'react';
 import { usePatchResumePublic } from '@/hooks/api/useResume';
+import ToggleButton from '../Common/ToggleButton';
 
 type UserInfoProps = {
   name: string;
@@ -68,28 +69,6 @@ const UserInfo = ({
   );
 };
 
-const PublicToggle = ({
-  isPublic,
-  onChange,
-}: {
-  isPublic: boolean;
-  onChange: () => void;
-}) => (
-  <div className="flex justify-between items-center px-1 py-2 mt-4">
-    <span className="button-14-semibold text-text-strong">
-      Make Resume Public
-    </span>
-    <div className="relative flex items-center" onClick={onChange}>
-      <div className="w-[2.125rem] h-5 rounded-full bg-surface-invert" />
-      <div
-        className={`w-[0.875rem] h-[0.875rem] rounded-full absolute bg-white transform transition-transform duration-300 ease-in-out ${
-          isPublic ? 'translate-x-4' : 'translate-x-[0.25rem]'
-        }`}
-      />
-    </div>
-  </div>
-);
-
 type ResumeProfileCardProps = {
   profileImgUrl: string;
   name: string;
@@ -136,8 +115,12 @@ const ResumeProfileCard = ({
           email={email}
         />
       </div>
-
-      <PublicToggle isPublic={toggleOn} onChange={handleToggleChange} />
+      <div className="flex justify-between items-center px-1 py-2 mt-4">
+        <span className="button-14-semibold text-text-strong">
+          Make Resume Public
+        </span>
+        <ToggleButton isOn={toggleOn} onChange={handleToggleChange} />
+      </div>
 
       {/* 단순한 버튼은 인라인 유지 */}
       <button
