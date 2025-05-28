@@ -56,7 +56,7 @@ const VisaSelectBottomSheet = ({
     >
       <div className="w-full flex-col">
         <div className="w-full h-[60vh] overflow-y-scroll">
-          <h3 className="pb-4 head-3 text-text-normal">
+          <h3 className="pb-4 heading-18-semibold text-text-normal">
             {account_type === UserType.OWNER
               ? '비자를 선택해주세요.'
               : 'Please select visas'}
@@ -67,7 +67,7 @@ const VisaSelectBottomSheet = ({
                 key={key}
                 className="w-full flex justify-between items-center gap-2 border-b border-border-disabled py-3"
               >
-                <p className="body-2 text-text-normal">
+                <p className="body-14-regular text-text-normal">
                   {visa[isEmployerByAccountType(account_type)]}
                 </p>
                 <div
@@ -80,7 +80,7 @@ const VisaSelectBottomSheet = ({
             ))}
           </div>
         </div>
-        <div className="bg-white flex items-center justify-center pt-3 box-border text-center button-1 z-10">
+        <div className="bg-white flex items-center justify-center pt-3 box-border text-center button-16-semibold z-10">
           <div className="w-full flex gap-2">
             <Button
               type={buttonTypeKeys.BACK}

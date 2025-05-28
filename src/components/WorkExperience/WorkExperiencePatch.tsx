@@ -66,7 +66,9 @@ const WorkExperiencePatch = ({
 
   return (
     <div className="p-6 flex flex-col gap-3">
-      <div className="head-1 mb-6 text-[#1E1926]">Modify Work Experience</div>
+      <div className="heading-24-semibold mb-6 text-[#1E1926]">
+        Modify Work Experience
+      </div>
       {/* title 입력 */}
       <InputLayout title="Experience Title" isEssential={true}>
         <Input
@@ -117,7 +119,9 @@ const WorkExperiencePatch = ({
           <div
             className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-[#FEF387] border-0' : 'border-[#F4F4F9]'}`}
           />
-          <p className="body-3 text-[#656565]">It's in progress right now</p>
+          <p className="caption-12-regular text-[#656565]">
+            It's in progress right now
+          </p>
         </div>
       </InputLayout>
       {/* 상세설명 입력 */}
@@ -131,9 +135,9 @@ const WorkExperiencePatch = ({
             placeholder="Please write an article that introduces you."
             value={workExperienceData.description}
             onChange={handleTextareaChange}
-            className="h-auto body-2 placeholder:text-[#abb0b9] text-[#1E1926] w-full resize-none outline-none"
+            className="h-auto body-14-regular placeholder:text-[#abb0b9] text-[#1E1926] w-full resize-none outline-none"
           />
-          <span className="caption text-[#464646] text-end">
+          <span className="caption-12-regular text-[#464646] text-end">
             {workExperienceData.description.length}/200
           </span>
         </div>

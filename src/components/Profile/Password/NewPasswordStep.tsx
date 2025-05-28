@@ -50,7 +50,7 @@ const NewPasswordStep = ({
         }
       />
       <div className="w-full h-full min-h-[100vh] px-4 ">
-        <div className="title-1 break-keep my-[3.125rem] w-full">
+        <div className="heading-28-semibold break-keep my-[3.125rem] w-full">
           <p className="h-20">
             {
               profileTranslation.enterYourPassword[

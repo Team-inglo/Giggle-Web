@@ -48,10 +48,10 @@ const ApplicationStatus = () => {
             key={item.label}
             className="flex flex-col gap-1 w-full justify-center bg-white"
           >
-            <span className="head-3 text-text-strong text-center">
+            <span className="heading-18-semibold text-text-strong text-center">
               {item.value}
             </span>
-            <span className="body-3 text-text-assistive text-center">
+            <span className="caption-12-regular text-text-assistive text-center">
               {item.label}
             </span>
           </div>
@@ -59,7 +59,7 @@ const ApplicationStatus = () => {
       </div>
       <div className="px-4">
         <button
-          className="grow w-full bg-[#FEF387] rounded-lg px-5 py-3 text-center button-2 text-text-strong"
+          className="grow w-full bg-[#FEF387] rounded-lg px-5 py-3 text-center button-14-semibold text-text-strong"
           onClick={() => navigate('/profile/manage-resume')}
         >
           Manage your Resume

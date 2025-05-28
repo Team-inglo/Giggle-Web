@@ -15,7 +15,7 @@ const PostSearchFilterToggle = ({
   return (
     <div>
       <div className="w-full flex justify-between items-center">
-        <h3 className="head-3 text-black">{title}</h3>
+        <h3 className="heading-18-semibold text-black">{title}</h3>
         <button
           className={`transition-transform duration-300 ${
             !isOpen && 'rotate-180'

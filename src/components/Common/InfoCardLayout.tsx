@@ -18,7 +18,7 @@ const InfoCardLayout = ({
       <div className="flex items-center">
         <div className="flex items-center gap-2">
           {icon && <div>{icon}</div>}
-          <h3 className="head-3 text-[#191919]">{title}</h3>
+          <h3 className="heading-18-semibold text-[#191919]">{title}</h3>
         </div>
         {rightTopElement && (
           <div className="ml-auto self-end">{rightTopElement}</div>

@@ -37,7 +37,7 @@ const IntroductionInput = ({
           canDelete={false}
         />
         <div className="w-full flex justify-end p-2">
-          <span className="w-full caption text-text-assistive text-end">
+          <span className="w-full caption-12-regular text-text-assistive text-end">
             {data.title?.length}/50
           </span>
         </div>
@@ -58,7 +58,7 @@ const IntroductionInput = ({
                 introduction: limitInputValueLength(e.target.value, 200),
               }))
             }
-            className="h-auto body-2 placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
+            className="h-auto body-14-regular placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
           />
         </div>
       </InputLayout>

@@ -9,7 +9,7 @@ const HomeEmptyJobList = () => {
   return (
     <div className="w-full h-36 p-4 flex flex-col justify-center items-center gap-1 rounded-lg bg-[#F4F4F9]">
       <EmptyJobIcon />
-      <p className="caption text-[#9397A1]">
+      <p className="caption-12-regular text-[#9397A1]">
         {postTranslation.emptyJobList[isEmployerByAccountType(account_type)]}
       </p>
     </div>

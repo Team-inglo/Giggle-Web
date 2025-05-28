@@ -33,8 +33,8 @@ const InfoItem = ({
   value: React.ReactNode;
 }) => (
   <div className="flex gap-3">
-    <h5 className="body-3 text-text-alternative">{label}</h5>
-    <p className="body-3 text-text-strong">{value}</p>
+    <h5 className="caption-12-regular text-text-alternative">{label}</h5>
+    <p className="caption-12-regular text-text-strong">{value}</p>
   </div>
 );
 
@@ -98,7 +98,7 @@ const RecruitmentSection = ({
 
   return (
     <article className="w-full px-4 py-6 bg-surface-base">
-      <h3 className="pb-5 head-3 text-text-strong">
+      <h3 className="pb-5 heading-18-semibold text-text-strong">
         {postTranslation.recruitmentConditions[isEmployer]}
       </h3>
       <div className="flex flex-col gap-2">
@@ -183,7 +183,7 @@ const WorkplaceSection = ({
 
   return (
     <article className="w-full px-4 py-6 bg-surface-base">
-      <h3 className="pb-5 head-3 text-text-strong">
+      <h3 className="pb-5 heading-18-semibold text-text-strong">
         {postTranslation.workplaceConditions[isEmployer]}
       </h3>
       <div className="flex flex-col gap-2">
@@ -233,10 +233,12 @@ const WorkplaceSection = ({
           }
         />
         <div className="flex gap-3">
-          <h5 className="body-3 text-text-alternative">
+          <h5 className="caption-12-regular text-text-alternative">
             {postTranslation.workingDaysHours[isEmployer]}
           </h5>
-          <div className="body-3 text-text-strong">{formatWorkDayTimes()}</div>
+          <div className="caption-12-regular text-text-strong">
+            {formatWorkDayTimes()}
+          </div>
         </div>
       </div>
     </article>
@@ -252,7 +254,7 @@ const CompanyInfoSection = ({
 }) => {
   return (
     <article className="w-full px-4 py-6 bg-surface-base">
-      <h3 className="pb-5 head-3 text-text-strong">
+      <h3 className="pb-5 heading-18-semibold text-text-strong">
         {postTranslation.companyInformation[isEmployer]}
       </h3>
       <div className="flex flex-col gap-2">
@@ -325,7 +327,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
           />
         </div>
         <article className="w-full px-4 py-6 bg-surface-base">
-          <h3 className="pb-5 head-3 text-text-strong">
+          <h3 className="pb-5 heading-18-semibold text-text-strong">
             {
               postTranslation.detailedOverview[
                 isEmployerByAccountType(account_type)
@@ -335,7 +337,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
           <div className="flex flex-col gap-3 w-full">
             {postDetailData.detailed_overview.length > 255 ? (
               <>
-                <p className="text-text-strong body-2 whitespace-pre-wrap break-all">
+                <p className="text-text-strong body-14-regular whitespace-pre-wrap break-all">
                   {showDetailOverview
                     ? postDetailData.detailed_overview
                     : postDetailData.detailed_overview.slice(0, 255) + '...'}
@@ -354,7 +356,7 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
                 )}
               </>
             ) : (
-              <p className="text-text-strong body-2 whitespace-pre-wrap break-all">
+              <p className="text-text-strong body-14-regular whitespace-pre-wrap break-all">
                 {postDetailData.detailed_overview}
               </p>
             )}
@@ -362,14 +364,14 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
         </article>
         <div ref={(e) => (scrollRef.current[1] = e)}>
           <article className="w-full px-4 py-6 bg-surface-base">
-            <h3 className="pb-5 head-3 text-text-strong">
+            <h3 className="pb-5 heading-18-semibold text-text-strong">
               {
                 postTranslation.workplaceInformation[
                   isEmployerByAccountType(account_type)
                 ]
               }
             </h3>
-            <p className="pb-3 text-text-strong body-3">
+            <p className="pb-3 text-text-strong caption-12-regular">
               {postDetailData.workplace_information.main_address ?? ''}{' '}
               {postDetailData.workplace_information.detailed_address ?? ''}
             </p>

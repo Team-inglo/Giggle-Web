@@ -17,13 +17,19 @@ const InputLayout = ({
 }: InputLayOutProps) => {
   return (
     <div>
-      <p className={`${width} button-2 text-text-strong px-1 py-[6px]`}>
+      <p
+        className={`${width} button-14-semibold text-text-strong px-1 py-[6px]`}
+      >
         {title}
         {isEssential && (
-          <span className="text-text-error body-1 ml-[0.125rem]">*</span>
+          <span className="text-text-error body-16-regular ml-[0.125rem]">
+            *
+          </span>
         )}
         {isOptional && (
-          <span className="text-text-alternative body-3 pl-1">(optional)</span>
+          <span className="text-text-alternative caption-12-regular pl-1">
+            (optional)
+          </span>
         )}
       </p>
       {children}

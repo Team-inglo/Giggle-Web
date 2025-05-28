@@ -83,7 +83,7 @@ const LanguageCard = ({
           isShowBottomsheet={true}
           setIsShowBottomSheet={setLevelBottomSheetOpen}
         >
-          <div className="head-2 text-[#1E1926] py-3 pb-8 text-center">
+          <div className="heading-20-semibold text-[#1E1926] py-3 pb-8 text-center">
             Choose your {title} Grade
           </div>
           {/* 언어 등급 선택 (0 ~ maxLevel) */}
@@ -93,7 +93,9 @@ const LanguageCard = ({
                 key={grade}
                 className="w-full flex items-center justify-between px-2.5 py-3"
               >
-                <div className="ml-2 body-1 text-[#656565]">Grade {grade}</div>
+                <div className="ml-2 body-16-regular text-[#656565]">
+                  Grade {grade}
+                </div>
                 <NumberRadioButton
                   value={grade}
                   setValue={() => setSelectedLevel(grade)}
@@ -117,8 +119,10 @@ const LanguageCard = ({
       {/* 컴포넌트 시작 */}
       <div className="flex justify-between items-center w-full py-4">
         <div className="flex items-center gap-2">
-          <h5 className="pb-[0.125rem] button-2 text-[#464646]">{title}</h5>
-          <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption">
+          <h5 className="pb-[0.125rem] button-14-semibold text-[#464646]">
+            {title}
+          </h5>
+          <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-12-regular">
             LEVEL {level}
           </div>
         </div>

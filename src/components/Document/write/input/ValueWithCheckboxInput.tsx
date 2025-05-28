@@ -60,7 +60,7 @@ const ValueWithCheckboxInput = <
         return (
           <div className="flex flex-col gap-2">
             {description && (
-              <p className="body-3 text-text-alternative px-1 pb-2">
+              <p className="caption-12-regular text-text-alternative px-1 pb-2">
                 {description}
               </p>
             )}
@@ -75,7 +75,7 @@ const ValueWithCheckboxInput = <
               unit={unit}
             />
 
-            <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left body-3 text-text-alternative">
+            <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left caption-12-regular text-text-alternative">
               <div className="w-6 h-6 relative">
                 <div
                   className={`w-full h-full border border-border-alternative rounded-sm flex items-center justify-center ${value === null ? 'bg-primary-dark' : 'bg-white'}`}

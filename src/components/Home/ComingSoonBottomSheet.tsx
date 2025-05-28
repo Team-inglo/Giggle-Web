@@ -25,20 +25,20 @@ const CommingSoonBottomSheet = ({
       <div className="w-full pt-2 px-2 pb-6 flex flex-col gap-6 items-center text-center">
         {account_type === UserType.OWNER ? (
           <>
-            <h3 className="head-3 text-[#252525]">
+            <h3 className="heading-18-semibold text-[#252525]">
               현재 준비 중인 메뉴입니다 🚀
             </h3>
-            <p className="body-2 text-[#252525]">
+            <p className="body-14-regular text-[#252525]">
               이 기능은 아직 제공되지 않았지만
               <br />곧 출시될 예정입니다!
             </p>
           </>
         ) : (
           <>
-            <h3 className="head-3 text-[#252525]">
+            <h3 className="heading-18-semibold text-[#252525]">
               Smart Job Matches? Almost there! 🚀
             </h3>
-            <p className="body-2 text-[#252525]">
+            <p className="body-14-regular text-[#252525]">
               This feature isn’t available yet,
               <br />
               but it’s coming soon!

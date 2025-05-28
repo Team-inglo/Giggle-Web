@@ -29,7 +29,9 @@ const CheckboxGroup = <T extends FieldValues = FieldValues>({
   return (
     <>
       {description && (
-        <p className="body-3 text-text-alternative px-1 pb-2">{description}</p>
+        <p className="caption-12-regular text-text-alternative px-1 pb-2">
+          {description}
+        </p>
       )}
       <Controller
         control={control}
@@ -44,7 +46,7 @@ const CheckboxGroup = <T extends FieldValues = FieldValues>({
               return variant === 'button' ? (
                 <button
                   key={info.key}
-                  className={`py-[0.375rem] px-[0.875rem] body-2 border-border-alternative rounded-md ${isChecked ? 'bg-primary-normal text-text-normal border border-border-primary' : 'bg-white text-text-alternative border'}`}
+                  className={`py-[0.375rem] px-[0.875rem] body-14-regular border-border-alternative rounded-md ${isChecked ? 'bg-primary-normal text-text-normal border border-border-primary' : 'bg-white text-text-alternative border'}`}
                   onClick={() => {
                     const newValue = isChecked
                       ? value.filter((v: string) => v !== info.key)
@@ -58,7 +60,7 @@ const CheckboxGroup = <T extends FieldValues = FieldValues>({
               ) : (
                 // 체크박스 버전인 경우 체크박스 렌더링
                 <label
-                  className="w-full relative flex items-center justify-start py-2 gap-2 text-left body-3 text-text-alternative cursor-pointer"
+                  className="w-full relative flex items-center justify-start py-2 gap-2 text-left caption-12-regular text-text-alternative cursor-pointer"
                   key={`${info.key}_${index}`}
                 >
                   <input

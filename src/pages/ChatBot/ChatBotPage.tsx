@@ -118,7 +118,7 @@ const ChatBotPage = () => {
               <UserChatBox key={index} text={data.message} />
             ),
           )}
-          <div className="w-full py-[1rem] caption text-[#1E1926] text-center">
+          <div className="w-full py-[1rem] caption-12-regular text-[#1E1926] text-center">
             {getCurrentDayAndTime()}
           </div>
           {chatData.map((data, index) =>

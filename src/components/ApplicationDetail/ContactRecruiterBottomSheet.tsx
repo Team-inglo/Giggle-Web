@@ -35,10 +35,10 @@ const ContactRecruiterBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <main className="p-3 w-full flex flex-col items-center text-center">
-        <h3 className="pb-6 head-3 text-text-normal">
+        <h3 className="pb-6 heading-18-semibold text-text-normal">
           Need to reach the recruiter? 📞
         </h3>
-        <p className="pb-4 body-2 text-text-normal">
+        <p className="pb-4 body-14-regular text-text-normal">
           If you haven’t received a response,
           <br />
           you can follow up directly.
@@ -46,10 +46,10 @@ const ContactRecruiterBottomSheet = ({
         <button className="w-full p-4 flex items-center gap-4 bg-surface-secondary rounded-lg text-start">
           <RecruiterIcon />
           <div>
-            <p className="pb-1 button-1 text-text-strong">
+            <p className="pb-1 button-16-semibold text-text-strong">
               {data?.data?.recruiter_name}
             </p>
-            <p className="body-2 text-text-alternative">
+            <p className="body-14-regular text-text-alternative">
               {data?.data?.recruiter_phone_number}
             </p>
           </div>

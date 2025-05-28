@@ -15,10 +15,10 @@ const EtcLevelSection = ({ level, setLevel }: EtcLevelSectionProps) => {
         className="flex flex-col gap-3 px-4 py-3 mt-6 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow"
         onClick={() => setBottomSheetOpen(true)}
       >
-        <div className="head-3 text-[#222]">Level</div>
-        <div className="body-2 text-[#656565]">level {level}</div>
+        <div className="heading-18-semibold text-[#222]">Level</div>
+        <div className="body-14-regular text-[#656565]">level {level}</div>
       </div>
-      <p className="body-3 text-[#656565] px-1.5 py-[0.375rem]">
+      <p className="caption-12-regular text-[#656565] px-1.5 py-[0.375rem]">
         Proficiency level : 0 - Poor, 10 - Very good
       </p>
       {/* 레벨 선택 바텀시트 */}

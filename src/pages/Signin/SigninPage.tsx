@@ -28,8 +28,8 @@ const SigninPage = () => {
       />
       <div className="w-full flex-grow flex flex-col">
         <div className="flex flex-col w-full gap-1 py-[3.125rem] px-4">
-          <div className="title-1">이미 계정이 있으신가요?</div>
-          <div className="body-2 text-text-alternative">
+          <div className="heading-28-semibold">이미 계정이 있으신가요?</div>
+          <div className="body-14-regular text-text-alternative">
             외국인 유학생을 지금 채용해 보세요!
           </div>
         </div>

@@ -44,7 +44,7 @@ const ProfileMenu = ({ title, onClick, isToggle }: ProfileMenuProps) => {
       className="flex items-center justify-between cursor-pointer p-4 bg-white  bg-cover bg-no-repeat bg-center"
     >
       <div className="flex justify-center items-center gap-4">
-        <div className="head-3 text-text-strong">{title}</div>
+        <div className="heading-18-semibold text-text-strong">{title}</div>
       </div>
       {isToggle ? (
         <div className="relative flex items-center">

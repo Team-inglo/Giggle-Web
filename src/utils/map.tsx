@@ -7,7 +7,7 @@ export const renderMap = (address: GiggleAddress) => {
   return (
     <>
       <div className="w-full self-stretch flex flex-col items-start justify-start">
-        <div className="w-full flex-1 relative body-2 mb-1">
+        <div className="w-full flex-1 relative body-14-regular mb-1">
           {address.address_name}
           {', '} {address.address_detail}
         </div>

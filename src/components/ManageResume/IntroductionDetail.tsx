@@ -39,10 +39,10 @@ const IntroductionDetail = ({ data }: IntroductionDetailProps) => {
       )}
       <div className="flex justify-between items-start">
         <div className="text-text-normal flex flex-col">
-          <p className="pb-2 body-3 text-text-alternative">
+          <p className="pb-2 caption-12-regular text-text-alternative">
             {profileTranslation.introductionQuestion[isEmployer(pathname)]}
           </p>
-          <p className="pb-2 body-3 text-[#252525] whitespace-pre-wrap break-all">
+          <p className="pb-2 caption-12-regular text-[#252525] whitespace-pre-wrap break-all">
             {data}
           </p>
         </div>
