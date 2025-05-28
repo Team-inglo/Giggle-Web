@@ -17,6 +17,8 @@ import WorkPreferenceDetail from './WorkPreferenceDetail';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { getKoreanAbilityLevel } from '@/utils/resume';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type MypageCardProps = {
   type: ManageResumeType;
@@ -40,6 +42,7 @@ const MypageCard = ({
 }: MypageCardProps) => {
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
+  const { account_type } = useUserStore();
   // '+' 버튼을 눌렀을 떄 이동되는 경로와 아이콘을 매칭
   const iconAndPath = {
     [ManageResumeType.VISA]: { path: '' },
@@ -108,7 +111,7 @@ const MypageCard = ({
   };
 
   const getRightTopElement = () => {
-    if (!isEmployer(pathname)) {
+    if (account_type === UserType.USER) {
       // 일반 유저: 기존 로직
       return contentMap[type].isValidRender() && rightElement;
     }

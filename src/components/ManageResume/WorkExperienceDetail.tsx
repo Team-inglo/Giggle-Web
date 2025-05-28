@@ -1,13 +1,14 @@
 import { WorkExperienceType } from '@/types/postApply/resumeDetailItem';
-import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
-import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
+import { useLocation } from 'react-router-dom';
 import { useDeleteWorkExperience } from '@/hooks/api/useResume';
 import { useState } from 'react';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { formatDate } from '@/utils/editResume';
 import { infoTranslation, profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type WorkExperienceDetailProps = {
   data: WorkExperienceType[];
@@ -15,7 +16,7 @@ type WorkExperienceDetailProps = {
 
 const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const { account_type } = useUserStore();
   const { mutate } = useDeleteWorkExperience();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -68,17 +69,11 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
                 </p>
               </div>
             </div>
-            {!isEmployer(pathname) && (
-            <div className="flex justify-center items-center gap-2 ml-1">
-              <EditIcon
-                onClick={() =>
-                  navigate(`/resume/work-experience/edit/${work.id}`)
-                }
-                className="cursor-pointer"
-              />
-              <DeleteIcon
-                onClick={() => openModal(work.id)}
-                className="cursor-pointer"
+            {account_type === UserType.USER && (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={() => openModal(work.id)}
+                  className="cursor-pointer"
                 />
               </div>
             )}

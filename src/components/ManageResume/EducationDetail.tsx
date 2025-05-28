@@ -1,13 +1,14 @@
 import { EducationType } from '@/types/postApply/resumeDetailItem';
 import { formatDate } from '@/utils/editResume';
-import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
-import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
+import { useLocation } from 'react-router-dom';
 import { useDeleteEducation } from '@/hooks/api/useResume';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { useState } from 'react';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type EducationDetailProps = {
   data: EducationType[];
@@ -15,7 +16,7 @@ type EducationDetailProps = {
 
 const EducationDetail = ({ data }: EducationDetailProps) => {
   const pathname = useLocation().pathname;
-  const navigate = useNavigate();
+  const { account_type } = useUserStore();
   const { mutate } = useDeleteEducation();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -65,14 +66,10 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
               </div>
             </div>
             {/* 수정, 삭제 아이콘 */}
-            {!isEmployer(pathname) && (
-            <div className="flex justify-center items-center gap-2 ml-1">
-              <EditIcon
-                onClick={() => navigate(`/resume/education/${education.id}`)}
-                className="cursor-pointer"
-              />
-              <DeleteIcon
-                onClick={() => openModal(education.id)}
+            {account_type === UserType.USER && (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={() => openModal(education.id)}
                   className="cursor-pointer"
                 />
               </div>

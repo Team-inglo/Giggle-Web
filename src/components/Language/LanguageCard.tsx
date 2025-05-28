@@ -1,5 +1,4 @@
-import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
-import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
+import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import { useState } from 'react';
 import Button from '@/components/Common/Button';
@@ -14,6 +13,8 @@ import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { profileTranslation } from '@/constants/translation';
 import { useLocation } from 'react-router-dom';
 import { isEmployer } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type LanguageCardProps = {
   title: string;
@@ -29,6 +30,7 @@ const LanguageCard = ({
   maxLevel,
 }: LanguageCardProps) => {
   const pathname = useLocation().pathname;
+  const { account_type } = useUserStore();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(level);
@@ -128,23 +130,21 @@ const LanguageCard = ({
               : `LEVEL ${level}`}
           </div>
         </div>
-        {!isEmployer(pathname) &&
+          {account_type === UserType.USER &&
           (etcLanguageId ? (
-            <div className="flex justify-center items-center gap-2 ml-1">
-              <EditIcon
-                onClick={openLevelBottomSheet}
-                className="cursor-pointer"
-              />
-              <DeleteIcon
-                onClick={() => setModalOpen(true)}
-                className="cursor-pointer"
-              />
-            </div>
-          ) : (
-            <EditIcon
+            <div className="flex justify-center items-center">
+            <MenuIcon
               onClick={openLevelBottomSheet}
               className="cursor-pointer"
             />
+          </div>
+          ) : (
+            <div className="flex justify-center items-center">
+            <MenuIcon
+              onClick={openLevelBottomSheet}
+              className="cursor-pointer"
+            />
+          </div>
           ))}
       </div>
     </>

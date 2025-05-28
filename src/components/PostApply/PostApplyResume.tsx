@@ -88,7 +88,7 @@ const PostApplyResume = () => {
           data={data.data?.visa}
           onAddClick={() => navigateToSection('/')}
           rightElement={
-            !isEmployer(pathname) && (
+            account_type === UserType.USER && (
               <button
                 className="body-3 text-text-alternative"
                 onClick={handleVisaClick}
