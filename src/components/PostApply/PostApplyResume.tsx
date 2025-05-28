@@ -36,7 +36,7 @@ const PostApplyResume = () => {
 
   // 재사용 가능한 네비게이션 핸들러
   const navigateToSection = useCallback(
-    (path: string, stateData: string | null = null) => {
+    <T,>(path: string, stateData: T | null = null) => {
       navigate(path, stateData ? { state: { data: stateData } } : undefined);
     },
     [navigate],
@@ -44,8 +44,12 @@ const PostApplyResume = () => {
 
   // 주로 사용되는 네비게이션 핸들러들
   const handleIntroductionClick = useCallback(
-    () => navigateToSection('/resume/introduction', data?.data?.introduction),
-    [navigateToSection, data?.data?.introduction],
+    () =>
+      navigateToSection('/resume/introduction', {
+        title: data?.data?.title ?? '',
+        introduction: data?.data?.introduction ?? '',
+      }),
+    [navigateToSection, data?.data?.title, data?.data?.introduction],
   );
 
   const handleVisaClick = useCallback(
@@ -155,7 +159,11 @@ const PostApplyResume = () => {
           rightElement={
             <button
               className="caption-12-regular text-text-alternative"
-              onClick={() => navigateToSection('/resume/work-preference')}
+              onClick={() =>
+                navigateToSection('/resume/work-preference', {
+                  isEdit: true,
+                })
+              }
             >
               Edit
             </button>

@@ -46,7 +46,7 @@ const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
 
       {/* Preferred Job Position */}
       <div className="flex flex-col gap-3 py-4">
-        <div className="body-14-medium text-text-strong mb-2">
+        <div className="body-14-medium text-text-strong">
           Preferred Job Position
         </div>
         <div className="flex flex-wrap gap-2">
