@@ -37,7 +37,7 @@ const ResumeDeleteModal = ({
         <div className="flex flex-col items-start justify-center gap-2">
           <button
             className="bg-surface-secondary py-3 w-full flex justify-start items-center body-16-regular text-text-strong"
-            onClick={onDeleteButton}
+            onClick={onEditButton}
           >
             수정하기
           </button>

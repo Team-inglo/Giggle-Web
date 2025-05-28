@@ -125,28 +125,31 @@ const LanguageCard = ({
       {/* 컴포넌트 시작 */}
       <div className="flex justify-between items-center w-full py-4">
         <div className="flex items-center gap-2">
-          <h5 className="pb-[0.125rem] button-14-semibold  text-[#464646]">{title}</h5>
+          <h5 className="pb-[0.125rem] button-14-semibold  text-[#464646]">
+            {title}
+          </h5>
           <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-12-regular">
             {isEmployer(pathname)
               ? `${level} ${profileTranslation.level[isEmployer(pathname)]}`
               : `LEVEL ${level}`}
+          </div>
+          {account_type === UserType.USER &&
+            (etcLanguageId ? (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={() => setModalOpen(true)}
+                  className="cursor-pointer"
+                />
+              </div>
+            ) : (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={openLevelBottomSheet}
+                  className="cursor-pointer"
+                />
+              </div>
+            ))}
         </div>
-        {account_type === UserType.USER &&
-          (etcLanguageId ? (
-            <div className="flex justify-center items-center">
-              <MenuIcon
-                onClick={() => setModalOpen(true)}
-                className="cursor-pointer"
-              />
-            </div>
-          ) : (
-            <div className="flex justify-center items-center">
-              <MenuIcon
-                onClick={openLevelBottomSheet}
-                className="cursor-pointer"
-              />
-            </div>
-          ))}
       </div>
     </>
   );
