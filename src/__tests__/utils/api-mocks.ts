@@ -116,12 +116,6 @@ export const mockFilteredSearchApi = (filters: Record<string, any>) => {
 // MSW (Mock Service Worker) 대신 사용할 수 있는 전역 API 모킹
 export const setupApiMocks = () => {
   // 실제 프로젝트에서 사용되는 API 모듈을 모킹
-  vi.mock('@/api/talent', () => ({
-    searchTalents: mockTalentSearchApi(),
-    getTalentDetail: mockTalentDetailApi(),
-    scrapTalent: mockScrapApi(),
-    getFilterOptions: mockFilterOptionsApi(),
-  }));
 
   vi.mock('@/api/auth', () => ({
     login: mockApiSuccess({
