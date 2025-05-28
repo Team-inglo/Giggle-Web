@@ -154,7 +154,7 @@ const PostApplyResume = () => {
               className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/work-preference')}
             >
-              Add
+              Edit
             </button>
           }
         />
