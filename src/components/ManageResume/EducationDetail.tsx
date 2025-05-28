@@ -1,7 +1,7 @@
 import { EducationType } from '@/types/postApply/resumeDetailItem';
 import { formatDate } from '@/utils/editResume';
 import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDeleteEducation } from '@/hooks/api/useResume';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { useState } from 'react';
@@ -18,6 +18,7 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
   const pathname = useLocation().pathname;
   const { account_type } = useUserStore();
   const { mutate } = useDeleteEducation();
+  const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -25,10 +26,6 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
   const openModal = (id: number) => {
     setModalOpen(true);
     setSelectedId(id);
-  };
-
-  const handleCancel = () => {
-    setModalOpen(false);
   };
 
   const handleDelete = () => {
@@ -39,7 +36,7 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
     <>
       {modalOpen && (
         <ResumeDeleteModal
-          onCancelButton={handleCancel}
+          onEditButton={() => navigate(`/resume/education/${selectedId}`)}
           onDeleteButton={handleDelete}
         />
       )}

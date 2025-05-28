@@ -1,6 +1,6 @@
 import { WorkExperienceType } from '@/types/postApply/resumeDetailItem';
 import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDeleteWorkExperience } from '@/hooks/api/useResume';
 import { useState } from 'react';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
@@ -18,6 +18,7 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
   const { pathname } = useLocation();
   const { account_type } = useUserStore();
   const { mutate } = useDeleteWorkExperience();
+  const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -25,10 +26,6 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
   const openModal = (id: number) => {
     setModalOpen(true);
     setSelectedId(id);
-  };
-
-  const handleCancel = () => {
-    setModalOpen(false);
   };
 
   const handleDelete = () => {
@@ -39,7 +36,7 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
     <>
       {modalOpen && (
         <ResumeDeleteModal
-          onCancelButton={handleCancel}
+          onEditButton={() => navigate(`/resume/work-experience/edit/${selectedId}`)}
           onDeleteButton={handleDelete}
         />
       )}

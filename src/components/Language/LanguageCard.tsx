@@ -77,7 +77,7 @@ const LanguageCard = ({
     <>
       {modalOpen && (
         <ResumeDeleteModal
-          onCancelButton={() => setModalOpen(false)}
+          onEditButton={() => openLevelBottomSheet}
           onDeleteButton={handleDelete}
         />
       )}
@@ -130,21 +130,21 @@ const LanguageCard = ({
               : `LEVEL ${level}`}
           </div>
         </div>
-          {account_type === UserType.USER &&
+        {account_type === UserType.USER &&
           (etcLanguageId ? (
             <div className="flex justify-center items-center">
-            <MenuIcon
-              onClick={openLevelBottomSheet}
-              className="cursor-pointer"
-            />
-          </div>
+              <MenuIcon
+                onClick={() => setModalOpen(true)}
+                className="cursor-pointer"
+              />
+            </div>
           ) : (
             <div className="flex justify-center items-center">
-            <MenuIcon
-              onClick={openLevelBottomSheet}
-              className="cursor-pointer"
-            />
-          </div>
+              <MenuIcon
+                onClick={openLevelBottomSheet}
+                className="cursor-pointer"
+              />
+            </div>
           ))}
       </div>
     </>
