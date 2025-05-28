@@ -1,10 +1,11 @@
 import { GenderType } from '@/constants/profile';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ProfileImage from '@/components/Common/ProfileImage';
 import { useState } from 'react';
 import { usePatchResumePublic } from '@/hooks/api/useResume';
 import ToggleButton from '../Common/ToggleButton';
-import { isEmployer } from '@/utils/signup';
+import { UserType } from '@/constants/user';
+import { useUserStore } from '@/store/user';
 
 type UserInfoProps = {
   name: string;
@@ -94,7 +95,7 @@ const ResumeProfileCard = ({
   isPublic = true,
 }: ResumeProfileCardProps) => {
   const navigate = useNavigate();
-  const pathname = useLocation().pathname;
+  const { account_type } = useUserStore();
   const [toggleOn, setToggleOn] = useState<boolean>(isPublic);
   const { mutate: patchResumePublic } = usePatchResumePublic();
 
@@ -118,8 +119,7 @@ const ResumeProfileCard = ({
         />
       </div>
 
-      {/* 단순한 버튼은 인라인 유지 */}
-      {!isEmployer(pathname) && (
+      {account_type === UserType.USER && (
         <>
           <div className="flex justify-between items-center px-1 py-2 mt-4">
             <span className="button-14-semibold text-text-strong">
