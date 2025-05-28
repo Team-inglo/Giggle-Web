@@ -4,6 +4,7 @@ import { ManageResumeType } from '@/constants/manageResume';
 import IntroductionDetail from '@/components/ManageResume/IntroductionDetail';
 import {
   EducationType,
+  IntroductionType,
   LanguageListType,
   WorkExperienceType,
   WorkPreferenceType,
@@ -23,7 +24,7 @@ import { UserType } from '@/constants/user';
 type MypageCardProps = {
   type: ManageResumeType;
   informations?: MypageCardType[];
-  introductionData?: string;
+  introductionData?: IntroductionType;
   workExperienceData?: WorkExperienceType[];
   educationData?: EducationType[];
   languageData?: LanguageListType;
@@ -85,7 +86,12 @@ const MypageCard = ({
     },
     [ManageResumeType.INTRODUCTION]: {
       isValidRender: () => introductionData !== null,
-      component: () => <IntroductionDetail data={introductionData!} />,
+      component: () => (
+        <IntroductionDetail
+          title={introductionData!.title}
+          content={introductionData!.content}
+        />
+      ),
       title: profileTranslation.introduction[isEmployer(pathname)],
     },
     [ManageResumeType.WORKEXPERIENCE]: {

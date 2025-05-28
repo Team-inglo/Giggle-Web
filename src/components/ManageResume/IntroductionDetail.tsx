@@ -1,23 +1,16 @@
-import { useLocation } from 'react-router-dom';
-import { profileTranslation } from '@/constants/translation';
-import { isEmployer } from '@/utils/signup';
-
 type IntroductionDetailProps = {
-  data: string;
+  title: string;
+  content: string;
 };
 
-const IntroductionDetail = ({ data }: IntroductionDetailProps) => {
-  const { pathname } = useLocation();
-
+const IntroductionDetail = ({ title, content }: IntroductionDetailProps) => {
   return (
     <>
       <div className="flex justify-between items-start">
         <div className="text-text-normal flex flex-col">
-          <p className="pb-2 caption-12-regular text-text-alternative">
-            {profileTranslation.introductionQuestion[isEmployer(pathname)]}
-          </p>
-          <p className="pb-2 caption-12-regular text-text-strong whitespace-pre-wrap break-all">
-            {data}
+          <p className="pb-2 body-14-medium text-text-strong">{title}</p>
+          <p className="pb-2 body-14-regular-reading text-text-normal whitespace-pre-wrap break-all">
+            {content}
           </p>
         </div>
       </div>

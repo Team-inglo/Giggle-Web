@@ -73,7 +73,10 @@ const PostApplyResume = () => {
       <section className="flex flex-col gap-2 bg-surface-secondary pt-2 pb-2">
         <MypageCard
           type={ManageResumeType.INTRODUCTION}
-          introductionData={data.data?.introduction}
+          introductionData={{
+            title: data.data?.title ?? '',
+            content: data.data?.introduction ?? '',
+          }}
           rightElement={
             <button
               className="caption-12-regular text-text-alternative"
