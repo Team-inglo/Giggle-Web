@@ -68,7 +68,7 @@ const CardDeadLineTag = () => {
       hasCheckIcon={false}
       backgroundColor="bg-[#FF5252]/10"
       color="text-text-error"
-      fontStyle="caption"
+      fontStyle="caption-12-regular"
     />
   );
 };
@@ -94,7 +94,9 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
 
   return (
     <div className="w-full flex justify-between items-center">
-      <h3 className="head-3 text-text-strong line-clamp-2">{title}</h3>
+      <h3 className="heading-18-semibold text-text-strong line-clamp-2">
+        {title}
+      </h3>
       <div className="w-6 h-6">
         {account_type === UserType.USER && isBookMarkButton && (
           <button onClick={(e) => onClickBookmark(e)}>
@@ -110,7 +112,7 @@ const CardCompanyInfo = () => {
   const { company_name, summaries } = useCard();
 
   return (
-    <p className="caption text-text-alternative whitespace-normal">
+    <p className="caption-12-regular text-text-alternative whitespace-normal">
       {company_name}
       <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
       {summaries?.address?.split(' ')?.slice(0, 2)?.join(' ') ?? ''}
@@ -123,7 +125,7 @@ const CardHourlyRate = () => {
   const { account_type } = useUserStore();
 
   return (
-    <p className="button-2 text-text-normal">
+    <p className="button-14-semibold text-text-normal">
       {account_type === UserType.OWNER
         ? `시간당 ${formatMoney(hourly_rate)}원`
         : `Hr ${formatMoney(hourly_rate)}KRW`}
@@ -135,7 +137,7 @@ const CardVisa = () => {
   const { tags } = useCard();
 
   return (
-    <span className="body-3 text-text-alternative whitespace-normal">
+    <span className="caption-12-regular text-text-alternative whitespace-normal">
       {tags.visa.sort().join(', ').replace(/_/g, '-')}
     </span>
   );
@@ -151,7 +153,7 @@ const CardWorkDayInfo = () => {
       : summaries.work_period?.replace(/_/g, ' ').toLowerCase();
 
   return (
-    <span className="body-3 text-text-alternative whitespace-normal">
+    <span className="caption-12-regular text-text-alternative whitespace-normal">
       {workDaysPerWeekToText(
         summaries.work_days_per_week as string,
         account_type,
@@ -178,7 +180,7 @@ const CardTagList = () => {
         hasCheckIcon={false}
         backgroundColor="bg-surface-secondary"
         color="text-text-normal"
-        fontStyle="caption"
+        fontStyle="caption-12-regular"
       />
       <Tag
         value={
@@ -193,7 +195,7 @@ const CardTagList = () => {
         hasCheckIcon={false}
         backgroundColor="bg-surface-secondary"
         color="text-text-normal"
-        fontStyle="caption"
+        fontStyle="caption-12-regular"
       />
     </div>
   );

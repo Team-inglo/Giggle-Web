@@ -136,7 +136,7 @@ const PostSearchFilterList = ({
             borderColor={'border-border-alternative'}
             backgroundColor={'bg-surface-base'}
             color="text-text-normal"
-            fontStyle="body-2"
+            fontStyle="body-14-regular"
           />
         ))}
       </div>

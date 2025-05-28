@@ -47,11 +47,11 @@ const SearchSchoolBottomSheet = ({
   };
   return (
     <>
-      <div className="self-stretch flex items-center justify-center pb-3 head-2 text-center">
+      <div className="self-stretch flex items-center justify-center pb-3 heading-20-semibold text-center">
         <div className="flex-1 relative">Search for school</div>
       </div>
 
-      <div className="w-full flex flex-col items-start justify-start pb-6 text-left head-3">
+      <div className="w-full flex flex-col items-start justify-start pb-6 text-left heading-18-semibold">
         <div className="self-stretch flex flex-col items-start justify-start py-6 gap-4">
           <div className="self-stretch flex items center jusity-center">
             <div className="flex-1 relative">Select your school</div>
@@ -68,7 +68,7 @@ const SearchSchoolBottomSheet = ({
           />
           <div className="w-full h-[30vh]">
             {searchResult && searchResult?.length > 0 && (
-              <div className="w-full relative rounded-2xl bg-white flex flex-row items-start justify-start pl-1 text-left text-[#656565] body-2">
+              <div className="w-full relative rounded-2xl bg-white flex flex-row items-start justify-start pl-1 text-left text-[#656565] body-14-regular">
                 <div className="flex-1 flex flex-col items-start justify-start gap-1">
                   {searchResult.map((school) => (
                     <div

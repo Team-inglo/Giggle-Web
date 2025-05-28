@@ -110,7 +110,7 @@ const FilterCategory = memo(
                     : 'bg-surface-base'
                 }
                 borderColor="border-border-alternative"
-                fontStyle="body-2"
+                fontStyle="body-14-regular"
               />
             </button>
           ))}

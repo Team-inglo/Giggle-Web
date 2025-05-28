@@ -43,20 +43,20 @@ const DocumentCardLayout = ({
   return (
     <div className="w-full p-4 flex flex-col rounded-lg bg-white border border-border-disabled">
       <div
-        className={`w-fit body-3 px-1 py-1 mb-1 ${tagStyle} rounded-sm justify-center items-center inline-flex`}
+        className={`w-fit caption-12-regular px-1 py-1 mb-1 ${tagStyle} rounded-sm justify-center items-center inline-flex`}
       >
         {tagText}
       </div>
       <div className="w-full pb-2 border-b border-border-disabled">
-        <p className="head-3 py-1">{title}</p>
+        <p className="heading-18-semibold py-1">{title}</p>
       </div>
       <section className="w-full flex flex-col gap-2">
-        <div className="w-full pt-2 body-3 text-text-alternative">
+        <div className="w-full pt-2 caption-12-regular text-text-alternative">
           <p>{content}</p>
         </div>
         {preview && (
           <div
-            className="relative w-full button-2 bg-surface-secondary rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-1"
+            className="relative w-full button-14-semibold bg-surface-secondary rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-1"
             onClick={onPreview}
           >
             <BlackFolderIcon />
@@ -150,7 +150,7 @@ const DocumentCardDispenser = ({
                 <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
                   <FolderIcon />
                 </div>
-                <div className="relative body-3 opacity-75">
+                <div className="relative caption-12-regular opacity-75">
                   word file download
                 </div>
               </div>
@@ -174,7 +174,7 @@ const DocumentCardDispenser = ({
           content="If you are sure of the content, click Submit to send it to your employer."
         >
           <button
-            className="bg-surface-secondary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2"
+            className="bg-surface-secondary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-14-semibold"
             onClick={() => {
               navigate(`/write-documents/${documentInfo.id}`, {
                 state: {
@@ -188,7 +188,7 @@ const DocumentCardDispenser = ({
             Edit
           </button>
           <button
-            className="bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2"
+            className="bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-14-semibold"
             onClick={() => submitDocument(Number(documentInfo.id))}
           >
             Submit
@@ -232,7 +232,7 @@ const DocumentCardDispenser = ({
           }}
         >
           <button
-            className="bg-primary-dark text-white w-full py-3 flex justify-center items-center rounded-lg button-2"
+            className="bg-primary-dark text-white w-full py-3 flex justify-center items-center rounded-lg button-14-semibold"
             onClick={() => {
               navigate(`/request-modify/${documentInfo.id}`, {
                 state: {
@@ -244,7 +244,7 @@ const DocumentCardDispenser = ({
             Request
           </button>
           <button
-            className="bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2"
+            className="bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-14-semibold"
             onClick={() => confirmDocument(Number(documentInfo.id))}
           >
             Confirm
@@ -265,7 +265,7 @@ const DocumentCardDispenser = ({
                 <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
                   <TalkBallonIconGrey />
                 </div>
-                <div className="relative body-3 opacity-75">
+                <div className="relative caption-12-regular opacity-75">
                   The employer is currently writing it.
                 </div>
               </div>
@@ -288,7 +288,7 @@ const DocumentCardDispenser = ({
                   <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
                     <FolderIcon />
                   </div>
-                  <div className="relative body-3 opacity-75">
+                  <div className="relative caption-12-regular opacity-75">
                     word file download
                   </div>
                 </div>

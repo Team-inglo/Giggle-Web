@@ -41,7 +41,7 @@ const EmployerProfileMenu = ({
       className="flex items-center justify-between cursor-pointer px-4 py-[1.125rem] bg-cover bg-no-repeat bg-center"
     >
       <div className="flex justify-center items-center gap-4">
-        <div className="head-3 text-[#1E1926]">{title}</div>
+        <div className="heading-18-semibold text-[#1E1926]">{title}</div>
       </div>
       {isToggle ? (
         <div className="relative flex items-center">

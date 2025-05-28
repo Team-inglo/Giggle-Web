@@ -74,7 +74,7 @@ const SearchSchools = ({
             title="Education"
           />
           <div className="px-6 mb-6">
-            <div className="head-1 text-[#1E1926] my-6">
+            <div className="heading-24-semibold text-[#1E1926] my-6">
               Search for
               <br />
               educational institutions
@@ -87,7 +87,7 @@ const SearchSchools = ({
               canDelete={true}
               onDelete={() => setSearchSchool('')}
             />
-            <div className="mt-6 p-2 body-2 text-[#656565] h-[26rem] overflow-scroll">
+            <div className="mt-6 p-2 body-14-regular text-[#656565] h-[26rem] overflow-scroll">
               {schoolList.length > 0 &&
                 schoolList.map((school: School) => (
                   <div

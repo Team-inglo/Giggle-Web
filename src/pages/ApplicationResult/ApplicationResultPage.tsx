@@ -42,9 +42,9 @@ const ApplicationResultPage = () => {
       />
       <main className="flex flex-col gap-4 w-full px-4">
         <section>
-          <h3 className="px-1 py-[0.375rem] button-2 text-primary-dark">
+          <h3 className="px-1 py-[0.375rem] button-14-semibold text-primary-dark">
             HiKorea e-Government
-            <span className="pl-1 body-1 text-text-error">*</span>
+            <span className="pl-1 body-16-regular text-text-error">*</span>
           </h3>
           <div className="px-1 py-[0.375rem] flex flex-col gap-4">
             <RadioButton
@@ -60,11 +60,11 @@ const ApplicationResultPage = () => {
           </div>
         </section>
         <section className="w-full">
-          <h3 className="px-1 py-[0.375rem] button-2 text-primary-dark">
+          <h3 className="px-1 py-[0.375rem] button-14-semibold text-primary-dark">
             Share your experience
           </h3>
           <textarea
-            className="min-h-24 w-full px-4 py-3 border border-border-alternative rounded body-2 focus:outline-none resize-none"
+            className="min-h-24 w-full px-4 py-3 border border-border-alternative rounded body-14-regular focus:outline-none resize-none"
             placeholder="Was the process smooth? Any challenges? 💬"
             value={feedback}
             onChange={(e) =>

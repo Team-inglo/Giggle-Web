@@ -24,23 +24,23 @@ const PostDetailConfirmBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full flex flex-col items-center text-center">
-        <h3 className="px-[1.625rem] pb-[2rem] head-2 text-[#1E1926]">
+        <h3 className="px-[1.625rem] pb-[2rem] heading-20-semibold text-[#1E1926]">
           Are you sure you want to proceed with this application?
         </h3>
-        <p className="px-[1.625rem] pb-[0.25rem] button-2 text-[#7872ED]">
+        <p className="px-[1.625rem] pb-[0.25rem] button-14-semibold text-[#7872ED]">
           Based on the information in your resume, it might be difficult to
           obtain a part-time work permit for this job posting. Would you still
           like to proceed?
         </p>
         <div className="flex items-center gap-[0.25rem] pb-[0.25rem]">
           <SmallCheckIcon />
-          <p className="body-3 text-[#464646]">
+          <p className="caption-12-regular text-[#464646]">
             You can update or create a new resume.
           </p>
         </div>
         <div className="flex items-center gap-[0.25rem] pb-[0.75rem]">
           <SmallCheckIcon />
-          <p className="body-3 text-[#464646]">
+          <p className="caption-12-regular text-[#464646]">
             Check out recommended job postings on the main page
           </p>
         </div>

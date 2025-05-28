@@ -38,24 +38,24 @@ const DocumentCardLayout = ({
   return (
     <div className="w-full p-4 flex flex-col rounded-lg bg-white border border-border-disabled">
       <div
-        className={`w-fit body-3 px-1 py-1 mb-1 ${tagStyle} rounded-sm justify-center items-center inline-flex`}
+        className={`w-fit caption-12-regular px-1 py-1 mb-1 ${tagStyle} rounded-sm justify-center items-center inline-flex`}
       >
         {tagText}
       </div>
       <div className="w-full pb-2 border-b border-border-disabled">
-        <p className="head-3 py-1">{title}</p>
+        <p className="heading-18-semibold py-1">{title}</p>
       </div>
-      <div className="w-full pb-2 body-3 text-text-alternative">
+      <div className="w-full pb-2 caption-12-regular text-text-alternative">
         <p className="py-2">{content}</p>
       </div>
       {reason && (
-        <div className="w-full pb-2 body-3 text-text-strong">
+        <div className="w-full pb-2 caption-12-regular text-text-strong">
           <p className="py-2">{'사유 : ' + reason}</p>
         </div>
       )}
       {preview && (
         <div
-          className="relative w-full button-2 bg-surface-secondary rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-1"
+          className="relative w-full button-14-semibold bg-surface-secondary rounded-lg px-3 py-2 flex flex-row items-center justify-start gap-1"
           onClick={onPreview}
         >
           <BlackFolderIcon />
@@ -174,7 +174,7 @@ const DocumentCardDispenserEmployer = ({
         >
           <div className="w-full flex self-stretch items-center justify-center gap-2 text-[#464646]">
             <button
-              className={`${isEmployerWrote ? 'bg-surface-secondary' : 'bg-surface-primary'} text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
+              className={`${isEmployerWrote ? 'bg-surface-secondary' : 'bg-surface-primary'} text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-14-semibold`}
               onClick={() => {
                 navigate(`/employer/write-documents/${documentInfo.id}`, {
                   // EmployerWriteDocumentPage.tsx
@@ -189,7 +189,7 @@ const DocumentCardDispenserEmployer = ({
               {isEmployerWrote ? '수정' : '작성'}
             </button>
             <button
-              className={`${isEmployerWrote ? 'bg-surface-primary text-primary-dark' : 'bg-surface-secondary text-text-disabled'} w-full py-3 flex justify-center items-center rounded-lg button-2`}
+              className={`${isEmployerWrote ? 'bg-surface-primary text-primary-dark' : 'bg-surface-secondary text-text-disabled'} w-full py-3 flex justify-center items-center rounded-lg button-14-semibold`}
               onClick={() => {
                 if (isEmployerWrote) {
                   submitDocument(Number(documentInfo.id)); // 고용주가 서류 제출
@@ -231,7 +231,7 @@ const DocumentCardDispenserEmployer = ({
           >
             <div className="w-full flex self-stretch items-center justify-center gap-2 text-[#464646]">
               <button
-                className={`bg-surface-secondary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
+                className={`bg-surface-secondary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-14-semibold`}
                 onClick={() => {
                   navigate(`/employer/write-documents/${documentInfo.id}`, {
                     // EmployerWriteDocumentPage.tsx
@@ -245,7 +245,7 @@ const DocumentCardDispenserEmployer = ({
                 수정
               </button>
               <button
-                className={`bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-2`}
+                className={`bg-surface-primary text-primary-dark w-full py-3 flex justify-center items-center rounded-lg button-14-semibold`}
                 onClick={() => {
                   if (isEmployerWrote) {
                     submitDocument(Number(documentInfo.id)); // 고용주가 서류 제출
@@ -274,7 +274,7 @@ const DocumentCardDispenserEmployer = ({
                     <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center rounded-full bg-primary-dark">
                       <FolderIcon />
                     </div>
-                    <div className="relative body-3 opacity-75">
+                    <div className="relative caption-12-regular opacity-75">
                       word로 다운로드
                     </div>
                   </div>

@@ -19,10 +19,10 @@ const PostApplyErrorBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full flex flex-col items-center text-center">
-        <h3 className="px-[1.625rem] pb-[2rem] head-2 text-[#1E1926]">
+        <h3 className="px-[1.625rem] pb-[2rem] heading-20-semibold text-[#1E1926]">
           This is the announcement you've already applied for.
         </h3>
-        <p className="px-[1.625rem] pb-[0.25rem] button-2 text-[#7872ED]">
+        <p className="px-[1.625rem] pb-[0.25rem] button-14-semibold text-[#7872ED]">
           The announcement you applied for can be found on the application
           document management menu.
         </p>

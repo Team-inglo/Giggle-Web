@@ -32,8 +32,10 @@ const ScrappedJobPostList = ({
     return (
       <div className="flex-1 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
-        <h3 className="head-2 text-[#252525]">No saved jobs yet!</h3>
-        <p className="body-2 text-[#9397A1] text-center">
+        <h3 className="heading-20-semibold text-[#252525]">
+          No saved jobs yet!
+        </h3>
+        <p className="body-14-regular text-[#9397A1] text-center">
           Save jobs you like and apply later with one click!
         </p>
       </div>
@@ -56,7 +58,7 @@ const ScrappedJobPostList = ({
                 <JobPostingCard.CompanyInfo />
               </div>
               <JobPostingCard.HourlyRate />
-              <p className="pt-[0.125rem] pb-2 caption text-text-alternative whitespace-normal">
+              <p className="pt-[0.125rem] pb-2 caption-12-regular text-text-alternative whitespace-normal">
                 <JobPostingCard.Visa />
                 <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
                 <JobPostingCard.WorkDayInfo />
@@ -121,7 +123,7 @@ const ScrappedJobPostsPage = () => {
         title="Scrapped Job Posts"
       />
       <div className="w-full pt-6 pb-2 px-4 flex justify-between items-center border-b border-border-disabled">
-        <h3 className=" caption text-text-alternative">
+        <h3 className=" caption-12-regular text-text-alternative">
           {jobPostingData.length} scrapped Job Posts
         </h3>
         <SearchSortDropdown

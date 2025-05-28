@@ -1,5 +1,21 @@
 # GIGGLE
 ### 🏆 2024 공개SW개발자대회 우수작
+
+🚧 **현재 테스트 환경 구축 중** - 테스트 도입 브랜치에서 작업 중입니다.
+
+<!--
+TODO: 메인 브랜치 merge 후 활성화 예정
+[![Tests](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml/badge.svg)](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml)
+[![Coverage Status](https://codecov.io/gh/Team-inglo/Giggle-Web/branch/main/graph/badge.svg)](https://codecov.io/gh/Team-inglo/Giggle-Web)
+-->
+
+## 🧪 테스트 환경
+
+✅ **Vitest + React Testing Library** 도입 완료  
+✅ **GitHub Actions CI/CD** 설정 완료  
+✅ **테스트 커버리지 80% 임계값** 설정  
+🔄 **Codecov 연동** 준비 중
+
 <div align="center">
 
 ![1  Cover](https://github.com/user-attachments/assets/cee631c9-b04c-421c-a197-0c767edd641f)
@@ -18,6 +34,7 @@
 > [Android](https://play.google.com/store/apps/details?id=com.teaminglo236.Giggle)
 
 ## 서비스 개발 여정
+
 > https://youtu.be/PfW00paozHM?si=0qIEgXpjnI9DGKZO
 
 ## Tech Stack
@@ -29,6 +46,8 @@
   <img src="https://img.shields.io/badge/tailwindcss-06B6D4.svg?style=flat-square&logo=tailwindcss&logoColor=white">
   <img src="https://img.shields.io/badge/Framer Motion-0055FF?style=flat-square&logo=Framer&logoColor=white"/>
   <img src="https://img.shields.io/badge/React%20Query-FF4154.svg?style=flat-square&logo=React-Query&logoColor=white">
+  <img src="https://img.shields.io/badge/Vitest-6E9F18.svg?style=flat-square&logo=Vitest&logoColor=white">
+  <img src="https://img.shields.io/badge/Testing%20Library-E33332?style=flat-square&logo=Testing%20Library&logoColor=white"/>
 </p>
 
 ## 프로젝트 소개
@@ -36,7 +55,6 @@
 ### 외국인 유학생 구인 구직 플랫폼
 
 혹시, 외국인 유학생을 고용하고 싶으신가요? 아니면 아르바이트를 구하고 계신 외국인 유학생이신가요?
-
 
 한국에 거주하는 외국인 유학생은 20만 명을 넘어서며 매년 증가하고 있습니다.
 하지만 외국인 유학생이 시간제 아르바이트를 하려면 시간제 취업허가가 반드시 필요합니다.
@@ -48,22 +66,27 @@
 ![3](https://github.com/user-attachments/assets/7fc617d7-94aa-4c35-b695-7bcec959f8ba)
 ![Slide 16_9 - 25](https://github.com/user-attachments/assets/42742e29-1bb9-4be7-8c7f-d2a7e2839658)
 
-
 ## 주요 기능 소개
+
 1. 간편한 공고 등록
+
 - 외국인 유학생을 위한 Giggle만의 맞춤형 공고로 올려보세요. Giggle은 외국인 유학생이 쉽게 공고를 발견하고 지원할 수 있도록 돕습니다.
 
 2. 맞춤형 공고 검색
+
 - 고유 추천 알고리즘으로 외국인 유학생을 위한 아르바이트 공고 확인 가능
 
 3. 간편한 서류 작성 및 제출
+
 - 시간제취업허가 취득 위한 필요 서류 3종 작성 및 수정, 파일 다운로드 기능 지원
 
 4. 안전한 취업 보장
+
 - 실제 허가 절차 및 서류 작성을 안내, 절차 이행 도움으로 합법 취업 보장
 
 5. 언어 장벽 해소
-- 사용자 유형에 따른 언어 제공 (유학생 - 영어  / 고용주 - 한국어)
+
+- 사용자 유형에 따른 언어 제공 (유학생 - 영어 / 고용주 - 한국어)
 
 ![이력서 등록1](https://github.com/user-attachments/assets/195315ec-1235-4866-bbcc-d2de64568989)
 ![공고추천알골](https://github.com/user-attachments/assets/65e9d347-d9c1-4c3b-8e64-586ef1926cf4)
@@ -73,7 +96,6 @@
 ![Frame (2)](https://github.com/user-attachments/assets/5c0526b5-b836-4553-903e-7fe54f58f138)
 ![Frame (7)](https://github.com/user-attachments/assets/b8add2a0-e167-47b0-999a-e12d3e8867aa)
 ![Frame (8)](https://github.com/user-attachments/assets/5348735c-398d-431f-9389-5bbdd7c90086)
-
 
 ## 데모 (24.11.26 기준)
 
@@ -110,6 +132,7 @@ VITE_APP_KAKAO_REST_API_KEY=your_kakao_rest_api_key
 ```
 pnpm run dev
 ```
+
 ## 프로젝트 구조
 
 ```
@@ -154,4 +177,46 @@ src/
 
 이 프로젝트는 Apache 2.0 라이센스를 사용합니다.
 
+## 테스트 실행
 
+이 프로젝트는 Vitest와 React Testing Library를 사용한 포괄적인 테스트 환경을 제공합니다.
+
+### 테스트 명령어
+
+```bash
+# 모든 테스트 실행
+pnpm test
+
+# 감시 모드로 테스트 실행 (개발 중 권장)
+pnpm test:watch
+
+# 커버리지 포함 테스트 실행
+pnpm test:coverage
+
+# 브라우저에서 테스트 UI 실행
+pnpm test:ui
+```
+
+### 테스트 가이드라인
+
+- 📋 **전체 가이드라인**: [TESTING_GUIDELINES.md](./TESTING_GUIDELINES.md) 참조
+- 🎯 **커버리지 목표**: 전체 80% 이상, 신규 기능 90% 이상
+- 🧪 **테스트 유형**: 컴포넌트, 훅, 유틸리티, 통합 테스트
+- 📏 **테스트 원칙**: 사용자 관점에서 작성, AAA 패턴 준수
+
+### 테스트 파일 구조
+
+```
+src/
+├── components/
+│   └── Button/
+│       ├── Button.tsx
+│       └── Button.test.tsx       # 컴포넌트 테스트
+├── hooks/
+│   ├── useTalentSearch.ts
+│   └── useTalentSearch.test.ts   # 커스텀 훅 테스트
+└── __tests__/
+    ├── setup.ts                  # 테스트 환경 설정
+    ├── utils/                    # 테스트 유틸리티
+    └── mocks/                    # 공통 모킹
+```
