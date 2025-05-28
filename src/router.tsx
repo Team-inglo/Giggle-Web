@@ -57,6 +57,7 @@ import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
 import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
 import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
+import EmploySearchDetailPage from './pages/Resume/EmploySearchDetailPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -208,6 +209,7 @@ const Router = () => {
           path="/employer/write-documents/:id"
           element={<EmployerWriteDocumentsPage />}
         />
+        <Route path="/employer/search/:id" element={<EmploySearchDetailPage />} />
         <Route path="/write-documents" element={<WriteDocumentsPage />} />
         <Route path="/document-preview" element={<DocumentPreview />} />
         <Route path="/request-modify" element={<RequestModifyPage />} />
