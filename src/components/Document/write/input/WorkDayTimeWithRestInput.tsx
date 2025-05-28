@@ -36,7 +36,7 @@ const WorkDayTimeWithRestInput = <
       render={({ field: { value, onChange } }) => (
         <>
           {description && (
-            <p className="body-3 text-text-alternative px-1 pb-2">
+            <p className="caption-12-regular text-text-alternative px-1 pb-2">
               {description}
             </p>
           )}
@@ -49,7 +49,7 @@ const WorkDayTimeWithRestInput = <
                   className="flex-shrink-0"
                   style={{ width: '124px' }}
                 >
-                  <div className="w-full h-6 flex items-center justify-center px-3 py-1 bg-primary-normal button-2 rounded-[1.125rem] whitespace-nowrap">
+                  <div className="w-full h-6 flex items-center justify-center px-3 py-1 bg-primary-normal button-14-semibold rounded-[1.125rem] whitespace-nowrap">
                     {workDayTimeToString(workdaytime)}
                   </div>
                 </div>
@@ -57,7 +57,7 @@ const WorkDayTimeWithRestInput = <
             </div>
           )}
           <button
-            className="w-full flex gap-2 items-center justify-center text-left body-2 border rounded-xl shadow-sm border-border-alternative [--input-color:text-alternative] bg-white py-[10px] pl-4 pr-[14px] cursor-pointer"
+            className="w-full flex gap-2 items-center justify-center text-left body-14-regular border rounded-xl shadow-sm border-border-alternative [--input-color:text-alternative] bg-white py-[10px] pl-4 pr-[14px] cursor-pointer"
             onClick={() => setIsModal(true)}
           >
             <span className="text-text-alternative">

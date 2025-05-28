@@ -29,11 +29,11 @@ const ApplicationDetailStepBarLayout = ({
       )}
       <div>
         <h5
-          className={`${step >= currentStep ? 'text-text-normal' : 'text-text-alternative'} head-3`}
+          className={`${step >= currentStep ? 'text-text-normal' : 'text-text-alternative'} heading-18-semibold`}
         >
           {title}
         </h5>
-        <p className="body-3 text-text-alternative">{explain}</p>
+        <p className="caption-12-regular text-text-alternative">{explain}</p>
       </div>
     </div>
   );

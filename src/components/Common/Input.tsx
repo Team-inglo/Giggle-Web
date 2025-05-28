@@ -97,10 +97,12 @@ const Input = ({
 
   return (
     <div
-      className={`w-full h-[3.125rem] flex gap-2 whitespace-nowrap items-center justify-between text-left body-2 border rounded-lg ${inputStyler(currentStatus)} bg-white py-3 pl-4 pr-[14px]`}
+      className={`w-full h-[3.125rem] flex gap-2 whitespace-nowrap items-center justify-between text-left body-14-regular border rounded-lg ${inputStyler(currentStatus)} bg-white py-3 pl-4 pr-[14px]`}
     >
       {/* 접두사가 존재할 경우 표시합니다. */}
-      {isPrefix && <div className="w-8 body-2 text-[#464646]">{prefix}</div>}
+      {isPrefix && (
+        <div className="w-8 body-14-regular text-[#464646]">{prefix}</div>
+      )}
       {/* 검색 타입일 경우 검색 아이콘을 표시합니다. */}
       <input
         placeholder={placeholder}
@@ -128,7 +130,7 @@ const Input = ({
       {canDelete && <CloseIcon onClick={onDelete} />}
       {/* 단위가 존재할 경우 표시합니다. */}
       {isUnit && (
-        <div className="text-right w-full body-2 text-[#464646]">
+        <div className="text-right w-full body-14-regular text-[#464646]">
           <div className="w-full">{unit}</div>
         </div>
       )}

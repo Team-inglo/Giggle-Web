@@ -18,8 +18,10 @@ const VerificationSuccessful = ({
   return (
     <div className="flex flex-col w-full h-full justify-center items-center gap-4">
       <SuccessIcon />
-      <div className="head-2 whitespace-pre-line text-center">{title}</div>
-      <p className="body-2 text-text-alternative whitespace-pre-line text-center">
+      <div className="heading-20-semibold whitespace-pre-line text-center">
+        {title}
+      </div>
+      <p className="body-14-regular text-text-alternative whitespace-pre-line text-center">
         {content}
       </p>
       <BottomButtonPanel>

@@ -23,7 +23,7 @@ const EmployerProfileCard = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h1 className="head-2 text-text-strong">
+            <h1 className="heading-20-semibold text-text-strong">
               {profileData.company_name}
             </h1>
           </div>

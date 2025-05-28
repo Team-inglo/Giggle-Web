@@ -19,7 +19,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           hasCheckIcon={false}
           backgroundColor="bg-[#0066FF]/10"
           color="text-text-success"
-          fontStyle="caption"
+          fontStyle="caption-12-regular"
         />
       );
     case APPLICATION_STEP.RESUME_REJECTED:
@@ -31,7 +31,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           hasCheckIcon={false}
           backgroundColor="bg-[#FF5252]/10"
           color="text-text-error"
-          fontStyle="caption"
+          fontStyle="caption-12-regular"
         />
       );
     case APPLICATION_STEP.APPLICATION_REJECTED:
@@ -43,7 +43,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           hasCheckIcon={false}
           backgroundColor="bg-[#FF5252]/10"
           color="text-text-error"
-          fontStyle="caption"
+          fontStyle="caption-12-regular"
         />
       );
     default:
@@ -55,7 +55,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
           hasCheckIcon={false}
           backgroundColor="bg-surface-secondary"
           color="text-text-normal"
-          fontStyle="caption"
+          fontStyle="caption-12-regular"
         />
       );
   }
@@ -88,23 +88,27 @@ const ApplicationPostCard = ({
       {!!postData?.step && (
         <div className="pb-2">{renderStatusBar(postData?.step)}</div>
       )}
-      <h4 className="button-2 text-text-normal">{postData?.company_name}</h4>
-      <h3 className={`pt-1 head-3 text-text-normal line-clamp-2`}>
+      <h4 className="button-14-semibold text-text-normal">
+        {postData?.company_name}
+      </h4>
+      <h3 className={`pt-1 heading-18-semibold text-text-normal line-clamp-2`}>
         {postData?.title}
       </h3>
       <div className="py-2 flex items-center gap-2">
         <LocationIcon />
-        <p className="caption text-text-normal">{postData?.address_name}</p>
+        <p className="caption-12-regular text-text-normal">
+          {postData?.address_name}
+        </p>
       </div>
       <div className="w-full flex justify-between items-center">
-        <p className="body-2 text-text-normal">
-          <span className="mr-[0.125rem] text-text-alternative body-3">
+        <p className="body-14-regular text-text-normal">
+          <span className="mr-[0.125rem] text-text-alternative caption-12-regular">
             {postTranslation.Hr[isEmployerByAccountType(account_type)]}
           </span>
           {formatMoney(postData?.hourly_rate)}
           {postTranslation.KRW[isEmployerByAccountType(account_type)]}
         </p>
-        <p className="caption text-text-alternative">
+        <p className="caption-12-regular text-text-alternative">
           {postData.duration_of_days}{' '}
           {postTranslation.daysAfter[isEmployerByAccountType(account_type)]}
         </p>
@@ -112,13 +116,13 @@ const ApplicationPostCard = ({
       <div className="w-full flex gap-2 pt-5">
         <button
           onClick={handleClickLeftButton}
-          className="flex-1 py-3 px-5 rounded-lg text-text-normal bg-surface-secondary button-2"
+          className="flex-1 py-3 px-5 rounded-lg text-text-normal bg-surface-secondary button-14-semibold"
         >
           {leftButtonText}
         </button>
         <button
           onClick={handleClickRightButton}
-          className="flex-1 py-3 px-5 rounded-lg text-text-normal bg-primary-normal button-2"
+          className="flex-1 py-3 px-5 rounded-lg text-text-normal bg-primary-normal button-14-semibold"
         >
           {rightButtonText}
         </button>

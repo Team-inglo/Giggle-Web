@@ -46,7 +46,7 @@ const AlarmCardList = ({
     return (
       <div className="flex-1 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
-        <p className="body-2 text-[#9397A1] text-center">
+        <p className="body-14-regular text-[#9397A1] text-center">
           {alarmTranslation.emptyAlarm[language]}
         </p>
       </div>
@@ -73,21 +73,23 @@ const AlarmCardList = ({
           <div className="w-full">
             <div className="w-full pb-1 flex items-end gap-1">
               <h5
-                className={`button-1 ${alarmData.is_read ? `text-text-disabled` : `text-text-normal`} `}
+                className={`button-16-semibold ${alarmData.is_read ? `text-text-disabled` : `text-text-normal`} `}
               >
                 {alarmData.title}
               </h5>
               <p
-                className={`caption ${alarmData.is_read ? `text-text-disabled` : `text-text-assistive`}`}
+                className={`caption-12-regular ${alarmData.is_read ? `text-text-disabled` : `text-text-assistive`}`}
               >
                 {alarmData.created_at}
               </p>
               {alarmData.is_read && (
-                <p className="ml-auto body-3 text-text-disabled">읽음</p>
+                <p className="ml-auto caption-12-regular text-text-disabled">
+                  읽음
+                </p>
               )}
             </div>
             <p
-              className={`body-3 ${alarmData.is_read ? `text-text-disabled` : `text-text-alternative`}`}
+              className={`caption-12-regular ${alarmData.is_read ? `text-text-disabled` : `text-text-alternative`}`}
             >
               {alarmData.description}
             </p>

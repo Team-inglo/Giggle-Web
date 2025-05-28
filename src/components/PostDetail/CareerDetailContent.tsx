@@ -22,7 +22,7 @@ const MenuTab = ({
 }) => (
   <button
     onClick={onClick}
-    className={`flex-1 py-[0.875rem] button-2 ${
+    className={`flex-1 py-[0.875rem] button-14-semibold ${
       isSelected
         ? 'text-text-strong border-b-2 border-b-primary-dark'
         : 'text-text-assistive'
@@ -40,8 +40,8 @@ const InfoItem = ({
   value: React.ReactNode;
 }) => (
   <div className="flex gap-3">
-    <h5 className="body-3 text-text-alternative">{label}</h5>
-    <p className="body-3 text-text-strong">{value}</p>
+    <h5 className="caption-12-regular text-text-alternative">{label}</h5>
+    <p className="caption-12-regular text-text-strong">{value}</p>
   </div>
 );
 
@@ -77,7 +77,7 @@ const RecruitmentSection = ({
 
   return (
     <article className="w-full px-4 py-6 bg-surface-base">
-      <h3 className="pb-5 head-3 text-text-strong">
+      <h3 className="pb-5 heading-18-semibold text-text-strong">
         {postTranslation.recruitmentConditions[isEmployer]}
       </h3>
       <div className="flex flex-col gap-2">
@@ -124,11 +124,11 @@ const DescriptionSection = ({
 
   return (
     <article className="w-full px-4 py-6 bg-surface-base">
-      <h3 className="pb-5 head-3 text-text-strong">
+      <h3 className="pb-5 heading-18-semibold text-text-strong">
         {careerDetailTranslation.description[isEmployer]}
       </h3>
       <div className="flex flex-col gap-3 w-full">
-        <p className="text-text-strong body-2 whitespace-pre-wrap break-all">
+        <p className="text-text-strong body-14-regular whitespace-pre-wrap break-all">
           {displayText}
         </p>
 

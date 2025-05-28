@@ -30,7 +30,9 @@ const RadioGroup = <T extends FieldValues = FieldValues>({
   return (
     <>
       {description && (
-        <p className="body-3 text-text-alternative px-1 pb-2">{description}</p>
+        <p className="caption-12-regular text-text-alternative px-1 pb-2">
+          {description}
+        </p>
       )}
       <Controller
         control={control}

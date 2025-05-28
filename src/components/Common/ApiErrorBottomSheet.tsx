@@ -27,8 +27,10 @@ const ApiErrorBottomSheet = ({
       isShowBottomsheet={isShowBottomsheet}
     >
       <div className="w-full pt-2 px-2 pb-6 flex flex-col gap-6 items-center text-center">
-        <h3 className="head-3 text-text-normal">문제가 발생했어요 ! 😢</h3>
-        <p className="body-2 text-text-normal">{errorMessage}</p>
+        <h3 className="heading-18-semibold text-text-normal">
+          문제가 발생했어요 ! 😢
+        </h3>
+        <p className="body-14-regular text-text-normal">{errorMessage}</p>
       </div>
       <div className="w-full pt-3">
         <Button

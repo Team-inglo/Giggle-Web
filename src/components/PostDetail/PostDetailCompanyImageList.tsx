@@ -42,7 +42,7 @@ const PostDetailCompanyImageList = ({
       {isOpen && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center bg-black bg-opacity-90 z-50 overflow-x-scroll no-scrollbar whitespace-nowrap">
           <button
-            className="fixed right-[1rem] top-[1rem] title-1 text-white"
+            className="fixed right-[1rem] top-[1rem] heading-28-semibold text-white"
             onClick={() => setIsOpen(false)}
           >
             <CloseWhiteIcon />

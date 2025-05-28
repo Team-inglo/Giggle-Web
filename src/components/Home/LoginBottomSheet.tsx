@@ -19,10 +19,10 @@ const LoginBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full pt-2 px-2 pb-6 flex flex-col gap-6 items-center text-center">
-        <h3 className="head-3 text-[#252525]">
+        <h3 className="heading-18-semibold text-[#252525]">
           Hold up! Let’s get you signed in 😊
         </h3>
-        <p className="body-2 text-[#252525]">
+        <p className="body-14-regular text-[#252525]">
           Log in is required to use that menu!
         </p>
       </div>

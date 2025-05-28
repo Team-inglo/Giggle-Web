@@ -68,20 +68,22 @@ const WorkDayTimeWithRestBottomSheet = ({
     >
       <div className="w-full">
         <div className="w-full py-[0.75rem] px-[3.125rem] flex flex-col items-center gap-[0.75rem]">
-          <h3 className="head-2 text-[#1E1926]">근로일 및 근로일별 근로시간</h3>
-          <p className="body-3 text-[#656565]">
+          <h3 className="heading-20-semibold text-[#1E1926]">
+            근로일 및 근로일별 근로시간
+          </h3>
+          <p className="caption-12-regular text-[#656565]">
             원하는 근무 시간을 추가해주세요.
           </p>
         </div>
         <div className="w-full mb-[1rem] px-[1.5rem] flex flex-col gap-[0.5rem]">
           <div>
-            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] body-3">
+            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
               근무일자 <span className="text-[#EE4700]">*</span>
             </h5>
             <div className="flex flex-wrap gap-[0.5rem] w-full">
               {Object.keys(DAYS).map((value, index) => (
                 <button
-                  className={`py-[0.375rem] px-[0.875rem] body-3 border border-border-alternative rounded-[1.125rem] ${dayOfWeek.includes(value as DayType) ? 'bg-[#FEF387]' : 'bg-white'}`}
+                  className={`py-[0.375rem] px-[0.875rem] caption-12-regular border border-border-alternative rounded-[1.125rem] ${dayOfWeek.includes(value as DayType) ? 'bg-[#FEF387]' : 'bg-white'}`}
                   key={`${value}_${index}`}
                   onClick={() => onClickDayOfWeek(value as DayType)}
                 >
@@ -91,7 +93,7 @@ const WorkDayTimeWithRestBottomSheet = ({
             </div>
           </div>
           <div>
-            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] body-3">
+            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
               근무시간 <span className="text-[#EE4700]">*</span>
             </h5>
             <div className="flex gap-[0.25rem] w-full ">
@@ -106,7 +108,7 @@ const WorkDayTimeWithRestBottomSheet = ({
             </div>
           </div>
           <div>
-            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] body-3">
+            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
               휴게시간 <span className="text-[#EE4700]">*</span>
             </h5>
             <div className="flex gap-[0.25rem] w-full ">

@@ -53,14 +53,14 @@ const ResumeProfileCard = ({
         <div className="flex-1">
           {/* 이름 */}
           <div className="flex items-center gap-2">
-            <h3 className="head-2 text-text-strong">{name}</h3>
-            <span className="body-3 text-text-alternative">
+            <h3 className="heading-20-semibold text-text-strong">{name}</h3>
+            <span className="caption-12-regular text-text-alternative">
               {formatNationality(nationality)}
             </span>
           </div>
 
           {/* 개인정보 첫 번째 줄 */}
-          <div className="caption text-text-alternative mt-1">
+          <div className="caption-12-regular text-text-alternative mt-1">
             <span>{gender.toLowerCase()}</span>
             {birth && (
               <>
@@ -77,7 +77,7 @@ const ResumeProfileCard = ({
           </div>
 
           {/* 개인정보 두 번째 줄 */}
-          <div className="caption text-text-alternative mt-0.5">
+          <div className="caption-12-regular text-text-alternative mt-0.5">
             {phone && <span>{phone}</span>}
             {phone && email && <span className="mx-1">|</span>}
             {email && <span>{email}</span>}
@@ -87,7 +87,7 @@ const ResumeProfileCard = ({
 
       {/* 프로필 편집 버튼 */}
       <button
-        className="w-full mt-4 py-3 bg-surface-secondary rounded-md text-center button-2 text-text-strong"
+        className="w-full mt-4 py-3 bg-surface-secondary rounded-md text-center button-14-semibold text-text-strong"
         onClick={() => navigate('/profile/edit')}
       >
         Edit Profile
