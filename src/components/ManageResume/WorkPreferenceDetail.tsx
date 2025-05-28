@@ -11,55 +11,53 @@ type WorkPreferenceProps = {
 const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
   const pathname = useLocation().pathname;
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col divide-y divide-neutral-100">
       {/* Preferred Work Area */}
-      <div>
-        <div className="caption-12-regular text-text-assistive mb-2">
-          {profileTranslation.workPreferenceRegion[isEmployer(pathname)]}
-          <div className="flex flex-wrap gap-2">
-            {data.preference_addresses.map((area, idx) => (
-              <span
-                key={idx}
-                className="px-3 py-1 rounded bg-surface-secondary text-text-normal caption-12-regular"
-              >
-                {formatArea(area)}
-              </span>
-            ))}
-          </div>
+      <div className="body-14-medium text-text-strong mb-2">
+        {profileTranslation.workPreferenceRegion[isEmployer(pathname)]}
+        <div className="flex flex-wrap gap-2">
+          {data.preference_addresses.map((area, idx) => (
+            <span
+              key={idx}
+              className="px-1.5 py-0.5 rounded-sm bg-surface-secondary text-text-normal caption-12-regular"
+            >
+              {formatArea(area)}
+            </span>
+          ))}
         </div>
+      </div>
 
-        {/* Preferred Job Type */}
-        <div>
-          <div className="caption-12-regular text-text-assistive mb-2">
-            Preferred Job Type
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {data.employment_types.map((type, idx) => (
-              <span
-                key={idx}
-                className="px-3 py-1 rounded bg-surface-secondary text-text-normal caption-12-regular"
-              >
-                {formatEnumValue(type)}
-              </span>
-            ))}
-          </div>
+      {/* Preferred Job Type */}
+      <div className="flex flex-col gap-3 py-4">
+        <div className="body-14-medium text-text-strong">
+          Preferred Job Type
         </div>
+        <div className="flex flex-wrap gap-2">
+          {data.employment_types.map((type, idx) => (
+            <span
+              key={idx}
+              className="px-1.5 py-0.5 rounded-sm bg-surface-secondary text-text-normal caption-12-regular"
+            >
+              {formatEnumValue(type)}
+            </span>
+          ))}
+        </div>
+      </div>
 
-        {/* Preferred Job Position */}
-        <div>
-          <div className="caption-12-regular text-text-assistive mb-2">
-            Preferred Job Position
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {data.job_categories.map((industry, idx) => (
-              <span
-                key={idx}
-                className="px-3 py-1 rounded bg-surface-secondary text-text-normal caption-12-regular"
-              >
-                {formatEnumValue(industry)}
-              </span>
-            ))}
-          </div>
+      {/* Preferred Job Position */}
+      <div className="flex flex-col gap-3 py-4">
+        <div className="body-14-medium text-text-strong mb-2">
+          Preferred Job Position
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {data.job_categories.map((industry, idx) => (
+            <span
+              key={idx}
+              className="px-1.5 py-0.5  rounded-sm bg-surface-secondary text-text-normal caption-12-regular"
+            >
+              {formatEnumValue(industry)}
+            </span>
+          ))}
         </div>
       </div>
     </div>

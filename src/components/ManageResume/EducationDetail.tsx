@@ -46,11 +46,11 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
             <div>
               {/* 학력 정보 */}
               <div className="flex items-center gap-1 pb-[0.125rem]">
-                <h5 className="button-14-semibold text-text-strong">
+                <h5 className="button-16-semibold text-text-strong">
                   {education.school_name}
                 </h5>
               </div>
-              <p className="pb-2 caption-12-regular text-text-normal">
+              <p className="pb-2 body-14-regular text-text-normal">
                 {education.major}
               </p>
               <div className="flex gap-[0.5rem] caption-12-regular">
