@@ -33,14 +33,20 @@ jobs:
         
       - name: Run tests with detailed reporting
         run: |
-          # JSON 리포트 생성
-          pnpm test --reporter=json --outputFile=test-results.json || echo "Tests failed but continuing"
+          echo "Running tests with JSON reporter..."
           
-          # HTML 커버리지 리포트 생성  
-          pnpm test:coverage:html || echo "Coverage failed but continuing"
+          # 테스트 실행 및 결과 수집 (JSON과 기본 출력 모두 확보)
+          pnpm test --reporter=json > test-results.json 2>&1 || echo "Tests may have failed"
           
-          # 커스텀 테스트 메트릭 수집
-          pnpm test --reporter=verbose > test-output.txt || echo "Verbose test failed but continuing"
+          # JSON 파일이 비어있거나 잘못된 경우를 대비해 기본 테스트도 실행
+          pnpm test --reporter=verbose > test-verbose.txt 2>&1 || echo "Verbose test failed"
+          
+          # 커버리지 실행
+          pnpm test:coverage > coverage-output.txt 2>&1 || echo "Coverage failed"
+          
+          echo "Test execution completed. Checking outputs..."
+          echo "JSON file size: $(wc -c < test-results.json 2>/dev/null || echo '0') bytes"
+          echo "JSON file first 200 chars: $(head -c 200 test-results.json 2>/dev/null || echo 'No JSON file')"
         continue-on-error: true
         
       - name: Parse test results and generate report
@@ -50,68 +56,109 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             
-            let testData = {};
-            let coverageData = {};
+            let summary = {
+              totalTests: 0,
+              passedTests: 0,
+              failedTests: 0,
+              skippedTests: 0,
+              runtime: 0,
+              coverage: {
+                lines: 0,
+                functions: 0,
+                branches: 0,
+                statements: 0
+              },
+              failedTestDetails: []
+            };
             
             try {
-              if (fs.existsSync('./test-results.json')) {
-                const content = fs.readFileSync('./test-results.json', 'utf8');
-                if (content.trim()) {
-                  testData = JSON.parse(content);
-                }
-              }
-              
+              // 커버리지 데이터 파싱
               if (fs.existsSync('./coverage/coverage-summary.json')) {
-                const content = fs.readFileSync('./coverage/coverage-summary.json', 'utf8');
-                if (content.trim()) {
-                  coverageData = JSON.parse(content);
+                try {
+                  const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
+                  if (coverageData.total) {
+                    summary.coverage = {
+                      lines: coverageData.total.lines?.pct || 0,
+                      functions: coverageData.total.functions?.pct || 0,
+                      branches: coverageData.total.branches?.pct || 0,
+                      statements: coverageData.total.statements?.pct || 0
+                    };
+                  }
+                } catch (e) {
+                  console.log('Coverage data parsing failed:', e.message);
                 }
               }
               
-              const testOutput = fs.existsSync('./test-output.txt') 
-                ? fs.readFileSync('./test-output.txt', 'utf8') 
-                : '';
-              
-              // 실패한 테스트 정보 파싱
-              const failedTests = [];
-              if (testData.testResults) {
-                testData.testResults.forEach(file => {
-                  if (file.assertionResults) {
-                    file.assertionResults.forEach(test => {
-                      if (test.status === 'failed') {
-                        failedTests.push({
-                          file: file.name,
-                          test: test.title,
-                          error: test.failureMessages?.[0] || 'Unknown error'
-                        });
-                      }
-                    });
+              // JSON 결과 파싱 시도
+              if (fs.existsSync('./test-results.json')) {
+                try {
+                  const content = fs.readFileSync('./test-results.json', 'utf8').trim();
+                  console.log('JSON content length:', content.length);
+                  console.log('JSON content preview:', content.substring(0, 300));
+                  
+                  if (content && content.startsWith('{')) {
+                    const testData = JSON.parse(content);
+                    console.log('Parsed JSON keys:', Object.keys(testData));
+                    
+                    // vitest JSON 형식 처리
+                    if (testData.testResults && Array.isArray(testData.testResults)) {
+                      testData.testResults.forEach(file => {
+                        if (file.assertionResults && Array.isArray(file.assertionResults)) {
+                          file.assertionResults.forEach(test => {
+                            summary.totalTests++;
+                            if (test.status === 'passed') {
+                              summary.passedTests++;
+                            } else if (test.status === 'failed') {
+                              summary.failedTests++;
+                              summary.failedTestDetails.push({
+                                file: file.name,
+                                test: test.title,
+                                error: test.failureMessages?.[0] || 'Unknown error'
+                              });
+                            } else {
+                              summary.skippedTests++;
+                            }
+                          });
+                        }
+                      });
+                    } else if (testData.numTotalTests !== undefined) {
+                      // Jest 스타일
+                      summary.totalTests = testData.numTotalTests || 0;
+                      summary.passedTests = testData.numPassedTests || 0;
+                      summary.failedTests = testData.numFailedTests || 0;
+                      summary.skippedTests = testData.numPendingTests || 0;
+                    }
                   }
-                });
+                } catch (e) {
+                  console.log('JSON parsing failed:', e.message);
+                }
               }
               
-              const summary = {
-                totalTests: testData.numTotalTests || 0,
-                passedTests: testData.numPassedTests || 0,
-                failedTests: testData.numFailedTests || 0,
-                skippedTests: testData.numPendingTests || 0,
-                runtime: testData.testResults?.reduce((acc, result) => acc + (result.perfStats?.runtime || 0), 0) || 0,
-                coverage: {
-                  lines: coverageData.total?.lines?.pct || 0,
-                  functions: coverageData.total?.functions?.pct || 0,
-                  branches: coverageData.total?.branches?.pct || 0,
-                  statements: coverageData.total?.statements?.pct || 0
-                },
-                failedTests: failedTests
-              };
+              // JSON 파싱이 실패했거나 결과가 없으면 verbose 출력에서 파싱
+              if (summary.totalTests === 0 && fs.existsSync('./test-verbose.txt')) {
+                const verboseContent = fs.readFileSync('./test-verbose.txt', 'utf8');
+                console.log('Verbose content preview:', verboseContent.substring(0, 500));
+                
+                // 간단한 패턴 매칭으로 결과 추출
+                const passedMatch = verboseContent.match(/(\d+) passed/);
+                const failedMatch = verboseContent.match(/(\d+) failed/);
+                const totalMatch = verboseContent.match(/Tests\s+(\d+) passed/);
+                
+                if (passedMatch) summary.passedTests = parseInt(passedMatch[1]);
+                if (failedMatch) summary.failedTests = parseInt(failedMatch[1]);
+                summary.totalTests = summary.passedTests + summary.failedTests + summary.skippedTests;
+                
+                console.log('Extracted from verbose - Total:', summary.totalTests, 'Passed:', summary.passedTests, 'Failed:', summary.failedTests);
+              }
               
-              // 성능 기준 확인
+              console.log('Final summary:', JSON.stringify(summary, null, 2));
+              
+              // 성능 및 커버리지 체크
               const performanceWarnings = [];
               if (summary.runtime > 30000) {
                 performanceWarnings.push('⚠️ Tests took longer than 30 seconds');
               }
               
-              // 커버리지 경고
               const coverageWarnings = [];
               Object.entries(summary.coverage).forEach(([metric, value]) => {
                 if (value < 80) {
@@ -119,13 +166,15 @@ jobs:
                 }
               });
               
-              const emoji = summary.failedTests === 0 ? '✅' : '❌';
-              const testStatus = summary.failedTests === 0 ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
+              const emoji = summary.failedTests === 0 && summary.totalTests > 0 ? '✅' : 
+                           summary.totalTests === 0 ? '⚠️' : '❌';
+              const testStatus = summary.totalTests === 0 ? 'NO TESTS FOUND' :
+                                summary.failedTests === 0 ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
               
               let comment = \`## \${emoji} Vitest Test Results
               
               **Status:** \${testStatus}
-              **Runtime:** \${(summary.runtime / 1000).toFixed(2)}s
+              \${summary.runtime > 0 ? \`**Runtime:** \${(summary.runtime / 1000).toFixed(2)}s\` : ''}
               
               ### 📊 Test Summary
               \\\`\\\`\\\`
@@ -134,7 +183,10 @@ jobs:
               Failed:  \${summary.failedTests} tests
               Skipped: \${summary.skippedTests} tests
               \\\`\\\`\\\`
+              \`;
               
+              if (summary.coverage.lines > 0 || summary.coverage.functions > 0) {
+                comment += \`
               ### 📈 Coverage Report
               | Metric | Coverage | Status |
               |--------|----------|--------|
@@ -143,6 +195,7 @@ jobs:
               | Branches | \${summary.coverage.branches}% | \${summary.coverage.branches >= 80 ? '✅' : '❌'} |
               | Statements | \${summary.coverage.statements}% | \${summary.coverage.statements >= 80 ? '✅' : '❌'} |
               \`;
+              }
               
               if (performanceWarnings.length > 0) {
                 comment += \`\\n### ⏱️ Performance Warnings\\n\` + performanceWarnings.join('\\n') + '\\n';
@@ -152,51 +205,61 @@ jobs:
                 comment += \`\\n### 📉 Coverage Warnings\\n\` + coverageWarnings.join('\\n') + '\\n';
               }
               
-              if (summary.failedTests.length > 0) {
+              if (summary.failedTestDetails.length > 0) {
                 comment += \`\\n### ❌ Failed Tests\\n\`;
-                summary.failedTests.slice(0, 5).forEach(test => {
+                summary.failedTestDetails.slice(0, 5).forEach(test => {
                   comment += \`\\n**\${test.file}**\\n\`;
                   comment += \`- \${test.test}\\n\`;
                   comment += \`\\\`\\\`\\\`\\n\${test.error.slice(0, 500)}...\\\`\\\`\\\`\\n\`;
                 });
                 
-                if (summary.failedTests.length > 5) {
-                  comment += \`\\n*... and \${summary.failedTests.length - 5} more failures*\\n\`;
+                if (summary.failedTestDetails.length > 5) {
+                  comment += \`\\n*... and \${summary.failedTestDetails.length - 5} more failures*\\n\`;
                 }
+              } else if (summary.totalTests > 0 && summary.failedTests === 0) {
+                comment += \`\\n### 🎉 All tests passed!\\nGreat job! All your tests are working correctly.\\n\`;
+              } else if (summary.totalTests === 0) {
+                comment += \`\\n### ⚠️ No tests found\\nMake sure your test files are properly configured and located in the right directories.\\n\`;
               }
               
-              comment += \`\\n### 🔗 Links\\n\`;
-              if (fs.existsSync('./coverage/index.html')) {
-                comment += \`- [📊 Detailed Coverage Report](https://\${process.env.GITHUB_REPOSITORY.replace('/', '.github.io/')}/coverage/pr-\${process.env.GITHUB_REF_NAME})\\n\`;
-              }
-              comment += \`- [🧪 Run Vitest UI locally](\\\`pnpm test:ui\\\`)\\n\`;
-              comment += \`- [⚙️ Workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID})\\n\`;
+              comment += \`\\n### 🔗 Quick Actions\\n\`;
+              comment += \`- [🧪 Run tests locally](\\\`pnpm test\\\`)\\n\`;
+              comment += \`- [📊 Run coverage locally](\\\`pnpm test:coverage\\\`)\\n\`;
+              comment += \`- [🎨 Open Vitest UI](\\\`pnpm test:ui\\\`)\\n\`;
+              comment += \`- [⚙️ View workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID})\\n\`;
               
-              comment += \`\\n---\\n*🤖 Auto-generated by GitHub Actions*\`;
+              comment += \`\\n---\\n*🤖 Generated by GitHub Actions at \${new Date().toISOString()}*\`;
               
               fs.writeFileSync('test-comment.md', comment);
               
-              // GitHub Actions 출력으로 결과 전달 (최신 문법 사용)
+              // GitHub Actions 출력
               const output = process.env.GITHUB_OUTPUT;
               if (output) {
-                fs.appendFileSync(output, \`test_status=\${summary.failedTests === 0 ? 'success' : 'failure'}\\n\`);
+                fs.appendFileSync(output, \`test_status=\${summary.failedTests === 0 && summary.totalTests > 0 ? 'success' : summary.totalTests === 0 ? 'neutral' : 'failure'}\\n\`);
                 fs.appendFileSync(output, \`total_tests=\${summary.totalTests}\\n\`);
                 fs.appendFileSync(output, \`failed_tests=\${summary.failedTests}\\n\`);
               }
               
             } catch (error) {
-              console.error('Error generating test report:', error);
-              const fallbackComment = \`## ⚠️ Test Results Error
+              console.error('Error in test parsing:', error);
+              console.error('Stack trace:', error.stack);
               
-              Unable to parse test results. This might be due to test failures or configuration issues.
+              const fallbackComment = \`## ⚠️ Test Parsing Error
               
-              **Please check:**
-              - [📋 Workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID})
+              Could not parse test results properly. The tests may have run but results couldn't be processed.
+              
+              **Debugging info:**
+              - Error: \${error.message}
+              - Check the [workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID}) for details
+              
+              **Next steps:**
               - Run tests locally: \\\`pnpm test\\\`
-              - Check test configuration in \\\`vite.config.ts\\\`
+              - Check vitest configuration in \\\`vite.config.ts\\\`
+              - Verify test files are in the correct location
               
               ---
-              *🤖 Auto-generated by GitHub Actions*\`;
+              *🤖 Generated by GitHub Actions*\`;
+              
               fs.writeFileSync('test-comment.md', fallbackComment);
               
               const output = process.env.GITHUB_OUTPUT;
@@ -205,15 +268,6 @@ jobs:
               }
             }
           "
-        
-      - name: Upload coverage to GitHub Pages
-        if: github.event_name == 'pull_request' && hashFiles('coverage/index.html') != ''
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./coverage
-          destination_dir: coverage/pr-${{ github.event.number }}
-        continue-on-error: true
         
       - name: Comment PR with results
         uses: actions/github-script@v7
