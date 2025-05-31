@@ -119,11 +119,19 @@ jobs:
                 console.log('\\n--- End of preview ---\\n');
                 
                 // vitest 결과 패턴 매칭
-                const testFilesMatch = verboseContent.match(/Test Files\\s+(\\d+)\\s+passed/);
-                const testsMatch = verboseContent.match(/Tests\\s+(\\d+)\\s+passed/);
+                console.log('🔍 Attempting to match test results patterns...');
+                const testFilesMatch = verboseContent.match(/Test Files\\s+(\\d+)\\s+passed\\s*\\((\\d+)\\)/);
+                const testsMatch = verboseContent.match(/Tests\\s+(\\d+)\\s+passed\\s*\\((\\d+)\\)/);
                 const failedTestsMatch = verboseContent.match(/(\\d+)\\s+failed/);
                 const skippedTestsMatch = verboseContent.match(/(\\d+)\\s+skipped/);
-                const durationMatch = verboseContent.match(/Duration\\s+([\\d.]+)([ms]+)/);
+                const durationMatch = verboseContent.match(/Duration\\s+([\\d.]+)(\\w+)/);
+                
+                console.log('📋 Regex match results:');
+                console.log('  testFilesMatch:', testFilesMatch);
+                console.log('  testsMatch:', testsMatch);
+                console.log('  failedTestsMatch:', failedTestsMatch);
+                console.log('  skippedTestsMatch:', skippedTestsMatch);
+                console.log('  durationMatch:', durationMatch);
                 
                 if (testFilesMatch) {
                   summary.testFiles = parseInt(testFilesMatch[1]);
@@ -155,21 +163,24 @@ jobs:
                   console.log(\`⏱️ Duration: \${duration}\${unit}\`);
                 }
                 
-                // 개별 테스트 파일에서 각각의 통과/실패 수 추출
+                // 개별 테스트 파일에서 각각의 통과/실패 수 추출 (백업 방법)
                 const testFileResults = verboseContent.match(/✓\\s+src\\/.+?\\((\\d+)\\s+tests?\\)/g);
-                if (testFileResults) {
+                if (testFileResults && summary.totalTests === 0) {
                   let totalFromFiles = 0;
+                  console.log('🔍 Parsing individual test file results...');
                   testFileResults.forEach(result => {
                     const match = result.match(/\\((\\d+)\\s+tests?\\)/);
                     if (match) {
-                      totalFromFiles += parseInt(match[1]);
+                      const count = parseInt(match[1]);
+                      totalFromFiles += count;
+                      console.log(\`  Found \${count} tests in file\`);
                     }
                   });
                   
-                  if (totalFromFiles > summary.totalTests) {
-                    console.log(\`🔄 Updating total tests from file details: \${totalFromFiles}\`);
+                  if (totalFromFiles > 0) {
+                    console.log(\`🔄 Using file-based parsing: \${totalFromFiles} total tests\`);
                     summary.totalTests = totalFromFiles;
-                    summary.passedTests = totalFromFiles - summary.failedTests - summary.skippedTests;
+                    summary.passedTests = totalFromFiles; // 실패한 테스트가 없으면 모두 통과
                   }
                 }
               }
