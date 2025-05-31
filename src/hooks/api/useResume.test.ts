@@ -1,9 +1,9 @@
-import React from 'react';
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { usePatchResumePublic } from '@/hooks/api/useResume';
 import { patchResumePublic } from '@/api/resumes';
+import { createElement, ReactNode } from 'react';
 
 // API 모킹
 vi.mock('@/api/resumes', () => ({
@@ -22,8 +22,8 @@ const createQueryClient = () =>
 // QueryClient Provider 래퍼
 const createWrapper = () => {
   const queryClient = createQueryClient();
-  return ({ children }: { children: React.ReactNode }) =>
-    React.createElement(QueryClientProvider, { client: queryClient }, children);
+  return ({ children }: { children: ReactNode }) =>
+    createElement(QueryClientProvider, { client: queryClient }, children);
 };
 
 describe('useResume Hooks', () => {
@@ -109,12 +109,8 @@ describe('useResume Hooks', () => {
       const queryClient = createQueryClient();
       const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
-      const wrapper = ({ children }: { children: React.ReactNode }) =>
-        React.createElement(
-          QueryClientProvider,
-          { client: queryClient },
-          children,
-        );
+      const wrapper = ({ children }: { children: ReactNode }) =>
+        createElement(QueryClientProvider, { client: queryClient }, children);
 
       const { result } = renderHook(() => usePatchResumePublic(), { wrapper });
 
