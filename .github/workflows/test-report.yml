@@ -143,6 +143,12 @@ jobs:
                   console.log(\`📄 Content preview (first 1200 chars):\\n$\{content.substring(0, 1200)}\`);
                   console.log('\\n--- End of preview ---\\n');
                   
+                  // CI 환경이므로 전체 내용도 출력해서 디버깅
+                  if (content.length <= 3000) {
+                    console.log(\`📄 FULL CONTENT of $\{fileName}:\\n$\{content}\`);
+                    console.log('\\n--- End of full content ---\\n');
+                  }
+                  
                   // 다양한 vitest 결과 패턴 시도
                   console.log(\`🔍 Attempting to match patterns in $\{fileName}...\`);
                   
@@ -259,7 +265,50 @@ jobs:
                   const testFilesContent = fs.readFileSync('./test-files.txt', 'utf8');
                   const testFileLines = testFilesContent.trim().split('\\n').filter(line => line.trim());
                   summary.testFiles = testFileLines.length;
-                  console.log(\`📁 Fallback: Found $\{summary.testFiles} test files\`);
+                  console.log(\`📁 Fallback: Found \${summary.testFiles} test files\`);
+                }
+                
+                // CI 환경에서 다른 패턴들 시도 - 더 관대한 매칭
+                console.log('🔍 Trying more flexible patterns for CI environment...');
+                
+                for (const fileName of outputFiles) {
+                  if (fs.existsSync(\`./$\{fileName}\`)) {
+                    const content = fs.readFileSync(\`./$\{fileName}\`, 'utf8');
+                    console.log(\`\\n🔍 Analyzing $\{fileName} for CI patterns...\`);
+                    
+                    // CI 환경에서 보다 관대한 패턴들
+                    const allNumbers = content.match(/(\\d+)/g);
+                    const testFileMatches = content.match(/src\\/.*?\\.test\\./g);
+                    const runLines = content.split('\\n').filter(line => line.includes('✓') || line.includes('passed') || line.includes('tests'));
+                    
+                    console.log(\`📊 Analysis for $\{fileName}:\`);
+                    console.log('  All numbers found:', allNumbers?.slice(0, 20)); // 처음 20개만
+                    console.log('  Test file patterns:', testFileMatches?.length || 0);
+                    console.log('  Run lines:', runLines.slice(0, 10)); // 처음 10개만
+                    
+                    // 마지막으로 테스트 파일들로부터 강제로 파싱 시도
+                    const testFilePattern = /✓\\s+src\\/.+?\\(([0-9]+)\\s+tests?\\)/g;
+                    let match;
+                    let totalCount = 0;
+                    let fileCount = 0;
+                    
+                    console.log('🔍 Force parsing individual test files...');
+                    while ((match = testFilePattern.exec(content)) !== null) {
+                      const count = parseInt(match[1]);
+                      totalCount += count;
+                      fileCount++;
+                      console.log(\`  File $\{fileCount}: $\{count} tests from match: $\{match[0]}\`);
+                    }
+                    
+                    if (totalCount > 0) {
+                      console.log(\`🎯 Force parsing successful: $\{totalCount} tests across $\{fileCount} files\`);
+                      summary.totalTests = totalCount;
+                      summary.passedTests = totalCount;
+                      summary.testFiles = fileCount;
+                      parseSuccess = true;
+                      break;
+                    }
+                  }
                 }
               }
               
