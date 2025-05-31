@@ -1,0 +1,249 @@
+name: 📊 Advanced Test Report
+
+on:
+  pull_request:
+    branches: [main, dev, develop]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  test-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Run tests with detailed reporting
+        run: |
+          # JSON 리포트 생성
+          pnpm test --reporter=json --outputFile=test-results.json
+          
+          # HTML 커버리지 리포트 생성  
+          pnpm test:coverage:html
+          
+          # 커스텀 테스트 메트릭 수집
+          pnpm test --reporter=verbose > test-output.txt || true
+        continue-on-error: true
+        
+      - name: Parse test results and generate report
+        id: test_results
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            
+            let testData = {};
+            let coverageData = {};
+            
+            try {
+              if (fs.existsSync('./test-results.json')) {
+                testData = JSON.parse(fs.readFileSync('./test-results.json', 'utf8'));
+              }
+              
+              if (fs.existsSync('./coverage/coverage-summary.json')) {
+                coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
+              }
+              
+              const testOutput = fs.existsSync('./test-output.txt') 
+                ? fs.readFileSync('./test-output.txt', 'utf8') 
+                : '';
+              
+              // 실패한 테스트 정보 파싱
+              const failedTests = [];
+              if (testData.testResults) {
+                testData.testResults.forEach(file => {
+                  if (file.assertionResults) {
+                    file.assertionResults.forEach(test => {
+                      if (test.status === 'failed') {
+                        failedTests.push({
+                          file: file.name,
+                          test: test.title,
+                          error: test.failureMessages?.[0] || 'Unknown error'
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+              
+              const summary = {
+                totalTests: testData.numTotalTests || 0,
+                passedTests: testData.numPassedTests || 0,
+                failedTests: testData.numFailedTests || 0,
+                skippedTests: testData.numPendingTests || 0,
+                runtime: testData.testResults?.reduce((acc, result) => acc + (result.perfStats?.runtime || 0), 0) || 0,
+                coverage: {
+                  lines: coverageData.total?.lines?.pct || 0,
+                  functions: coverageData.total?.functions?.pct || 0,
+                  branches: coverageData.total?.branches?.pct || 0,
+                  statements: coverageData.total?.statements?.pct || 0
+                },
+                failedTests: failedTests
+              };
+              
+              // 성능 기준 확인
+              const performanceWarnings = [];
+              if (summary.runtime > 30000) {
+                performanceWarnings.push('⚠️ Tests took longer than 30 seconds');
+              }
+              
+              // 커버리지 경고
+              const coverageWarnings = [];
+              Object.entries(summary.coverage).forEach(([metric, value]) => {
+                if (value < 80) {
+                  coverageWarnings.push(\`⚠️ \${metric.charAt(0).toUpperCase() + metric.slice(1)} coverage is below 80% (\${value}%)\`);
+                }
+              });
+              
+              const emoji = summary.failedTests === 0 ? '✅' : '❌';
+              const testStatus = summary.failedTests === 0 ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
+              
+              let comment = \`## \${emoji} Vitest Test Results
+              
+              **Status:** \${testStatus}
+              **Runtime:** \${(summary.runtime / 1000).toFixed(2)}s
+              
+              ### 📊 Test Summary
+              \\\`\\\`\\\`
+              Total:   \${summary.totalTests} tests
+              Passed:  \${summary.passedTests} tests
+              Failed:  \${summary.failedTests} tests
+              Skipped: \${summary.skippedTests} tests
+              \\\`\\\`\\\`
+              
+              ### 📈 Coverage Report
+              | Metric | Coverage | Status |
+              |--------|----------|--------|
+              | Lines | \${summary.coverage.lines}% | \${summary.coverage.lines >= 80 ? '✅' : '❌'} |
+              | Functions | \${summary.coverage.functions}% | \${summary.coverage.functions >= 80 ? '✅' : '❌'} |
+              | Branches | \${summary.coverage.branches}% | \${summary.coverage.branches >= 80 ? '✅' : '❌'} |
+              | Statements | \${summary.coverage.statements}% | \${summary.coverage.statements >= 80 ? '✅' : '❌'} |
+              \`;
+              
+              if (performanceWarnings.length > 0) {
+                comment += \`\\n### ⏱️ Performance Warnings\\n\` + performanceWarnings.join('\\n') + '\\n';
+              }
+              
+              if (coverageWarnings.length > 0) {
+                comment += \`\\n### 📉 Coverage Warnings\\n\` + coverageWarnings.join('\\n') + '\\n';
+              }
+              
+              if (summary.failedTests.length > 0) {
+                comment += \`\\n### ❌ Failed Tests\\n\`;
+                summary.failedTests.slice(0, 5).forEach(test => {
+                  comment += \`\\n**\${test.file}**\\n\`;
+                  comment += \`- \${test.test}\\n\`;
+                  comment += \`\\\`\\\`\\\`\\n\${test.error.slice(0, 500)}...\\\`\\\`\\\`\\n\`;
+                });
+                
+                if (summary.failedTests.length > 5) {
+                  comment += \`\\n*... and \${summary.failedTests.length - 5} more failures*\\n\`;
+                }
+              }
+              
+              comment += \`\\n### 🔗 Links\\n\`;
+              comment += \`- [Detailed Coverage Report](https://\${process.env.GITHUB_REPOSITORY.replace('/', '.github.io/')}/)\\n\`;
+              comment += \`- [Vitest UI (run locally)](https://github.com/\${process.env.GITHUB_REPOSITORY}/blob/\${process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME}/README.md#testing)\\n\`;
+              
+              comment += \`\\n---\\n*Generated by GitHub Actions • [Workflow run](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID})*\`;
+              
+              fs.writeFileSync('test-comment.md', comment);
+              
+              // GitHub Actions 출력으로 결과 전달
+              console.log(\`::set-output name=test_status::\${summary.failedTests === 0 ? 'success' : 'failure'}\`);
+              console.log(\`::set-output name=total_tests::\${summary.totalTests}\`);
+              console.log(\`::set-output name=failed_tests::\${summary.failedTests}\`);
+              
+            } catch (error) {
+              console.error('Error generating test report:', error);
+              const fallbackComment = \`## ⚠️ Test Results
+              
+              Unable to parse test results. Please check the [workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID}).
+              
+              ---
+              *Generated by GitHub Actions*\`;
+              fs.writeFileSync('test-comment.md', fallbackComment);
+              console.log('::set-output name=test_status::error');
+            }
+          "
+        
+      - name: Upload coverage to GitHub Pages
+        if: github.event_name == 'pull_request'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage
+          destination_dir: coverage/pr-${{ github.event.number }}
+          
+      - name: Comment PR with results
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('test-comment.md', 'utf8');
+            
+            // 기존 테스트 리포트 댓글 찾기
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.includes('Vitest Test Results')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+        
+      - name: Set PR status check
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const testStatus = '${{ steps.test_results.outputs.test_status }}';
+            const state = testStatus === 'success' ? 'success' : 'failure';
+            const description = testStatus === 'success' 
+              ? 'All tests passed!' 
+              : 'Some tests failed';
+            
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.pull_request.head.sha,
+              state: state,
+              description: description,
+              context: 'vitest/test-results'
+            }); 
