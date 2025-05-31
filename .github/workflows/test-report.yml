@@ -47,30 +47,45 @@ jobs:
           echo "  pnpm version: $(pnpm --version)"
           echo "  Working directory: $(pwd)"
           
-          # JSON 리포터로 테스트 실행
-          echo "🏃 Running tests with JSON reporter..."
-          pnpm test --reporter=json > test-results.json 2>&1
-          TEST_EXIT_CODE=$?
-          echo "📋 Test exit code: $TEST_EXIT_CODE"
+          # 기본 테스트 실행
+          echo "🏃 Running tests with default output (no redirection)..."
+          pnpm test || echo "Test execution completed with exit code: $?"
           
-          # 다양한 리포터로 테스트 실행 (더 자세한 출력)
-          echo "🏃 Running tests with verbose reporter..."
-          pnpm test --reporter=verbose > test-verbose.txt 2>&1
-          VERBOSE_EXIT_CODE=$?
-          echo "📋 Verbose test exit code: $VERBOSE_EXIT_CODE"
+          # 출력을 파일로 저장
+          echo "🏃 Running tests and saving to file..."
+          timeout 300 pnpm test > test-output-safe.txt 2>&1 || echo "Test completed or timed out"
           
-          # 기본 리포터로도 테스트 실행
-          echo "🏃 Running tests with default reporter..."
-          pnpm test > test-default.txt 2>&1
-          DEFAULT_EXIT_CODE=$?
-          echo "📋 Default test exit code: $DEFAULT_EXIT_CODE"
+          # vitest가 완료될 때까지 대기
+          sleep 2
+          
+          # 다른 리포터들도 시도
+          echo "🏃 Running with verbose reporter..."
+          timeout 300 pnpm test --reporter=verbose > test-verbose-safe.txt 2>&1 || echo "Verbose test completed"
+          
+          # 출력 파일들 확인
+          echo "📁 Checking all output files..."
+          for file in test-output-safe.txt test-verbose-safe.txt; do
+            if [ -f "$file" ]; then
+              echo "✅ $file: $(wc -c < "$file") bytes, $(wc -l < "$file") lines"
+              echo "📄 Last 10 lines of $file:"
+              tail -10 "$file" || echo "Could not read file"
+            else
+              echo "❌ $file: Not found"
+            fi
+          done
+          
+          # 직접 테스트 실행해서 라이브 출력 확인
+          echo "🏃 Final test run with live output:"
+          pnpm test --reporter=default 2>&1 | tee test-live-output.txt
+          
+          echo "📄 Live output file size: $(wc -c < test-live-output.txt 2>/dev/null || echo '0') bytes"
           
           # 커버리지 실행 (별도로)
           echo "📊 Running coverage..."
           pnpm test:coverage > coverage-output.txt 2>&1 || echo "Coverage failed"
           
           echo "📁 Checking all output files..."
-          for file in test-results.json test-verbose.txt test-default.txt coverage-output.txt; do
+          for file in test-output-safe.txt test-verbose-safe.txt coverage-output.txt; do
             if [ -f "$file" ]; then
               echo "✅ $file: $(wc -c < "$file") bytes"
             else
@@ -79,13 +94,13 @@ jobs:
           done
           
           echo "📄 JSON file content (first 500 chars):"
-          head -c 500 test-results.json 2>/dev/null || echo "No JSON file"
+          head -c 500 test-output-safe.txt 2>/dev/null || echo "No JSON file"
           
           echo "📄 Verbose file content (first 1000 chars):"
-          head -c 1000 test-verbose.txt 2>/dev/null || echo "No verbose file"
+          head -c 1000 test-verbose-safe.txt 2>/dev/null || echo "No verbose file"
           
           echo "📄 Default file content (first 1000 chars):"
-          head -c 1000 test-default.txt 2>/dev/null || echo "No default file"
+          head -c 1000 test-output-safe.txt 2>/dev/null || echo "No default file"
         continue-on-error: true
         
       - name: Parse test results and generate report
@@ -133,7 +148,7 @@ jobs:
               }
               
               // 여러 출력 파일을 시도하여 파싱
-              const outputFiles = ['test-default.txt', 'test-verbose.txt', 'coverage-output.txt'];
+              const outputFiles = ['test-output-safe.txt', 'test-verbose-safe.txt'];
               let parseSuccess = false;
               
               for (const fileName of outputFiles) {
@@ -313,9 +328,9 @@ jobs:
               }
               
               // JSON 결과도 시도 (추가 정보 확인용)
-              if (fs.existsSync('./test-results.json')) {
+              if (fs.existsSync('./test-output-safe.txt')) {
                 try {
-                  const content = fs.readFileSync('./test-results.json', 'utf8').trim();
+                  const content = fs.readFileSync('./test-output-safe.txt', 'utf8').trim();
                   console.log('🔍 JSON content length:', content.length);
                   console.log('🔍 JSON content start:', content.substring(0, 300));
                   
