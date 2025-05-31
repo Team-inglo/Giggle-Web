@@ -129,6 +129,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
+            
+            if (!fs.existsSync('test-comment.md')) {
+              console.log('No test comment file found, skipping PR comment');
+              return;
+            }
+            
             const comment = fs.readFileSync('test-comment.md', 'utf8');
             
             // 기존 봇 댓글 찾기
@@ -143,22 +149,29 @@ jobs:
               comment.body.includes('Test Results')
             );
             
-            if (botComment) {
-              // 기존 댓글 업데이트
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: comment
-              });
-            } else {
-              // 새 댓글 생성
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: comment
-              });
+            try {
+              if (botComment) {
+                // 기존 댓글 업데이트
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: botComment.id,
+                  body: comment
+                });
+                console.log('Updated existing PR comment');
+              } else {
+                // 새 댓글 생성
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: comment
+                });
+                console.log('Created new PR comment');
+              }
+            } catch (error) {
+              console.error('Failed to update PR comment:', error.message);
+              // 댓글 실패해도 워크플로우는 계속 진행
             }
         
       - name: Upload coverage reports to Codecov

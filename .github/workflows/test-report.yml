@@ -250,23 +250,47 @@ jobs:
                 body: comment
               });
             }
-        
-      - name: Set PR status check
+            
+      - name: Create Check Run
         uses: actions/github-script@v7
+        if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const testStatus = '${{ steps.test_results.outputs.test_status }}';
-            const state = testStatus === 'success' ? 'success' : 'failure';
-            const description = testStatus === 'success' 
-              ? 'All tests passed!' 
-              : 'Some tests failed';
+            const totalTests = '${{ steps.test_results.outputs.total_tests }}' || '0';
+            const failedTests = '${{ steps.test_results.outputs.failed_tests }}' || '0';
             
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.pull_request.head.sha,
-              state: state,
-              description: description,
-              context: 'vitest/test-results'
-            }); 
+            const conclusion = testStatus === 'success' ? 'success' : 
+                             testStatus === 'error' ? 'neutral' : 'failure';
+            
+            const title = testStatus === 'success' 
+              ? `✅ All ${totalTests} tests passed!`
+              : testStatus === 'error'
+              ? '⚠️ Test execution error'
+              : `❌ ${failedTests}/${totalTests} tests failed`;
+            
+            const summary = testStatus === 'success' 
+              ? `🎉 All ${totalTests} tests are passing! Great job!`
+              : testStatus === 'error'
+              ? '⚠️ Unable to execute tests properly. Check the workflow logs for details.'
+              : `📊 **Test Results Summary**\n- Total: ${totalTests} tests\n- Failed: ${failedTests} tests\n- Check the PR comment for detailed results.`;
+            
+            try {
+              await github.rest.checks.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'Vitest Test Results',
+                head_sha: context.payload.pull_request.head.sha,
+                status: 'completed',
+                conclusion: conclusion,
+                output: {
+                  title: title,
+                  summary: summary,
+                  text: 'See the PR comment for detailed test results and coverage information.'
+                }
+              });
+            } catch (error) {
+              console.log('Could not create check run:', error.message);
+              // 체크 실행 생성에 실패해도 워크플로우는 계속 진행
+            } 
