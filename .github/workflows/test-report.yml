@@ -60,14 +60,83 @@ jobs:
           echo "$TEST_OUTPUT"
           
           # 출력에서 직접 정보 추출
-          TEST_FILES=$(echo "$TEST_OUTPUT" | grep -o "Test Files[[:space:]]*[0-9]*" | grep -o "[0-9]*" || echo "0")
-          TOTAL_TESTS=$(echo "$TEST_OUTPUT" | grep -o "Tests[[:space:]]*[0-9]*[[:space:]]*passed" | grep -o "[0-9]*" | head -1 || echo "0")
-          DURATION=$(echo "$TEST_OUTPUT" | grep -o "Duration[[:space:]]*[0-9.]*s" | grep -o "[0-9.]*" || echo "0")
+          echo "🎯 Attempting multiple parsing methods..."
           
-          echo "🎯 Extracted results:"
-          echo "  Test Files: $TEST_FILES"
-          echo "  Total Tests: $TOTAL_TESTS"  
-          echo "  Duration: ${DURATION}s"
+          # 방법 1: 가장 단순한 패턴
+          TEST_FILES=$(echo "$TEST_OUTPUT" | grep "Test Files" | grep -o "[0-9]\+" | head -1 || echo "0")
+          TOTAL_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests.*passed" | grep -o "[0-9]\+" | head -1 || echo "0")
+          DURATION=$(echo "$TEST_OUTPUT" | grep "Duration" | head -1 | grep -o "[0-9.]\+s" | grep -o "[0-9.]\+" | head -1 || echo "0")
+          
+          echo "🔍 Method 1 results:"
+          echo "  Test Files: '$TEST_FILES'"
+          echo "  Total Tests: '$TOTAL_TESTS'"  
+          echo "  Duration: '${DURATION}s'"
+          
+          # 방법 2: sed 사용
+          if [ "$TOTAL_TESTS" = "0" ]; then
+            echo "🔍 Trying method 2 with sed..."
+            TEST_FILES_2=$(echo "$TEST_OUTPUT" | sed -n 's/.*Test Files[[:space:]]*\([0-9]\+\).*/\1/p' | head -1 || echo "0")
+            TOTAL_TESTS_2=$(echo "$TEST_OUTPUT" | sed -n 's/.*Tests[[:space:]]*\([0-9]\+\)[[:space:]]*passed.*/\1/p' | head -1 || echo "0")
+            DURATION_2=$(echo "$TEST_OUTPUT" | sed -n 's/.*Duration[[:space:]]*\([0-9.]\+\)s.*/\1/p' | head -1 || echo "0")
+            
+            echo "🔍 Method 2 results:"
+            echo "  Test Files: '$TEST_FILES_2'"
+            echo "  Total Tests: '$TOTAL_TESTS_2'"  
+            echo "  Duration: '${DURATION_2}s'"
+            
+            # 더 나은 결과가 있다면 사용
+            [ "$TEST_FILES_2" != "0" ] && TEST_FILES="$TEST_FILES_2"
+            [ "$TOTAL_TESTS_2" != "0" ] && TOTAL_TESTS="$TOTAL_TESTS_2"
+            [ "$DURATION_2" != "0" ] && DURATION="$DURATION_2"
+          fi
+          
+          # 방법 3: awk 사용
+          if [ "$TOTAL_TESTS" = "0" ]; then
+            echo "🔍 Trying method 3 with awk..."
+            TEST_FILES_3=$(echo "$TEST_OUTPUT" | awk '/Test Files/ {for(i=1;i<=NF;i++) if($i ~ /^[0-9]+$/) {print $i; exit}}' || echo "0")
+            TOTAL_TESTS_3=$(echo "$TEST_OUTPUT" | awk '/Tests.*passed/ {for(i=1;i<=NF;i++) if($i ~ /^[0-9]+$/) {print $i; exit}}' || echo "0")
+            DURATION_3=$(echo "$TEST_OUTPUT" | awk '/Duration/ {for(i=1;i<=NF;i++) if($i ~ /^[0-9.]+s$/) {gsub(/s/,"",$i); print $i; exit}}' || echo "0")
+            
+            echo "🔍 Method 3 results:"
+            echo "  Test Files: '$TEST_FILES_3'"
+            echo "  Total Tests: '$TOTAL_TESTS_3'"  
+            echo "  Duration: '${DURATION_3}s'"
+            
+            # 더 나은 결과가 있다면 사용
+            [ "$TEST_FILES_3" != "0" ] && TEST_FILES="$TEST_FILES_3"
+            [ "$TOTAL_TESTS_3" != "0" ] && TOTAL_TESTS="$TOTAL_TESTS_3"
+            [ "$DURATION_3" != "0" ] && DURATION="$DURATION_3"
+          fi
+          
+          # 방법 4: 라인별 직접 파싱
+          if [ "$TOTAL_TESTS" = "0" ]; then
+            echo "🔍 Trying method 4 with line-by-line parsing..."
+            while IFS= read -r line; do
+              if [[ "$line" == *"Test Files"* && "$line" == *"passed"* ]]; then
+                TEST_FILES_4=$(echo "$line" | tr -s ' ' | cut -d' ' -f3 || echo "0")
+                echo "  Found test files line: '$line' -> '$TEST_FILES_4'"
+              fi
+              if [[ "$line" == *"Tests"* && "$line" == *"passed"* && "$line" != *"Test Files"* ]]; then
+                TOTAL_TESTS_4=$(echo "$line" | tr -s ' ' | cut -d' ' -f2 || echo "0")
+                echo "  Found tests line: '$line' -> '$TOTAL_TESTS_4'"
+              fi
+              if [[ "$line" == *"Duration"* ]]; then
+                DURATION_4=$(echo "$line" | grep -o "[0-9.]\+s" | grep -o "[0-9.]\+" || echo "0")
+                echo "  Found duration line: '$line' -> '${DURATION_4}s'"
+              fi
+            done <<< "$TEST_OUTPUT"
+            
+            # 더 나은 결과가 있다면 사용
+            [ "$TEST_FILES_4" != "0" ] && [ "$TEST_FILES_4" != "" ] && TEST_FILES="$TEST_FILES_4"
+            [ "$TOTAL_TESTS_4" != "0" ] && [ "$TOTAL_TESTS_4" != "" ] && TOTAL_TESTS="$TOTAL_TESTS_4"
+            [ "$DURATION_4" != "0" ] && [ "$DURATION_4" != "" ] && DURATION="$DURATION_4"
+          fi
+          
+          echo ""
+          echo "🎯 Final extracted results:"
+          echo "  Test Files: '$TEST_FILES'"
+          echo "  Total Tests: '$TOTAL_TESTS'"  
+          echo "  Duration: '${DURATION}s'"
           
           # GitHub Actions output으로 전달
           echo "test_files=$TEST_FILES" >> $GITHUB_OUTPUT
