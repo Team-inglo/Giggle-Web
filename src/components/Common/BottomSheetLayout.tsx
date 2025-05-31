@@ -9,6 +9,7 @@ type BottomSheetLayoutProps = {
   setIsShowBottomSheet?: (isShowBottomsheet: boolean) => void; // isShowBottomsheet 값 동기화하기 위한 함수
   children: ReactNode;
   isFixedBackground?: boolean;
+  isExitable?: boolean;
 };
 
 const LAYOUT_MARGIN = 64;
@@ -20,6 +21,7 @@ const BottomSheetLayout = ({
   setIsShowBottomSheet,
   children,
   isFixedBackground = true,
+  isExitable = false,
 }: BottomSheetLayoutProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +57,12 @@ const BottomSheetLayout = ({
   return (
     <>
       {isOpen && isFixedBackground && (
-        <div className="fixed w-screen h-screen top-0 bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.3)] z-40"></div>
+        <div
+          className="fixed w-screen h-screen top-0 bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.3)] z-40"
+          onClick={() => {
+            if (isExitable) setIsShowBottomSheet?.(false);
+          }}
+        ></div>
       )}
       <motion.div
         drag="y"
@@ -80,6 +87,7 @@ const BottomSheetLayout = ({
         style={{
           top: `${viewHeight - contentHeight - LAYOUT_MARGIN}px`,
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         {hasHandlebar && (
           <div className="mx-auto mt-[-0.5rem] mb-[1.5rem] w-[4rem] border-[0.125rem] border-[#F1F2F6]"></div>

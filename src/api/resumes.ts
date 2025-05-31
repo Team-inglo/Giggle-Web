@@ -194,3 +194,8 @@ export const getSearchSchools = async ({
   );
   return response.data;
 };
+
+export const patchResumePublic = async (data: { is_public: boolean }) => {
+  const response = await api.patch('/users/resumes/is-public', data);
+  return response.data;
+};

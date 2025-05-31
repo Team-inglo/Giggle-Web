@@ -13,6 +13,7 @@ import {
   patchEtcLanguageLevel,
   patchIntroduction,
   patchLanguagesLevel,
+  patchResumePublic,
   patchWorkExperience,
   postEducation,
   postEtcLanguageLevel,
@@ -294,5 +295,15 @@ export const useGetSearchSchools = (
         size: size.toString(),
       }),
     enabled: !!search, // 검색어가 있을 때만 쿼리 활성화
+  });
+};
+
+export const usePatchResumePublic = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: patchResumePublic,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
+    },
   });
 };
