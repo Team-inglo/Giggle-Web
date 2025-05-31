@@ -298,7 +298,6 @@ export const useGetSearchSchools = (
   });
 };
 
-// TODO: 이력서 공개 여부 수정하기 훅 api 명세 나오는대로 수정 필요
 export const usePatchResumePublic = () => {
   const queryClient = useQueryClient();
   return useMutation({

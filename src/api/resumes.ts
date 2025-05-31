@@ -195,8 +195,7 @@ export const getSearchSchools = async ({
   return response.data;
 };
 
-// TODO: 이력서 공개 여부 수정하기 API 명세 나오는 대로 수정 필요
 export const patchResumePublic = async (data: { is_public: boolean }) => {
-  const response = await api.patch('/users/resumes/public', data);
+  const response = await api.patch('/users/resumes/is-public', data);
   return response.data;
 };
