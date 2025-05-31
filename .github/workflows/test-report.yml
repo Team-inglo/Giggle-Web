@@ -40,31 +40,52 @@ jobs:
           find src -name "*.test.*" -type f | tee test-files.txt
           echo "📊 Total test files: $(cat test-files.txt | wc -l)"
           
+          # CI 환경 정보 출력
+          echo "🔧 CI Environment info:"
+          echo "  Node version: $(node --version)"
+          echo "  npm version: $(npm --version)"
+          echo "  pnpm version: $(pnpm --version)"
+          echo "  Working directory: $(pwd)"
+          
           # JSON 리포터로 테스트 실행
           echo "🏃 Running tests with JSON reporter..."
           pnpm test --reporter=json > test-results.json 2>&1
           TEST_EXIT_CODE=$?
           echo "📋 Test exit code: $TEST_EXIT_CODE"
           
-          # 기본 리포터로도 테스트 실행 (개별 테스트 수 확인용)
-          echo "🏃 Running tests with default reporter..."
-          pnpm test > test-verbose.txt 2>&1
+          # 다양한 리포터로 테스트 실행 (더 자세한 출력)
+          echo "🏃 Running tests with verbose reporter..."
+          pnpm test --reporter=verbose > test-verbose.txt 2>&1
           VERBOSE_EXIT_CODE=$?
           echo "📋 Verbose test exit code: $VERBOSE_EXIT_CODE"
           
-          # 커버리지 실행
+          # 기본 리포터로도 테스트 실행
+          echo "🏃 Running tests with default reporter..."
+          pnpm test > test-default.txt 2>&1
+          DEFAULT_EXIT_CODE=$?
+          echo "📋 Default test exit code: $DEFAULT_EXIT_CODE"
+          
+          # 커버리지 실행 (별도로)
           echo "📊 Running coverage..."
           pnpm test:coverage > coverage-output.txt 2>&1 || echo "Coverage failed"
           
-          echo "📁 Checking output files..."
-          echo "JSON file size: $(wc -c < test-results.json 2>/dev/null || echo '0') bytes"
-          echo "Verbose file size: $(wc -c < test-verbose.txt 2>/dev/null || echo '0') bytes"
+          echo "📁 Checking all output files..."
+          for file in test-results.json test-verbose.txt test-default.txt coverage-output.txt; do
+            if [ -f "$file" ]; then
+              echo "✅ $file: $(wc -c < "$file") bytes"
+            else
+              echo "❌ $file: Not found"
+            fi
+          done
           
-          echo "📄 JSON file content preview:"
-          head -c 300 test-results.json 2>/dev/null || echo "No JSON file"
+          echo "📄 JSON file content (first 500 chars):"
+          head -c 500 test-results.json 2>/dev/null || echo "No JSON file"
           
-          echo "📄 Verbose file content preview:"
-          head -20 test-verbose.txt 2>/dev/null || echo "No verbose file"
+          echo "📄 Verbose file content (first 1000 chars):"
+          head -c 1000 test-verbose.txt 2>/dev/null || echo "No verbose file"
+          
+          echo "📄 Default file content (first 1000 chars):"
+          head -c 1000 test-default.txt 2>/dev/null || echo "No default file"
         continue-on-error: true
         
       - name: Parse test results and generate report
@@ -111,86 +132,143 @@ jobs:
                 }
               }
               
-              // Verbose 출력에서 vitest 결과 파싱
-              if (fs.existsSync('./test-verbose.txt')) {
-                const verboseContent = fs.readFileSync('./test-verbose.txt', 'utf8');
-                console.log('📄 Verbose content preview (first 800 chars):');
-                console.log(verboseContent.substring(0, 800));
-                console.log('\\n--- End of preview ---\\n');
-                
-                // vitest 결과 패턴 매칭
-                console.log('🔍 Attempting to match test results patterns...');
-                const testFilesMatch = verboseContent.match(/Test Files\\s+(\\d+)\\s+passed\\s*\\((\\d+)\\)/);
-                const testsMatch = verboseContent.match(/Tests\\s+(\\d+)\\s+passed\\s*\\((\\d+)\\)/);
-                const failedTestsMatch = verboseContent.match(/(\\d+)\\s+failed/);
-                const skippedTestsMatch = verboseContent.match(/(\\d+)\\s+skipped/);
-                const durationMatch = verboseContent.match(/Duration\\s+([\\d.]+)(\\w+)/);
-                
-                console.log('📋 Regex match results:');
-                console.log('  testFilesMatch:', testFilesMatch);
-                console.log('  testsMatch:', testsMatch);
-                console.log('  failedTestsMatch:', failedTestsMatch);
-                console.log('  skippedTestsMatch:', skippedTestsMatch);
-                console.log('  durationMatch:', durationMatch);
-                
-                if (testFilesMatch) {
-                  summary.testFiles = parseInt(testFilesMatch[1]);
-                  console.log(\`📁 Test files: \${summary.testFiles}\`);
-                }
-                
-                if (testsMatch) {
-                  summary.passedTests = parseInt(testsMatch[1]);
-                  summary.totalTests = summary.passedTests;
-                  console.log(\`✅ Passed tests: \${summary.passedTests}\`);
-                }
-                
-                if (failedTestsMatch) {
-                  summary.failedTests = parseInt(failedTestsMatch[1]);
-                  summary.totalTests += summary.failedTests;
-                  console.log(\`❌ Failed tests: \${summary.failedTests}\`);
-                }
-                
-                if (skippedTestsMatch) {
-                  summary.skippedTests = parseInt(skippedTestsMatch[1]);
-                  summary.totalTests += summary.skippedTests;
-                  console.log(\`⏭️ Skipped tests: \${summary.skippedTests}\`);
-                }
-                
-                if (durationMatch) {
-                  const duration = parseFloat(durationMatch[1]);
-                  const unit = durationMatch[2];
-                  summary.runtime = unit === 's' ? duration * 1000 : duration;
-                  console.log(\`⏱️ Duration: \${duration}\${unit}\`);
-                }
-                
-                // 개별 테스트 파일에서 각각의 통과/실패 수 추출 (백업 방법)
-                const testFileResults = verboseContent.match(/✓\\s+src\\/.+?\\((\\d+)\\s+tests?\\)/g);
-                if (testFileResults && summary.totalTests === 0) {
-                  let totalFromFiles = 0;
-                  console.log('🔍 Parsing individual test file results...');
-                  testFileResults.forEach(result => {
-                    const match = result.match(/\\((\\d+)\\s+tests?\\)/);
-                    if (match) {
-                      const count = parseInt(match[1]);
-                      totalFromFiles += count;
-                      console.log(\`  Found \${count} tests in file\`);
-                    }
-                  });
+              // 여러 출력 파일을 시도하여 파싱
+              const outputFiles = ['test-default.txt', 'test-verbose.txt', 'coverage-output.txt'];
+              let parseSuccess = false;
+              
+              for (const fileName of outputFiles) {
+                if (fs.existsSync(\`./$\{fileName}\`) && !parseSuccess) {
+                  const content = fs.readFileSync(\`./$\{fileName}\`, 'utf8');
+                  console.log(\`\\n🔍 Trying to parse $\{fileName} (length: $\{content.length})\\n\`);
+                  console.log(\`📄 Content preview (first 1200 chars):\\n$\{content.substring(0, 1200)}\`);
+                  console.log('\\n--- End of preview ---\\n');
                   
-                  if (totalFromFiles > 0) {
-                    console.log(\`🔄 Using file-based parsing: \${totalFromFiles} total tests\`);
-                    summary.totalTests = totalFromFiles;
-                    summary.passedTests = totalFromFiles; // 실패한 테스트가 없으면 모두 통과
+                  // 다양한 vitest 결과 패턴 시도
+                  console.log(\`🔍 Attempting to match patterns in $\{fileName}...\`);
+                  
+                  // 패턴 1: 표준 vitest 출력
+                  const testFilesMatch1 = content.match(/Test Files\\s+(\\d+)\\s+passed\\s*\\((\\d+)\\)/);
+                  const testsMatch1 = content.match(/Tests\\s+(\\d+)\\s+passed\\s*\\((\\d+)\\)/);
+                  
+                  // 패턴 2: 다른 형식
+                  const testFilesMatch2 = content.match(/(\\d+)\\s+passed.*test files?/i);
+                  const testsMatch2 = content.match(/(\\d+)\\s+passed.*tests?\\s*$/gm);
+                  
+                  // 패턴 3: 실패/성공 카운트
+                  const failedTestsMatch = content.match(/(\\d+)\\s+failed/);
+                  const skippedTestsMatch = content.match(/(\\d+)\\s+skipped/);
+                  const durationMatch = content.match(/Duration\\s+([\\d.]+)(\\w+)/);
+                  
+                  // 패턴 4: 개별 테스트 파일 카운트
+                  const individualTestMatches = content.match(/✓\\s+src\\/.+?\\((\\d+)\\s+tests?\\)/g);
+                  
+                  console.log(\`📋 Regex match results for $\{fileName}:\`);
+                  console.log('  testFilesMatch1:', testFilesMatch1);
+                  console.log('  testsMatch1:', testsMatch1);
+                  console.log('  testFilesMatch2:', testFilesMatch2);
+                  console.log('  testsMatch2:', testsMatch2);
+                  console.log('  failedTestsMatch:', failedTestsMatch);
+                  console.log('  skippedTestsMatch:', skippedTestsMatch);
+                  console.log('  durationMatch:', durationMatch);
+                  console.log('  individualTestMatches:', individualTestMatches);
+                  
+                  // 첫 번째 패턴 시도
+                  if (testFilesMatch1) {
+                    summary.testFiles = parseInt(testFilesMatch1[1]);
+                    parseSuccess = true;
+                    console.log(\`📁 Test files (pattern 1): $\{summary.testFiles}\`);
+                  } else if (testFilesMatch2) {
+                    summary.testFiles = parseInt(testFilesMatch2[1]);
+                    parseSuccess = true;
+                    console.log(\`📁 Test files (pattern 2): $\{summary.testFiles}\`);
+                  }
+                  
+                  if (testsMatch1) {
+                    summary.passedTests = parseInt(testsMatch1[1]);
+                    summary.totalTests = summary.passedTests;
+                    parseSuccess = true;
+                    console.log(\`✅ Passed tests (pattern 1): $\{summary.passedTests}\`);
+                  } else if (testsMatch2 && testsMatch2.length > 0) {
+                    // 마지막 매치가 총 테스트 수일 가능성이 높음
+                    const lastMatch = testsMatch2[testsMatch2.length - 1];
+                    const match = lastMatch.match(/(\\d+)/);
+                    if (match) {
+                      summary.passedTests = parseInt(match[1]);
+                      summary.totalTests = summary.passedTests;
+                      parseSuccess = true;
+                      console.log(\`✅ Passed tests (pattern 2): $\{summary.passedTests}\`);
+                    }
+                  }
+                  
+                  // 개별 테스트 파일에서 카운트 (백업 방법)
+                  if (individualTestMatches && !parseSuccess) {
+                    let totalFromFiles = 0;
+                    let fileCount = 0;
+                    console.log('🔍 Parsing individual test file results...');
+                    individualTestMatches.forEach(result => {
+                      const match = result.match(/\\((\\d+)\\s+tests?\\)/);
+                      if (match) {
+                        const count = parseInt(match[1]);
+                        totalFromFiles += count;
+                        fileCount++;
+                        console.log(\`  Found $\{count} tests in file\`);
+                      }
+                    });
+                    
+                    if (totalFromFiles > 0) {
+                      console.log(\`🔄 Using file-based parsing: $\{totalFromFiles} total tests across $\{fileCount} files\`);
+                      summary.totalTests = totalFromFiles;
+                      summary.passedTests = totalFromFiles; // 실패한 테스트가 없다고 가정
+                      summary.testFiles = fileCount;
+                      parseSuccess = true;
+                    }
+                  }
+                  
+                  // 실패/스킵 테스트 파싱
+                  if (failedTestsMatch) {
+                    summary.failedTests = parseInt(failedTestsMatch[1]);
+                    summary.totalTests += summary.failedTests;
+                    console.log(\`❌ Failed tests: $\{summary.failedTests}\`);
+                  }
+                  
+                  if (skippedTestsMatch) {
+                    summary.skippedTests = parseInt(skippedTestsMatch[1]);
+                    summary.totalTests += summary.skippedTests;
+                    console.log(\`⏭️ Skipped tests: $\{summary.skippedTests}\`);
+                  }
+                  
+                  if (durationMatch) {
+                    const duration = parseFloat(durationMatch[1]);
+                    const unit = durationMatch[2];
+                    summary.runtime = unit === 's' ? duration * 1000 : duration;
+                    console.log(\`⏱️ Duration: $\{duration}$\{unit}\`);
+                  }
+                  
+                  if (parseSuccess) {
+                    console.log(\`🎯 Successfully parsed from $\{fileName}\`);
+                    break;
                   }
                 }
               }
               
-              // JSON 결과도 시도
+              if (!parseSuccess) {
+                console.log('⚠️ Could not parse test results from any output file, trying fallback methods...');
+                
+                // 최후의 수단: 테스트 파일 개수라도 카운트
+                if (fs.existsSync('./test-files.txt')) {
+                  const testFilesContent = fs.readFileSync('./test-files.txt', 'utf8');
+                  const testFileLines = testFilesContent.trim().split('\\n').filter(line => line.trim());
+                  summary.testFiles = testFileLines.length;
+                  console.log(\`📁 Fallback: Found $\{summary.testFiles} test files\`);
+                }
+              }
+              
+              // JSON 결과도 시도 (추가 정보 확인용)
               if (fs.existsSync('./test-results.json')) {
                 try {
                   const content = fs.readFileSync('./test-results.json', 'utf8').trim();
                   console.log('🔍 JSON content length:', content.length);
-                  console.log('🔍 JSON content start:', content.substring(0, 200));
+                  console.log('🔍 JSON content start:', content.substring(0, 300));
                   
                   if (content && content.startsWith('{')) {
                     const testData = JSON.parse(content);
@@ -206,7 +284,7 @@ jobs:
                     }
                   }
                 } catch (e) {
-                  console.log('⚠️ JSON parsing failed (expected):', e.message);
+                  console.log('⚠️ JSON parsing failed (expected for non-JSON output):', e.message);
                 }
               }
               
