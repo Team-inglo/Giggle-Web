@@ -4,6 +4,7 @@ import { useGetUserSummaries } from '@/hooks/api/useProfile';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import ArrowIcon from '@/assets/icons/Chevron.svg?react';
+import ToggleButton from '../Common/ToggleButton';
 
 type ProfileMenuProps = {
   title: string;
@@ -47,17 +48,7 @@ const ProfileMenu = ({ title, onClick, isToggle }: ProfileMenuProps) => {
         <div className="heading-18-semibold text-text-strong">{title}</div>
       </div>
       {isToggle ? (
-        <div className="relative flex items-center">
-          <div
-            className={`w-[2.125rem] h-5 rounded-full ${toggleOn ? 'bg-primary-normal' : 'bg-surface-disabled'}`}
-          />
-          <div
-            className={`w-[0.875rem] h-[0.875rem] rounded-full absolute bg-white transform transition-transform duration-300 ease-in-out ${
-              toggleOn ? 'translate-x-4' : 'translate-x-[0.25rem]'
-            }`}
-            onClick={handleToggleChange}
-          />
-        </div>
+        <ToggleButton isOn={toggleOn} onChange={handleToggleChange} />
       ) : (
         <div className="flex items-center">
           <ArrowIcon />
