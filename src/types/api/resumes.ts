@@ -67,4 +67,5 @@ export type UserResumeDetailResponse = {
   work_experience: WorkExperienceType[];
   education: EducationType[];
   languages: LanguageListType;
+  is_public: boolean;
 };

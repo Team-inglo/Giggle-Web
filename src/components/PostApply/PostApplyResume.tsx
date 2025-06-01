@@ -68,6 +68,7 @@ const PostApplyResume = () => {
           main_address={data.data.personal_information.main_address}
           phone={data.data.personal_information.phone}
           email={data.data.personal_information.email}
+          isPublic={data.data.is_public}
         />
       </section>
       <section className="flex flex-col gap-2 bg-surface-secondary pt-2 pb-2">
