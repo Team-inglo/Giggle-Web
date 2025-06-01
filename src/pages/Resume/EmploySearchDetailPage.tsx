@@ -14,8 +14,11 @@ const EmploySearchDetailPage = () => {
         hasMenuButton={false}
         title="이력서 조회"
       />
-      <PostApplyResume />
+      <div className="pb-28">
+        <PostApplyResume />
+      </div>
       <BookmarkContactPanel isBookmarked={false} />
+
     </>
   );
 };
