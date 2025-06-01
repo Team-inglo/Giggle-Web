@@ -28,158 +28,72 @@ jobs:
           version: 8
           run_install: false
           
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
         
-      - name: Run tests with detailed reporting
+      - name: Run tests with JSON reporting
         id: test_execution
         run: |
           echo "🧪 Starting test execution..."
-          
+
           # 테스트 파일 탐지 확인
           echo "📁 Test files found:"
           find src -name "*.test.*" -type f | tee test-files.txt
           echo "📊 Total test files: $(cat test-files.txt | wc -l)"
-          
+
           # CI 환경 정보 출력
           echo "🔧 CI Environment info:"
           echo "  Node version: $(node --version)"
           echo "  npm version: $(npm --version)"
           echo "  pnpm version: $(pnpm --version)"
           echo "  Working directory: $(pwd)"
-          
-          # 테스트 실행하고 출력을 캡처
-          echo "🏃 Running tests and capturing output..."
-          
-          # 테스트 실행하고 결과를 변수에 저장
-          TEST_OUTPUT=$(pnpm test 2>&1)
-          TEST_EXIT_CODE=$?
-          
-          echo "📋 Test exit code: $TEST_EXIT_CODE"
-          echo "📄 Complete test output:"
-          echo "$TEST_OUTPUT"
-          
-          # 출력에서 직접 정보 추출
-          echo "🎯 Attempting multiple parsing methods..."
-          
-          # 방법 1: 가장 단순한 패턴
-          TEST_FILES=$(echo "$TEST_OUTPUT" | grep "Test Files" | grep -o "[0-9]\+" | head -1 || echo "0")
-          TOTAL_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests.*passed" | grep -o "[0-9]\+" | head -1 || echo "0")
-          DURATION=$(echo "$TEST_OUTPUT" | grep "Duration" | head -1 | grep -o "[0-9.]\+s" | grep -o "[0-9.]\+" | head -1 || echo "0")
-          
-          echo "🔍 Method 1 results:"
-          echo "  Test Files: '$TEST_FILES'"
-          echo "  Total Tests: '$TOTAL_TESTS'"  
-          echo "  Duration: '${DURATION}s'"
-          
-          # 방법 2: sed 사용
-          if [ "$TOTAL_TESTS" = "0" ]; then
-            echo "🔍 Trying method 2 with sed..."
-            TEST_FILES_2=$(echo "$TEST_OUTPUT" | sed -n 's/.*Test Files[[:space:]]*\([0-9]\+\).*/\1/p' | head -1 || echo "0")
-            TOTAL_TESTS_2=$(echo "$TEST_OUTPUT" | sed -n 's/.*Tests[[:space:]]*\([0-9]\+\)[[:space:]]*passed.*/\1/p' | head -1 || echo "0")
-            DURATION_2=$(echo "$TEST_OUTPUT" | sed -n 's/.*Duration[[:space:]]*\([0-9.]\+\)s.*/\1/p' | head -1 || echo "0")
-            
-            echo "🔍 Method 2 results:"
-            echo "  Test Files: '$TEST_FILES_2'"
-            echo "  Total Tests: '$TOTAL_TESTS_2'"  
-            echo "  Duration: '${DURATION_2}s'"
-            
-            # 더 나은 결과가 있다면 사용
-            [ "$TEST_FILES_2" != "0" ] && TEST_FILES="$TEST_FILES_2"
-            [ "$TOTAL_TESTS_2" != "0" ] && TOTAL_TESTS="$TOTAL_TESTS_2"
-            [ "$DURATION_2" != "0" ] && DURATION="$DURATION_2"
+
+          # JSON 리포터로 테스트 실행
+          echo "🏃 Running tests with JSON reporter..."
+          npx vitest run --reporter=json --outputFile=test-results.json || echo "Test execution completed"
+
+          # JSON 파일 확인
+          if [ -f "test-results.json" ]; then
+            echo "✅ JSON results file created"
+            echo "📄 JSON file size: $(wc -c < test-results.json) bytes"
+            echo "📄 First 200 chars of JSON:"
+            head -c 200 test-results.json
+            echo ""
+          else
+            echo "❌ JSON results file not found"
           fi
-          
-          # 방법 3: awk 사용
-          if [ "$TOTAL_TESTS" = "0" ]; then
-            echo "🔍 Trying method 3 with awk..."
-            TEST_FILES_3=$(echo "$TEST_OUTPUT" | awk '/Test Files/ {for(i=1;i<=NF;i++) if($i ~ /^[0-9]+$/) {print $i; exit}}' || echo "0")
-            TOTAL_TESTS_3=$(echo "$TEST_OUTPUT" | awk '/Tests.*passed/ {for(i=1;i<=NF;i++) if($i ~ /^[0-9]+$/) {print $i; exit}}' || echo "0")
-            DURATION_3=$(echo "$TEST_OUTPUT" | awk '/Duration/ {for(i=1;i<=NF;i++) if($i ~ /^[0-9.]+s$/) {gsub(/s/,"",$i); print $i; exit}}' || echo "0")
-            
-            echo "🔍 Method 3 results:"
-            echo "  Test Files: '$TEST_FILES_3'"
-            echo "  Total Tests: '$TOTAL_TESTS_3'"  
-            echo "  Duration: '${DURATION_3}s'"
-            
-            # 더 나은 결과가 있다면 사용
-            [ "$TEST_FILES_3" != "0" ] && TEST_FILES="$TEST_FILES_3"
-            [ "$TOTAL_TESTS_3" != "0" ] && TOTAL_TESTS="$TOTAL_TESTS_3"
-            [ "$DURATION_3" != "0" ] && DURATION="$DURATION_3"
-          fi
-          
-          # 방법 4: 라인별 직접 파싱
-          if [ "$TOTAL_TESTS" = "0" ]; then
-            echo "🔍 Trying method 4 with line-by-line parsing..."
-            while IFS= read -r line; do
-              if [[ "$line" == *"Test Files"* && "$line" == *"passed"* ]]; then
-                TEST_FILES_4=$(echo "$line" | tr -s ' ' | cut -d' ' -f3 || echo "0")
-                echo "  Found test files line: '$line' -> '$TEST_FILES_4'"
-              fi
-              if [[ "$line" == *"Tests"* && "$line" == *"passed"* && "$line" != *"Test Files"* ]]; then
-                TOTAL_TESTS_4=$(echo "$line" | tr -s ' ' | cut -d' ' -f2 || echo "0")
-                echo "  Found tests line: '$line' -> '$TOTAL_TESTS_4'"
-              fi
-              if [[ "$line" == *"Duration"* ]]; then
-                DURATION_4=$(echo "$line" | grep -o "[0-9.]\+s" | grep -o "[0-9.]\+" || echo "0")
-                echo "  Found duration line: '$line' -> '${DURATION_4}s'"
-              fi
-            done <<< "$TEST_OUTPUT"
-            
-            # 더 나은 결과가 있다면 사용
-            [ "$TEST_FILES_4" != "0" ] && [ "$TEST_FILES_4" != "" ] && TEST_FILES="$TEST_FILES_4"
-            [ "$TOTAL_TESTS_4" != "0" ] && [ "$TOTAL_TESTS_4" != "" ] && TOTAL_TESTS="$TOTAL_TESTS_4"
-            [ "$DURATION_4" != "0" ] && [ "$DURATION_4" != "" ] && DURATION="$DURATION_4"
-          fi
-          
-          echo ""
-          echo "🎯 Final extracted results:"
-          echo "  Test Files: '$TEST_FILES'"
-          echo "  Total Tests: '$TOTAL_TESTS'"  
-          echo "  Duration: '${DURATION}s'"
-          
-          # GitHub Actions output으로 전달
-          echo "test_files=$TEST_FILES" >> $GITHUB_OUTPUT
-          echo "total_tests=$TOTAL_TESTS" >> $GITHUB_OUTPUT
-          echo "passed_tests=$TOTAL_TESTS" >> $GITHUB_OUTPUT
-          echo "failed_tests=0" >> $GITHUB_OUTPUT
-          echo "skipped_tests=0" >> $GITHUB_OUTPUT
-          echo "duration=$DURATION" >> $GITHUB_OUTPUT
-          echo "test_status=success" >> $GITHUB_OUTPUT
-          
-          # 커버리지도 실행
+
+          # 커버리지 실행
           echo "📊 Running coverage..."
-          pnpm test:coverage > coverage-output.txt 2>&1 || echo "Coverage completed"
+          npx vitest run --coverage > coverage-output.txt 2>&1 || echo "Coverage completed"
         continue-on-error: true
         
-      - name: Parse test results and generate report
+      - name: Parse JSON test results and generate report
         id: test_results
         run: |
           node -e "
             const fs = require('fs');
-            
-            // 이전 step에서 전달받은 값들 사용
-            const testFiles = '${{ steps.test_execution.outputs.test_files }}' || '0';
-            const totalTests = '${{ steps.test_execution.outputs.total_tests }}' || '0';
-            const passedTests = '${{ steps.test_execution.outputs.passed_tests }}' || '0';
-            const failedTests = '${{ steps.test_execution.outputs.failed_tests }}' || '0';
-            const skippedTests = '${{ steps.test_execution.outputs.skipped_tests }}' || '0';
-            const duration = '${{ steps.test_execution.outputs.duration }}' || '0';
-            
-            console.log('📊 Using values from previous step:');
-            console.log(\`  Test Files: \${testFiles}\`);
-            console.log(\`  Total Tests: \${totalTests}\`);
-            console.log(\`  Passed Tests: \${passedTests}\`);
-            console.log(\`  Failed Tests: \${failedTests}\`);
-            console.log(\`  Duration: \${duration}s\`);
-            
+
             let summary = {
-              totalTests: parseInt(totalTests),
-              passedTests: parseInt(passedTests),
-              failedTests: parseInt(failedTests),
-              skippedTests: parseInt(skippedTests),
-              testFiles: parseInt(testFiles),
-              runtime: parseFloat(duration) * 1000,
+              totalTests: 0,
+              passedTests: 0,
+              failedTests: 0,
+              skippedTests: 0,
+              testFiles: 0,
+              runtime: 0,
               coverage: {
                 lines: 0,
                 functions: 0,
@@ -188,114 +102,212 @@ jobs:
               },
               failedTestDetails: []
             };
-            
-            // 커버리지 데이터 파싱 (기존 로직 유지)
-            if (fs.existsSync('./coverage/coverage-summary.json')) {
-              try {
-                const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
-                if (coverageData.total) {
-                  summary.coverage = {
-                    lines: coverageData.total.lines?.pct || 0,
-                    functions: coverageData.total.functions?.pct || 0,
-                    branches: coverageData.total.branches?.pct || 0,
-                    statements: coverageData.total.statements?.pct || 0
-                  };
-                  console.log('✅ Coverage data parsed successfully');
+
+            try {
+              console.log('🔍 Starting JSON test result parsing...');
+
+              // JSON 파일에서 테스트 결과 파싱
+              if (fs.existsSync('./test-results.json')) {
+                console.log('📄 Reading JSON test results...');
+                const jsonContent = fs.readFileSync('./test-results.json', 'utf8').trim();
+
+                if (jsonContent) {
+                  try {
+                    const testResults = JSON.parse(jsonContent);
+                    console.log('✅ JSON parsing successful!');
+
+                    // Vitest JSON 구조에 맞춰 파싱
+                    summary.totalTests = testResults.numTotalTests || 0;
+                    summary.passedTests = testResults.numPassedTests || 0;
+                    summary.failedTests = testResults.numFailedTests || 0;
+                    summary.skippedTests = (testResults.numPendingTests || 0) + (testResults.numTodoTests || 0);
+                    
+                    // 테스트 파일 수는 testResults 배열의 길이로 계산
+                    summary.testFiles = testResults.testResults ? testResults.testResults.length : 0;
+
+                    // 실행 시간 계산 (startTime과 endTime 사용)
+                    if (testResults.testResults && testResults.testResults.length > 0) {
+                      const durations = testResults.testResults.map(suite => {
+                        if (suite.endTime && suite.startTime) {
+                          return suite.endTime - suite.startTime;
+                        }
+                        return 0;
+                      });
+                      summary.runtime = Math.max(...durations) || 0;
+                    }
+
+                    console.log('🎯 JSON parsing results:');
+                    console.log(\`  Total tests: \${summary.totalTests}\`);
+                    console.log(\`  Passed: \${summary.passedTests}\`);
+                    console.log(\`  Failed: \${summary.failedTests}\`);
+                    console.log(\`  Test files: \${summary.testFiles}\`);
+                    console.log(\`  Runtime: \${summary.runtime}ms\`);
+
+                    // 실패한 테스트 상세 정보 추출
+                    if (testResults.testResults) {
+                      testResults.testResults.forEach(suite => {
+                        if (suite.assertionResults) {
+                          suite.assertionResults.forEach(test => {
+                            if (test.status === 'failed') {
+                              summary.failedTestDetails.push({
+                                file: suite.name || 'Unknown file',
+                                test: test.title || test.fullName || 'Unknown test',
+                                error: test.failureMessages?.join('\\n') || 'No error message'
+                              });
+                            }
+                          });
+                        }
+                      });
+                    }
+                  } catch (parseError) {
+                    console.log('❌ JSON parsing failed:', parseError.message);
+                    console.log('📄 Raw content preview:', jsonContent.substring(0, 500));
+                    throw parseError;
+                  }
+                } else {
+                  console.log('⚠️ JSON file is empty');
+                  throw new Error('JSON file is empty');
                 }
-              } catch (e) {
-                console.log('❌ Coverage data parsing failed:', e.message);
+              } else {
+                console.log('⚠️ JSON file does not exist');
+                throw new Error('JSON file does not exist');
               }
-            }
-            
-            console.log('📊 Final summary:', JSON.stringify(summary, null, 2));
-            
-            // 성능 및 커버리지 체크
-            const performanceWarnings = [];
-            if (summary.runtime > 30000) {
-              performanceWarnings.push('⚠️ Tests took longer than 30 seconds');
-            }
-            
-            const coverageWarnings = [];
-            Object.entries(summary.coverage).forEach(([metric, value]) => {
-              if (value < 80) {
-                coverageWarnings.push(\`⚠️ \${metric.charAt(0).toUpperCase() + metric.slice(1)} coverage is below 80% (\${value}%)\`);
+
+              // 커버리지 데이터 파싱
+              if (fs.existsSync('./coverage/coverage-summary.json')) {
+                try {
+                  const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
+                  if (coverageData.total) {
+                    summary.coverage = {
+                      lines: coverageData.total.lines?.pct || 0,
+                      functions: coverageData.total.functions?.pct || 0,
+                      branches: coverageData.total.branches?.pct || 0,
+                      statements: coverageData.total.statements?.pct || 0
+                    };
+                    console.log('✅ Coverage data parsed successfully');
+                  }
+                } catch (e) {
+                  console.log('❌ Coverage data parsing failed:', e.message);
+                }
               }
-            });
-            
-            const emoji = summary.failedTests === 0 && summary.totalTests > 0 ? '✅' : 
-                         summary.totalTests === 0 ? '⚠️' : '❌';
-            const testStatus = summary.totalTests === 0 ? 'NO TESTS FOUND' :
-                              summary.failedTests === 0 ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
-            
-            let comment = \`## \${emoji} Vitest Test Results
-            
-            **Status:** \${testStatus}
-            \${summary.runtime > 0 ? \`**Runtime:** \${(summary.runtime / 1000).toFixed(2)}s\` : ''}
-            
-            ### 📊 Test Summary
-            \\\`\\\`\\\`
-            Test Files: \${summary.testFiles} files
-            Total:      \${summary.totalTests} tests
-            Passed:     \${summary.passedTests} tests
-            Failed:     \${summary.failedTests} tests
-            Skipped:    \${summary.skippedTests} tests
-            \\\`\\\`\\\`
-            \`;
-            
-            if (summary.coverage.lines > 0 || summary.coverage.functions > 0) {
-              comment += \`
-            ### 📈 Coverage Report
-            | Metric | Coverage | Status |
-            |--------|----------|--------|
-            | Lines | \${summary.coverage.lines.toFixed(1)}% | \${summary.coverage.lines >= 80 ? '✅' : '❌'} |
-            | Functions | \${summary.coverage.functions.toFixed(1)}% | \${summary.coverage.functions >= 80 ? '✅' : '❌'} |
-            | Branches | \${summary.coverage.branches.toFixed(1)}% | \${summary.coverage.branches >= 80 ? '✅' : '❌'} |
-            | Statements | \${summary.coverage.statements.toFixed(1)}% | \${summary.coverage.statements >= 80 ? '✅' : '❌'} |
-            \`;
-            }
-            
-            if (performanceWarnings.length > 0) {
-              comment += \`\\n### ⏱️ Performance Warnings\\n\` + performanceWarnings.join('\\n') + '\\n';
-            }
-            
-            if (coverageWarnings.length > 0) {
-              comment += \`\\n### 📉 Coverage Warnings\\n\` + coverageWarnings.join('\\n') + '\\n';
-            }
-            
-            if (summary.failedTestDetails.length > 0) {
-              comment += \`\\n### ❌ Failed Tests\\n\`;
-              summary.failedTestDetails.slice(0, 5).forEach(test => {
-                comment += \`\\n**\${test.file}**\\n\`;
-                comment += \`- \${test.test}\\n\`;
-                comment += \`\\\`\\\`\\\`\\n\${test.error.slice(0, 500)}...\\\`\\\`\\\`\\n\`;
+
+              console.log('📊 Final summary:', JSON.stringify(summary, null, 2));
+
+              // 성능 및 커버리지 체크
+              const performanceWarnings = [];
+              if (summary.runtime > 30000) {
+                performanceWarnings.push('⚠️ Tests took longer than 30 seconds');
+              }
+
+              const coverageWarnings = [];
+              Object.entries(summary.coverage).forEach(([metric, value]) => {
+                if (value < 80) {
+                  coverageWarnings.push(\`⚠️ \${metric.charAt(0).toUpperCase() + metric.slice(1)} coverage is below 80% (\${value}%)\`);
+                }
               });
-              
-              if (summary.failedTestDetails.length > 5) {
-                comment += \`\\n*... and \${summary.failedTestDetails.length - 5} more failures*\\n\`;
+
+              const emoji = summary.failedTests === 0 && summary.totalTests > 0 ? '✅' :
+                           summary.totalTests === 0 ? '⚠️' : '❌';
+              const testStatus = summary.totalTests === 0 ? 'NO TESTS FOUND' :
+                                summary.failedTests === 0 ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
+
+              let comment = \`## \${emoji} Vitest Test Results
+
+              **Status:** \${testStatus}
+              \${summary.runtime > 0 ? \`**Runtime:** \${(summary.runtime / 1000).toFixed(2)}s\` : ''}
+
+              ### 📊 Test Summary
+              \\\`\\\`\\\`
+              Test Files: \${summary.testFiles} files
+              Total:      \${summary.totalTests} tests
+              Passed:     \${summary.passedTests} tests
+              Failed:     \${summary.failedTests} tests
+              Skipped:    \${summary.skippedTests} tests
+              \\\`\\\`\\\`
+              \`;
+
+              if (summary.coverage.lines > 0 || summary.coverage.functions > 0) {
+                comment += \`
+              ### 📈 Coverage Report
+              | Metric | Coverage | Status |
+              |--------|----------|--------|
+              | Lines | \${summary.coverage.lines.toFixed(1)}% | \${summary.coverage.lines >= 80 ? '✅' : '❌'} |
+              | Functions | \${summary.coverage.functions.toFixed(1)}% | \${summary.coverage.functions >= 80 ? '✅' : '❌'} |
+              | Branches | \${summary.coverage.branches.toFixed(1)}% | \${summary.coverage.branches >= 80 ? '✅' : '❌'} |
+              | Statements | \${summary.coverage.statements.toFixed(1)}% | \${summary.coverage.statements >= 80 ? '✅' : '❌'} |
+              \`;
               }
-            } else if (summary.totalTests > 0 && summary.failedTests === 0) {
-              comment += \`\\n### 🎉 All tests passed!\\nGreat job! All \${summary.totalTests} tests are working correctly across \${summary.testFiles} test files.\\n\`;
-            } else if (summary.totalTests === 0) {
-              comment += \`\\n### ⚠️ No tests found\\nMake sure your test files are properly configured and located in the right directories.\\n\`;
-            }
-            
-            comment += \`\\n### 🔗 Quick Actions\\n\`;
-            comment += \`- [🧪 Run tests locally](\\\`pnpm test\\\`)\\n\`;
-            comment += \`- [📊 Run coverage locally](\\\`pnpm test:coverage\\\`)\\n\`;
-            comment += \`- [🎨 Open Vitest UI](\\\`pnpm test:ui\\\`)\\n\`;
-            comment += \`- [⚙️ View workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID})\\n\`;
-            
-            comment += \`\\n---\\n*🤖 Generated by GitHub Actions at \${new Date().toISOString()}*\`;
-            
-            fs.writeFileSync('test-comment.md', comment);
-            
-            // GitHub Actions 출력
-            const output = process.env.GITHUB_OUTPUT;
-            if (output) {
-              fs.appendFileSync(output, \`test_status=\${summary.failedTests === 0 && summary.totalTests > 0 ? 'success' : summary.totalTests === 0 ? 'neutral' : 'failure'}\\n\`);
-              fs.appendFileSync(output, \`total_tests=\${summary.totalTests}\\n\`);
-              fs.appendFileSync(output, \`failed_tests=\${summary.failedTests}\\n\`);
-              fs.appendFileSync(output, \`test_files=\${summary.testFiles}\\n\`);
+
+              if (performanceWarnings.length > 0) {
+                comment += \`\\n### ⏱️ Performance Warnings\\n\` + performanceWarnings.join('\\n') + '\\n';
+              }
+
+              if (coverageWarnings.length > 0) {
+                comment += \`\\n### 📉 Coverage Warnings\\n\` + coverageWarnings.join('\\n') + '\\n';
+              }
+
+              if (summary.failedTestDetails.length > 0) {
+                comment += \`\\n### ❌ Failed Tests\\n\`;
+                summary.failedTestDetails.slice(0, 5).forEach(test => {
+                  comment += \`\\n**\${test.file}**\\n\`;
+                  comment += \`- \${test.test}\\n\`;
+                  comment += \`\\\`\\\`\\\`\\n\${test.error.slice(0, 500)}...\\\`\\\`\\\`\\n\`;
+                });
+
+                if (summary.failedTestDetails.length > 5) {
+                  comment += \`\\n*... and \${summary.failedTestDetails.length - 5} more failures*\\n\`;
+                }
+              } else if (summary.totalTests > 0 && summary.failedTests === 0) {
+                comment += \`\\n### 🎉 All tests passed!\\nGreat job! All \${summary.totalTests} tests are working correctly across \${summary.testFiles} test files.\\n\`;
+              } else if (summary.totalTests === 0) {
+                comment += \`\\n### ⚠️ No tests found\\nMake sure your test files are properly configured and located in the right directories.\\n\`;
+              }
+
+              comment += \`\\n### 🔗 Quick Actions\\n\`;
+              comment += \`- [🧪 Run tests locally](\\\`pnpm test\\\`)\\n\`;
+              comment += \`- [📊 Run coverage locally](\\\`pnpm test:coverage\\\`)\\n\`;
+              comment += \`- [🎨 Open Vitest UI](\\\`pnpm test:ui\\\`)\\n\`;
+              comment += \`- [⚙️ View workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID})\\n\`;
+
+              comment += \`\\n---\\n*🤖 Generated by GitHub Actions at \${new Date().toISOString()}*\`;
+
+              fs.writeFileSync('test-comment.md', comment);
+
+              // GitHub Actions 출력
+              const output = process.env.GITHUB_OUTPUT;
+              if (output) {
+                fs.appendFileSync(output, \`test_status=\${summary.failedTests === 0 && summary.totalTests > 0 ? 'success' : summary.totalTests === 0 ? 'neutral' : 'failure'}\\n\`);
+                fs.appendFileSync(output, \`total_tests=\${summary.totalTests}\\n\`);
+                fs.appendFileSync(output, \`failed_tests=\${summary.failedTests}\\n\`);
+                fs.appendFileSync(output, \`test_files=\${summary.testFiles}\\n\`);
+              }
+
+            } catch (error) {
+              console.error('💥 Error in JSON test parsing:', error);
+              console.error('📋 Stack trace:', error.stack);
+
+              const fallbackComment = \`## ⚠️ Test Parsing Error
+
+              Could not parse JSON test results properly. The tests may have run but results couldn't be processed.
+
+              **Debugging info:**
+              - Error: \${error.message}
+              - Check the [workflow logs](\${process.env.GITHUB_SERVER_URL}/\${process.env.GITHUB_REPOSITORY}/actions/runs/\${process.env.GITHUB_RUN_ID}) for details
+
+              **Next steps:**
+              - Run tests locally: \\\`pnpm test\\\`
+              - Check vitest configuration in \\\`vite.config.ts\\\`
+              - Verify test files are in the correct location
+
+              ---
+              *🤖 Generated by GitHub Actions*\`;
+
+              fs.writeFileSync('test-comment.md', fallbackComment);
+
+              const output = process.env.GITHUB_OUTPUT;
+              if (output) {
+                fs.appendFileSync(output, 'test_status=error\\n');
+              }
             }
           "
         
