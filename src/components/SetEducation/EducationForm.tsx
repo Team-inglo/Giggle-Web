@@ -5,18 +5,14 @@ import {
   PostEducationType,
   SchoolSummary,
 } from '@/types/postResume/postEducation';
-import {
-  EducationLevels,
-  getEnumByKo,
-  getKoByEnum,
-  MajorsEn,
-} from '@/constants/manageResume';
+import { EducationLevels, MajorsEn } from '@/constants/manageResume';
 import GraySearchIcon from '@/assets/icons/ManageResume/GraySearchIcon.svg?react';
 import { Dispatch, SetStateAction, useState } from 'react';
 import SearchSchools from '@/components/SetEducation/SearchSchools';
 import { School } from '@/types/api/document';
 import { formatDateInput } from '@/utils/information';
 import InputLayout from '../WorkExperience/InputLayout';
+import { getMajorEnumFromKo, getMajorKoFromEnum } from '@/utils/resume';
 
 type EducationFormProps = {
   mode: 'post' | 'patch';
@@ -91,11 +87,14 @@ const EducationForm = ({
         {/* 전공 입력 */}
         <InputLayout title="Department (major)" isEssential={true}>
           <Dropdown
-            value={getKoByEnum(educationData.major || '') || ''}
+            value={getMajorKoFromEnum(educationData.major || '') || ''}
             placeholder="Education Title"
             options={MajorsEn}
             setValue={(value) =>
-              handleInputChange('major', getEnumByKo(value as string) || '')
+              handleInputChange(
+                'major',
+                getMajorEnumFromKo(value as string) || '',
+              )
             }
           />
         </InputLayout>

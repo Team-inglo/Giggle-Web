@@ -17,7 +17,7 @@ import {
   validateFieldValues,
 } from '@/utils/editProfileData';
 import { useEffect, useState } from 'react';
-import { country, phone, visa } from '@/constants/information';
+import { phone, visa } from '@/constants/information';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useGetUserProfile, usePatchUserProfile } from '@/hooks/api/useProfile';
 import InputLayout from '@/components/WorkExperience/InputLayout';
@@ -27,6 +27,11 @@ import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import { documentTranslation } from '@/constants/translation';
 import { formatDateInput } from '@/utils/information';
+import { Nationalities } from '@/constants/manageResume';
+import {
+  getNationalityEnFromEnum,
+  getNationalityEnumFromEn,
+} from '@/utils/resume';
 
 const EditProfilePage = () => {
   const { data: userProfile } = useGetUserProfile();
@@ -227,11 +232,16 @@ const EditProfilePage = () => {
               {/* 국적 선택 */}
               <InputLayout title="Nationality" isEssential={false} isOptional>
                 <Dropdown
-                  value={userData.nationality}
+                  value={
+                    getNationalityEnFromEnum(userData.nationality || '') || ''
+                  }
                   placeholder="Select Nationality"
-                  options={country}
+                  options={Nationalities.map((nationality) => nationality.en)}
                   setValue={(value: string) =>
-                    setUserData({ ...userData, nationality: value })
+                    setUserData({
+                      ...userData,
+                      nationality: getNationalityEnumFromEn(value) as string,
+                    })
                   }
                 />
               </InputLayout>
