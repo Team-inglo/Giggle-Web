@@ -18,6 +18,7 @@ import {
   postEducation,
   postEtcLanguageLevel,
   postWorkExperience,
+  putScrapResume,
   putWorkPreference,
 } from '@/api/resumes';
 import {
@@ -280,6 +281,18 @@ export const usePutWorkPreference = () => {
     },
   });
 };
+
+// 7.23 (유학생) 이력서 공개 여부 수정하기
+export const usePatchResumePublic = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: patchResumePublic,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
+    },
+  });
+};
+
 // 9.1 (유학생) 학교 검색하기
 export const useGetSearchSchools = (
   search: string,
@@ -298,10 +311,11 @@ export const useGetSearchSchools = (
   });
 };
 
-export const usePatchResumePublic = () => {
+// 15.1 (고용주) 인재 스크랩 추가/삭제
+export const usePutScrapResume = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: patchResumePublic,
+    mutationFn: putScrapResume,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
     },

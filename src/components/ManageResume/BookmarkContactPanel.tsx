@@ -7,9 +7,9 @@ import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/store/user';
 import { useParams } from 'react-router-dom';
-import { usePutPostBookmark } from '@/hooks/api/usePost';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
+import { usePutScrapResume } from '@/hooks/api/useResume';
 
 type PostDetailApplyButtonProps = {
   isBookmarked: boolean;
@@ -19,7 +19,7 @@ const BookmarkContactPanel = ({ isBookmarked }: PostDetailApplyButtonProps) => {
   const { account_type } = useUserStore();
   const { id } = useParams();
 
-  const { mutate } = usePutPostBookmark();
+  const { mutate } = usePutScrapResume();
 
   const [isOpenConfirmBottomSheet, setIsOpenConfirmBottomSheet] =
     useState<boolean>(false);
@@ -29,14 +29,14 @@ const BookmarkContactPanel = ({ isBookmarked }: PostDetailApplyButtonProps) => {
 
   const onClickApply = async () => {
     sendReactNativeMessage({
-      type: 'PHONE_CALL',
+      type: 'CALL_PHONE',
       payload: '01012345678',
     });
   };
 
   const onClickBookmark = async () => {
     if (account_type && !isNaN(Number(id))) {
-      mutate(Number(id));
+      mutate(Number(id)); // 검색 페이지에서 넘겨준 이력서 id로 스크랩하는 것으로 추후 수정
       setIsBookmark(!isBookmark);
     }
   };
