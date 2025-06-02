@@ -12,7 +12,6 @@ import SearchSchools from '@/components/SetEducation/SearchSchools';
 import { School } from '@/types/api/document';
 import { formatDateInput } from '@/utils/information';
 import InputLayout from '../WorkExperience/InputLayout';
-import { getMajorEnumFromKo, getMajorKoFromEnum } from '@/utils/resume';
 
 type EducationFormProps = {
   mode: 'post' | 'patch';
@@ -87,15 +86,10 @@ const EducationForm = ({
         {/* 전공 입력 */}
         <InputLayout title="Department (major)" isEssential={true}>
           <Dropdown
-            value={getMajorKoFromEnum(educationData.major || '') || ''}
+            value={educationData.major}
             placeholder="Education Title"
             options={MajorsEn}
-            setValue={(value) =>
-              handleInputChange(
-                'major',
-                getMajorEnumFromKo(value as string) || '',
-              )
-            }
+            setValue={(value) => handleInputChange('major', value)}
           />
         </InputLayout>
         {/* 학년 입력 */}

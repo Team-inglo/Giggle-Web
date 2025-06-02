@@ -9,7 +9,7 @@ import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
-import { getMajorEnFromEnum, getMajorKoFromEnum } from '@/utils/resume';
+import { getMajorKoFromEn } from '@/utils/resume';
 
 type EducationDetailProps = {
   data: EducationType[];
@@ -53,8 +53,8 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
               </div>
               <p className="pb-2 body-14-regular text-text-normal">
                 {account_type === UserType.OWNER
-                  ? getMajorKoFromEnum(education.major || '')
-                  : getMajorEnFromEnum(education.major || '')}
+                  ? getMajorKoFromEn(education.major)
+                  : education.major}
               </p>
               <div className="flex gap-[0.5rem] caption-12-regular">
                 <p className="text-text-alternative">
