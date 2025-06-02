@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 import PostApplyResume from './PostApplyResume';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { createMockResumeData } from '@/__tests__/mocks/resume';
+import { createMockResumeData } from '@/__tests__/mocks/resume.mock';
 
 // Mock all hooks directly
 const mockUseGetResume = vi.fn();

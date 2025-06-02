@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { vi } from 'vitest';
-import { createMockTalentList, createMockSearchResult } from '../mocks/talent';
+import { createMockTalentList, createMockSearchResult } from '../mocks/talent.mock';
 
 // API 함수들에 대한 모킹 헬퍼
 export const mockApiSuccess = <T>(data: T) => {
