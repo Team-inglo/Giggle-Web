@@ -13,9 +13,13 @@ import { usePutScrapResume } from '@/hooks/api/useResume';
 
 type PostDetailApplyButtonProps = {
   isBookmarked: boolean;
+  phoneNumber: string;
 };
 
-const BookmarkContactPanel = ({ isBookmarked }: PostDetailApplyButtonProps) => {
+const BookmarkContactPanel = ({
+  isBookmarked,
+  phoneNumber,
+}: PostDetailApplyButtonProps) => {
   const { account_type } = useUserStore();
   const { id } = useParams();
 
@@ -28,10 +32,13 @@ const BookmarkContactPanel = ({ isBookmarked }: PostDetailApplyButtonProps) => {
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
   const onClickApply = async () => {
-    sendReactNativeMessage({
-      type: 'CALL_PHONE',
-      payload: '01012345678',
-    });
+    if (window.ReactNativeWebView) {
+      sendReactNativeMessage({
+        type: 'SEND_MESSAGE_TO_USER',
+        payload: phoneNumber.replace(/[-]/g, ''),
+      });
+      return;
+    }
   };
 
   const onClickBookmark = async () => {
