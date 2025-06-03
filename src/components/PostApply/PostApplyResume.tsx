@@ -68,6 +68,7 @@ const PostApplyResume = () => {
           main_address={data.data.personal_information.main_address}
           phone={data.data.personal_information.phone}
           email={data.data.personal_information.email}
+          isPublic={data.data.is_public}
         />
       </section>
       <section className="flex flex-col gap-2 bg-surface-secondary pt-2 pb-2">
@@ -76,7 +77,7 @@ const PostApplyResume = () => {
           introductionData={data.data?.introduction}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={handleIntroductionClick}
             >
               {data.data?.introduction ? 'Edit' : 'Add'}
@@ -89,7 +90,7 @@ const PostApplyResume = () => {
           onAddClick={() => navigateToSection('/')}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={handleVisaClick}
             >
               Edit
@@ -97,10 +98,10 @@ const PostApplyResume = () => {
           }
           renderContent={() => (
             <>
-              <p className="pb-2 button-1 text-text-strong">
+              <p className="pb-2 button-16-semibold text-text-strong">
                 {data.data?.visa.visa.replace(/_/g, '-')}
               </p>
-              <p className="body-3 text-text-normal">
+              <p className="caption-12-regular text-text-normal">
                 {data.data?.visa.description === '-'
                   ? ''
                   : data.data?.visa.description}
@@ -113,7 +114,7 @@ const PostApplyResume = () => {
           workExperienceData={data.data?.work_experience}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/work-experience')}
             >
               Add
@@ -125,7 +126,7 @@ const PostApplyResume = () => {
           educationData={data.data?.education}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/education')}
             >
               Add
@@ -137,7 +138,7 @@ const PostApplyResume = () => {
           languageData={data.data?.languages}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/language/add')}
             >
               Add
@@ -149,7 +150,7 @@ const PostApplyResume = () => {
           workPreferencesData={data.data?.work_preference}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/work-preference')}
             >
               Add

@@ -46,24 +46,26 @@ const ApplicationDetailSchoolPage = () => {
         <>
           <main className="w-full px-4 flex flex-col gap-8">
             <section>
-              <h5 className="pb-2 body-2 text-text-alternative">
+              <h5 className="pb-2 body-14-regular text-text-alternative">
                 Check the documents 👀
               </h5>
               <ul className="w-full p-4 flex flex-col gap-1 bg-primary-neutral rounded-lg">
-                <li className="caption text-text-alternative">
+                <li className="caption-12-regular text-text-alternative">
                   📌 Work Permit Form
                 </li>
-                <li className="caption text-text-alternative">
+                <li className="caption-12-regular text-text-alternative">
                   📌 Employment Contract
                 </li>
-                <li className="caption text-text-alternative">
+                <li className="caption-12-regular text-text-alternative">
                   📌 Integrated Application Form
                 </li>
-                <li className="caption text-text-alternative">
+                <li className="caption-12-regular text-text-alternative">
                   📌 Residence Card
                 </li>
-                <li className="caption text-text-alternative">📌 Passport</li>
-                <li className="caption text-text-alternative">
+                <li className="caption-12-regular text-text-alternative">
+                  📌 Passport
+                </li>
+                <li className="caption-12-regular text-text-alternative">
                   📌 Business Registration Certificate
                 </li>
               </ul>
@@ -71,14 +73,14 @@ const ApplicationDetailSchoolPage = () => {
             {data?.data?.school_name ? (
               <>
                 <section>
-                  <h5 className="pb-2 body-2 text-text-alternative">
+                  <h5 className="pb-2 body-14-regular text-text-alternative">
                     Check the address 👀
                   </h5>
-                  <p className="button-1 text-text-strong">
+                  <p className="button-16-semibold text-text-strong">
                     📍 {data?.data?.school_name ?? ''}{' '}
                     {data?.data?.institute_name ?? ''}
                   </p>
-                  <p className="pb-3 caption text-text-strong">
+                  <p className="pb-3 caption-12-regular text-text-strong">
                     {data?.data?.address?.address_detail}
                   </p>
                   {data?.data?.address?.latitude &&
@@ -101,16 +103,16 @@ const ApplicationDetailSchoolPage = () => {
                     )}
                 </section>
                 <section>
-                  <h5 className="pb-2 body-2 text-text-alternative">
+                  <h5 className="pb-2 body-14-regular text-text-alternative">
                     Need to reach the coordinator? 📞
                   </h5>
                   <button className="w-full p-4 flex items-center gap-4 bg-surface-secondary rounded-lg">
                     <RecruiterIcon />
                     <div>
-                      <p className="pb-1 button-1 text-text-strong">
+                      <p className="pb-1 button-16-semibold text-text-strong">
                         {data?.data?.coordinator_name}
                       </p>
-                      <p className="body-2 text-text-alternative">
+                      <p className="body-14-regular text-text-alternative">
                         {data?.data?.coordinator_phone_number}
                       </p>
                     </div>
@@ -119,22 +121,22 @@ const ApplicationDetailSchoolPage = () => {
               </>
             ) : (
               <section>
-                <h5 className="pb-2 body-2 text-text-alternative">
+                <h5 className="pb-2 body-14-regular text-text-alternative">
                   Check the information 👀
                 </h5>
                 <div className="w-full p-4 flex flex-col items-center bg-surface-secondary rounded-lg">
                   <EmptyJobIcon />
-                  <p className="mt-1 mb-4 caption text-text-alternative">
+                  <p className="mt-1 mb-4 caption-12-regular text-text-alternative">
                     Can’t find your school coordinator info ?
                   </p>
                   <button
-                    className="mb-2 py-2 px-[0.625rem] border border-border-normal rounded-lg bg-surface-base body-2 text-surface-invert"
+                    className="mb-2 py-2 px-[0.625rem] border border-border-normal rounded-lg bg-surface-base body-14-regular text-surface-invert"
                     onClick={() => handleGoExternalWeb('googleform')}
                   >
                     Contact us
                   </button>
                   <button
-                    className="caption text-text-alternative underline"
+                    className="caption-12-regular text-text-alternative underline"
                     onClick={() => handleGoExternalWeb('kakao')}
                   >
                     Don't you have KakaoTalk? Click here

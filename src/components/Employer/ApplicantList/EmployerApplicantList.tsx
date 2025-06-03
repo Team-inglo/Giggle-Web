@@ -67,9 +67,11 @@ const EmployerApplicantList = () => {
   return (
     <>
       <section className="w-full pt-2">
-        <h2 className="p-4 head-2 text-text-strong">이 공고의 지원자들 👥</h2>
+        <h2 className="p-4 heading-20-semibold text-text-strong">
+          이 공고의 지원자들 👥
+        </h2>
         <div className="w-full p-4 flex justify-between items-center">
-          <h3 className="caption text-text-alternative">
+          <h3 className="caption-12-regular text-text-alternative">
             {applicantData.length} 명의 지원자
           </h3>
           <SearchSortDropdown
@@ -101,7 +103,7 @@ const EmployerApplicantList = () => {
                       ? 'bg-surface-secondary'
                       : 'bg-surface-base'
                   }
-                  fontStyle="body-2"
+                  fontStyle="body-14-regular"
                 />
               </button>
             ))}
@@ -114,7 +116,9 @@ const EmployerApplicantList = () => {
             <EmployerApplicationCard key={data.id} applicantData={data} />
           ))
         ) : (
-          <p className="py-12 w-full text-center body-2">지원자가 없습니다.</p>
+          <p className="py-12 w-full text-center body-14-regular">
+            지원자가 없습니다.
+          </p>
         )}
       </div>
       {isFetchingNextPage && <LoadingItem />}

@@ -42,8 +42,11 @@ const HomeJobPostingList = ({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center py-1">
-        <h3 className="head-3 text-black">{title}</h3>
-        <button className="caption text-[#9397A1]" onClick={onSeeMoreClick}>
+        <h3 className="heading-18-semibold text-black">{title}</h3>
+        <button
+          className="caption-12-regular text-[#9397A1]"
+          onClick={onSeeMoreClick}
+        >
           {postTranslation.seeMore[isEmployerByAccountType(account_type)]}
         </button>
       </div>

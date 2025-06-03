@@ -43,14 +43,14 @@ const PostCardList = ({
     return (
       <div className="w-full px-4 flex-1 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
-        <h3 className="head-2 text-[#252525]">
+        <h3 className="heading-20-semibold text-[#252525]">
           {
             postTranslation.emptySearchResultTitle[
               isEmployerByAccountType(account_type)
             ]
           }
         </h3>
-        <p className="body-2 text-[#9397A1] text-center">
+        <p className="body-14-regular text-[#9397A1] text-center">
           {
             postTranslation.emptySearchResultContent[
               isEmployerByAccountType(account_type)
@@ -77,7 +77,7 @@ const PostCardList = ({
                 <JobPostingCard.CompanyInfo />
               </div>
               <JobPostingCard.HourlyRate />
-              <p className="pt-[0.125rem] pb-2 caption text-text-alternative whitespace-normal">
+              <p className="pt-[0.125rem] pb-2 caption-12-regular text-text-alternative whitespace-normal">
                 <JobPostingCard.Visa />
                 <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
                 <JobPostingCard.WorkDayInfo />

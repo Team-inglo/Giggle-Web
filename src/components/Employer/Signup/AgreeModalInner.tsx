@@ -32,15 +32,15 @@ const AgreeModalInner = ({
     onNext(false);
   };
   return (
-    <div className="w-full flex flex-col items-center justify-start gap-[2.5rem] text-left body-1">
-      <div className="relative w-full flex flex-col items-start justify-start gap-y-6 text-left text-[#33384b] head-2">
+    <div className="w-full flex flex-col items-center justify-start gap-[2.5rem] text-left body-16-regular">
+      <div className="relative w-full flex flex-col items-start justify-start gap-y-6 text-left text-[#33384b] heading-20-semibold">
         <div className="w-full flex flex-col items-start justify-start px-1.5">
           <div className="w-full flex items-center ">약관동의*</div>
         </div>
         <div className="w-full border-b border-[#F4F4F6]"></div>
       </div>
-      <div className="w-full flex flex-col items-start justify-start gap-6 text-left body-2">
-        <div className="w-full relative flex flex-col items-start justify-center gap-2 pb-2 text-left body-1 border-b border-[#F4F4F6]">
+      <div className="w-full flex flex-col items-start justify-start gap-6 text-left body-14-regular">
+        <div className="w-full relative flex flex-col items-start justify-center gap-2 pb-2 text-left body-16-regular border-b border-[#F4F4F6]">
           <div className="flex items-start justify-center gap-3">
             <div className="flex items-center justify-start py-0.5">
               <div
@@ -58,13 +58,13 @@ const AgreeModalInner = ({
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
               <div className="w-full flex items-center">전체동의</div>
-              <div className="w-full body-3 text-[#bdbdbd] flex items-center">
+              <div className="w-full caption-12-regular text-[#bdbdbd] flex items-center">
                 선택항목 포함 모든 약관에 동의합니다.
               </div>
             </div>
           </div>
         </div>
-        <div className="w-full flex flex-col items-start justify-center gap-4 text-left body-2">
+        <div className="w-full flex flex-col items-start justify-center gap-4 text-left body-14-regular">
           <div className="w-full flex items-center justify-center gap-3">
             <div className="flex items-center justify-start py-0.5">
               <div

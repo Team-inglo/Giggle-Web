@@ -45,7 +45,7 @@ const PostSearchPage = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <TextFieldHeader
         handleSearch={onClickSearch}
         placeholder={
@@ -59,15 +59,15 @@ const PostSearchPage = () => {
         <nav className="flex w-full bg-surface-base">
           <button
             onClick={() => setSelectedMenu(PostSearchMenu.POST)}
-            className={`flex-1 py-[0.625rem] button-1 ${selectedMenu === PostSearchMenu.POST ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
+            className={`flex-1 py-[0.625rem] button-16-semibold ${selectedMenu === PostSearchMenu.POST ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
           >
-            공고
+            Job
           </button>
           <button
             onClick={() => setSelectedMenu(PostSearchMenu.CAREER)}
-            className={`flex-1 py-[0.625rem] button-1 ${selectedMenu === PostSearchMenu.CAREER ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
+            className={`flex-1 py-[0.625rem] button-16-semibold ${selectedMenu === PostSearchMenu.CAREER ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
           >
-            커리어
+            Career
           </button>
         </nav>
       )}

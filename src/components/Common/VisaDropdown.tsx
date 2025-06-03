@@ -21,8 +21,9 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
   return (
     <>
       <div className="w-full flex flex-col gap-2">
-        <div className="w-full relative rounded-lg bg-white border border-border-disabled box-border h-11 flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-2 text-text-normal">
-          <div className="flex-1 h-5 flex flex-row items-center justify-between"
+        <div className="w-full relative rounded-lg bg-white border border-border-disabled box-border h-11 flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-14-regular text-text-normal">
+          <div
+            className="flex-1 h-5 flex flex-row items-center justify-between"
             onClick={() => setIsBottomSheetOpen(!isBottomSheetOpen)}
           >
             <input
@@ -53,7 +54,7 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
               hasCheckIcon={false}
               backgroundColor={'bg-surface-base'}
               color="text-text-normal"
-              fontStyle="body-2"
+              fontStyle="body-14-regular"
               onDelete={() => handleDelete(value)}
               borderColor={'border-border-alternative'}
             />
