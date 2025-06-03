@@ -1,5 +1,4 @@
-import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
-import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
+import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import { useState } from 'react';
 import Button from '@/components/Common/Button';
@@ -11,6 +10,11 @@ import {
 import NumberRadioButton from '@/components/Language/NumberRadioButton';
 import { LanguagesLevelType } from '@/types/api/resumes';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
+import { profileTranslation } from '@/constants/translation';
+import { useLocation } from 'react-router-dom';
+import { isEmployer } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type LanguageCardProps = {
   title: string;
@@ -25,6 +29,8 @@ const LanguageCard = ({
   etcLanguageId,
   maxLevel,
 }: LanguageCardProps) => {
+  const pathname = useLocation().pathname;
+  const { account_type } = useUserStore();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(level);
@@ -71,29 +77,29 @@ const LanguageCard = ({
     <>
       {modalOpen && (
         <ResumeDeleteModal
-          onCancelButton={() => setModalOpen(false)}
+          onEditButton={openLevelBottomSheet}
           onDeleteButton={handleDelete}
         />
       )}
       {/* 언어 레벨 선택 바텀 시트 */}
       {levelBottomSheetOpen && (
         <BottomSheetLayout
-          hasHandlebar={true}
+          hasHandlebar={false}
           isAvailableHidden={true}
           isShowBottomsheet={true}
           setIsShowBottomSheet={setLevelBottomSheetOpen}
         >
-          <div className="heading-20-semibold text-[#1E1926] py-3 pb-8 text-center">
+          <div className="heading-20-semibold text-text-strong pb-3">
             Choose your {title} Grade
           </div>
           {/* 언어 등급 선택 (0 ~ maxLevel) */}
-          <div className="w-full h-[48vh] overflow-x-scroll">
+          <div className="w-full h-[48vh] overflow-x-scroll no-scrollbar">
             {[...Array(maxLevel + 1).keys()].map((grade) => (
               <div
                 key={grade}
-                className="w-full flex items-center justify-between px-2.5 py-3"
+                className="w-full flex items-center justify-between py-3"
               >
-                <div className="ml-2 body-16-regular text-[#656565]">
+                <div className="body-16-regular text-text-normal">
                   Grade {grade}
                 </div>
                 <NumberRadioButton
@@ -104,13 +110,13 @@ const LanguageCard = ({
               </div>
             ))}
           </div>
-          <div className="bg-grayGradient">
+          <div className="">
             <Button
               type="large"
               title="Select"
               isBorder={false}
-              bgColor="bg-[#FEF387]"
-              fontColor="text-[#1E1926]"
+              bgColor="bg-surface-primary"
+              fontColor="text-text-strong"
               onClick={handleLevelChange}
             />
           </div>
@@ -118,28 +124,34 @@ const LanguageCard = ({
       )}
       {/* 컴포넌트 시작 */}
       <div className="flex justify-between items-center w-full py-4">
-        <div className="flex items-center gap-2">
-          <h5 className="pb-[0.125rem] button-14-semibold text-[#464646]">
+        <section className="flex gap-2 items-center">
+          <h5 className="pb-[0.125rem] button-14-semibold  text-text-strong">
             {title}
           </h5>
-          <div className="px-1 py-[0.188rem] rounded-sm text-[#0066FF] bg-[#0066FF1F] caption-12-regular">
-            LEVEL {level}
+          <div className="px-1.5 py-0.5 rounded-sm text-statusBlue-300 bg-statusBlue-100 caption-11-semibold">
+            {account_type === UserType.OWNER
+              ? `${level} ${profileTranslation.level[isEmployer(pathname)]}`
+              : `LEVEL ${level}`}
           </div>
+        </section>
+        <div className="flex items-center gap-2">
+          {account_type === UserType.USER &&
+            (etcLanguageId ? (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={() => setModalOpen(true)}
+                  className="cursor-pointer"
+                />
+              </div>
+            ) : (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={openLevelBottomSheet}
+                  className="cursor-pointer"
+                />
+              </div>
+            ))}
         </div>
-        {etcLanguageId ? (
-          <div className="flex justify-center items-center gap-2 ml-1">
-            <EditIcon
-              onClick={openLevelBottomSheet}
-              className="cursor-pointer"
-            />
-            <DeleteIcon
-              onClick={() => setModalOpen(true)}
-              className="cursor-pointer"
-            />
-          </div>
-        ) : (
-          <EditIcon onClick={openLevelBottomSheet} className="cursor-pointer" />
-        )}
       </div>
     </>
   );

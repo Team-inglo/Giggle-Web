@@ -30,8 +30,7 @@ const WorkPreferencePage = () => {
   const handleBackButtonClick = useNavigateBack();
 
   // 수정 여부 확인
-  const isEdit = location.state?.isEdit === true;
-
+  const isEdit = location.state?.data?.isEdit === true;
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const [isAreaSelectOpen, setIsAreaSelectOpen] = useState(false);
 
@@ -53,17 +52,31 @@ const WorkPreferencePage = () => {
 
   // 기존 데이터가 있는 경우 초기 데이터 설정
   useEffect(() => {
-    if (isEdit && isSuccess && workPreferenceData) {
-      setSelectedAreas(convertApiAreasToStrings(workPreferenceData.areas));
+    if (isEdit && isSuccess && workPreferenceData.data) {
+      // 지역(areas)
+      setSelectedAreas(
+        Array.isArray(workPreferenceData.data.preference_addresses)
+          ? convertApiAreasToStrings(
+              workPreferenceData.data.preference_addresses,
+            )
+          : [],
+      );
 
-      // 근무 형태 설정
-      const jobTypeStrings = workPreferenceData.jobTypes.map(
-        (jobType: EmploymentType) => jobType.toLowerCase(),
+      // 근무 형태(employment_types)
+      const jobTypes = Array.isArray(workPreferenceData.data.employment_types)
+        ? workPreferenceData.data.employment_types
+        : [];
+      const jobTypeStrings = jobTypes.map((jobType: EmploymentType) =>
+        jobType.toLowerCase(),
       );
       setSelectedJobTypes(jobTypeStrings);
 
-      // 업직종 설정
-      setSelectedIndustries(workPreferenceData.industries);
+      // 업직종(job_categories)
+      setSelectedIndustries(
+        Array.isArray(workPreferenceData.data.job_categories)
+          ? workPreferenceData.data.job_categories
+          : [],
+      );
     }
   }, [isEdit, isSuccess, workPreferenceData]);
 

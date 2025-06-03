@@ -16,8 +16,8 @@ import {
   PartTimePermitFormRequest,
 } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
-import { country } from './information';
 import { transformers } from '@/utils/transformers';
+import { Nationalities } from './manageResume';
 
 // 문서 타입별 정보를 담은 객체
 export const DocumentTypeInfo = {
@@ -838,7 +838,7 @@ export const IntegratedApplicationformFields: IntegratedApplicationFormField[] =
           IntegratedApplicationField.NATIONALITY
         ].name,
       placeholder: 'Nationality',
-      options: country,
+      options: Nationalities.map((nationality) => nationality.en),
     },
     {
       type: 'phone',

@@ -23,6 +23,7 @@ import { EducationRequest } from '@/types/api/resumes';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EducationLevelType } from '@/types/postApply/resumeDetailItem';
+import { getMajorEnumFromEn } from '@/utils/resume';
 
 const EducationPage = () => {
   const { id } = useParams();
@@ -72,6 +73,7 @@ const EducationPage = () => {
         education_level: educationData.education_level as EducationLevelType,
         gpa: educationData.gpa ? parseFloat(String(educationData.gpa)) : 0,
         grade: educationData.grade ? Number(educationData.grade) : 0,
+        major: getMajorEnumFromEn(educationData.major || '') || '',
       };
       patchMutate({
         id: id!,
