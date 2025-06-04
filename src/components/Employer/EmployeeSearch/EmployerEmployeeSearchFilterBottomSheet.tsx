@@ -61,7 +61,7 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full">
-        <h3 className="px-1 py-3 head-3 text-text-strong">
+        <h3 className="px-1 py-3 head-3 text-text-strong heading-18-semibold">
           {EMPLOYEE_SEARCH_CATEGORY_KO[filterType]}을 선택해주세요
         </h3>
         <main className="h-[50vh] overflow-y-scroll">
@@ -71,7 +71,9 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
               className="w-full px-1 py-3 flex justify-between items-center"
               onClick={() => handleClickFilter(option.en)}
             >
-              <p className="body-2 text-text-strong">{option.ko}</p>
+              <p className="body-2 text-text-strong body-16-regular">
+                {option.ko}
+              </p>
               <BottomSheetCheckIcon
                 bgColor={
                   checkedFilter.includes(option.en)

@@ -69,3 +69,27 @@ export type UserResumeDetailResponse = {
   languages: LanguageListType;
   is_public: boolean;
 };
+
+// (고용주) 인재 이력서 리스트
+export type EmployeeResumeListItemType = {
+  id: string;
+  name: string;
+  profile_img_url: string;
+  nationality: string;
+  title: string;
+  visa: VisaType;
+  industry: string;
+  bookmark_count: number;
+  is_bookmarked: boolean;
+};
+
+// 7.24 (고용주) 이력서 리스트 조회하기 request type
+export type GetEmployeeResumeListReq = {
+  size: number;
+  sorting?: string | null;
+  visa?: string | null;
+  korean?: string | null;
+  major?: string | null;
+  nationality?: string | null;
+  industry?: string | null;
+};

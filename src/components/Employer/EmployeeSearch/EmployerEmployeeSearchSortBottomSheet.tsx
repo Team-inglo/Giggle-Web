@@ -23,14 +23,18 @@ const EmployerEmployeeSearchSortBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="px-1 w-full">
-        <h3 className="py-3 head-3 text-text-strong">정렬조건 선택</h3>
+        <h3 className="py-3 head-3 text-text-strong heading-18-semibold">
+          정렬조건 선택
+        </h3>
         {Object.values(POST_SORTING).map((option, index) => (
           <button
             key={`${index}_${option}`}
             className="relative w-full py-3 text-start"
             onClick={() => handleClickSort(option)}
           >
-            <p className="body-2 text-text-strong">{POST_SORTING_KR[option]}</p>
+            <p className="body-2 text-text-strong body-16-regular">
+              {POST_SORTING_KR[option]}
+            </p>
             {option === selectedSort && (
               <div className="absolute right-0 top-3">
                 <BottomSheetCheckIcon />

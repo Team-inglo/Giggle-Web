@@ -7,7 +7,7 @@ import {
   EMPLOYEE_SEARCH_OPTIONS,
   initialEmployerSearchFilterList,
 } from '@/constants/employee';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { POST_SORTING, POST_SORTING_KR } from '@/constants/postSearch';
 import {
   EmployeeSearchCategoryEnType,
@@ -15,9 +15,16 @@ import {
 } from '@/types/api/employee';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import EmployerEmployeeSearchSortBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchSortBottomSheet';
-import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon.svg?react';
+import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
 import EmployerEmployeeSearchFilterBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchFilterBottomSheet';
 import DisclosureIcon from '@/assets/icons/DisclosureIcon';
+import { useInfiniteGetEmployeeResumeList } from '@/hooks/api/useResume';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { EmployeeResumeListItemType } from '@/types/api/resumes';
+import { formatResumeSearchFilter } from '@/utils/formatSearchFilter';
+import EmployerEmployeeCardList from '@/components/Employer/EmployeeSearch/EmployerEmployeeCardList';
 
 export type EmployeeSearchOptionType = {
   filterList: EmployeeSearchFilterItemType;
@@ -26,6 +33,8 @@ export type EmployeeSearchOptionType = {
 
 const EmployerEmployeeSearchPage = () => {
   const navigate = useNavigate();
+
+  const { account_type } = useUserStore();
 
   const [searchOption, setSearchOption] = useState<EmployeeSearchOptionType>({
     sortType: POST_SORTING.RECENT,
@@ -36,10 +45,35 @@ const EmployerEmployeeSearchPage = () => {
     useState<EmployeeSearchCategoryEnType>(EMPLOYEE_SEARCH_CATEGORY.VISA);
   const [isOpenSortBottomSheet, setIsOpenSortBottomSheet] = useState(false);
   const [isOpenFilterBottomSheet, setIsOpenFilterBottomSheet] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [resumeData, setResumeData] = useState<EmployeeResumeListItemType[]>(
+    [],
+  );
 
-  const goToHomePage = () => {
-    navigate(`/`);
-  };
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isInitialLoading,
+  } = useInfiniteGetEmployeeResumeList(
+    formatResumeSearchFilter(searchOption),
+    account_type === UserType.OWNER ? true : false,
+  );
+
+  const targetRef = useInfiniteScroll(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      setIsLoading(true);
+      fetchNextPage().finally(() => setIsLoading(false));
+    }
+  }, !!hasNextPage);
+
+  useEffect(() => {
+    if (data && data.pages.length > 0) {
+      const result = data.pages.flatMap((page) => page.data.resumes);
+      setResumeData(result);
+    }
+  }, [data]);
 
   const handleClickSort = (selectedSort: PostSortingType) => {
     setSearchOption((prev) => ({ ...prev, sortType: selectedSort }));
@@ -59,7 +93,7 @@ const EmployerEmployeeSearchPage = () => {
     <>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={goToHomePage}
+        onClickBackButton={() => navigate(`/`)}
         hasMenuButton={false}
         title={'인재찾기'}
       />
@@ -78,7 +112,7 @@ const EmployerEmployeeSearchPage = () => {
             return (
               <button
                 key={category}
-                className={`flex items-center py-2 pl-[0.875rem] pr-[0.625rem] border border-border-disabled rounded-[3.125rem] ${isSelected ? 'bg-surface-invert text-text-invert' : 'text-text-alternative'}`}
+                className={`flex items-center py-2 pl-[0.875rem] pr-[0.625rem] border border-border-disabled rounded-[3.125rem] body-14-regular ${isSelected ? 'bg-surface-invert text-text-invert' : 'text-text-alternative'}`}
                 onClick={() =>
                   handleOpenFilter(category as EmployeeSearchCategoryEnType)
                 }
@@ -100,10 +134,12 @@ const EmployerEmployeeSearchPage = () => {
         <div className="absolute top-0 right-0 h-14 pl-12 pr-2 py-1 bg-gradient-to-r from-white/20 to-white/70"></div>
       </nav>
       <section className="w-full py-1 px-4 flex justify-between items-center">
-        <h3 className="body-3 text-text-assistive">1개의 검색결과</h3>
+        <h3 className="body-3 text-text-assistive body-14-regular">
+          {resumeData.length}개의 검색결과
+        </h3>
         <button
           onClick={() => setIsOpenSortBottomSheet(true)}
-          className="flex items-center gap-1 text-text-assistive body-3"
+          className="flex items-center gap-1 text-text-assistive body-3 body-14-medium"
         >
           {POST_SORTING_KR[searchOption.sortType]}
           <div
@@ -111,11 +147,16 @@ const EmployerEmployeeSearchPage = () => {
               isOpenSortBottomSheet && 'rotate-180'
             }`}
           >
-            <DownArrowIcon />
+            <DownArrowIcon stroke={'#A9ABB8'} />
           </div>
         </button>
       </section>
-      <main>검색 결과 보여주기</main>
+      <EmployerEmployeeCardList
+        resumeData={resumeData}
+        isLoading={isLoading}
+        isInitialLoading={isInitialLoading}
+      />
+      <div ref={targetRef} className="h-1"></div>
       <EmployerEmployeeSearchSortBottomSheet
         selectedSort={searchOption.sortType}
         handleClickSort={handleClickSort}

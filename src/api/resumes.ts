@@ -1,6 +1,7 @@
 import {
   AdditionalLanguageRequest,
   EducationRequest,
+  GetEmployeeResumeListReq,
   IntroductionRequest,
   LanguagesLevelType,
   UserResumeDetailResponse,
@@ -11,6 +12,7 @@ import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
 import { GetEducationType } from '@/types/postResume/postEducation';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
+import { filterNullParams } from '@/utils/filterNullParams';
 
 // 7.1 (유학생) 이력서 조회하기
 export const getResume = async (): Promise<
@@ -176,6 +178,17 @@ export const getWorkPreference = async () => {
 // 7.22 (유학생) 희망 근로 조건 수정하기
 export const putWorkPreference = async (data: WorkPreferenceType) => {
   const response = await api.put('/users/resumes/work-preferences', data);
+  return response.data;
+};
+
+// 7.24 (고용주) 이력서 리스트 조회하기
+export const getEmployeeResumeList = async (
+  req: GetEmployeeResumeListReq,
+  page: number,
+) => {
+  const response = await api.get(`/owners/resumes/overviews`, {
+    params: { ...filterNullParams(req), page },
+  });
   return response.data;
 };
 
