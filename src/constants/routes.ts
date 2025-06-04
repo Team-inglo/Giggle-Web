@@ -73,16 +73,16 @@ export const guestRoutes = [
   {
     path: '/signin',
     svg: ApplicantsIcon,
-    label: 'Signin',
+    label: 'Applicants',
   },
   {
     path: '/signin',
     svg: ScrappedIcon,
-    label: 'Signin',
+    label: 'Saved',
   },
   {
     path: '/signin',
     svg: ProfileIcon,
-    label: 'Signin',
+    label: 'Mypage',
   },
 ];
