@@ -57,8 +57,8 @@ import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
 import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
 import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
-import EmploySearchDetailPage from './pages/Resume/EmploySearchDetailPage';
-import EmployerApplicantScrappedPage from './pages/Employer/ApplicantScrapped/EmployerApplicantScrappedPage';
+import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
+import EmployerApplicantScrappedPage from '@/pages/Employer/ApplicantScrapped/EmployerApplicantScrappedPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
