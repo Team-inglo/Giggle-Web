@@ -185,6 +185,14 @@ export const patchResumePublic = async (data: { is_public: boolean }) => {
   return response.data;
 };
 
+// 7.25 (고용주) 이력서 상세 조회하기
+export const getResumeDetail = async (id: string) => {
+  const response = await api.get(
+    `/owners/resumes/${id}/details`,
+  );
+  return response.data;
+};
+
 // 9.1 (유학생) 학교 검색하기
 export const getSearchSchools = async ({
   search,

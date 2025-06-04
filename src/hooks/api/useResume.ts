@@ -6,6 +6,7 @@ import {
   getApplicantResume,
   getEducation,
   getResume,
+  getResumeDetail,
   getSearchSchools,
   getWorkExperience,
   getWorkPreference,
@@ -290,6 +291,15 @@ export const usePatchResumePublic = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
+  });
+};
+
+// 7.25 (고용주) 이력서 상세 조회하기
+export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
+  return useQuery({
+    queryKey: ['resumeDetail', id],
+    queryFn: () => getResumeDetail(id),
+    enabled: isEnabled,
   });
 };
 
