@@ -1,7 +1,5 @@
-import { useGetApplicantResume, useGetResume } from '@/hooks/api/useResume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
-import { useCurrentApplicantIdStore } from '@/store/url';
 import { LoadingItem } from '@/components/Common/LoadingItem';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
@@ -11,28 +9,13 @@ import { ManageResumeType } from '@/constants/manageResume';
 import MypageCard from '@/components/ManageResume/MypageCard';
 import ResumeProfileCard from '@/components/ManageResume/ResumeProfileCard';
 import { useCallback } from 'react';
+import useResumeData from '@/hooks/useResumeData';
 
 const PostApplyResume = () => {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  const { currentApplicantId } = useCurrentApplicantIdStore();
+  const { pathname } = useLocation();
   const { account_type } = useUserStore();
-
-  const { data: userData, isPending: userDataPending } = useGetResume(
-    account_type === UserType.USER,
-  );
-  const { data: ownerData, isPending: ownerDataPending } =
-    useGetApplicantResume(
-      Number(currentApplicantId),
-      !isNaN(Number(currentApplicantId)) && account_type === UserType.OWNER
-        ? true
-        : false,
-    );
-
-  const data = account_type === UserType.OWNER ? ownerData : userData;
-  const isPending =
-    account_type === UserType.OWNER ? ownerDataPending : userDataPending;
+  const { data, isPending } = useResumeData();
 
   // 재사용 가능한 네비게이션 핸들러
   const navigateToSection = useCallback(

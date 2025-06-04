@@ -116,7 +116,7 @@ const InformationStep = ({
           content={signInputTranclation.infoStepContent[isEmployer(pathname)]}
         />
       </div>
-      <div className="w-full mx-auto mb-[7rem]">
+      <div className="w-full mx-auto mb-[7rem] px-4">
         <div className="w-full flex flex-col gap-[1rem]">
           {/* 이름 작성 */}
           <InputLayout title="First Name" isEssential={true}>
