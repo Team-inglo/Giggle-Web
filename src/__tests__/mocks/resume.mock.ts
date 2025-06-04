@@ -62,3 +62,11 @@ export const createMockResumeData = () => ({
     },
   },
 });
+
+// 공개 설정 응답 모킹을 위한 함수 추가
+export const createResumePublicResponse = (isPublic: boolean) => ({
+  success: true,
+  data: {
+    is_public: isPublic,
+  },
+});
