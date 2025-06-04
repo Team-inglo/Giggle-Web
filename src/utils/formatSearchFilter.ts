@@ -99,8 +99,7 @@ export const formatResumeSearchFilter = ({
       filterList[EMPLOYEE_SEARCH_CATEGORY.VISA]
         ?.join(',')
         ?.replace(/-/g, '_') ?? null,
-    korean:
-      filterList[EMPLOYEE_SEARCH_CATEGORY.KOREAN_LEVEL]?.join(',') ?? null,
+    korean: filterList[EMPLOYEE_SEARCH_CATEGORY.KOREAN]?.join(',') ?? null,
     major: filterList[EMPLOYEE_SEARCH_CATEGORY.MAJOR]?.join(',') ?? null,
     nationality:
       filterList[EMPLOYEE_SEARCH_CATEGORY.NATIONALITY]?.join(',') ?? null,

@@ -64,19 +64,19 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
         <h3 className="px-1 py-3 head-3 text-text-strong heading-18-semibold">
           {EMPLOYEE_SEARCH_CATEGORY_KO[filterType]}을 선택해주세요
         </h3>
-        <main className="h-[50vh] overflow-y-scroll">
+        <main className="max-h-[50vh] overflow-y-scroll">
           {EMPLOYEE_SEARCH_OPTIONS[filterType].map((option, index) => (
             <button
               key={`${index}_${option.ko}`}
               className="w-full px-1 py-3 flex justify-between items-center"
-              onClick={() => handleClickFilter(option.en)}
+              onClick={() => handleClickFilter(option.enum)}
             >
               <p className="body-2 text-text-strong body-16-regular">
                 {option.ko}
               </p>
               <BottomSheetCheckIcon
                 bgColor={
-                  checkedFilter.includes(option.en)
+                  checkedFilter.includes(option.enum)
                     ? 'bg-surface-invert'
                     : 'bg-surface-tertiary'
                 }
