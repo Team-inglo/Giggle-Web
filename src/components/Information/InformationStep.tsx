@@ -9,7 +9,7 @@ import {
   isValidPhoneNumber,
 } from '@/utils/information';
 import Dropdown from '@/components/Common/Dropdown';
-import { country, gender, phone, visa } from '@/constants/information';
+import { gender, phone, visa } from '@/constants/information';
 import RadioButton from '@/components/Information/RadioButton';
 import { InputType } from '@/types/common/input';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
@@ -20,6 +20,11 @@ import PageTitle from '../Common/PageTitle';
 import { signInputTranclation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
+import { Nationalities } from '@/constants/manageResume';
+import {
+  getNationalityEnFromEnum,
+  getNationalityEnumFromEn,
+} from '@/utils/resume';
 const InformationStep = ({
   userInfo,
   onNext,
@@ -203,11 +208,16 @@ const InformationStep = ({
           {/* 국적 선택 */}
           <InputLayout title="Nationality" isEssential={false} isOptional>
             <Dropdown
-              value={newUserInfo.nationality}
+              value={
+                getNationalityEnFromEnum(newUserInfo.nationality || '') || ''
+              }
               placeholder="Select Nationality"
-              options={country} // TODO: 국가명 데이터 받으면 교체해야 함.
+              options={Nationalities.map((nationality) => nationality.en)} // TODO: 국가명 데이터 받으면 교체해야 함.
               setValue={(value: string) =>
-                setNewUserInfo({ ...newUserInfo, nationality: value })
+                setNewUserInfo({
+                  ...newUserInfo,
+                  nationality: getNationalityEnumFromEn(value) as string,
+                })
               }
             />
           </InputLayout>

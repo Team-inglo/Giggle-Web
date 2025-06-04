@@ -17,7 +17,7 @@ import EditProfilePage from '@/pages/EditProfile/EditProfilePage';
 import PostDetailPage from '@/pages/PostDetail/PostDetailPage';
 import PostApplyPage from '@/pages/PostApply/PostApplyPage';
 import ApplicationPage from '@/pages/Application/ApplicationPage';
-import ManageResumePage from '@/pages/ManageResumePage/ManageResumePage';
+import ManageResumePage from '@/pages/Resume/ManageResumePage';
 import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
 import ScrappedJobPostsPage from '@/pages/Resume/ScrappedJobPostsPage';
 import PostWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PostWorkExperiencePage';
@@ -57,6 +57,7 @@ import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
 import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
 import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
+import EmploySearchDetailPage from './pages/Resume/EmploySearchDetailPage';
 import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
 
 const Layout = () => {
@@ -212,6 +213,10 @@ const Router = () => {
         <Route
           path="/employer/write-documents/:id"
           element={<EmployerWriteDocumentsPage />}
+        />
+        <Route
+          path="/employer/search/:id"
+          element={<EmploySearchDetailPage />}
         />
         <Route path="/write-documents" element={<WriteDocumentsPage />} />
         <Route path="/document-preview" element={<DocumentPreview />} />

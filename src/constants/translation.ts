@@ -345,6 +345,30 @@ export const profileTranslation = {
     ko: '언어능력',
     en: 'Languages',
   },
+  workPreference: {
+    ko: '희망 근무 조건',
+    en: 'Work Preference',
+  },
+  workPreferenceRegion: {
+    ko: '희망 근무 지역',
+    en: 'Preferred Work Area',
+  },
+  workPreferenceIndustry: {
+    ko: '희망 업직종',
+    en: 'Preferred Job Type',
+  },
+  workPreferenceType: {
+    ko: '희망 근무 분야',
+    en: 'Preferred Job Type',
+  },
+  socialIntegration: {
+    ko: '사회통합프로그램',
+    en: 'Social Integration',
+  },
+  sejongInstitute: {
+    ko: '세종학당',
+    en: 'Sejong Institute',
+  },
   level: {
     ko: '급',
     en: 'LEVEL',
@@ -354,7 +378,7 @@ export const profileTranslation = {
     en: 'years program',
   },
   thGrade: {
-    ko: '년',
+    ko: '학년',
     en: 'th grade',
   },
 };

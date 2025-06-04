@@ -1,13 +1,14 @@
 import { WorkExperienceType } from '@/types/postApply/resumeDetailItem';
-import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
-import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
+import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDeleteWorkExperience } from '@/hooks/api/useResume';
 import { useState } from 'react';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { formatDate } from '@/utils/editResume';
-import { infoTranslation } from '@/constants/translation';
+import { infoTranslation, profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type WorkExperienceDetailProps = {
   data: WorkExperienceType[];
@@ -15,8 +16,9 @@ type WorkExperienceDetailProps = {
 
 const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const { account_type } = useUserStore();
   const { mutate } = useDeleteWorkExperience();
+  const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -24,10 +26,6 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
   const openModal = (id: number) => {
     setModalOpen(true);
     setSelectedId(id);
-  };
-
-  const handleCancel = () => {
-    setModalOpen(false);
   };
 
   const handleDelete = () => {
@@ -38,7 +36,7 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
     <>
       {modalOpen && (
         <ResumeDeleteModal
-          onCancelButton={handleCancel}
+          onEditButton={() => navigate(`/resume/work-experience/edit/${selectedId}`)}
           onDeleteButton={handleDelete}
         />
       )}
@@ -49,10 +47,10 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
             className="w-full flex justify-between items-start rounded-lg"
           >
             <div className="flex flex-col gap-0.5">
-              <h5 className="pb-[0.125rem] button-16-semibold text-[#252525]">
+              <h5 className="pb-[0.125rem] button-16-semibold text-text-strong">
                 {work.title}
               </h5>
-              <p className="pb-2 caption-12-regular text-[#252525] whitespace-pre-wrap break-all">
+              <p className="pb-2 body-14-regular text-text-normal whitespace-pre-wrap break-all">
                 {work.description !== '-'
                   ? work.description
                   : infoTranslation.notEntered[isEmployer(pathname)]}
@@ -62,21 +60,20 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
                   {formatDate(work.start_date)}~
                   {work?.end_date ? formatDate(work.end_date) : ''}
                 </p>
-                <p className="text-text-alternative">{work.duration} months</p>
+                <p className="text-text-alternative">
+                  {work.duration}
+                  {profileTranslation.months[isEmployer(pathname)]}
+                </p>
               </div>
             </div>
-            <div className="flex justify-center items-center gap-2 ml-1">
-              <EditIcon
-                onClick={() =>
-                  navigate(`/resume/work-experience/edit/${work.id}`)
-                }
-                className="cursor-pointer"
-              />
-              <DeleteIcon
-                onClick={() => openModal(work.id)}
-                className="cursor-pointer"
-              />
-            </div>
+            {account_type === UserType.USER && (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={() => openModal(work.id)}
+                  className="cursor-pointer"
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>

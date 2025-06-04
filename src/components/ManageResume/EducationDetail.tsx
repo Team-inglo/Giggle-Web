@@ -1,19 +1,25 @@
 import { EducationType } from '@/types/postApply/resumeDetailItem';
 import { formatDate } from '@/utils/editResume';
-import EditIcon from '@/assets/icons/ManageResume/EditIcon.svg?react';
-import DeleteIcon from '@/assets/icons/ManageResume/DeleteIcon.svg?react';
-import { useNavigate } from 'react-router-dom';
+import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDeleteEducation } from '@/hooks/api/useResume';
 import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { useState } from 'react';
+import { profileTranslation } from '@/constants/translation';
+import { isEmployer } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
+import { getMajorKoFromEn } from '@/utils/resume';
 
 type EducationDetailProps = {
   data: EducationType[];
 };
 
 const EducationDetail = ({ data }: EducationDetailProps) => {
-  const navigate = useNavigate();
+  const pathname = useLocation().pathname;
+  const { account_type } = useUserStore();
   const { mutate } = useDeleteEducation();
+  const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -21,10 +27,6 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
   const openModal = (id: number) => {
     setModalOpen(true);
     setSelectedId(id);
-  };
-
-  const handleCancel = () => {
-    setModalOpen(false);
   };
 
   const handleDelete = () => {
@@ -35,7 +37,7 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
     <>
       {modalOpen && (
         <ResumeDeleteModal
-          onCancelButton={handleCancel}
+          onEditButton={() => navigate(`/resume/education/${selectedId}`)}
           onDeleteButton={handleDelete}
         />
       )}
@@ -45,12 +47,14 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
             <div>
               {/* 학력 정보 */}
               <div className="flex items-center gap-1 pb-[0.125rem]">
-                <h5 className="button-14-semibold text-text-strong">
+                <h5 className="button-16-semibold text-text-strong">
                   {education.school_name}
                 </h5>
               </div>
-              <p className="pb-2 caption-12-regular text-text-normal">
-                {education.major}
+              <p className="pb-2 body-14-regular text-text-normal">
+                {account_type === UserType.OWNER
+                  ? getMajorKoFromEn(education.major)
+                  : education.major}
               </p>
               <div className="flex gap-[0.5rem] caption-12-regular">
                 <p className="text-text-alternative">
@@ -58,21 +62,20 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
                   {formatDate(education.end_date)}
                 </p>
                 <p className="text-text-alternative">
-                  {education.grade}th grade
+                  {education.grade}
+                  {profileTranslation.thGrade[isEmployer(pathname)]}
                 </p>
               </div>
             </div>
             {/* 수정, 삭제 아이콘 */}
-            <div className="flex justify-center items-center gap-2 ml-1">
-              <EditIcon
-                onClick={() => navigate(`/resume/education/${education.id}`)}
-                className="cursor-pointer"
-              />
-              <DeleteIcon
-                onClick={() => openModal(education.id)}
-                className="cursor-pointer"
-              />
-            </div>
+            {account_type === UserType.USER && (
+              <div className="flex justify-center items-center">
+                <MenuIcon
+                  onClick={() => openModal(education.id)}
+                  className="cursor-pointer"
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>

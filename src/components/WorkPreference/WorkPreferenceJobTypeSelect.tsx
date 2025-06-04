@@ -28,7 +28,6 @@ const WorkPreferenceJobTypeSelect = memo(
     );
 
     const isSelected = (value: string) => selectedJobTypes.includes(value);
-
     return (
       <div className="flex flex-wrap gap-2 w-full">
         {jobTypes.map((jobType, index) => (

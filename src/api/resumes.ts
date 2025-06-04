@@ -181,6 +181,12 @@ export const putWorkPreference = async (data: WorkPreferenceType) => {
   return response.data;
 };
 
+// 7.23 (유학생) 이력서 공개 여부 수정하기
+export const patchResumePublic = async (data: { is_public: boolean }) => {
+  const response = await api.patch('/users/resumes/is-public', data);
+  return response.data;
+};
+
 // 7.24 (고용주) 이력서 리스트 조회하기
 export const getEmployeeResumeList = async (
   req: GetEmployeeResumeListReq,
@@ -208,7 +214,8 @@ export const getSearchSchools = async ({
   return response.data;
 };
 
-export const patchResumePublic = async (data: { is_public: boolean }) => {
-  const response = await api.patch('/users/resumes/is-public', data);
+// 15.1 (고용주) 인재 스크랩 추가/삭제
+export const putScrapResume = async (id: number) => {
+  const response = await api.put(`/owners/resumes/${id}/book-mark-resumes`);
   return response.data;
 };

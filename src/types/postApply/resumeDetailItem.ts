@@ -1,5 +1,10 @@
 import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
 
+export type IntroductionType = {
+  title: string;
+  content: string;
+};
+
 export type EducationLevelType = 'BACHELOR' | 'ASSOCIATE' | 'HIGHSCHOOL';
 
 export type WorkExperienceType = {
