@@ -105,7 +105,7 @@ const InformationPage = () => {
               }`}
             />
           </div>
-          <div className="w-full flex justify-center px-4 pt-4">
+          <div className="w-full flex justify-center pt-4">
             {currentStep === 1 && (
               <InformationStep userInfo={userInfo} onNext={handleNext} />
             )}
