@@ -215,7 +215,7 @@ export const getSearchSchools = async ({
 };
 
 // 15.1 (고용주) 인재 스크랩 추가/삭제
-export const putScrapResume = async (id: number) => {
+export const putScrapResume = async (id: string) => {
   const response = await api.put(`/owners/resumes/${id}/book-mark-resumes`);
   return response.data;
 };

@@ -7,6 +7,86 @@ import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import { postTranslation } from '@/constants/translation';
 import { EmployeeResumeListItemType } from '@/types/api/resumes';
 import { LoadingItem } from '@/components/Common/LoadingItem';
+import { MouseEvent, useEffect, useState } from 'react';
+import { usePutScrapResume } from '@/hooks/api/useResume';
+
+const EmployerEmployeeCard = ({
+  cardData,
+}: {
+  cardData: EmployeeResumeListItemType;
+}) => {
+  const navigate = useNavigate();
+
+  const { mutate } = usePutScrapResume();
+
+  const [isBookmark, setIsBookmark] = useState<boolean>(false);
+
+  const handleClickBookmark = (e: MouseEvent) => {
+    e.stopPropagation();
+    mutate(cardData.id);
+    setIsBookmark(!isBookmark);
+  };
+
+  const goToResumeDetailPage = (id: string) => {
+    navigate(`/employer/search/${id}`);
+  };
+
+  useEffect(() => {
+    setIsBookmark(cardData.is_bookmarked ?? false);
+  }, [cardData]);
+
+  return (
+    <article
+      className="w-full p-4 border-b border-[#F8F8F8]"
+      onClick={() => goToResumeDetailPage(cardData.id)}
+    >
+      <div className="pb-3 flex justify-between items-center gap-2">
+        <div className="w-20 h-20 rounded-full overflow-hidden">
+          <img
+            src={cardData.profile_img_url}
+            alt="profile image"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="flex-1">
+          <div className="w-full pb-[0.125rem] flex justify-between items-center">
+            <p className="text-text-strong heading-18-semibold">
+              {cardData?.name}{' '}
+              <span className="pl-1 text-text-alternative caption-12-regular">
+                {cardData?.nationality}
+              </span>
+            </p>
+            <button onClick={(e) => handleClickBookmark(e)}>
+              {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
+            </button>
+          </div>
+          <p className="text-text-alternative body-14-regular">주소 넣기</p>
+        </div>
+      </div>
+      <p className="text-text-normal body-14-medium">{cardData.title}</p>
+      <div className="pt-2 flex items-center gap-1 flex-wrap">
+        <Tag
+          value={cardData.industry}
+          padding="py-[0.188rem] px-[0.25rem]"
+          isRounded={true}
+          hasCheckIcon={false}
+          backgroundColor="bg-[#0066FF]/10"
+          color="text-text-success"
+          fontStyle="caption-12-semibold"
+        />
+        <Tag
+          value={cardData.visa.replace(/_/g, '-')}
+          padding="py-[0.188rem] px-[0.25rem]"
+          isRounded={true}
+          hasCheckIcon={false}
+          backgroundColor="bg-surface-secondary"
+          color="text-text-alternative"
+          fontStyle="caption-12-semibold"
+        />
+      </div>
+    </article>
+  );
+};
 
 type EmployerEmployeeCardListProps = {
   resumeData: EmployeeResumeListItemType[];
@@ -19,12 +99,6 @@ const EmployerEmployeeCardList = ({
   isLoading,
   isInitialLoading,
 }: EmployerEmployeeCardListProps) => {
-  const navigate = useNavigate();
-
-  const goToResumeDetailPage = (id: string) => {
-    navigate(`/employer/search/${id}`);
-  };
-
   if (isInitialLoading) {
     return (
       <div className="pt-[20vh] flex flex-col justify-center items-center">
@@ -50,60 +124,7 @@ const EmployerEmployeeCardList = ({
   return (
     <>
       {resumeData.map((value: EmployeeResumeListItemType) => (
-        <article
-          className="w-full p-4 border-b border-[#F8F8F8]"
-          key={value.id}
-          onClick={() => goToResumeDetailPage(value.id)}
-        >
-          <div className="pb-3 flex justify-between items-center gap-2">
-            <div className="w-20 h-20 rounded-full overflow-hidden">
-              <img
-                src={value.profile_img_url}
-                alt="profile image"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="flex-1">
-              <div className="w-full pb-[0.125rem] flex justify-between items-center">
-                <p className="text-text-strong heading-18-semibold">
-                  {value?.name}{' '}
-                  <span className="pl-1 text-text-alternative caption-12-regular">
-                    {value?.nationality}
-                  </span>
-                </p>
-                <button>
-                  {value.is_bookmarked ? (
-                    <BookmarkCheckedIcon />
-                  ) : (
-                    <BookmarkIcon />
-                  )}
-                </button>
-              </div>
-              <p className="text-text-alternative body-14-regular">주소 넣기</p>
-            </div>
-          </div>
-          <p className="text-text-normal body-14-medium">{value.title}</p>
-          <div className="pt-2 flex items-center gap-1 flex-wrap">
-            <Tag
-              value={value.industry}
-              padding="py-[0.188rem] px-[0.25rem]"
-              isRounded={true}
-              hasCheckIcon={false}
-              backgroundColor="bg-[#0066FF]/10"
-              color="text-text-success"
-              fontStyle="caption-12-semibold"
-            />
-            <Tag
-              value={value.visa.replace(/_/g, '-')}
-              padding="py-[0.188rem] px-[0.25rem]"
-              isRounded={true}
-              hasCheckIcon={false}
-              backgroundColor="bg-surface-secondary"
-              color="text-text-alternative"
-              fontStyle="caption-12-semibold"
-            />
-          </div>
-        </article>
+        <EmployerEmployeeCard cardData={value} key={value.id} />
       ))}
       {isLoading && <LoadingItem />}
     </>

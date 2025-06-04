@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
 import { usePutScrapResume } from '@/hooks/api/useResume';
+import { UserType } from '@/constants/user';
 
 type PostDetailApplyButtonProps = {
   isBookmarked: boolean;
@@ -42,8 +43,8 @@ const BookmarkContactPanel = ({
   };
 
   const onClickBookmark = async () => {
-    if (account_type && !isNaN(Number(id))) {
-      mutate(Number(id)); // 검색 페이지에서 넘겨준 이력서 id로 스크랩하는 것으로 추후 수정
+    if (account_type === UserType.OWNER && id) {
+      mutate(id); // 검색 페이지에서 넘겨준 이력서 id로 스크랩하는 것으로 추후 수정
       setIsBookmark(!isBookmark);
     }
   };

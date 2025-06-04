@@ -349,8 +349,12 @@ export const usePutScrapResume = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: putScrapResume,
-    onSuccess: () => {
+    onError: (error) => {
+      console.error('스크랩 추가/삭제 실패', error);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
+    meta: { skipGlobalLoading: true },
   });
 };
