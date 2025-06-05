@@ -12,21 +12,20 @@ const useResumeData = () => {
     if (account_type === UserType.OWNER) {
       return 'owner';
     }
-
     return 'user';
   };
 
   const dataSourceType = getDataSourceType();
 
   const shouldFetchUserData = dataSourceType === 'user';
-  const shouldFetchOwnerData = dataSourceType === 'owner';
+  const shouldFetchOwnerData = dataSourceType === 'owner' && id !== undefined;
 
   // 데이터 페칭 훅들
   const { data: userData, isPending: userDataPending } =
     useGetResume(shouldFetchUserData);
 
   const { data: ownerData, isPending: ownerDataPending } = useGetResumeDetail(
-    id ?? '',
+    id as string,
     shouldFetchOwnerData,
   );
 

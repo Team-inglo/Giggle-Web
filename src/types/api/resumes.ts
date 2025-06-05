@@ -4,6 +4,7 @@ import {
   LanguageListType,
   PersonalInformationType,
   WorkExperienceType,
+  WorkPreferenceType,
 } from '@/types/postApply/resumeDetailItem';
 import { VisaType } from '@/types/postDetail/postDetailItem';
 
@@ -63,15 +64,12 @@ export type UserResumeDetailResponse = {
   name: string;
   visa: visa;
   personal_information: PersonalInformationType;
+  title: string;
   introduction: string;
   work_experience: WorkExperienceType[];
   education: EducationType[];
   languages: LanguageListType;
+  work_preference: WorkPreferenceType[];
   is_public: boolean;
-};
-
-// 고용주가 인재 이력서 조회시 사용하는 응답 타입
-export type ApplicantResumeResponse = {
   is_bookmarked: boolean;
-  data: UserResumeDetailResponse;
 };

@@ -24,8 +24,8 @@ import {
 import { RESTYPE } from '@/types/api/common';
 import {
   AdditionalLanguageRequest,
-  ApplicantResumeResponse,
   LanguagesLevelType,
+  UserResumeDetailResponse,
 } from '@/types/api/resumes';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 import { smartNavigate } from '@/utils/application';
@@ -334,7 +334,7 @@ export const usePutScrapResume = () => {
       // 낙관적 업데이트
       queryClient.setQueryData(
         ['resume', 'detail', resumeId],
-        (old: RESTYPE<ApplicantResumeResponse>) => {
+        (old: RESTYPE<UserResumeDetailResponse>) => {
           if (!old) return old;
           return {
             ...old,
