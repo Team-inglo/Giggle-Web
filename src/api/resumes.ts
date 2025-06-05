@@ -1,6 +1,7 @@
 import {
   AdditionalLanguageRequest,
   EducationRequest,
+  GetEmployeeResumeListReq,
   IntroductionRequest,
   LanguagesLevelType,
   UserResumeDetailResponse,
@@ -11,6 +12,7 @@ import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
 import { GetEducationType } from '@/types/postResume/postEducation';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
+import { filterNullParams } from '@/utils/filterNullParams';
 
 // 7.1 (유학생) 이력서 조회하기
 export const getResume = async (): Promise<
@@ -185,11 +187,20 @@ export const patchResumePublic = async (data: { is_public: boolean }) => {
   return response.data;
 };
 
+// 7.24 (고용주) 이력서 리스트 조회하기
+export const getEmployeeResumeList = async (
+  req: GetEmployeeResumeListReq,
+  page: number,
+) => {
+  const response = await api.get(`/owners/resumes/overviews`, {
+    params: { ...filterNullParams(req), page },
+  });
+  return response.data;
+};
+
 // 7.25 (고용주) 이력서 상세 조회하기
 export const getResumeDetail = async (id: string) => {
-  const response = await api.get(
-    `/owners/resumes/${id}/details`,
-  );
+  const response = await api.get(`/owners/resumes/${id}/details`);
   return response.data;
 };
 
@@ -210,7 +221,7 @@ export const getSearchSchools = async ({
 };
 
 // 15.1 (고용주) 인재 스크랩 추가/삭제
-export const putScrapResume = async (id: number) => {
+export const putScrapResume = async (id: string) => {
   const response = await api.put(`/owners/resumes/${id}/book-mark-resumes`);
   return response.data;
 };

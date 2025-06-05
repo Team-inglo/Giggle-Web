@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon.svg?react';
+import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
 
 type PostSearchFilterToggleProps = {
   title: string;

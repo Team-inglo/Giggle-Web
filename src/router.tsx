@@ -58,6 +58,7 @@ import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
 import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
 import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
+import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
 import EmployerApplicantScrappedPage from '@/pages/Employer/ApplicantScrapped/EmployerApplicantScrappedPage';
 
 const Layout = () => {
@@ -126,6 +127,10 @@ const Router = () => {
 
         <Route path="/search/filter" element={<PostSearchFilterPage />} />
         <Route path="/search" element={<PostSearchPage />} />
+        <Route
+          path="/employer/search"
+          element={<EmployerEmployeeSearchPage />}
+        />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/about" element={<AboutPage />} />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon.svg?react';
+import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
 
 type DropdownProps = {
   options: string[];

@@ -6,6 +6,10 @@ import {
   WorkExperienceType,
 } from '@/types/postApply/resumeDetailItem';
 import { VisaType } from '@/types/postDetail/postDetailItem';
+import {
+  EMPLOYEE_SEARCH_CATEGORY,
+  EMPLOYEE_SEARCH_CATEGORY_KO,
+} from '@/constants/manageResume';
 
 // 자기소개 요청 타입
 export type IntroductionRequest = {
@@ -74,4 +78,40 @@ export type UserResumeDetailResponse = {
 export type ApplicantResumeResponse = {
   is_scraped: boolean;
   data: UserResumeDetailResponse;
+};
+
+// (고용주) 인재 이력서 리스트
+export type EmployeeResumeListItemType = {
+  id: string;
+  name: string;
+  profile_img_url: string;
+  nationality: string;
+  address: string;
+  title: string;
+  visa: VisaType;
+  industry: string;
+  bookmark_count: number;
+  is_bookmarked: boolean;
+};
+
+// 7.24 (고용주) 이력서 리스트 조회하기 request type
+export type GetEmployeeResumeListReq = {
+  size: number;
+  sorting?: string | null;
+  visa?: string | null;
+  korean?: string | null;
+  major?: string | null;
+  nationality?: string | null;
+  industry?: string | null;
+  is_book_marked?: boolean;
+};
+
+// (고용주) 이력서 리스트 조회 검색 필터
+export type EmployeeSearchCategoryEnType =
+  keyof typeof EMPLOYEE_SEARCH_CATEGORY; // 'VISA' | 'INDUSTRY' | ...
+export type EmployeeSearchCategoryKoType =
+  (typeof EMPLOYEE_SEARCH_CATEGORY_KO)[EmployeeSearchCategoryEnType]; // '비자' | '업직종' | ...
+
+export type EmployeeSearchFilterItemType = {
+  [key in EmployeeSearchCategoryEnType]: string[];
 };

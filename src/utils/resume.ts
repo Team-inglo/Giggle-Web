@@ -1,9 +1,4 @@
-import {
-  Majors,
-  MajorType,
-  Nationalities,
-  NationalityType,
-} from '@/constants/manageResume';
+import { Majors, KoEnEnumType, Nationalities } from '@/constants/manageResume';
 
 type KoreanLevelInput = {
   topik?: number; // 0~6
@@ -50,7 +45,7 @@ export const getKoreanAbilityLevel = ({
 };
 
 // 변환 함수 생성 함수
-const createLookupFunction = <T extends MajorType | NationalityType>(
+const createLookupFunction = <T extends KoEnEnumType>(
   data: T[],
   from: keyof T,
   to: keyof T,
@@ -67,7 +62,7 @@ const createLookupFunction = <T extends MajorType | NationalityType>(
 // 전공 변환 함수
 export const getMajorKoFromEnum = createLookupFunction(Majors, 'enum', 'ko');
 export const getMajorEnFromEnum = createLookupFunction(Majors, 'enum', 'en');
-export const getMajorKoFromEn = createLookupFunction(Majors, 'en', 'ko')
+export const getMajorKoFromEn = createLookupFunction(Majors, 'en', 'ko');
 export const getMajorEnumFromKo = createLookupFunction(Majors, 'ko', 'enum');
 export const getMajorEnumFromEn = createLookupFunction(Majors, 'en', 'enum');
 
