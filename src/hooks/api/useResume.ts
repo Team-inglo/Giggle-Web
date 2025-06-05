@@ -7,6 +7,7 @@ import {
   getEducation,
   getEmployeeResumeList,
   getResume,
+  getResumeDetail,
   getSearchSchools,
   getWorkExperience,
   getWorkPreference,
@@ -324,6 +325,15 @@ export const useInfiniteGetEmployeeResumeList = (
     hasNextPage: data?.pages[data?.pages.length - 1].data.has_next,
     isFetchingNextPage,
   };
+};
+
+// 7.25 (고용주) 이력서 상세 조회하기
+export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
+  return useQuery({
+    queryKey: ['resumeDetail', id],
+    queryFn: () => getResumeDetail(id),
+    enabled: isEnabled,
+  });
 };
 
 // 9.1 (유학생) 학교 검색하기

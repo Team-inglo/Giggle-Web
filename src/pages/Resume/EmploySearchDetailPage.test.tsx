@@ -2,9 +2,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import EmploySearchDetailPage from './EmploySearchDetailPage';
-import { QueryClient, QueryClientProvider, UseQueryResult } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { useGetApplicantResume } from '@/hooks/api/useResume';
+import { ApplicantResumeResponse } from '@/types/api/resumes';
 
 // Mock React Router
 const mockNavigateBack = vi.fn();
@@ -102,7 +107,7 @@ describe('EmploySearchDetailPage', () => {
       },
       isLoading: false,
       error: null,
-    } as UseQueryResult<ApplicantResume, Error>);
+    } as UseQueryResult<ApplicantResumeResponse, Error>);
   });
 
   describe('렌더링', () => {
@@ -156,7 +161,7 @@ describe('EmploySearchDetailPage', () => {
         },
         isLoading: false,
         error: null,
-      } as any);
+      } as UseQueryResult<ApplicantResumeResponse, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
@@ -189,7 +194,7 @@ describe('EmploySearchDetailPage', () => {
         data: null,
         isLoading: false,
         error: null,
-      } as any);
+      } as UseQueryResult<ApplicantResumeResponse | null, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
@@ -209,7 +214,7 @@ describe('EmploySearchDetailPage', () => {
         },
         isLoading: false,
         error: null,
-      } as any);
+      } as UseQueryResult<ApplicantResumeResponse, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 

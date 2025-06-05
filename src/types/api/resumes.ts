@@ -74,6 +74,12 @@ export type UserResumeDetailResponse = {
   is_public: boolean;
 };
 
+// 고용주가 인재 이력서 조회시 사용하는 응답 타입
+export type ApplicantResumeResponse = {
+  is_scraped: boolean;
+  data: UserResumeDetailResponse;
+};
+
 // (고용주) 인재 이력서 리스트
 export type EmployeeResumeListItemType = {
   id: string;

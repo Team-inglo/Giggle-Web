@@ -57,8 +57,9 @@ import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
 import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
 import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
-import EmploySearchDetailPage from './pages/Resume/EmploySearchDetailPage';
+import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
 import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
+import EmployerApplicantScrappedPage from '@/pages/Employer/ApplicantScrapped/EmployerApplicantScrappedPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -77,8 +78,15 @@ const Layout = () => {
   // Nav bar 컴포넌트가 랜딩되는 페이지
   const showNavbarPaths = () => {
     if (account_type === UserType.OWNER) {
-      return ['/', '/search', '/employer/post', '/employer/profile'];
-    } else return ['/', '/search', '/application', '/profile'];
+      return [
+        '/',
+        '/search',
+        '/employer/post',
+        '/employer/profile',
+        '/employer/scrapped',
+      ];
+    } else
+      return ['/', '/search', '/application', '/profile', '/resume/scrapped'];
   };
 
   const shouldShowNavbar = showNavbarPaths().includes(location.pathname);
@@ -226,6 +234,10 @@ const Router = () => {
         <Route
           path="/employer/profile/edit"
           element={<EmployerEditProfilePage />}
+        />
+        <Route
+          path="/employer/scrapped"
+          element={<EmployerApplicantScrappedPage />}
         />
       </Route>
     </Routes>
