@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { useGetResumeDetail } from '@/hooks/api/useResume';
-import { ApplicantResumeResponse } from '@/types/api/resumes';
+import { UserResumeDetailResponse } from '@/types/api/resumes';
 
 // Mock React Router
 const mockNavigateBack = vi.fn();
@@ -108,7 +108,7 @@ describe('EmploySearchDetailPage', () => {
       isLoading: false,
       isSuccess: true,
       error: null,
-    } as unknown as UseQueryResult<ApplicantResumeResponse, Error>);
+    } as unknown as UseQueryResult<UserResumeDetailResponse, Error>);
   });
 
   describe('렌더링', () => {
@@ -156,7 +156,7 @@ describe('EmploySearchDetailPage', () => {
         isLoading: false,
         isSuccess: true,
         error: null,
-      } as unknown as UseQueryResult<ApplicantResumeResponse, Error>);
+      } as unknown as UseQueryResult<UserResumeDetailResponse, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
@@ -190,7 +190,7 @@ describe('EmploySearchDetailPage', () => {
         isLoading: false,
         isSuccess: false,
         error: null,
-      } as unknown as UseQueryResult<ApplicantResumeResponse | null, Error>);
+      } as unknown as UseQueryResult<UserResumeDetailResponse | null, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
@@ -205,7 +205,7 @@ describe('EmploySearchDetailPage', () => {
         isLoading: true,
         isSuccess: false,
         error: null,
-      } as unknown as UseQueryResult<ApplicantResumeResponse | null, Error>);
+      } as unknown as UseQueryResult<UserResumeDetailResponse | null, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
@@ -227,7 +227,7 @@ describe('EmploySearchDetailPage', () => {
         isLoading: false,
         isSuccess: true,
         error: null,
-      } as unknown as UseQueryResult<ApplicantResumeResponse, Error>);
+      } as unknown as UseQueryResult<UserResumeDetailResponse, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
