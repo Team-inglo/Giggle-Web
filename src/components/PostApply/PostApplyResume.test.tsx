@@ -13,7 +13,7 @@ const mockUseCurrentApplicantIdStore = vi.fn();
 
 vi.mock('@/hooks/api/useResume', () => ({
   useGetResume: () => mockUseGetResume(),
-  useGetApplicantResume: () => mockUseGetApplicantResume(),
+  useGetResumeDetail: () => mockUseGetApplicantResume(),
 }));
 
 vi.mock('@/store/user', () => ({
