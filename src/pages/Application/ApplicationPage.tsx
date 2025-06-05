@@ -10,7 +10,7 @@ import {
 } from '@/constants/sort';
 import { useGetApplyPostList } from '@/hooks/api/usePost';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { AppicationItemType } from '@/types/application/applicationItem';
+import { ApplicationItemType } from '@/types/application/applicationItem';
 import { ApplicationStatusType } from '@/types/application/applicationStatus';
 import { AscendingSortType } from '@/types/common/sort';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ const ApplicationPage = () => {
     status: selectedStatus,
   });
 
-  const [applicantData, setApplicantData] = useState<AppicationItemType[]>([]);
+  const [applicantData, setApplicantData] = useState<ApplicationItemType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {

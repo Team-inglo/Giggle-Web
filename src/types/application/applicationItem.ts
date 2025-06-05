@@ -12,7 +12,7 @@ export type ApplicationStepType =
   | 'PENDING'
   | 'REGISTERING_RESULTS'; // 6;
 
-export type AppicationItemType = {
+export type ApplicationItemType = {
   job_posting_id: number;
   user_owner_job_posting_id: number;
   icon_img_url: string;

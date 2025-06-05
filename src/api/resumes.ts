@@ -5,7 +5,7 @@ import {
   LanguagesLevelType,
   UserResumeDetailResponse,
   WorkExperienctRequest,
-  WorkExperienctResponse,
+  WorkExperienceResponse,
 } from '@/types/api/resumes';
 import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
@@ -23,7 +23,7 @@ export const getResume = async (): Promise<
 // 7.2 경력 상세 조회하기
 export const getWorkExperience = async (
   id: string,
-): Promise<RESTYPE<WorkExperienctResponse>> => {
+): Promise<RESTYPE<WorkExperienceResponse>> => {
   const response = await api.get(
     `/users/resumes/work-experiences/${id}/details`,
   );

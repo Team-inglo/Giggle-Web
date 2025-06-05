@@ -1,5 +1,5 @@
 import ApplicationPostCard from '@/components/Application/ApplicationPostCard';
-import { AppicationItemType } from '@/types/application/applicationItem';
+import { ApplicationItemType } from '@/types/application/applicationItem';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import {
 } from '@/store/url';
 
 type ApplicationCardListType = {
-  applicationListData: AppicationItemType[];
+  applicationListData: ApplicationItemType[];
   isInitialLoading: boolean;
 };
 
