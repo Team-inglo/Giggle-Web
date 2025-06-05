@@ -40,7 +40,7 @@ export const getPostDetail = async (id: number) => {
 // 4.6 (고용주) 공고에 대한 지원자 리스트 조회
 export const getApplicantList = async (
   page: number,
-  id: string,
+  id: number,
   sorting: string,
   status: string | null,
 ) => {

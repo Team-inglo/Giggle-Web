@@ -348,7 +348,7 @@ export const usePutScrapResume = () => {
 
       return { previousData, resumeId };
     },
-    onError: (err, resumeId, context) => {
+    onError: (_, __, context) => {
       // 에러 발생 시 이전 데이터로 롤백
       if (context?.previousData) {
         queryClient.setQueryData(
@@ -360,7 +360,7 @@ export const usePutScrapResume = () => {
     meta: {
       skipGlobalLoading: true,
     },
-    onSettled: (data, error, resumeId) => {
+    onSettled: (_, __, resumeId) => {
       // 성공/실패 관계없이 데이터 재fetch
       queryClient.invalidateQueries({
         queryKey: ['resume', 'detail', resumeId],
