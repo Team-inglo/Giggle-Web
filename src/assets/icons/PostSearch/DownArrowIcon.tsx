@@ -1,8 +1,8 @@
 type DownArrowIconProp = {
-  stroke?: string;
+  strokeColor?: string;
 };
 
-const DownArrowIcon = ({ stroke = '#1E1926' }: DownArrowIconProp) => {
+const DownArrowIcon = ({ strokeColor = '#1E1926' }: DownArrowIconProp) => {
   return (
     <svg
       width="10"
@@ -15,7 +15,7 @@ const DownArrowIcon = ({ stroke = '#1E1926' }: DownArrowIconProp) => {
         <path
           id="Path 5"
           d="M1.45833 3.54167L5 7.08333L8.54167 3.54167"
-          stroke={stroke}
+          stroke={strokeColor}
           strokeWidth="1.2"
           strokeLinecap="round"
           strokeLinejoin="round"

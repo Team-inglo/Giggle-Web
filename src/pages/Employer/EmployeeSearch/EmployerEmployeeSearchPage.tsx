@@ -1,5 +1,4 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import { useNavigate } from 'react-router-dom';
 import ResetIcon from '@/assets/icons/ResetIcon.svg?react';
 import {
   EMPLOYEE_SEARCH_CATEGORY,
@@ -25,6 +24,7 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { EmployeeResumeListItemType } from '@/types/api/resumes';
 import { formatResumeSearchFilter } from '@/utils/formatSearchFilter';
 import EmployerEmployeeCardList from '@/components/Employer/EmployeeSearch/EmployerEmployeeCardList';
+import useNavigateBack from '@/hooks/useNavigateBack';
 
 export type EmployeeSearchOptionType = {
   filterList: EmployeeSearchFilterItemType;
@@ -32,9 +32,8 @@ export type EmployeeSearchOptionType = {
 };
 
 const EmployerEmployeeSearchPage = () => {
-  const navigate = useNavigate();
-
   const { account_type } = useUserStore();
+  const handleBackButtonClick = useNavigateBack();
 
   const [searchOption, setSearchOption] = useState<EmployeeSearchOptionType>({
     sortType: POST_SORTING.RECENT,
@@ -58,7 +57,7 @@ const EmployerEmployeeSearchPage = () => {
     isLoading: isInitialLoading,
   } = useInfiniteGetEmployeeResumeList(
     formatResumeSearchFilter(searchOption),
-    account_type === UserType.OWNER ? true : false,
+    account_type === UserType.OWNER,
   );
 
   const targetRef = useInfiniteScroll(() => {
@@ -93,7 +92,7 @@ const EmployerEmployeeSearchPage = () => {
     <>
       <BaseHeader
         hasBackButton={true}
-        onClickBackButton={() => navigate(`/`)}
+        onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
         title={'인재찾기'}
       />
@@ -147,7 +146,7 @@ const EmployerEmployeeSearchPage = () => {
               isOpenSortBottomSheet && 'rotate-180'
             }`}
           >
-            <DownArrowIcon stroke={'#A9ABB8'} />
+            <DownArrowIcon strokeColor={'#A9ABB8'} />
           </div>
         </button>
       </section>

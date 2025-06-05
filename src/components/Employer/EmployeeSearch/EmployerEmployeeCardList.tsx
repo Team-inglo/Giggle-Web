@@ -37,7 +37,7 @@ const EmployerEmployeeCard = ({
 
   return (
     <article
-      className="w-full p-4 border-b border-[#F8F8F8]"
+      className="w-full p-4"
       onClick={() => goToResumeDetailPage(cardData.id)}
     >
       <div className="pb-3 flex justify-between items-center gap-2">
@@ -72,7 +72,7 @@ const EmployerEmployeeCard = ({
           padding="py-[0.188rem] px-[0.25rem]"
           isRounded={true}
           hasCheckIcon={false}
-          backgroundColor="bg-[#0066FF]/10"
+          backgroundColor="bg-statusBlue-300/10"
           color="text-text-success"
           fontStyle="caption-12-semibold"
         />
@@ -125,9 +125,11 @@ const EmployerEmployeeCardList = ({
 
   return (
     <>
-      {resumeData.map((value: EmployeeResumeListItemType) => (
-        <EmployerEmployeeCard cardData={value} key={value.id} />
-      ))}
+      <main className="flex flex-col divide-y divide-[#F8F8F8]">
+        {resumeData.map((value: EmployeeResumeListItemType) => (
+          <EmployerEmployeeCard cardData={value} key={value.id} />
+        ))}
+      </main>
       {isLoading && <LoadingItem />}
     </>
   );

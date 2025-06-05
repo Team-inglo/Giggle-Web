@@ -23,7 +23,6 @@ const ResumeDeleteModal = ({
 
   return (
     <BottomSheetLayout
-      hasHandlebar={false}
       isAvailableHidden={false}
       isShowBottomsheet={true}
       isFixedBackground={true}
