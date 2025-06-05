@@ -1,7 +1,7 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import BookmarkContactPanel from '@/components/ManageResume/BookmarkContactPanel';
 import PostApplyResume from '@/components/PostApply/PostApplyResume';
-import { useGetApplicantResume } from '@/hooks/api/useResume';
+import { useGetResumeDetail } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useParams } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ const EmploySearchDetailPage = () => {
   const handleBackButtonClick = useNavigateBack();
   const { id } = useParams();
 
-  const { data: resumeData } = useGetApplicantResume(Number(id), true);
+  const { data: resumeData, isLoading } = useGetResumeDetail(id ?? '', true);
   return (
     <>
       <BaseHeader
@@ -21,10 +21,14 @@ const EmploySearchDetailPage = () => {
       <div className="pb-28">
         <PostApplyResume />
       </div>
-      <BookmarkContactPanel
-        isBookmarked={resumeData?.is_scraped ?? false}
-        phoneNumber={resumeData?.data?.personal_information?.phone_number ?? ''}
-      />
+      {!isLoading && resumeData && (
+        <BookmarkContactPanel
+          isBookmarked={resumeData?.data?.is_bookmarked}
+          phoneNumber={
+            resumeData?.data?.personal_information?.phone_number ?? ''
+          }
+        />
+      )}
     </>
   );
 };

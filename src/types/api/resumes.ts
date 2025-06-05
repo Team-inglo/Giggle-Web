@@ -72,6 +72,6 @@ export type UserResumeDetailResponse = {
 
 // 고용주가 인재 이력서 조회시 사용하는 응답 타입
 export type ApplicantResumeResponse = {
-  is_scraped: boolean;
+  is_bookmarked: boolean;
   data: UserResumeDetailResponse;
 };

@@ -4,7 +4,7 @@ import PostDetailConfirmBottomSheet from '@/components/PostDetail/PostDetailConf
 import LoginBottomSheet from '@/components/Common/LoginBottomSheet';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
 import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUserStore } from '@/store/user';
 import { useParams } from 'react-router-dom';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
@@ -29,7 +29,7 @@ const BookmarkContactPanel = ({
     useState<boolean>(false);
   const [isOpenLoginBottomSheet, setIsOpenLoginBottomSheet] =
     useState<boolean>(false);
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  const [isBookmark, setIsBookmark] = useState<boolean>(isBookmarked);
 
   const onClickApply = async () => {
     if (window.ReactNativeWebView) {
@@ -42,15 +42,13 @@ const BookmarkContactPanel = ({
   };
 
   const onClickBookmark = async () => {
-    if (account_type && !isNaN(Number(id))) {
-      mutate(Number(id)); // 검색 페이지에서 넘겨준 이력서 id로 스크랩하는 것으로 추후 수정
-      setIsBookmark(!isBookmark);
+    if (!id) {
+      console.error('이력서 ID가 없습니다.');
+      return;
     }
+    mutate(id);
+    setIsBookmark(!isBookmark);
   };
-
-  useEffect(() => {
-    setIsBookmark(isBookmarked);
-  }, [setIsBookmark, isBookmarked]);
 
   return (
     <>
