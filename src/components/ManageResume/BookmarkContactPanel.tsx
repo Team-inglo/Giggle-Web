@@ -29,7 +29,6 @@ const BookmarkContactPanel = ({
     useState<boolean>(false);
   const [isOpenLoginBottomSheet, setIsOpenLoginBottomSheet] =
     useState<boolean>(false);
-  const [isBookmark, setIsBookmark] = useState<boolean>(isBookmarked);
 
   const onClickApply = async () => {
     if (window.ReactNativeWebView) {
@@ -47,7 +46,6 @@ const BookmarkContactPanel = ({
       return;
     }
     mutate(id);
-    setIsBookmark(!isBookmark);
   };
 
   return (
@@ -59,7 +57,7 @@ const BookmarkContactPanel = ({
               className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-lg bg-[#F4F4F980]"
               onClick={onClickBookmark}
             >
-              {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
+              {isBookmarked ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
             </button>
           )}
           <Button

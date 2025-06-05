@@ -21,8 +21,10 @@ import {
   putScrapResume,
   putWorkPreference,
 } from '@/api/resumes';
+import { RESTYPE } from '@/types/api/common';
 import {
   AdditionalLanguageRequest,
+  ApplicantResumeResponse,
   LanguagesLevelType,
 } from '@/types/api/resumes';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
@@ -287,7 +289,7 @@ export const usePatchResumePublic = () => {
 // 7.25 (고용주) 이력서 상세 조회하기
 export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
   return useQuery({
-    queryKey: ['resumeDetail', id],
+    queryKey: ['resume', 'detail', id],
     queryFn: () => getResumeDetail(id),
     enabled: isEnabled,
   });
@@ -316,6 +318,54 @@ export const usePutScrapResume = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: putScrapResume,
+    onMutate: async (resumeId) => {
+      // 진행 중인 쿼리 취소
+      await queryClient.cancelQueries({
+        queryKey: ['resume', 'detail', resumeId],
+      });
+
+      // 이전 데이터 백업
+      const previousData = queryClient.getQueryData([
+        'resume',
+        'detail',
+        resumeId,
+      ]);
+
+      // 낙관적 업데이트
+      queryClient.setQueryData(
+        ['resume', 'detail', resumeId],
+        (old: RESTYPE<ApplicantResumeResponse>) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              is_bookmarked: !old.data.is_bookmarked,
+            },
+          };
+        },
+      );
+
+      return { previousData, resumeId };
+    },
+    onError: (err, resumeId, context) => {
+      // 에러 발생 시 이전 데이터로 롤백
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          ['resume', 'detail', context.resumeId],
+          context.previousData,
+        );
+      }
+    },
+    meta: {
+      skipGlobalLoading: true,
+    },
+    onSettled: (data, error, resumeId) => {
+      // 성공/실패 관계없이 데이터 재fetch
+      queryClient.invalidateQueries({
+        queryKey: ['resume', 'detail', resumeId],
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
