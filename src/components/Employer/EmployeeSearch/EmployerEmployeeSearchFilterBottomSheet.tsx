@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react';
 import {
   EMPLOYEE_SEARCH_CATEGORY_KO,
   EMPLOYEE_SEARCH_OPTIONS,
-} from '@/constants/employee';
+} from '@/constants/manageResume';
 import {
   EmployeeSearchCategoryEnType,
   EmployeeSearchFilterItemType,
-} from '@/types/api/employee';
+} from '@/types/api/resumes';
 import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon';
 
 type EmployerEmployeeSearchFilterBottomSheetPropsType = {
@@ -71,7 +71,9 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
               className="w-full px-1 py-3 flex justify-between items-center"
               onClick={() => handleClickFilter(option.enum)}
             >
-              <p className="body-2 text-text-strong body-16-regular">
+              <p
+                className={`body-2 text-text-strong ${checkedFilter.includes(option.enum) ? 'body-16-medium' : 'body-16-regular'}`}
+              >
                 {option.ko}
               </p>
               <BottomSheetCheckIcon

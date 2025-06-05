@@ -32,7 +32,9 @@ const EmployerEmployeeSearchSortBottomSheet = ({
             className="relative w-full py-3 text-start"
             onClick={() => handleClickSort(option)}
           >
-            <p className="body-2 text-text-strong body-16-regular">
+            <p
+              className={`body-2 text-text-strong ${option === selectedSort ? 'body-16-medium' : 'body-16-regular'}`}
+            >
               {POST_SORTING_KR[option]}
             </p>
             {option === selectedSort && (

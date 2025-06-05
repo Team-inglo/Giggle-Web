@@ -1,10 +1,10 @@
-import { EMPLOYEE_SEARCH_CATEGORY } from '@/constants/employee';
+import { EMPLOYEE_SEARCH_CATEGORY } from '@/constants/manageResume';
 import {
   FILTER_CATEGORY,
   initialFilterList,
   POST_SEARCH_MENU,
 } from '@/constants/postSearch';
-import { EmployeeSearchFilterItemType } from '@/types/api/employee';
+import { EmployeeSearchFilterItemType } from '@/types/api/resumes';
 import {
   PostSearchFilterItemType,
   PostSortingType,

@@ -6,6 +6,10 @@ import {
   WorkExperienceType,
 } from '@/types/postApply/resumeDetailItem';
 import { VisaType } from '@/types/postDetail/postDetailItem';
+import {
+  EMPLOYEE_SEARCH_CATEGORY,
+  EMPLOYEE_SEARCH_CATEGORY_KO,
+} from '@/constants/manageResume';
 
 // 자기소개 요청 타입
 export type IntroductionRequest = {
@@ -76,6 +80,7 @@ export type EmployeeResumeListItemType = {
   name: string;
   profile_img_url: string;
   nationality: string;
+  address: string;
   title: string;
   visa: VisaType;
   industry: string;
@@ -92,4 +97,15 @@ export type GetEmployeeResumeListReq = {
   major?: string | null;
   nationality?: string | null;
   industry?: string | null;
+  is_book_marked?: boolean;
+};
+
+// (고용주) 이력서 리스트 조회 검색 필터
+export type EmployeeSearchCategoryEnType =
+  keyof typeof EMPLOYEE_SEARCH_CATEGORY; // 'VISA' | 'INDUSTRY' | ...
+export type EmployeeSearchCategoryKoType =
+  (typeof EMPLOYEE_SEARCH_CATEGORY_KO)[EmployeeSearchCategoryEnType]; // '비자' | '업직종' | ...
+
+export type EmployeeSearchFilterItemType = {
+  [key in EmployeeSearchCategoryEnType]: string[];
 };

@@ -60,13 +60,15 @@ const EmployerEmployeeCard = ({
               {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
             </button>
           </div>
-          <p className="text-text-alternative body-14-regular">주소 넣기</p>
+          <p className="text-text-alternative body-14-regular">
+            {cardData?.address}
+          </p>
         </div>
       </div>
-      <p className="text-text-normal body-14-medium">{cardData.title}</p>
+      <p className="text-text-normal body-14-medium">{cardData?.title}</p>
       <div className="pt-2 flex items-center gap-1 flex-wrap">
         <Tag
-          value={cardData.industry}
+          value={cardData?.industry}
           padding="py-[0.188rem] px-[0.25rem]"
           isRounded={true}
           hasCheckIcon={false}
@@ -75,7 +77,7 @@ const EmployerEmployeeCard = ({
           fontStyle="caption-12-semibold"
         />
         <Tag
-          value={cardData.visa.replace(/_/g, '-')}
+          value={cardData?.visa?.replace(/_/g, '-')}
           padding="py-[0.188rem] px-[0.25rem]"
           isRounded={true}
           hasCheckIcon={false}

@@ -6,13 +6,13 @@ import {
   EMPLOYEE_SEARCH_CATEGORY_KO,
   EMPLOYEE_SEARCH_OPTIONS,
   initialEmployerSearchFilterList,
-} from '@/constants/employee';
+} from '@/constants/manageResume';
 import { useEffect, useState } from 'react';
 import { POST_SORTING, POST_SORTING_KR } from '@/constants/postSearch';
 import {
   EmployeeSearchCategoryEnType,
   EmployeeSearchFilterItemType,
-} from '@/types/api/employee';
+} from '@/types/api/resumes';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import EmployerEmployeeSearchSortBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchSortBottomSheet';
 import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
