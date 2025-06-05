@@ -27,6 +27,7 @@ export type AppicationItemType = {
 // 공고에 대한 지원자 리스트
 export type ApplicantItemType = {
   id: number;
+  resume_id: string;
   profile_img_url: string;
   name: string;
   nationality: string;

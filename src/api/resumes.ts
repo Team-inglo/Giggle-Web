@@ -159,14 +159,6 @@ export const deleteEtcLanguageLevel = async (id: number) => {
   return response.data;
 };
 
-// 7.19 (고용주) 이력서 조회하기
-export const getApplicantResume = async (id: number) => {
-  const response = await api.get(
-    `/owners/user-owner-job-postings/${id}/users/resumes/details`,
-  );
-  return response.data;
-};
-
 // 7.21 (유학생) 희망 근로 조건 상세 조회하기
 export const getWorkPreference = async () => {
   const response = await api.get('/users/resumes/work-preferences/details');
@@ -187,9 +179,7 @@ export const patchResumePublic = async (data: { is_public: boolean }) => {
 
 // 7.25 (고용주) 이력서 상세 조회하기
 export const getResumeDetail = async (id: string) => {
-  const response = await api.get(
-    `/owners/resumes/${id}/details`,
-  );
+  const response = await api.get(`/owners/resumes/${id}/details`);
   return response.data;
 };
 
@@ -210,7 +200,7 @@ export const getSearchSchools = async ({
 };
 
 // 15.1 (고용주) 인재 스크랩 추가/삭제
-export const putScrapResume = async (id: number) => {
+export const putScrapResume = async (id: string) => {
   const response = await api.put(`/owners/resumes/${id}/book-mark-resumes`);
   return response.data;
 };

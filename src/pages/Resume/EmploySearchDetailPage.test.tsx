@@ -8,7 +8,7 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { useGetApplicantResume } from '@/hooks/api/useResume';
+import { useGetResumeDetail } from '@/hooks/api/useResume';
 import { ApplicantResumeResponse } from '@/types/api/resumes';
 
 // Mock React Router
@@ -89,7 +89,7 @@ const createWrapper = () => {
 };
 
 // Create a typed mock to access the mocked function
-const mockUseGetApplicantResume = vi.mocked(useGetApplicantResume);
+const mockUseGetApplicantResume = vi.mocked(useGetResumeDetail);
 
 describe('EmploySearchDetailPage', () => {
   beforeEach(() => {
@@ -98,7 +98,7 @@ describe('EmploySearchDetailPage', () => {
     // Setup default mock return value
     mockUseGetApplicantResume.mockReturnValue({
       data: {
-        is_scraped: false,
+        is_bookmarked: false,
         data: {
           personal_information: {
             phone_number: '010-1234-5678',
@@ -152,7 +152,7 @@ describe('EmploySearchDetailPage', () => {
       // 북마크된 상태로 모킹
       mockUseGetApplicantResume.mockReturnValue({
         data: {
-          is_scraped: true,
+          is_bookmarked: true,
           data: {
             personal_information: {
               phone_number: '010-1234-5678',
@@ -205,7 +205,7 @@ describe('EmploySearchDetailPage', () => {
     it('전화번호 정보가 없을 때 빈 문자열이 전달되어야 한다', () => {
       mockUseGetApplicantResume.mockReturnValue({
         data: {
-          is_scraped: false,
+          is_bookmarked: false,
           data: {
             personal_information: {
               // phone_number가 없는 경우

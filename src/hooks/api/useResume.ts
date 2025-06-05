@@ -3,7 +3,6 @@ import {
   deleteEtcLanguageLevel,
   deleteIntroduction,
   deleteWorkExperience,
-  getApplicantResume,
   getEducation,
   getResume,
   getResumeDetail,
@@ -249,15 +248,6 @@ export const useDeleteEtcLanguageLevel = () => {
     onError: (error) => {
       console.error('ETC 삭제 실패', error);
     },
-  });
-};
-
-// 7.19 (고용주) 이력서 조회하기 훅
-export const useGetApplicantResume = (id: number, isEnabled: boolean) => {
-  return useQuery({
-    queryKey: ['resume', id],
-    queryFn: () => getApplicantResume(id),
-    enabled: isEnabled,
   });
 };
 
