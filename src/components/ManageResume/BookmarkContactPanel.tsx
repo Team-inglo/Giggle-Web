@@ -1,17 +1,14 @@
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
-import PostDetailConfirmBottomSheet from '@/components/PostDetail/PostDetailConfirmBottomSheet';
-import LoginBottomSheet from '@/components/Common/LoginBottomSheet';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
 import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
-import { useState } from 'react';
 import { useUserStore } from '@/store/user';
 import { useParams } from 'react-router-dom';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
 import { usePutScrapResume } from '@/hooks/api/useResume';
 
-type PostDetailApplyButtonProps = {
+type BookmarkContactPanelProps = {
   isBookmarked: boolean;
   phoneNumber: string;
 };
@@ -19,22 +16,18 @@ type PostDetailApplyButtonProps = {
 const BookmarkContactPanel = ({
   isBookmarked,
   phoneNumber,
-}: PostDetailApplyButtonProps) => {
+}: BookmarkContactPanelProps) => {
   const { account_type } = useUserStore();
   const { id } = useParams();
 
   const { mutate } = usePutScrapResume();
 
-  const [isOpenConfirmBottomSheet, setIsOpenConfirmBottomSheet] =
-    useState<boolean>(false);
-  const [isOpenLoginBottomSheet, setIsOpenLoginBottomSheet] =
-    useState<boolean>(false);
-
   const onClickApply = async () => {
+    const formattedPhoneNumber = phoneNumber.replace(/[-]/g, '');
     if (window.ReactNativeWebView) {
       sendReactNativeMessage({
         type: 'SEND_MESSAGE_TO_USER',
-        payload: phoneNumber.replace(/[-]/g, ''),
+        payload: formattedPhoneNumber,
       });
       return;
     }
@@ -54,7 +47,7 @@ const BookmarkContactPanel = ({
         <footer className="w-full flex gap-2 z-20">
           {account_type && (
             <button
-              className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-lg bg-[#F4F4F980]"
+              className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-lg bg-neutral-100"
               onClick={onClickBookmark}
             >
               {isBookmarked ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
@@ -70,14 +63,6 @@ const BookmarkContactPanel = ({
           />
         </footer>
       </BottomButtonPanel>
-      <PostDetailConfirmBottomSheet
-        isShowBottomsheet={isOpenConfirmBottomSheet}
-        setIsShowBottomSheet={setIsOpenConfirmBottomSheet}
-      />
-      <LoginBottomSheet
-        isShowBottomsheet={isOpenLoginBottomSheet}
-        setIsShowBottomSheet={setIsOpenLoginBottomSheet}
-      />
     </>
   );
 };
