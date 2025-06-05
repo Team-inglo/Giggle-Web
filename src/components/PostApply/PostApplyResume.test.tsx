@@ -30,7 +30,7 @@ vi.mock('react-router-dom', async () => {
   return {
     ...actual,
     useNavigate: () => vi.fn(),
-    useLocation: () => ({ pathname: '/resume/employ-search-detail' }),
+    useLocation: () => ({ pathname: '/resume/employer/search/1' }),
   };
 });
 
