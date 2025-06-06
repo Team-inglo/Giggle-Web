@@ -4,6 +4,7 @@ import {
   deleteIntroduction,
   deleteWorkExperience,
   getEducation,
+  getEmployeeResumeList,
   getResume,
   getResumeDetail,
   getSearchSchools,
@@ -24,12 +25,18 @@ import {
 import { RESTYPE } from '@/types/api/common';
 import {
   AdditionalLanguageRequest,
+  GetEmployeeResumeListReq,
   LanguagesLevelType,
   UserResumeDetailResponse,
 } from '@/types/api/resumes';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 import { smartNavigate } from '@/utils/application';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 // 7.1 (유학생/고용주) 이력서 조회하기
@@ -286,6 +293,32 @@ export const usePatchResumePublic = () => {
   });
 };
 
+// 7.24 (고용주) 이력서 리스트 조회하기 훅
+export const useInfiniteGetEmployeeResumeList = (
+  req: GetEmployeeResumeListReq,
+  isEnabled: boolean,
+) => {
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['resume', 'search', req],
+      queryFn: ({ pageParam = 1 }) => getEmployeeResumeList(req, pageParam),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPage) => {
+        return lastPage.data.has_next ? allPage.length + 1 : undefined;
+      },
+      enabled: isEnabled,
+      retry: 1,
+    });
+
+  return {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage: data?.pages[data?.pages.length - 1].data.has_next,
+    isFetchingNextPage,
+  };
+};
+
 // 7.25 (고용주) 이력서 상세 조회하기
 export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
   return useQuery({
@@ -369,5 +402,6 @@ export const usePutScrapResume = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
+    meta: { skipGlobalLoading: true },
   });
 };

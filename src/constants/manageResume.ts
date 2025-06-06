@@ -1,3 +1,5 @@
+import { EmployeeSearchFilterItemType } from '@/types/api/resumes';
+
 export const enum ManageResumeType {
   VISA = 'VISA',
   PERSONALINFORMATION = 'Personal Information',
@@ -16,19 +18,37 @@ export const EducationLevels = [
   'DOCTOR',
 ];
 
-export type MajorType = {
+export type KoEnEnumType = {
   ko: string;
   en: string;
   enum: string;
 };
 
-export type NationalityType = {
-  ko: string;
-  en: string;
-  enum: string;
-};
+// 비자
+export const Visas: KoEnEnumType[] = [
+  { ko: 'D-2', en: 'D-2', enum: 'D_2' },
+  { ko: 'D-4', en: 'D-4', enum: 'D_4' },
+  { ko: 'D-10', en: 'D-10', enum: 'D_10' },
+  { ko: 'C-4', en: 'C-4', enum: 'C_4' },
+  { ko: 'F-2', en: 'F-2', enum: 'F_2' },
+  { ko: 'F-4', en: 'F-4', enum: 'F_4' },
+  { ko: 'F-5', en: 'F-5', enum: 'F_5' },
+  { ko: 'F-6', en: 'F-6', enum: 'F_6' },
+  { ko: 'H-1', en: 'H-1', enum: 'H_1' },
+];
 
-export const Majors: MajorType[] = [
+// 한국어 사용 능력
+export const Koreans: KoEnEnumType[] = [
+  { ko: '전혀 불가능', en: 'none', enum: 'NONE' },
+  { ko: '간단한 해석 가능', en: 'basic', enum: 'BASIC' },
+  { ko: '의사소통 가능', en: 'communicate', enum: 'COMMUNICATE' },
+  { ko: '업무 능숙', en: 'working', enum: 'WORKING' },
+  { ko: '고급 구사 가능', en: 'advanced', enum: 'ADVANCED' },
+  { ko: '원어민 수준', en: 'native', enum: 'NATIVE' },
+];
+
+// 전공
+export const Majors: KoEnEnumType[] = [
   { ko: '사업관리', en: 'Business Management', enum: 'BUSINESS_MANAGEMENT' },
   {
     ko: '경영/회계/사무',
@@ -87,7 +107,8 @@ export const Majors: MajorType[] = [
   },
 ];
 
-export const Nationalities: NationalityType[] = [
+// 국적
+export const Nationalities: KoEnEnumType[] = [
   { ko: '가나', en: 'Ghana', enum: 'GHANA' },
   { ko: '가봉', en: 'Gabon', enum: 'GABON' },
   { ko: '가이아나', en: 'Guyana', enum: 'GUYANA' },
@@ -471,3 +492,62 @@ export const Nationalities: NationalityType[] = [
 
 export const MajorsKo: string[] = Majors.map((major) => major.ko);
 export const MajorsEn: string[] = Majors.map((major) => major.en);
+
+// 희망업무 직종
+export const Industrys: KoEnEnumType[] = [
+  { ko: '외식/음료', en: 'Food Service', enum: 'FOOD_SERVICE' },
+  { ko: '매장관리/판매', en: 'Store Management', enum: 'STORE_MANAGEMENT' },
+  { ko: '서비스', en: 'Service', enum: 'SERVICE' },
+  { ko: '사무직', en: 'Office Work', enum: 'OFFICE_WORK' },
+  { ko: '고객상담/리서치/영업', en: 'Customer Sales', enum: 'CUSTOMER_SALES' },
+  {
+    ko: '생산/건설/노무',
+    en: 'Production Construction',
+    enum: 'PRODUCTION_CONSTRUCTION',
+  },
+  { ko: 'IT/기술', en: 'IT Tech', enum: 'IT_TECH' },
+  { ko: '디자인', en: 'Design', enum: 'DESIGN' },
+  { ko: '미디어', en: 'Media', enum: 'MEDIA' },
+  { ko: '운전/배달', en: 'Driving Delivery', enum: 'DRIVING_DELIVERY' },
+  {
+    ko: '병원/간호/연구',
+    en: 'Healthcare Research',
+    enum: 'HEALTHCARE_RESEARCH',
+  },
+  { ko: '교육/강사', en: 'Education', enum: 'EDUCATION' },
+];
+
+// (고용주) 이력서 검색 카테고리
+export const EMPLOYEE_SEARCH_CATEGORY = {
+  VISA: 'VISA',
+  INDUSTRY: 'INDUSTRY',
+  KOREAN: 'KOREAN',
+  MAJOR: 'MAJOR',
+  NATIONALITY: 'NATIONALITY',
+} as const;
+
+export const EMPLOYEE_SEARCH_CATEGORY_KO = {
+  [EMPLOYEE_SEARCH_CATEGORY.VISA]: '비자',
+  [EMPLOYEE_SEARCH_CATEGORY.INDUSTRY]: '업직종',
+  [EMPLOYEE_SEARCH_CATEGORY.KOREAN]: '한국어',
+  [EMPLOYEE_SEARCH_CATEGORY.MAJOR]: '전공',
+  [EMPLOYEE_SEARCH_CATEGORY.NATIONALITY]: '국가',
+} as const;
+
+// (고용주) 이력서 검색 카테고리 별 옵션
+export const EMPLOYEE_SEARCH_OPTIONS = {
+  [EMPLOYEE_SEARCH_CATEGORY.VISA]: Visas,
+  [EMPLOYEE_SEARCH_CATEGORY.KOREAN]: Koreans,
+  [EMPLOYEE_SEARCH_CATEGORY.INDUSTRY]: Industrys,
+  [EMPLOYEE_SEARCH_CATEGORY.MAJOR]: Majors,
+  [EMPLOYEE_SEARCH_CATEGORY.NATIONALITY]: Nationalities,
+} as const;
+
+// (고용주) 이력서 검색 시에 초기값
+export const initialEmployerSearchFilterList: EmployeeSearchFilterItemType = {
+  [EMPLOYEE_SEARCH_CATEGORY.VISA]: [],
+  [EMPLOYEE_SEARCH_CATEGORY.KOREAN]: [],
+  [EMPLOYEE_SEARCH_CATEGORY.INDUSTRY]: [],
+  [EMPLOYEE_SEARCH_CATEGORY.MAJOR]: [],
+  [EMPLOYEE_SEARCH_CATEGORY.NATIONALITY]: [],
+};

@@ -22,7 +22,6 @@ const ApplicationDetailBottomSheet = ({
 }: ApplicationDetailBottomSheetType) => {
   return (
     <BottomSheetLayout
-      hasHandlebar={true}
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}

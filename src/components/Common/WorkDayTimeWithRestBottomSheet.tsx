@@ -61,7 +61,6 @@ const WorkDayTimeWithRestBottomSheet = ({
 
   return (
     <BottomSheetLayout
-      hasHandlebar={true}
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}

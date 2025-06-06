@@ -1,8 +1,10 @@
+import { EMPLOYEE_SEARCH_CATEGORY } from '@/constants/manageResume';
 import {
   FILTER_CATEGORY,
   initialFilterList,
   POST_SEARCH_MENU,
 } from '@/constants/postSearch';
+import { EmployeeSearchFilterItemType } from '@/types/api/resumes';
 import {
   PostSearchFilterItemType,
   PostSortingType,
@@ -77,6 +79,31 @@ export const formatCareerSearchFilter = ({
     search: searchText ?? null,
     sorting: careerSortType as PostSortingType | POST_SEARCH_MENU,
     category: careerCategory.join(','),
+  };
+
+  return newSearchFilter;
+};
+
+// (고용주) 인재 이력서 검색 시에 request 형식으로 변경
+export const formatResumeSearchFilter = ({
+  sortType,
+  filterList,
+}: {
+  sortType: PostSortingType;
+  filterList: EmployeeSearchFilterItemType;
+}) => {
+  const newSearchFilter = {
+    size: 5,
+    sorting: sortType,
+    visa:
+      filterList[EMPLOYEE_SEARCH_CATEGORY.VISA]
+        ?.join(',')
+        ?.replace(/-/g, '_') ?? null,
+    korean: filterList[EMPLOYEE_SEARCH_CATEGORY.KOREAN]?.join(',') ?? null,
+    major: filterList[EMPLOYEE_SEARCH_CATEGORY.MAJOR]?.join(',') ?? null,
+    nationality:
+      filterList[EMPLOYEE_SEARCH_CATEGORY.NATIONALITY]?.join(',') ?? null,
+    industry: filterList[EMPLOYEE_SEARCH_CATEGORY.INDUSTRY]?.join(',') ?? null,
   };
 
   return newSearchFilter;

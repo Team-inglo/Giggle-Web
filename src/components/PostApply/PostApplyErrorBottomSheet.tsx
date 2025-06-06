@@ -13,7 +13,6 @@ const PostApplyErrorBottomSheet = ({
 }: PostApplyErrorBottomSheetType) => {
   return (
     <BottomSheetLayout
-      hasHandlebar={true}
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}

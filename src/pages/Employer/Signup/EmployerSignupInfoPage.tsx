@@ -167,7 +167,6 @@ const EmployerSignupInfoPage = () => {
 
       {isAgreeModal && (
         <BottomSheetLayout
-          hasHandlebar={true}
           isAvailableHidden={false}
           isShowBottomsheet={isAgreeModal}
         >
