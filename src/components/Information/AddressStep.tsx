@@ -73,7 +73,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
             onClose={() => setIsAddressSearch(false)}
           />
         ) : (
-          <div className="w-full flex flex-col gap-[1.125rem] [&>*:last-child]:mb-32">
+          <div className="w-full flex flex-col px-4 gap-[1.125rem] [&>*:last-child]:mb-32">
             {/* 주소 검색 입력 input */}
             <InputLayout title="Main Address" isEssential={false} isOptional>
               <div onClick={() => setIsAddressSearch(true)}>
