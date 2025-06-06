@@ -57,13 +57,11 @@ const AddressInput = <T extends FieldValues>({
                   const coords = await getAddressCoords(
                     convertedAddress.address_name as string,
                   );
-                  const x = coords.getLng();
-                  const y = coords.getLat();
 
                   onChange({
                     ...convertedAddress,
-                    longitude: y,
-                    latitude: x,
+                    longitude: coords.getLng(),
+                    latitude: coords.getLat(),
                   });
                   setIsAddressSearch(false);
                 }}

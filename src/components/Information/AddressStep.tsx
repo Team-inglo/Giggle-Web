@@ -18,7 +18,7 @@ import {
 import { useLocation } from 'react-router-dom';
 import { isEmployer } from '@/utils/signup';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { processAddressData } from '@/utils/map';
 
 type AddressStepProps = {
   userInfo: UserInfoRequestBody;
@@ -31,18 +31,8 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
   const [newAddress, setNewAddress] = useState<GiggleAddress>(initialAddress);
   // 검색된 주소 선택 시 state에 반영
   const handleAddressSelection = async (data: Address) => {
-    const convertedAddress = convertToAddress(data);
-    const coords = await getAddressCoords(
-      convertedAddress.address_name as string,
-    );
-    const x = coords.getLng();
-    const y = coords.getLat();
-
-    setNewAddress({
-      ...convertedAddress,
-      longitude: y,
-      latitude: x,
-    });
+    const newAddress = await processAddressData(data);
+    setNewAddress(newAddress);
     setIsAddressSearch(false);
   };
 
@@ -73,7 +63,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
             onClose={() => setIsAddressSearch(false)}
           />
         ) : (
-          <div className="w-full flex flex-col gap-[1.125rem] [&>*:last-child]:mb-32">
+          <div className="w-full flex flex-col px-4 gap-[1.125rem] [&>*:last-child]:mb-32">
             {/* 주소 검색 입력 input */}
             <InputLayout title="Main Address" isEssential={false} isOptional>
               <div onClick={() => setIsAddressSearch(true)}>

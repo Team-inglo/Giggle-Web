@@ -74,11 +74,26 @@ export const getAddressCoords = async (
       );
     });
 
-    return new kakao.maps.LatLng(Number(result.x), Number(result.y));
+    return new kakao.maps.LatLng(Number(result.y), Number(result.x));
   } catch (error) {
     const err = error as Error;
     throw new Error(
       `Failed to get coordinates for address: ${address}. ${err.message}`,
     );
   }
+};
+
+export const processAddressData = async (
+  addressData: Address,
+): Promise<GiggleAddress> => {
+  const convertedAddress = convertToAddress(addressData);
+  const coords = await getAddressCoords(
+    convertedAddress.address_name as string,
+  );
+
+  return {
+    ...convertedAddress,
+    longitude: coords.getLng(),
+    latitude: coords.getLat(),
+  };
 };
