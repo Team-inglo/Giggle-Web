@@ -1,7 +1,7 @@
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
 import { useParams } from 'react-router-dom';
-import { useGetResume, useGetResumeDetail } from './api/useResume';
+import { useGetResume, useGetResumeDetail } from '@/hooks/api/useResume';
 
 const useResumeData = () => {
   const { id } = useParams();
