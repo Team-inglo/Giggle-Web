@@ -10,13 +10,13 @@ import { useUserStore } from '@/store/user';
 import {
   EducationLevelInfo,
   genderInfo,
-  JobCategoryInfo,
+  JobCategoryExtendedInfo,
   WorkTypeInfo,
 } from '@/constants/post';
 import {
   EducationLevel,
   EmploymentType,
-  JobCategory,
+  JobCategoryExtended,
 } from '@/types/postCreate/postCreate';
 import { WorkPeriodInfo } from '@/constants/documents';
 import { DayOfWeek, WorkPeriod } from '@/types/api/document';
@@ -202,8 +202,9 @@ const WorkplaceSection = ({
           label={postTranslation.jobCategory[isEmployer]}
           value={
             accountType === UserType.OWNER
-              ? JobCategoryInfo[
-                  postDetailData.working_conditions.job_category as JobCategory
+              ? JobCategoryExtendedInfo[
+                  postDetailData.working_conditions
+                    .job_category as JobCategoryExtended // 구 버전 데이터 처리
                 ].name
               : postDetailData.working_conditions.job_category
                   .replace(/_/g, ' ')
