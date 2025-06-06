@@ -402,6 +402,5 @@ export const usePutScrapResume = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
-    meta: { skipGlobalLoading: true },
   });
 };
