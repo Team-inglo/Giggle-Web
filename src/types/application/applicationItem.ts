@@ -12,7 +12,7 @@ export type ApplicationStepType =
   | 'PENDING'
   | 'REGISTERING_RESULTS'; // 6;
 
-export type AppicationItemType = {
+export type ApplicationItemType = {
   job_posting_id: number;
   user_owner_job_posting_id: number;
   icon_img_url: string;
@@ -27,6 +27,7 @@ export type AppicationItemType = {
 // 공고에 대한 지원자 리스트
 export type ApplicantItemType = {
   id: number;
+  resume_id: string;
   profile_img_url: string;
   name: string;
   nationality: string;

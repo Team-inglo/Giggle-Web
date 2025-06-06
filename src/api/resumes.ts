@@ -6,7 +6,7 @@ import {
   LanguagesLevelType,
   UserResumeDetailResponse,
   WorkExperienctRequest,
-  WorkExperienctResponse,
+  WorkExperienceResponse,
 } from '@/types/api/resumes';
 import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
@@ -25,7 +25,7 @@ export const getResume = async (): Promise<
 // 7.2 경력 상세 조회하기
 export const getWorkExperience = async (
   id: string,
-): Promise<RESTYPE<WorkExperienctResponse>> => {
+): Promise<RESTYPE<WorkExperienceResponse>> => {
   const response = await api.get(
     `/users/resumes/work-experiences/${id}/details`,
   );
@@ -157,14 +157,6 @@ export const deleteEducation = async (id: number) => {
 export const deleteEtcLanguageLevel = async (id: number) => {
   const response = await api.delete(
     `/users/resumes/languages/additional-languages/${id}`,
-  );
-  return response.data;
-};
-
-// 7.19 (고용주) 이력서 조회하기
-export const getApplicantResume = async (id: number) => {
-  const response = await api.get(
-    `/owners/user-owner-job-postings/${id}/users/resumes/details`,
   );
   return response.data;
 };

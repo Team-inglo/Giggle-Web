@@ -8,8 +8,8 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { useGetApplicantResume } from '@/hooks/api/useResume';
-import { ApplicantResumeResponse } from '@/types/api/resumes';
+import { useGetResumeDetail } from '@/hooks/api/useResume';
+import { UserResumeDetailResponse } from '@/types/api/resumes';
 
 // Mock React Router
 const mockNavigateBack = vi.fn();
@@ -28,7 +28,7 @@ vi.mock('react-router-dom', async () => {
 
 // Mock API hooks
 vi.mock('@/hooks/api/useResume', () => ({
-  useGetApplicantResume: vi.fn(),
+  useGetResumeDetail: vi.fn(),
 }));
 
 // Mock components
@@ -89,25 +89,26 @@ const createWrapper = () => {
 };
 
 // Create a typed mock to access the mocked function
-const mockUseGetApplicantResume = vi.mocked(useGetApplicantResume);
+const mockUseGetResumeDetail = vi.mocked(useGetResumeDetail);
 
 describe('EmploySearchDetailPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Setup default mock return value
-    mockUseGetApplicantResume.mockReturnValue({
+    // Setup default mock return value - 실제 사용하는 데이터 구조와 일치
+    mockUseGetResumeDetail.mockReturnValue({
       data: {
-        is_scraped: false,
         data: {
+          is_bookmarked: false,
           personal_information: {
             phone_number: '010-1234-5678',
           },
         },
       },
       isLoading: false,
+      isSuccess: true,
       error: null,
-    } as UseQueryResult<ApplicantResumeResponse, Error>);
+    } as unknown as UseQueryResult<UserResumeDetailResponse, Error>);
   });
 
   describe('렌더링', () => {
@@ -124,13 +125,6 @@ describe('EmploySearchDetailPage', () => {
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
       expect(screen.getByTestId('back-button')).toBeInTheDocument();
-    });
-
-    it('BookmarkContactPanel의 기본 북마크 상태가 false로 설정되어야 한다', () => {
-      render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
-
-      expect(screen.getByText('북마크')).toBeInTheDocument();
-      expect(screen.queryByText('북마크됨')).not.toBeInTheDocument();
     });
 
     it('연락하기 버튼이 표시되어야 한다', () => {
@@ -150,18 +144,19 @@ describe('EmploySearchDetailPage', () => {
 
     it('북마크 상태가 API 응답에 따라 올바르게 설정되어야 한다', () => {
       // 북마크된 상태로 모킹
-      mockUseGetApplicantResume.mockReturnValue({
+      mockUseGetResumeDetail.mockReturnValue({
         data: {
-          is_scraped: true,
           data: {
+            is_bookmarked: true,
             personal_information: {
               phone_number: '010-1234-5678',
             },
           },
         },
         isLoading: false,
+        isSuccess: true,
         error: null,
-      } as UseQueryResult<ApplicantResumeResponse, Error>);
+      } as unknown as UseQueryResult<UserResumeDetailResponse, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
@@ -183,38 +178,56 @@ describe('EmploySearchDetailPage', () => {
   });
 
   describe('API 연동', () => {
-    it('useGetApplicantResume이 올바른 매개변수로 호출되어야 한다', () => {
+    it('useGetResumeDetail이 올바른 매개변수로 호출되어야 한다', () => {
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
-      expect(mockUseGetApplicantResume).toHaveBeenCalledWith(1, true);
+      expect(mockUseGetResumeDetail).toHaveBeenCalledWith('1', true);
     });
 
-    it('API 응답이 없을 때 기본값이 설정되어야 한다', () => {
-      mockUseGetApplicantResume.mockReturnValue({
+    it('API 응답이 없을 때 컴포넌트가 렌더링되지 않아야 한다', () => {
+      mockUseGetResumeDetail.mockReturnValue({
         data: null,
         isLoading: false,
+        isSuccess: false,
         error: null,
-      } as UseQueryResult<ApplicantResumeResponse | null, Error>);
+      } as unknown as UseQueryResult<UserResumeDetailResponse | null, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 
-      expect(screen.getByTestId('phone-number')).toHaveTextContent('');
-      expect(screen.getByText('북마크')).toBeInTheDocument();
+      expect(
+        screen.queryByTestId('bookmark-contact-panel'),
+      ).not.toBeInTheDocument();
+    });
+
+    it('로딩 중일 때 BookmarkContactPanel이 렌더링되지 않아야 한다', () => {
+      mockUseGetResumeDetail.mockReturnValue({
+        data: null,
+        isLoading: true,
+        isSuccess: false,
+        error: null,
+      } as unknown as UseQueryResult<UserResumeDetailResponse | null, Error>);
+
+      render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
+
+      expect(
+        screen.queryByTestId('bookmark-contact-panel'),
+      ).not.toBeInTheDocument();
     });
 
     it('전화번호 정보가 없을 때 빈 문자열이 전달되어야 한다', () => {
-      mockUseGetApplicantResume.mockReturnValue({
+      mockUseGetResumeDetail.mockReturnValue({
         data: {
-          is_scraped: false,
           data: {
+            is_bookmarked: false,
             personal_information: {
               // phone_number가 없는 경우
             },
           },
         },
         isLoading: false,
+        isSuccess: true,
         error: null,
-      } as UseQueryResult<ApplicantResumeResponse, Error>);
+      } as unknown as UseQueryResult<UserResumeDetailResponse, Error>);
 
       render(<EmploySearchDetailPage />, { wrapper: createWrapper() });
 

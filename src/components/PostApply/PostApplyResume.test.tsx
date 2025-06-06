@@ -13,7 +13,7 @@ const mockUseCurrentApplicantIdStore = vi.fn();
 
 vi.mock('@/hooks/api/useResume', () => ({
   useGetResume: () => mockUseGetResume(),
-  useGetApplicantResume: () => mockUseGetApplicantResume(),
+  useGetResumeDetail: () => mockUseGetApplicantResume(),
 }));
 
 vi.mock('@/store/user', () => ({
@@ -30,7 +30,7 @@ vi.mock('react-router-dom', async () => {
   return {
     ...actual,
     useNavigate: () => vi.fn(),
-    useLocation: () => ({ pathname: '/resume/employ-search-detail' }),
+    useLocation: () => ({ pathname: '/resume/employer/search/1' }),
   };
 });
 
