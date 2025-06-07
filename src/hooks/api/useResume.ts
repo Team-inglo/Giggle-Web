@@ -297,11 +297,13 @@ export const usePatchResumePublic = () => {
 export const useInfiniteGetEmployeeResumeList = (
   req: GetEmployeeResumeListReq,
   isEnabled: boolean,
+  isBookmarked: boolean = false,
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['resume', 'search', req],
-      queryFn: ({ pageParam = 1 }) => getEmployeeResumeList(req, pageParam),
+      queryFn: ({ pageParam = 1 }) =>
+        getEmployeeResumeList(req, pageParam, isBookmarked),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPage) => {
         return lastPage.data.has_next ? allPage.length + 1 : undefined;

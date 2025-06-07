@@ -59,7 +59,7 @@ import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
 import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
 import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
-import EmployerApplicantScrappedPage from '@/pages/Employer/ApplicantScrapped/EmployerApplicantScrappedPage';
+import EmployerScrappedPage from '@/pages/Employer/Scrapped/EmployerScrappedPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -235,10 +235,7 @@ const Router = () => {
           path="/employer/profile/edit"
           element={<EmployerEditProfilePage />}
         />
-        <Route
-          path="/employer/scrapped"
-          element={<EmployerApplicantScrappedPage />}
-        />
+        <Route path="/employer/scrapped" element={<EmployerScrappedPage />} />
       </Route>
     </Routes>
   );

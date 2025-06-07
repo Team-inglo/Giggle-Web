@@ -183,9 +183,14 @@ export const patchResumePublic = async (data: { is_public: boolean }) => {
 export const getEmployeeResumeList = async (
   req: GetEmployeeResumeListReq,
   page: number,
+  isBookmarked: boolean,
 ) => {
   const response = await api.get(`/owners/resumes/overviews`, {
-    params: { ...filterNullParams(req), page },
+    params: {
+      ...filterNullParams(req),
+      page,
+      ...(isBookmarked ? { 'is-book-marked': true } : {}),
+    },
   });
   return response.data;
 };
