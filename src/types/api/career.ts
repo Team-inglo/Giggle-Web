@@ -40,3 +40,11 @@ export type CareerDetailItemType = {
   details?: string;
   application_url: string;
 };
+
+// 14.3 (유학생/고용주) 커리어 리스트 조회 Response
+export type GetCareerListResponse = {
+  data: {
+    career_list: CareerListItemType[];
+    has_next: boolean;
+  };
+};

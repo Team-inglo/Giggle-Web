@@ -137,7 +137,6 @@ const IntegratedApplicationWriteForm = ({
         {/* 학교 선택 모달 */}
         {isModalOpen && (
           <BottomSheetLayout
-            hasHandlebar
             isAvailableHidden={true}
             isShowBottomsheet={isModalOpen}
             setIsShowBottomSheet={setIsModalOpen}

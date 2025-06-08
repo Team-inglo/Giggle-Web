@@ -10,7 +10,7 @@ import {
 } from '@/constants/sort';
 import { useGetApplyPostList } from '@/hooks/api/usePost';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { AppicationItemType } from '@/types/application/applicationItem';
+import { ApplicationItemType } from '@/types/application/applicationItem';
 import { ApplicationStatusType } from '@/types/application/applicationStatus';
 import { AscendingSortType } from '@/types/common/sort';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ const ApplicationPage = () => {
     status: selectedStatus,
   });
 
-  const [applicantData, setApplicantData] = useState<AppicationItemType[]>([]);
+  const [applicantData, setApplicantData] = useState<ApplicationItemType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -80,17 +80,17 @@ const ApplicationPage = () => {
       />
       <section className="w-full bg-surface-base">
         <div className="px-4 py-[3.125rem]">
-          <h1 className="pb-2 head-1 text-text-strong">
+          <h1 className="pb-2 heading-24-semibold text-text-strong">
             Track Your Progress 👀
           </h1>
-          <p className="body-2 text-text-alternative">
+          <p className="body-14-regular text-text-alternative">
             Stay updated on your job applications
             <br />
             and document status.
           </p>
         </div>
         <div className="w-full p-4 flex justify-between items-center">
-          <h3 className="caption text-text-alternative">
+          <h3 className="caption-12-regular text-text-alternative">
             {applicantData.length} Applicants
           </h3>
           <SearchSortDropdown
@@ -123,7 +123,7 @@ const ApplicationPage = () => {
                         ? 'bg-surface-secondary'
                         : 'bg-surface-base'
                     }
-                    fontStyle="body-2"
+                    fontStyle="body-14-regular"
                   />
                 </button>
               ),

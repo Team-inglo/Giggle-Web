@@ -4,7 +4,7 @@ import PostDetailConfirmBottomSheet from '@/components/PostDetail/PostDetailConf
 import LoginBottomSheet from '@/components/Common/LoginBottomSheet';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
 import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUserStore } from '@/store/user';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetPostValidation } from '@/hooks/api/useApplication';
@@ -32,7 +32,6 @@ const PostDetailApplyButton = ({
     useState<boolean>(false);
   const [isOpenLoginBottomSheet, setIsOpenLoginBottomSheet] =
     useState<boolean>(false);
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
   const onClickApply = async () => {
     if (!account_type) {
@@ -52,13 +51,8 @@ const PostDetailApplyButton = ({
   const onClickBookmark = async () => {
     if (account_type && !isNaN(Number(id))) {
       mutate(Number(id));
-      setIsBookmark(!isBookmark);
     }
   };
-
-  useEffect(() => {
-    setIsBookmark(isBookmarked);
-  }, [setIsBookmark, isBookmarked]);
 
   return (
     <>
@@ -69,7 +63,7 @@ const PostDetailApplyButton = ({
               className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-lg bg-[#F4F4F980]"
               onClick={onClickBookmark}
             >
-              {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
+              {isBookmarked ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
             </button>
           )}
           <Button

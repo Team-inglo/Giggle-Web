@@ -17,7 +17,7 @@ const IntegratedApplicationPreview = ({
 }: IntegratedApplicationFormProps) => {
   // 공통 타이틀 렌더링 함수
   const renderTitle = (key: string) => (
-    <p className="button-2 text-text-alternative">
+    <p className="button-14-semibold text-text-alternative">
       {
         IntegratedApplicationPropertyInfo[key as IntegratedApplicationField]
           .name
@@ -27,7 +27,7 @@ const IntegratedApplicationPreview = ({
 
   // 기본 값 렌더링 컴포넌트
   const DefaultValueRenderer = ({ value }: { value: unknown }) => (
-    <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
+    <div className="w-full self-stretch flex items-start justify-start body-14-regular text-primary-dark">
       {propertyToString(String(value)) === 'Null'
         ? 'none'
         : propertyToString(String(value))}
@@ -42,7 +42,7 @@ const IntegratedApplicationPreview = ({
         return renderMap(value as GiggleAddress);
       case IntegratedApplicationField.IS_ACCREDITED:
         return (
-          <div className="w-full self-stretch flex items-start justify-start body-2 text-primary-dark">
+          <div className="w-full self-stretch flex items-start justify-start body-14-regular text-primary-dark">
             {value
               ? 'Accredited school by Education Office'
               : 'Non-accredited, Alternative school'}
@@ -70,7 +70,7 @@ const IntegratedApplicationPreview = ({
   if (!document) return null;
 
   return (
-    <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left body-3 bg-white">
+    <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left caption-12-regular bg-white">
       <div className="w-full self-stretch flex flex-col items-start justify-center">
         <div className="w-full self-stretch flex flex-col items-center justify-start text-left pt-4 gap-3">
           {Object.entries(document).map(([key, value]) => (

@@ -1,6 +1,5 @@
 import {
   getEmailValidation,
-  getIdValidation,
   getUserType,
   logout,
   patchAuthentication,
@@ -154,14 +153,6 @@ export const usePatchDeviceToken = () => {
       console.error('디바이스 토큰 갱신에 실패했습니다.');
       console.log(error);
     },
-  });
-};
-
-// 2.1 아이디 중복검사 훅
-export const useGetIdValidation = (userId: string) => {
-  return useQuery({
-    queryKey: ['validId', userId],
-    queryFn: () => getIdValidation(userId),
   });
 };
 

@@ -14,7 +14,7 @@ import {
   formatPhoneNumber,
 } from '@/utils/information';
 import { EmployerProfileRequestBody } from '@/types/api/profile';
-import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { processAddressData } from '@/utils/map';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { documentTranslation } from '@/constants/translation';
 
@@ -73,20 +73,12 @@ const EmployerEditInputSection = ({
 
   // 검색된 주소 선택 시 state에 반영
   const handleAddressSelection = async (data: Address) => {
-    const convertedAddress = convertToAddress(data);
-    const coords = await getAddressCoords(
-      convertedAddress.address_name as string,
-    );
-    const x = coords.getLng();
-    const y = coords.getLat();
-
+    const newAddress = await processAddressData(data);
     setNewEmployData({
       ...newEmployData,
       address: {
         ...newEmployData.address,
-        ...convertedAddress,
-        longitude: y,
-        latitude: x,
+        ...newAddress,
       },
     });
     setIsAddressSearch(false);
@@ -145,7 +137,7 @@ const EmployerEditInputSection = ({
           />
         ) : (
           <div className="flex flex-col gap-4 [&>*:last-child]:mb-40">
-            <div className="w-full py-6 flex items-center justify-start title-1 text-[#1e1926] text-left">
+            <div className="w-full py-6 flex items-center justify-start heading-28-semibold text-[#1e1926] text-left">
               회사/점포 정보 수정
             </div>
             {/* 이름 입력 */}
@@ -344,7 +336,7 @@ const EmployerEditInputSection = ({
                     />
                   </label>
                 </div>
-                <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left body-3 text-[#656565]">
+                <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left caption-12-regular text-[#656565]">
                   <div className="w-6 h-6 relative">
                     <div
                       className={`w-full h-full border border-[#f4f4f9] flex items-center justify-center ${logoStatus === LogoType.DEFAULT ? 'bg-[#1E1926]' : 'bg-white'}`}

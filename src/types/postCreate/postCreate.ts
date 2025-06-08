@@ -17,7 +17,31 @@ export enum JobCategory {
   EDUCATION = 'EDUCATION',
 }
 
-export enum DayOfWeek {
+// 구 버전 데이터 처리 위한 확장된 데이터 타입(추후 삭제 필요)
+export enum JobCategoryExtended {
+  FOOD_SERVICE = 'FOOD_SERVICE',
+  STORE_MANAGEMENT = 'STORE_MANAGEMENT',
+  SERVICE = 'SERVICE',
+  OFFICE_WORK = 'OFFICE_WORK',
+  CUSTOMER_SALES = 'CUSTOMER_SALES',
+  PRODUCTION_CONSTRUCTION = 'PRODUCTION_CONSTRUCTION',
+  IT_TECH = 'IT_TECH',
+  DESIGN = 'DESIGN',
+  MEDIA = 'MEDIA',
+  DRIVING_DELIVERY = 'DRIVING_DELIVERY',
+  HEALTHCARE_RESEARCH = 'HEALTHCARE_RESEARCH',
+  EDUCATION = 'EDUCATION',
+  GENERAL_INTERPRETATION_TRANSLATION = 'GENERAL_INTERPRETATION_TRANSLATION',
+  FOOD_SERVICE_ASSISTANT = 'FOOD_SERVICE_ASSISTANT',
+  GENERAL_ADMINISTRATIVE_SUPPORT = 'GENERAL_ADMINISTRATIVE_SUPPORT',
+  ENGLISH_KIDS_CAFE = 'ENGLISH_KIDS_CAFE',
+  GENERAL_CAFE = 'GENERAL_CAFE',
+  PART_TIME_WORK = 'PART_TIME_WORK',
+  TOUR_GUIDE_AND_DUTY_FREE_ASSISTANT = 'TOUR_GUIDE_AND_DUTY_FREE_ASSISTANT',
+  MANUFACTURING = 'MANUFACTURING',
+}
+
+enum DayOfWeek {
   WEEKDAYS = 'WEEKDAYS',
   WEEKEND = 'WEEKEND',
   MONDAY = 'MONDAY',
@@ -30,7 +54,7 @@ export enum DayOfWeek {
   NEGOTIABLE = 'NEGOTIABLE',
 }
 
-export enum WorkPeriod {
+enum WorkPeriod {
   ONE_DAY = 'ONE_DAY',
   LESS_THAN_ONE_WEEK = 'LESS_THAN_ONE_WEEK',
   ONE_WEEK_TO_ONE_MONTH = 'ONE_WEEK_TO_ONE_MONTH',
@@ -66,7 +90,7 @@ export enum VisaGroup {
 
 // Types
 
-export type GiggleAddress = {
+type GiggleAddress = {
   address_name: string | null;
   region_1depth_name: string | null;
   region_2depth_name: string | null;
@@ -107,8 +131,6 @@ export type JobPostingForm = {
     deleted_img_ids?: number[];
   };
 };
-
-export type JobPostingFormField = keyof JobPostingForm['body'];
 
 // Initial State
 export const initialJobPostingState: JobPostingForm = {

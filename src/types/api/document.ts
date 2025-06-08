@@ -2,7 +2,7 @@ import { DocumentStatusEmployer } from '@/constants/documents';
 import { GiggleAddress, Gender } from '@/types/api/users';
 
 //현재 문서의 작성 상태
-export type DocumentStatus =
+type DocumentStatus =
   | 'TEMPORARY_SAVE'
   | 'SUBMITTED'
   | 'BEFORE_CONFIRMATION'
@@ -21,12 +21,6 @@ export type EmployDocumentInfo = {
   word_url: string | null;
   reason: string | null;
   status: DocumentStatusEmployer | null;
-};
-
-// 통합 신청서 타입
-export type IntegratedApplicationInfo = {
-  id: number;
-  word_url: string | null;
 };
 
 // 문서 상태 조회 응답 양식
@@ -70,25 +64,6 @@ export type EmployeeInformation = {
   phone_number: string;
   email: string;
 };
-
-// 시간근무 허가서 유학생 정보 property와 이름 mapping
-export enum PartTimeEmployeeInfoProperty {
-  FIRST_NAME = 'first_name',
-  LAST_NAME = 'last_name',
-  MAJOR = 'major',
-  TERM_OF_COMPLETION = 'term_of_completion',
-  PHONE_NUMBER = 'phone_number',
-  EMAIL = 'email',
-}
-
-// 근로계약서 유학생 정보 property와 이름 mapping
-export enum LaborContractEmployeeInfoProperty {
-  FIRST_NAME = 'first_name',
-  LAST_NAME = 'last_name',
-  ADDRESS = 'address',
-  PHONE_NUMBER = 'phone_number',
-  SIGNATURE_BASE64 = 'signature_base64',
-}
 
 // 고용주 정보 property와 이름 mapping
 export enum EmployerInfoProperty {

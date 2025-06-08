@@ -3,10 +3,10 @@ import {
   deleteEtcLanguageLevel,
   deleteIntroduction,
   deleteWorkExperience,
-  getApplicantResume,
   getEducation,
-  getLanguagesSummaries,
+  getEmployeeResumeList,
   getResume,
+  getResumeDetail,
   getSearchSchools,
   getWorkExperience,
   getWorkPreference,
@@ -14,19 +14,31 @@ import {
   patchEtcLanguageLevel,
   patchIntroduction,
   patchLanguagesLevel,
+  patchResumePublic,
   patchWorkExperience,
   postEducation,
   postEtcLanguageLevel,
   postWorkExperience,
+  putScrapResume,
   putWorkPreference,
 } from '@/api/resumes';
+import { RESTYPE } from '@/types/api/common';
 import {
   AdditionalLanguageRequest,
+  EmployeeResumeListResponse,
+  GetEmployeeResumeListReq,
   LanguagesLevelType,
+  UserResumeDetailResponse,
 } from '@/types/api/resumes';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 import { smartNavigate } from '@/utils/application';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 // 7.1 (유학생/고용주) 이력서 조회하기
@@ -52,14 +64,6 @@ export const useGetEducation = (id: string) => {
     queryKey: ['education', id],
     queryFn: () => getEducation(id),
     enabled: !!id,
-  });
-};
-
-// 7.4 언어 요약 조회하기
-export const useGetLanguagesSummaries = () => {
-  return useQuery({
-    queryKey: ['languagesSummaries'],
-    queryFn: getLanguagesSummaries,
   });
 };
 
@@ -258,15 +262,6 @@ export const useDeleteEtcLanguageLevel = () => {
   });
 };
 
-// 7.19 (고용주) 이력서 조회하기 훅
-export const useGetApplicantResume = (id: number, isEnabled: boolean) => {
-  return useQuery({
-    queryKey: ['resume', id],
-    queryFn: () => getApplicantResume(id),
-    enabled: isEnabled,
-  });
-};
-
 // 7.21 (유학생) 희망 근로 조건 상세 조회하기
 export const useGetWorkPreference = (isEnabled: boolean = true) => {
   return useQuery({
@@ -288,6 +283,53 @@ export const usePutWorkPreference = () => {
     },
   });
 };
+
+// 7.23 (유학생) 이력서 공개 여부 수정하기
+export const usePatchResumePublic = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: patchResumePublic,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
+    },
+  });
+};
+
+// 7.24 (고용주) 이력서 리스트 조회하기 훅
+export const useInfiniteGetEmployeeResumeList = (
+  req: GetEmployeeResumeListReq,
+  isEnabled: boolean,
+) => {
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['resume', 'list', req],
+      queryFn: ({ pageParam = 1 }) => getEmployeeResumeList(req, pageParam),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPage) => {
+        return lastPage.data.has_next ? allPage.length + 1 : undefined;
+      },
+      enabled: isEnabled,
+      retry: 1,
+    });
+
+  return {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage: data?.pages[data?.pages.length - 1].data.has_next,
+    isFetchingNextPage,
+  };
+};
+
+// 7.25 (고용주) 이력서 상세 조회하기
+export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
+  return useQuery({
+    queryKey: ['resume', 'detail', id],
+    queryFn: () => getResumeDetail(id),
+    enabled: isEnabled,
+  });
+};
+
 // 9.1 (유학생) 학교 검색하기
 export const useGetSearchSchools = (
   search: string,
@@ -303,5 +345,99 @@ export const useGetSearchSchools = (
         size: size.toString(),
       }),
     enabled: !!search, // 검색어가 있을 때만 쿼리 활성화
+  });
+};
+
+// 15.1 (고용주) 인재 스크랩 추가/삭제
+export const usePutScrapResume = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: putScrapResume,
+    onMutate: async (resumeId) => {
+      // 1. 진행 중인 쿼리 취소
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: ['resume', 'detail', resumeId] }),
+        queryClient.cancelQueries({ queryKey: ['resume', 'list'] }),
+      ]);
+
+      // 2. 이전 데이터 백업
+      const previousDetail = queryClient.getQueryData([
+        'resume',
+        'detail',
+        resumeId,
+      ]);
+      const previousList = queryClient.getQueriesData<
+        InfiniteData<EmployeeResumeListResponse>
+      >({
+        queryKey: ['resume', 'list'],
+      });
+
+      // 3. 상세 캐시 낙관적 업데이트
+      queryClient.setQueryData(
+        ['resume', 'detail', resumeId],
+        (old: RESTYPE<UserResumeDetailResponse>) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              is_bookmarked: !old.data.is_bookmarked,
+            },
+          };
+        },
+      );
+
+      // 4. 목록 캐시 낙관적 업데이트
+      previousList.forEach(([queryKey, previousList]) => {
+        if (!previousList) return;
+
+        const newPages = previousList.pages.map((page) => ({
+          ...page,
+          data: {
+            ...page.data,
+            resumes: page.data.resumes.map((resume) =>
+              resume.id === resumeId
+                ? {
+                    ...resume,
+                    is_bookmarked: !resume.is_bookmarked,
+                  }
+                : resume,
+            ),
+          },
+        }));
+
+        queryClient.setQueryData(queryKey, {
+          ...previousList,
+          pages: newPages,
+        });
+      });
+
+      return { previousDetail, previousList, resumeId };
+    },
+    onError: (_, __, context) => {
+      // 에러 발생 시 이전 데이터로 롤백
+      if (context?.previousDetail) {
+        queryClient.setQueryData(
+          ['resume', 'detail', context.resumeId],
+          context.previousDetail,
+        );
+      }
+
+      if (context?.previousList) {
+        context.previousList.forEach(([queryKey, previousList]) => {
+          queryClient.setQueryData(queryKey, previousList);
+        });
+      }
+    },
+    onSettled: (_, __, ___, context) => {
+      // 성공/실패 관계없이 데이터 재fetch
+      queryClient.invalidateQueries({
+        queryKey: ['resume', 'detail', context?.resumeId],
+      });
+      queryClient.invalidateQueries({ queryKey: ['resume', 'list'] });
+    },
+    meta: {
+      skipGlobalLoading: true,
+    },
   });
 };

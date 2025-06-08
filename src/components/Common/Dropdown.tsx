@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
+import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
+import Icon from './Icon';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {
@@ -21,12 +22,12 @@ export const DropdownModal = ({
   onSelect: (option: string) => void;
 }) => {
   return (
-    <div className="max-h-[13.3rem] overflow-y-scroll w-full relative rounded-lg bg-white border border-[#dcdcdc] flex flex-row items-start justify-start p-2 text-left body-2 text-primary-dark z-10">
+    <div className="max-h-[13.3rem] overflow-y-scroll w-full relative rounded-lg bg-white border border-[#dcdcdc] flex flex-row items-start justify-start p-2 text-left body-14-regular text-primary-dark z-10">
       <div className="flex-1 flex flex-col items-start justify-start gap-[5px]">
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
           <div
-            className={`self-stretch overflow-hidden ${value == option && 'bg-[#f4f4f9] text-primary-dark'} rounded-lg flex flex-row items-center justify-start p-2.5`}
+            className={`self-stretch overflow-hidden ${value == option && 'bg-surface-secondary text-text-strong'} rounded-lg flex flex-row items-center justify-start p-2.5`}
             onClick={() => onSelect(option)}
             key={option}
           >
@@ -58,7 +59,7 @@ const Dropdown = ({
     <div className="w-full flex flex-col">
       {/* 드롭다운 제목 (있는 경우에만 표시) */}
       {title && (
-        <div className="w-full relative flex flex-row items-center justify-start px-1 py-1.5 box-border text-left body-3 text-[#222]">
+        <div className="w-full relative flex flex-row items-center justify-start px-1 py-1.5 box-border text-left caption-12-regular text-[#222]">
           <div className="flex-1 overflow-hidden flex flex-col items-start justify-start">
             <div className="self-stretch flex flex-row items-center justify-start">
               <div className="relative leading-4">{title}</div>
@@ -68,7 +69,7 @@ const Dropdown = ({
       )}
       {/* 드롭다운 입력 영역 */}
       <div className="w-full flex flex-col gap-2">
-        <div className="w-full h-[3.125rem] relative rounded-lg bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-2 text-primary-dark">
+        <div className="w-full h-[3.125rem] relative rounded-lg bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-14-regular text-primary-dark">
           <div
             className="flex-1 h-5 flex flex-row items-center justify-between"
             onClick={() => setIsOpen(!isOpen)}
@@ -86,7 +87,11 @@ const Dropdown = ({
                   isOpen ? '' : 'rotate-180'
                 }`}
               >
-                <ArrowIcon isMarked={value !== null} />
+                <Icon icon={ArrowIcon} strokeColor={
+                    value !== ''
+                      ? 'stroke-text-strong'
+                      : 'stroke-text-assistive'
+                  }/>
               </div>
             </button>
           </div>

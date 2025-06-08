@@ -35,73 +35,129 @@ body {
 }
 
 @layer components {
-  /* 폰트 설정하기 */
-  .title-1 {
-    font-weight: 600;
-    font-size: 1.75rem;
-    line-height: 2.25rem;
-  }
+  /* 폰트 시스템 최신화 (1rem=16px) */
 
-  .title-2 {
+  /* Heading */
+  .heading-28-semibold {
     font-weight: 600;
-    font-size: 1.625rem;
-    line-height: 2rem;
+    font-size: 1.75rem; /* 28px */
+    line-height: 140%;
+    letter-spacing: -0.0125em; /* -0.75% */
   }
-
-  .head-1 {
+  .heading-24-semibold {
     font-weight: 600;
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 1.5rem; /* 24px */
+    line-height: 140%;
+    letter-spacing: -0.0125em;
   }
-
-  .head-2 {
+  .heading-20-semibold {
     font-weight: 600;
-    font-size: 1.25rem;
-    line-height: 1.5rem;
+    font-size: 1.25rem; /* 20px */
+    line-height: 140%;
+    letter-spacing: -0.008em; /* -0.5% */
   }
-
-  .head-3 {
+  .heading-18-semibold {
     font-weight: 600;
-    font-size: 1.125rem;
-    line-height: 1.25rem;
+    font-size: 1.125rem; /* 18px */
+    line-height: 140%;
+    letter-spacing: -0.008em;
     color: #17181a;
   }
+  .heading-16-semibold {
+    font-weight: 600;
+    font-size: 1rem; /* 16px */
+    line-height: 140%;
+    letter-spacing: -0.008em;
+  }
 
-  .body-1 {
+  /* Body */
+  .body-18-regular {
+    font-weight: 400;
+    font-size: 1.125rem; /* 18px */
+    line-height: 140%;
+    letter-spacing: -0.004em; /* -0.25% */
+  }
+  .body-18-medium {
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 140%;
+    letter-spacing: -0.004em;
+  }
+  .body-16-regular {
+    font-weight: 400;
+    font-size: 1rem; /* 16px */
+    line-height: 140%;
+    letter-spacing: -0.004em;
+  }
+  .body-16-medium {
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 140%;
+    letter-spacing: -0.004em;
+  }
+  .body-16-regular-reading {
     font-weight: 400;
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 150%;
+    letter-spacing: -0.004em;
   }
-
-  .body-2 {
+  .body-14-regular {
+    font-weight: 400;
+    font-size: 0.875rem; /* 14px */
+    line-height: 140%;
+    letter-spacing: -0.004em;
+  }
+  .body-14-medium {
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 140%;
+    letter-spacing: -0.004em;
+  }
+  .body-14-regular-reading {
     font-weight: 400;
     font-size: 0.875rem;
-    line-height: 1.25rem;
+    line-height: 150%;
+    letter-spacing: -0.004em;
   }
 
-  .body-3 {
+  /* Caption */
+  .caption-12-regular {
     font-weight: 400;
+    font-size: 0.75rem; /* 12px */
+    line-height: 140%;
+    letter-spacing: -0.008em;
+  }
+  .caption-12-semibold {
+    font-weight: 600;
     font-size: 0.75rem;
-    line-height: 1rem;
-    letter-spacing: 0rem;
+    line-height: 140%;
+    letter-spacing: -0.008em;
   }
-
-  .button-1 {
-    font-weight: 600;
-    font-size: 1rem;
-    line-height: 1.25rem;
-  }
-
-  .button-2 {
-    font-weight: 600;
-    font-size: 0.875rem;
-    line-height: 1rem;
-  }
-
-  .caption {
+  .caption-11-regular {
     font-weight: 400;
-    font-size: 0.75rem;
-    line-height: 1rem;
+    font-size: 0.6875rem; /* 11px */
+    line-height: 140%;
+    letter-spacing: -0.008em;
+  }
+  .caption-11-semibold {
+    font-weight: 600;
+    font-size: 0.6875rem;
+    line-height: 140%;
+    letter-spacing: -0.008em;
+  }
+
+  /* Button */
+  .button-16-semibold {
+    font-weight: 600;
+    font-size: 1rem; /* 16px */
+    line-height: 130%;
+    letter-spacing: -0.008em;
+  }
+  .button-14-semibold {
+    font-weight: 600;
+    font-size: 0.875rem; /* 14px */
+    line-height: 130%;
+    letter-spacing: -0.008em;
   }
 }
 

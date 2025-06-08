@@ -1,6 +1,5 @@
 import {
   EmployerInformation,
-  Insurance,
   IntegratedApplicationData,
   LaborContractEmployeeInfo,
   LaborContractEmployerInfo,
@@ -8,34 +7,10 @@ import {
   Phone,
   WorkDayTime,
 } from '@/types/api/document';
-import { GiggleAddress } from '@/types/api/users';
 import { extractNumbersAsNumber } from './post';
-import { InsuranceInfo } from '@/constants/documents';
 import { DropdownOption } from '@/components/Document/write/input/DropdownInput';
 
 export const MINIMUM_HOURLY_RATE = 10030;
-
-// 객체의 모든 프로퍼티가 공백이 아닌지 확인하는 함수
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isNotEmpty = (obj: Record<string, any>): boolean => {
-  return Object.entries(obj).every(([key, value]) => {
-    // null 또는 undefined 체크
-    if (value === null || value === undefined) {
-      return false;
-    }
-
-    // 문자열이면서 phone_number가 아닌 경우 trim()으로 공백 제거 후 길이 확인
-    if (typeof value === 'string' && key !== 'phone_number') {
-      return value.trim()?.length > 0;
-    }
-
-    if (key === 'address') {
-      return value.address_detail?.length <= 50;
-    }
-    // 숫자나 불리언 등 다른 타입은 true 반환
-    return true;
-  });
-};
 
 // string data의 공백 여부를 확인하는 함수
 const hasStringValue = (value: string): boolean => {
@@ -107,10 +82,6 @@ export const workDayTimeToString = (workDayTimes: WorkDayTime[]): string => {
   const { work_start_time, work_end_time } = workDayTimes[0];
 
   return `${arrayToString(daysOfWeek)} / ${work_start_time} - ${work_end_time}`;
-};
-
-export const getDetailAddress = (value: GiggleAddress) => {
-  return value.address_detail;
 };
 
 export const arrayToString = (array: string[]): string => {
@@ -257,55 +228,6 @@ export const parseStringToSafeNumber = (value: string): number => {
   else return numberValue;
 };
 
-export const parseStringToSafeDecimalNumberText = (value: string): string => {
-  // 숫자와 소수점만 허용하는 정규식 검사
-  if (value === '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
-    return value;
-  }
-
-  // 유효하지 않은 입력이면 이전 유효한 값 반환
-  const cleanedValue = value.replace(/[^0-9.]/g, '');
-
-  // 소수점이 여러 개 있으면 첫 번째만 유지
-  const parts = cleanedValue.split('.');
-  return parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
-};
-
-// 시급 필드 onBlur 이벤트 핸들러
-export const handleHourlyRateBlur = (value: string) => {
-  const parsedValue = parseStringToSafeNumber(value);
-  return parsedValue < MINIMUM_HOURLY_RATE;
-};
-
-// base64 데이터를 디코딩해 이미지 타입을 추론하는 함수
-export const getImageType = (base64String: string) => {
-  // base64 디코딩
-  const stringHeader = atob(base64String).slice(0, 4);
-  const header = new Uint8Array(stringHeader.length);
-  for (let i = 0; i < stringHeader.length; i++) {
-    header[i] = stringHeader.charCodeAt(i);
-  }
-
-  // 시그니처 체크
-  if (header[0] === 0xff && header[1] === 0xd8 && header[2] === 0xff) {
-    return 'jpeg';
-  }
-  if (
-    header[0] === 0x89 &&
-    header[1] === 0x50 &&
-    header[2] === 0x4e &&
-    header[3] === 0x47
-  ) {
-    return 'png';
-  }
-  if (header[0] === 0x47 && header[1] === 0x49 && header[2] === 0x46) {
-    return 'gif';
-  }
-
-  // 기본값
-  return 'jpeg';
-};
-
 // 통합신청서 유효성 검사
 export const validateIntegratedApplication = (
   data: IntegratedApplicationData,
@@ -357,23 +279,6 @@ export const validateIntegratedApplication = (
   });
 
   return isAddressValid && isIncomeValid && isPhoneValid && otherFieldsValid;
-};
-
-// 보험 이름과 enum 매핑 함수
-export const getInsuranceByName = (name: string): Insurance | undefined => {
-  const entry = Object.entries(InsuranceInfo).find(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_, value]) => value.name === name,
-  );
-  return entry ? (entry[0] as Insurance) : undefined;
-};
-
-export const getInsuranceByKey = (key: string): Insurance | undefined => {
-  const entry = Object.entries(InsuranceInfo).find(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_, value]) => value.key === key,
-  );
-  return entry ? (entry[0] as Insurance) : undefined;
 };
 
 // 입력 형식 처리를 위한 유틸리티 함수

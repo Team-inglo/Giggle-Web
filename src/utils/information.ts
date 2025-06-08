@@ -1,22 +1,11 @@
 // 이름 유효성 검사 및 포맷팅 관련 유틸리티 함수들
 // 이름은 영문 대소문자, 한글만 허용하며, 공백도 허용
 // 연속된 공백은 하나의 공백으로 간주
-export const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
+const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
 
 // 이름의 최대 길이
-export const MAX_NAME_LENGTH = 50;
+const MAX_NAME_LENGTH = 50;
 
-/**
- * 공백을 포함한 이름에서 실제 문자 수를 계산하는 함수
- * 연속된 공백은 하나의 공백으로 간주하여 계산
- * @param name 사용자가 입력한 이름
- * @returns 정규화된 공백을 포함한 문자 수
- */
-export const countNormalizedNameLength = (name: string): number => {
-  // 연속된 공백을 하나의 공백으로 정규화
-  const normalizedName = name.replace(/\s+/g, ' ').trim();
-  return normalizedName.length;
-};
 
 /**
  * 이름 유효성 검사 함수
@@ -35,15 +24,6 @@ export const isValidName = (name: string): boolean => {
   }
 
   return nameRegexWithSpaces.test(normalizedName);
-};
-
-// 이름 유효성 검사 함수
-export const isValidFirstName = (name: string): boolean => {
-  return isValidName(name);
-};
-
-export const isValidLastName = (name: string): boolean => {
-  return isValidName(name);
 };
 
 // 전화번호 유효성 검사 함수

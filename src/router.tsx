@@ -17,7 +17,7 @@ import EditProfilePage from '@/pages/EditProfile/EditProfilePage';
 import PostDetailPage from '@/pages/PostDetail/PostDetailPage';
 import PostApplyPage from '@/pages/PostApply/PostApplyPage';
 import ApplicationPage from '@/pages/Application/ApplicationPage';
-import ManageResumePage from '@/pages/ManageResumePage/ManageResumePage';
+import ManageResumePage from '@/pages/Resume/ManageResumePage';
 import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
 import ScrappedJobPostsPage from '@/pages/Resume/ScrappedJobPostsPage';
 import PostWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PostWorkExperiencePage';
@@ -57,6 +57,9 @@ import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
 import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
 import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
 import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
+import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
+import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
+import EmployerScrappedPage from '@/pages/Employer/Scrapped/EmployerScrappedPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -75,8 +78,15 @@ const Layout = () => {
   // Nav bar 컴포넌트가 랜딩되는 페이지
   const showNavbarPaths = () => {
     if (account_type === UserType.OWNER) {
-      return ['/', '/search', '/employer/post', '/employer/profile'];
-    } else return ['/', '/search', '/application', '/profile'];
+      return [
+        '/',
+        '/search',
+        '/employer/post',
+        '/employer/profile',
+        '/employer/scrapped',
+      ];
+    } else
+      return ['/', '/search', '/application', '/profile', '/resume/scrapped'];
   };
 
   const shouldShowNavbar = showNavbarPaths().includes(location.pathname);
@@ -117,6 +127,10 @@ const Router = () => {
 
         <Route path="/search/filter" element={<PostSearchFilterPage />} />
         <Route path="/search" element={<PostSearchPage />} />
+        <Route
+          path="/employer/search"
+          element={<EmployerEmployeeSearchPage />}
+        />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/about" element={<AboutPage />} />
@@ -208,6 +222,10 @@ const Router = () => {
           path="/employer/write-documents/:id"
           element={<EmployerWriteDocumentsPage />}
         />
+        <Route
+          path="/employer/search/:id"
+          element={<EmploySearchDetailPage />}
+        />
         <Route path="/write-documents" element={<WriteDocumentsPage />} />
         <Route path="/document-preview" element={<DocumentPreview />} />
         <Route path="/request-modify" element={<RequestModifyPage />} />
@@ -217,6 +235,7 @@ const Router = () => {
           path="/employer/profile/edit"
           element={<EmployerEditProfilePage />}
         />
+        <Route path="/employer/scrapped" element={<EmployerScrappedPage />} />
       </Route>
     </Routes>
   );

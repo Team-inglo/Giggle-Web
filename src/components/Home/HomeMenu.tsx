@@ -24,7 +24,7 @@ const HomeMenu = () => {
         {
           icon: <RecommendPostIcon />,
           text: '인재추천',
-          onClick: () => setIsOpenCommingSoonBottomSheet(true),
+          onClick: () => navigate('/employer/search'),
         },
         {
           icon: <SavedPostIcon />,
@@ -78,7 +78,9 @@ const HomeMenu = () => {
             onClick={() => checkLogin(item.onClick)}
           >
             {item.icon}
-            <p className="button-2 text-[#333333] break-keep">{item.text}</p>
+            <p className="button-14-semibold text-[#333333] break-keep">
+              {item.text}
+            </p>
           </button>
         ))}
       </nav>

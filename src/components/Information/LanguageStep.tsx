@@ -27,7 +27,7 @@ const LanguageStep = ({ onNext }: LanguageStepProps) => {
           }
         />
       </div>
-      <div className="w-full flex flex-col gap-[1.125rem]">
+      <div className="w-full flex flex-col gap-[1.125rem] px-4">
         {/* 언어 선택 작성 */}
         <InputLayout title="Language" isEssential={true}>
           <Dropdown

@@ -41,34 +41,34 @@ const ApplicationDetailSteps = ({ step }: ApplicationDetailStepsProps) => {
     success: (message: string) => (
       <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-[#0066FF]/10 rounded">
         <SuccessIcon />
-        <p className="body-2 text-text-success">{message}</p>
+        <p className="body-14-regular text-text-success">{message}</p>
       </div>
     ),
     // 거절 메시지
     error: (message: string) => (
       <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-[#ff5252]/10 rounded">
         <RejectIcon />
-        <p className="body-2 text-text-error">{message}</p>
+        <p className="body-14-regular text-text-error">{message}</p>
       </div>
     ),
     // 일반 메시지
     info: (message: string) => (
       <div className="flex items-center gap-1 mt-2 py-[0.625rem] px-2 bg-primary-neutral rounded">
         <MessageIcon />
-        <p className="body-2 text-text-alternative">{message}</p>
+        <p className="body-14-regular text-text-alternative">{message}</p>
       </div>
     ),
     waiting: () => (
       <>
         <article className="w-full mt-2 p-4 rounded-lg bg-surface-secondary">
-          <h5 className="pb-1 button-2 text-text-normal">
+          <h5 className="pb-1 button-14-semibold text-text-normal">
             Waiting for employer response… ⏳
           </h5>
-          <p className="pb-4 caption text-text-alternative">
+          <p className="pb-4 caption-12-regular text-text-alternative">
             The employer will request an interview soon. Hang tight!
           </p>
           <button
-            className="caption text-text-assistive underline"
+            className="caption-12-regular text-text-assistive underline"
             onClick={() => setIsShowBottomSheet(true)}
           >
             Didn't get a response? 😓
@@ -123,14 +123,14 @@ const ApplicationDetailSteps = ({ step }: ApplicationDetailStepsProps) => {
   return (
     <>
       <section className="w-full p-4">
-        <h3 className="px-2 pb-2 head-3 text-text-strong">
+        <h3 className="px-2 pb-2 heading-18-semibold text-text-strong">
           {
             applicationTranslation.applicationTitle[
               isEmployerByAccountType(account_type)
             ]
           }
         </h3>
-        <p className="px-2 body-2 text-text-alternative">
+        <p className="px-2 body-14-regular text-text-alternative">
           {
             applicationTranslation.applicationSubTitle[
               isEmployerByAccountType(account_type)

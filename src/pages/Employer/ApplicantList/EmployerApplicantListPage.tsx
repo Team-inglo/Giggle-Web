@@ -28,7 +28,7 @@ const EmployerApplicantListPage = () => {
         hasMenuButton={false}
         title="지원자 확인"
       />
-      <h2 className="mt-2 px-4 py-4 head-2 border-b border-[#f8f8f8] text-text-strong">
+      <h2 className="mt-2 px-4 py-4 heading-20-semibold border-b border-[#f8f8f8] text-text-strong">
         내 공고 📋
       </h2>
       {isLoading ? (
@@ -50,7 +50,7 @@ const EmployerApplicantListPage = () => {
           <div className="w-full mb-2 py-2 flex justify-center">
             <button
               onClick={goToPostDetailPage}
-              className="body-3 text-text-alternative underline cursor-pointer"
+              className="caption-12-regular text-text-alternative underline cursor-pointer"
             >
               공고 상세보기
             </button>

@@ -110,16 +110,6 @@ export const patchDeviceToken = async ({
   }
 };
 
-// 2.1 아이디 중복검사
-export const getIdValidation = async (
-  userId: string,
-): Promise<RESTYPE<ValidationResponse>> => {
-  const response = await apiWithoutAuth.get(
-    `/auth/validations/id?id=${userId}`,
-  );
-  return response.data;
-};
-
 // 2.2 이메일 중복검사
 export const getEmailValidation = async (
   userEmail: string,

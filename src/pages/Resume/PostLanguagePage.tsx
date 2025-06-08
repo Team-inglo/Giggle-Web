@@ -46,7 +46,9 @@ const PostLanguagePage = () => {
         title="Add Language"
       />
       <div className="px-6 mb-32">
-        <h1 className="pt-6 pb-12 head-1 text-[#1E1926]">Add Language</h1>
+        <h1 className="pt-6 pb-12 heading-24-semibold text-[#1E1926]">
+          Add Language
+        </h1>
         {/* 1단계: 언어 선택 */}
         {step === 1 && (
           <EtcLanguageSection

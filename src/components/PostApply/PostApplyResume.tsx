@@ -1,7 +1,5 @@
-import { useGetApplicantResume, useGetResume } from '@/hooks/api/useResume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
-import { useCurrentApplicantIdStore } from '@/store/url';
 import { LoadingItem } from '@/components/Common/LoadingItem';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
@@ -11,32 +9,17 @@ import { ManageResumeType } from '@/constants/manageResume';
 import MypageCard from '@/components/ManageResume/MypageCard';
 import ResumeProfileCard from '@/components/ManageResume/ResumeProfileCard';
 import { useCallback } from 'react';
+import useResumeData from '@/hooks/useResumeData';
 
 const PostApplyResume = () => {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  const { currentApplicantId } = useCurrentApplicantIdStore();
+  const { pathname } = useLocation();
   const { account_type } = useUserStore();
-
-  const { data: userData, isPending: userDataPending } = useGetResume(
-    account_type === UserType.USER,
-  );
-  const { data: ownerData, isPending: ownerDataPending } =
-    useGetApplicantResume(
-      Number(currentApplicantId),
-      !isNaN(Number(currentApplicantId)) && account_type === UserType.OWNER
-        ? true
-        : false,
-    );
-
-  const data = account_type === UserType.OWNER ? ownerData : userData;
-  const isPending =
-    account_type === UserType.OWNER ? ownerDataPending : userDataPending;
+  const { data, isPending } = useResumeData();
 
   // 재사용 가능한 네비게이션 핸들러
   const navigateToSection = useCallback(
-    (path: string, stateData: string | null = null) => {
+    <T,>(path: string, stateData: T | null = null) => {
       navigate(path, stateData ? { state: { data: stateData } } : undefined);
     },
     [navigate],
@@ -44,8 +27,12 @@ const PostApplyResume = () => {
 
   // 주로 사용되는 네비게이션 핸들러들
   const handleIntroductionClick = useCallback(
-    () => navigateToSection('/resume/introduction', data?.data?.introduction),
-    [navigateToSection, data?.data?.introduction],
+    () =>
+      navigateToSection('/resume/introduction', {
+        title: data?.data?.title ?? '',
+        introduction: data?.data?.introduction ?? '',
+      }),
+    [navigateToSection, data?.data?.title, data?.data?.introduction],
   );
 
   const handleVisaClick = useCallback(
@@ -68,15 +55,19 @@ const PostApplyResume = () => {
           main_address={data.data.personal_information.main_address}
           phone={data.data.personal_information.phone}
           email={data.data.personal_information.email}
+          isPublic={data.data.is_public}
         />
       </section>
       <section className="flex flex-col gap-2 bg-surface-secondary pt-2 pb-2">
         <MypageCard
           type={ManageResumeType.INTRODUCTION}
-          introductionData={data.data?.introduction}
+          introductionData={{
+            title: data.data?.title ?? '',
+            content: data.data?.introduction ?? '',
+          }}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={handleIntroductionClick}
             >
               {data.data?.introduction ? 'Edit' : 'Add'}
@@ -88,19 +79,21 @@ const PostApplyResume = () => {
           data={data.data?.visa}
           onAddClick={() => navigateToSection('/')}
           rightElement={
-            <button
-              className="body-3 text-text-alternative"
-              onClick={handleVisaClick}
-            >
-              Edit
-            </button>
+            account_type === UserType.USER && (
+              <button
+                className="caption-12-regular text-text-alternative"
+                onClick={handleVisaClick}
+              >
+                Edit
+              </button>
+            )
           }
           renderContent={() => (
             <>
-              <p className="pb-2 button-1 text-text-strong">
+              <p className="pb-2 button-16-semibold text-text-strong">
                 {data.data?.visa.visa.replace(/_/g, '-')}
               </p>
-              <p className="body-3 text-text-normal">
+              <p className="caption-12-regular text-text-normal">
                 {data.data?.visa.description === '-'
                   ? ''
                   : data.data?.visa.description}
@@ -113,7 +106,7 @@ const PostApplyResume = () => {
           workExperienceData={data.data?.work_experience}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/work-experience')}
             >
               Add
@@ -125,7 +118,7 @@ const PostApplyResume = () => {
           educationData={data.data?.education}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/education')}
             >
               Add
@@ -137,7 +130,7 @@ const PostApplyResume = () => {
           languageData={data.data?.languages}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
+              className="caption-12-regular text-text-alternative"
               onClick={() => navigateToSection('/resume/language/add')}
             >
               Add
@@ -149,10 +142,14 @@ const PostApplyResume = () => {
           workPreferencesData={data.data?.work_preference}
           rightElement={
             <button
-              className="body-3 text-text-alternative"
-              onClick={() => navigateToSection('/resume/work-preference')}
+              className="caption-12-regular text-text-alternative"
+              onClick={() =>
+                navigateToSection('/resume/work-preference', {
+                  isEdit: true,
+                })
+              }
             >
-              Add
+              Edit
             </button>
           }
         />

@@ -1,5 +1,5 @@
 import ApplicationPostCard from '@/components/Application/ApplicationPostCard';
-import { AppicationItemType } from '@/types/application/applicationItem';
+import { ApplicationItemType } from '@/types/application/applicationItem';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import {
 } from '@/store/url';
 
 type ApplicationCardListType = {
-  applicationListData: AppicationItemType[];
+  applicationListData: ApplicationItemType[];
   isInitialLoading: boolean;
 };
 
@@ -34,8 +34,8 @@ const ApplicationCardList = ({
     return (
       <div className="mt-10 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
-        <h3 className="head-2 text-[#252525]">No results found</h3>
-        <p className="body-2 text-[#9397A1] text-center">
+        <h3 className="heading-20-semibold text-[#252525]">No results found</h3>
+        <p className="body-14-regular text-[#9397A1] text-center">
           We couldn’t find any jobs matching your search. <br />
           Try adjusting your filters!
         </p>

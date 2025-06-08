@@ -4,23 +4,12 @@ import {
   EducationLevel,
   EmploymentType,
   JobCategory,
+  JobCategoryExtended,
   VisaGroup,
 } from '@/types/postCreate/postCreate';
-import { EducationCategoryNames, JobCategoryNames } from '@/utils/post';
 import { ValueTransformer } from '@/types/api/document';
 import { transformers } from '@/utils/transformers';
 import { WorkPeriodInfo } from './documents';
-
-// 근무 기간 리스트
-export const WorkPeriodNames = [
-  '하루',
-  '1주 미만',
-  '1주 ~ 1개월',
-  '1개월 ~ 3개월',
-  '3개월 ~ 6개월',
-  '6개월 ~ 1년',
-  '1년 이상',
-];
 
 export const JobCategoryInfo = {
   [JobCategory.FOOD_SERVICE]: {
@@ -73,27 +62,89 @@ export const JobCategoryInfo = {
   },
 };
 
-export const JobCategoryList: JobCategoryNames[] = [
-  '외식/음료',
-  '매장관리/판매',
-  '서비스',
-  '사무직',
-  '고객상담/리서치/영업',
-  '생산/건설/노무',
-  'IT/기술',
-  '디자인',
-  '미디어',
-  '운전/배달',
-  '병원/간호/연구',
-  '교육/강사',
-];
-
-export const EducationList: EducationCategoryNames[] = [
-  '대학(4년제)',
-  '대학(2년제)',
-  '고등학교졸업',
-  '무관',
-];
+// 구 버전 데이터 처리 위한 확장된 데이터 타입 정보(추후 삭제 필요)
+export const JobCategoryExtendedInfo = {
+  [JobCategoryExtended.GENERAL_INTERPRETATION_TRANSLATION]: {
+    name: '일반 동시 통역/번역',
+    key: 'GENERAL_INTERPRETATION_TRANSLATION',
+  },
+  [JobCategoryExtended.FOOD_SERVICE_ASSISTANT]: {
+    name: '외식/음료 도우미',
+    key: 'FOOD_SERVICE_ASSISTANT',
+  },
+  [JobCategoryExtended.GENERAL_ADMINISTRATIVE_SUPPORT]: {
+    name: '일반 관리/지원',
+    key: 'GENERAL_ADMINISTRATIVE_SUPPORT',
+  },
+  [JobCategoryExtended.ENGLISH_KIDS_CAFE]: {
+    name: '영어 아동 카페',
+    key: 'ENGLISH_KIDS_CAFE',
+  },
+  [JobCategoryExtended.GENERAL_CAFE]: {
+    name: '일반 카페',
+    key: 'GENERAL_CAFE',
+  },
+  [JobCategoryExtended.PART_TIME_WORK]: {
+    name: '일용 근로',
+    key: 'PART_TIME_WORK',
+  },
+  [JobCategoryExtended.TOUR_GUIDE_AND_DUTY_FREE_ASSISTANT]: {
+    name: '관광/무료 타입 도우미',
+    key: 'TOUR_GUIDE_AND_DUTY_FREE_ASSISTANT',
+  },
+  [JobCategoryExtended.MANUFACTURING]: {
+    name: '제조/생산',
+    key: 'MANUFACTURING',
+  },
+  [JobCategoryExtended.FOOD_SERVICE]: {
+    name: '외식/음료',
+    key: 'FOOD_SERVICE',
+  },
+  [JobCategoryExtended.STORE_MANAGEMENT]: {
+    name: '매장관리/판매',
+    key: 'STORE_MANAGEMENT',
+  },
+  [JobCategoryExtended.SERVICE]: {
+    name: '서비스',
+    key: 'SERVICE',
+  },
+  [JobCategoryExtended.OFFICE_WORK]: {
+    name: '사무직',
+    key: 'OFFICE_WORK',
+  },
+  [JobCategoryExtended.CUSTOMER_SALES]: {
+    name: '고객상담/리서치/영업',
+    key: 'CUSTOMER_SALES',
+  },
+  [JobCategoryExtended.PRODUCTION_CONSTRUCTION]: {
+    name: '생산/건설/노무',
+    key: 'PRODUCTION_CONSTRUCTION',
+  },
+  [JobCategoryExtended.IT_TECH]: {
+    name: 'IT/기술',
+    key: 'IT_TECH',
+  },
+  [JobCategoryExtended.DESIGN]: {
+    name: '디자인',
+    key: 'DESIGN',
+  },
+  [JobCategoryExtended.MEDIA]: {
+    name: '미디어',
+    key: 'MEDIA',
+  },
+  [JobCategoryExtended.DRIVING_DELIVERY]: {
+    name: '운전/배달',
+    key: 'DRIVING_DELIVERY',
+  },
+  [JobCategoryExtended.HEALTHCARE_RESEARCH]: {
+    name: '병원/간호/연구',
+    key: 'HEALTHCARE_RESEARCH',
+  },
+  [JobCategoryExtended.EDUCATION]: {
+    name: '교육/강사',
+    key: 'EDUCATION',
+  },
+};
 
 export const EducationLevelInfo = {
   [EducationLevel.BACHELOR]: {
@@ -162,8 +213,6 @@ export const VisaInfo = {
   },
 };
 
-export const GenderList = ['남', '여', '무관'];
-
 export const genderInfo = {
   [Gender.MALE]: {
     name: '남',
@@ -178,6 +227,8 @@ export const genderInfo = {
     key: 'NONE',
   },
 };
+
+const GenderList = ['남', '여', '무관'];
 
 export const WorkTypeInfo = {
   [EmploymentType.INTERNSHIP]: {

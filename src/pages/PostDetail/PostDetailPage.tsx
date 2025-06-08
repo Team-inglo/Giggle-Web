@@ -60,17 +60,17 @@ const PostDetailPage = () => {
         companyImageData={postDetailData.data?.company_img_url_list}
       />
       <article className="w-full px-4 py-5 bg-surface-base">
-        <h3 className="pb-1 head-3 text-text-strong line-clamp-2">
+        <h3 className="pb-1 heading-18-semibold text-text-strong line-clamp-2">
           {postDetailData.data?.title}
         </h3>
-        <p className="pb-4 body-3 text-text-normal whitespace-normal">
+        <p className="pb-4 caption-12-regular text-text-normal whitespace-normal">
           {postDetailData.data?.company_name}ㆍ
           {postDetailData.data?.summaries.address}
         </p>
         <div className="flex flex-col gap-1">
           <div className="flex gap-2 items-center">
             <CalendarIcon />
-            <p className="body-3 text-text-strong">
+            <p className="caption-12-regular text-text-strong">
               {account_type === UserType.OWNER
                 ? WorkPeriodInfo[
                     postDetailData.data?.summaries.work_period as WorkPeriod
@@ -87,13 +87,13 @@ const PostDetailPage = () => {
           </div>
           <div className="flex gap-2 items-center">
             <GlobalIcon />
-            <p className="body-3 text-text-strong">
+            <p className="caption-12-regular text-text-strong">
               {postDetailData.data?.tags.visa.join(', ').replace(/_/g, '-')}
             </p>
           </div>
           <div className="flex gap-2 items-center">
             <MoneyIcon />
-            <p className="body-3 text-text-strong">
+            <p className="caption-12-regular text-text-strong">
               {account_type === UserType.OWNER
                 ? `시급 ${formatMoney(postDetailData.data?.summaries.hourly_rate)}원`
                 : `Hr ${formatMoney(postDetailData.data?.summaries.hourly_rate)}KRW`}

@@ -1,17 +1,18 @@
 import {
   AdditionalLanguageRequest,
   EducationRequest,
+  GetEmployeeResumeListReq,
   IntroductionRequest,
   LanguagesLevelType,
-  LanguagesSummariesResponse,
   UserResumeDetailResponse,
   WorkExperienctRequest,
-  WorkExperienctResponse,
+  WorkExperienceResponse,
 } from '@/types/api/resumes';
 import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
 import { GetEducationType } from '@/types/postResume/postEducation';
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
+import { filterNullParams } from '@/utils/filterNullParams';
 
 // 7.1 (유학생) 이력서 조회하기
 export const getResume = async (): Promise<
@@ -24,7 +25,7 @@ export const getResume = async (): Promise<
 // 7.2 경력 상세 조회하기
 export const getWorkExperience = async (
   id: string,
-): Promise<RESTYPE<WorkExperienctResponse>> => {
+): Promise<RESTYPE<WorkExperienceResponse>> => {
   const response = await api.get(
     `/users/resumes/work-experiences/${id}/details`,
   );
@@ -36,14 +37,6 @@ export const getEducation = async (
   id: string,
 ): Promise<RESTYPE<GetEducationType>> => {
   const response = await api.get(`/users/resumes/educations/${id}/details`);
-  return response.data;
-};
-
-// 7.4 언어 요약 조회하기
-export const getLanguagesSummaries = async (): Promise<
-  RESTYPE<LanguagesSummariesResponse>
-> => {
-  const response = await api.get('/users/resumes/languages/summaries');
   return response.data;
 };
 
@@ -168,14 +161,6 @@ export const deleteEtcLanguageLevel = async (id: number) => {
   return response.data;
 };
 
-// 7.19 (고용주) 이력서 조회하기
-export const getApplicantResume = async (id: number) => {
-  const response = await api.get(
-    `/owners/user-owner-job-postings/${id}/users/resumes/details`,
-  );
-  return response.data;
-};
-
 // 7.21 (유학생) 희망 근로 조건 상세 조회하기
 export const getWorkPreference = async () => {
   const response = await api.get('/users/resumes/work-preferences/details');
@@ -185,6 +170,35 @@ export const getWorkPreference = async () => {
 // 7.22 (유학생) 희망 근로 조건 수정하기
 export const putWorkPreference = async (data: WorkPreferenceType) => {
   const response = await api.put('/users/resumes/work-preferences', data);
+  return response.data;
+};
+
+// 7.23 (유학생) 이력서 공개 여부 수정하기
+export const patchResumePublic = async (data: { is_public: boolean }) => {
+  const response = await api.patch('/users/resumes/is-public', data);
+  return response.data;
+};
+
+// 7.24 (고용주) 이력서 리스트 조회하기
+export const getEmployeeResumeList = async (
+  req: GetEmployeeResumeListReq,
+  page: number,
+) => {
+  const { is_book_marked, ...rest } = req;
+
+  const response = await api.get(`/owners/resumes/overviews`, {
+    params: {
+      ...filterNullParams(rest),
+      page,
+      ...(is_book_marked ? { 'is-book-marked': true } : {}),
+    },
+  });
+  return response.data;
+};
+
+// 7.25 (고용주) 이력서 상세 조회하기
+export const getResumeDetail = async (id: string) => {
+  const response = await api.get(`/owners/resumes/${id}/details`);
   return response.data;
 };
 
@@ -201,5 +215,11 @@ export const getSearchSchools = async ({
   const response = await api.get(
     `/users/schools/briefs?search=${search}&page=${page}&size=${size}`,
   );
+  return response.data;
+};
+
+// 15.1 (고용주) 인재 스크랩 추가/삭제
+export const putScrapResume = async (id: string) => {
+  const response = await api.put(`/owners/resumes/${id}/book-mark-resumes`);
   return response.data;
 };

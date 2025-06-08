@@ -1,12 +1,13 @@
 import PostSearchFilterToggle from '@/components/PostSearchFilter/PostSearchFilterToggle';
 import Tag from '@/components/Common/Tag';
-import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
+import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { memo, useEffect, useState } from 'react';
 import { FILTER_CATEGORY } from '@/constants/postSearch';
 import { useUserStore } from '@/store/user';
 import { postSearchTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
+import Icon from '@/components/Common/Icon';
 
 type PostSearchFilterAreaInputProps = {
   setIsOpenAreaFilter: (value: boolean) => void;
@@ -72,7 +73,7 @@ const PostSearchFilterAreaInput = memo(
         }
       >
         <div
-          className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-2 text-text-assistive cursor-pointer"
+          className="w-full relative rounded bg-white border border-[#eae9f6] box-border flex flex-row items-center justify-center p-4 text-left body-14-regular text-text-assistive cursor-pointer"
           onClick={() => setIsOpenAreaFilter(true)}
         >
           <div className="flex-1 h-5 flex flex-row items-center justify-between">
@@ -88,7 +89,7 @@ const PostSearchFilterAreaInput = memo(
               <div
                 className={`flex items-center justify-center w-5 h-6 transition-transform duration-300 rotate-180`}
               >
-                <ArrowIcon isMarked={false} />
+                <Icon icon={ArrowIcon} strokeColor="stroke-text-assistive" />
               </div>
             </button>
           </div>
@@ -104,7 +105,7 @@ const PostSearchFilterAreaInput = memo(
               borderColor={'border-border-alternative'}
               backgroundColor={'bg-surface-base'}
               color="text-text-normal"
-              fontStyle="body-2"
+              fontStyle="body-14-regular"
               onDelete={() => onClickDelete(index)}
             />
           ))}

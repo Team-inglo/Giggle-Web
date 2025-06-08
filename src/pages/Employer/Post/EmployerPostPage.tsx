@@ -54,19 +54,19 @@ const EmployerPostPage = () => {
       />
       <section className="w-full bg-surface-base">
         <div className="px-4 py-[3.125rem]">
-          <h1 className="pb-2 head-1 text-text-strong">
+          <h1 className="pb-2 heading-24-semibold text-text-strong">
             내가 올린 공고를
             <br />
             관리할 수 있어요
           </h1>
-          <p className="body-2 text-text-alternative">
+          <p className="body-14-regular text-text-alternative">
             등록한 공고를 한눈에 확인하고,
             <br />
             지원자 현황도 살펴보세요!
           </p>
         </div>
         <div className="w-full p-4 flex justify-between items-center">
-          <h3 className="caption text-text-alternative">
+          <h3 className="caption-12-regular text-text-alternative">
             {postListData.length} 개의 공고
           </h3>
           <SearchSortDropdown

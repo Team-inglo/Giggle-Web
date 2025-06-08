@@ -1,13 +1,13 @@
 import { OwnerInfo } from '@/types/api/employ';
 import { GiggleAddress } from '@/types/api/users';
 
-export type LanguageLevelType = {
+type LanguageLevelType = {
   topik_level: number;
   kiip_level: number;
   sejong_level: number;
 };
 
-export type MetaDataType = {
+type MetaDataType = {
   weekend_work_hour: number;
   weekday_work_hour: number;
   is_language_skill_4_or_more: boolean;
@@ -55,11 +55,6 @@ export type UserProfileDetailResponse = {
   address: GiggleAddress;
 };
 
-export type UserEditProfileRequest = {
-  image?: File; // multipart-form-data
-  body: UserEditRequestBody;
-};
-
 export type UserEditRequestBody = {
   first_name: string;
   last_name: string;
@@ -94,7 +89,7 @@ export const InitialUserProfileDetail: UserEditRequestBody = {
 };
 
 // 고용주 프로필
-export type AddressResponse = {
+type AddressResponse = {
   address_name: string;
   region_1depth_name: string;
   region_2depth_name: string;
@@ -130,11 +125,6 @@ export type EmployerProfileRequestBody = {
   owner_info: OwnerInfo;
   address: GiggleAddress;
   is_icon_img_changed: boolean;
-};
-
-export type EmployerProfileRequest = {
-  image: File | undefined;
-  body: EmployerProfileRequestBody;
 };
 
 // Initial State
