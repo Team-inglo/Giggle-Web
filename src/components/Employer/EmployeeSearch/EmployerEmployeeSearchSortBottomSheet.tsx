@@ -1,7 +1,8 @@
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
-import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon';
+import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { POST_SORTING, POST_SORTING_KR } from '@/constants/postSearch';
+import Icon from '@/components/Common/Icon';
 
 type EmployerEmployeeSearchSortBottomSheetPropsType = {
   selectedSort: PostSortingType;
@@ -39,7 +40,12 @@ const EmployerEmployeeSearchSortBottomSheet = ({
             </p>
             {option === selectedSort && (
               <div className="absolute right-0 top-3">
-                <BottomSheetCheckIcon />
+                <div className={`p-1 rounded-full bg-surface-base`}>
+                  <Icon
+                    icon={BottomSheetCheckIcon}
+                    strokeColor="stroke-surface-invert"
+                  />
+                </div>
               </div>
             )}
           </button>

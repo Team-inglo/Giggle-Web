@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
+import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
+import Icon from './Icon';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {
@@ -26,7 +27,7 @@ export const DropdownModal = ({
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
           <div
-            className={`self-stretch overflow-hidden ${value == option && 'bg-[#f4f4f9] text-primary-dark'} rounded-lg flex flex-row items-center justify-start p-2.5`}
+            className={`self-stretch overflow-hidden ${value == option && 'bg-surface-secondary text-text-strong'} rounded-lg flex flex-row items-center justify-start p-2.5`}
             onClick={() => onSelect(option)}
             key={option}
           >
@@ -86,7 +87,11 @@ const Dropdown = ({
                   isOpen ? '' : 'rotate-180'
                 }`}
               >
-                <ArrowIcon isMarked={value !== null} />
+                <Icon icon={ArrowIcon} strokeColor={
+                    value !== ''
+                      ? 'stroke-text-strong'
+                      : 'stroke-text-assistive'
+                  }/>
               </div>
             </button>
           </div>

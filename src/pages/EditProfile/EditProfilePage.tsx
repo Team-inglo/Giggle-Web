@@ -24,7 +24,7 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { processAddressData } from '@/utils/map';
 import { documentTranslation } from '@/constants/translation';
 import { formatDateInput } from '@/utils/information';
 import { Nationalities } from '@/constants/manageResume';
@@ -54,20 +54,10 @@ const EditProfilePage = () => {
 
   // 검색된 주소 선택 시 state에 반영
   const handleAddressSelection = async (data: Address) => {
-    const convertedAddress = convertToAddress(data);
-    const coords = await getAddressCoords(
-      convertedAddress.address_name as string,
-    );
-    const x = coords.getLng();
-    const y = coords.getLat();
-
+    const newAddress = await processAddressData(data);
     setUserData({
       ...userData,
-      address: {
-        ...convertedAddress,
-        longitude: y,
-        latitude: x,
-      },
+      address: newAddress,
     });
     setIsAddressSearch(false);
   };

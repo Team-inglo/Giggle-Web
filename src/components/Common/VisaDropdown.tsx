@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
+import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 import VisaSelectBottomSheet from './VisaSelectBottomSheet';
 import { VisaGroup } from '@/types/postCreate/postCreate';
 import Tag from '@/components/Common/Tag';
+import Icon from './Icon';
 
 type VisaDropDownProps = {
   value: VisaGroup[]; // 현재 선택된 값
@@ -39,7 +40,11 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
                   isBottomSheetOpen ? '' : 'rotate-180'
                 }`}
               >
-                <ArrowIcon isMarked={value !== null} />
+                <Icon icon={ArrowIcon} strokeColor={
+                    value.length > 0
+                      ? 'stroke-text-strong'
+                      : 'stroke-text-assistive'
+                  }/>
               </div>
             </button>
           </div>

@@ -12,8 +12,13 @@ import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessa
 import ApiErrorBottomSheet from './components/Common/ApiErrorBottomSheet';
 import { BrowserRouter } from 'react-router-dom';
 import { useErrorStore } from '@/store/error';
+import { useKakaoLoader } from 'react-kakao-maps-sdk';
 
 function App() {
+  useKakaoLoader({
+    appkey: import.meta.env.VITE_APP_KAKAO_API_KEY as string,
+    libraries: ['services', 'clusterer'],
+  });
   const {
     isOpenServerErrorBottomSheet,
     isOpenErrorBottomSheet,
