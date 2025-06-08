@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import DownArrowIcon from '@/assets/icons/DownArrowIcon.tsx';
+import DownArrowIcon from '@/assets/icons/DownArrowIcon.svg?react';
 import { HOUR_LIST, MINUTE_LIST } from '@/constants/time';
+import Icon from './Icon';
 
 type TimePickerProps = {
   isDisabled: boolean;
@@ -52,7 +53,12 @@ const TimePicker = ({ isDisabled, onChangeTime }: TimePickerProps) => {
         </select>
       </div>
       <div className="">
-        <DownArrowIcon isMarked={!isDisabled} />
+        <Icon
+          icon={DownArrowIcon}
+          strokeColor={
+            isDisabled ? 'stroke-text-assistive' : 'stroke-text-strong'
+          }
+        />
       </div>
     </div>
   );

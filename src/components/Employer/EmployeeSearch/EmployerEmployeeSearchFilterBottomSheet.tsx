@@ -10,7 +10,8 @@ import {
   EmployeeSearchCategoryEnType,
   EmployeeSearchFilterItemType,
 } from '@/types/api/resumes';
-import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon';
+import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
+import Icon from '@/components/Common/Icon';
 
 type EmployerEmployeeSearchFilterBottomSheetPropsType = {
   filterType: EmployeeSearchCategoryEnType;
@@ -76,14 +77,18 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
               >
                 {option.ko}
               </p>
-              <BottomSheetCheckIcon
-                bgColor={
+              <div
+                className={`p-1 rounded-full                 ${
                   checkedFilter.includes(option.enum)
                     ? 'bg-surface-invert'
                     : 'bg-surface-tertiary'
-                }
-                strokeColor="#fff"
-              />
+                }`}
+              >
+                <Icon
+                  icon={BottomSheetCheckIcon}
+                  strokeColor="stroke-surface-base"
+                />
+              </div>
             </button>
           ))}
         </main>

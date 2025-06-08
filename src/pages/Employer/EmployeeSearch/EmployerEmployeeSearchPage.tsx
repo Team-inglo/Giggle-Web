@@ -14,9 +14,9 @@ import {
 } from '@/types/api/resumes';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import EmployerEmployeeSearchSortBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchSortBottomSheet';
-import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
+import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIconSm.svg?react';
 import EmployerEmployeeSearchFilterBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchFilterBottomSheet';
-import DisclosureIcon from '@/assets/icons/DisclosureIcon';
+import DisclosureIcon from '@/assets/icons/DisclosureIcon.svg?react';
 import { useInfiniteGetEmployeeResumeList } from '@/hooks/api/useResume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
@@ -25,6 +25,7 @@ import { EmployeeResumeListItemType } from '@/types/api/resumes';
 import { formatResumeSearchFilter } from '@/utils/formatSearchFilter';
 import EmployerEmployeeCardList from '@/components/Employer/EmployeeSearch/EmployerEmployeeCardList';
 import useNavigateBack from '@/hooks/useNavigateBack';
+import Icon from '@/components/Common/Icon';
 
 export type EmployeeSearchOptionType = {
   filterList: EmployeeSearchFilterItemType;
@@ -125,7 +126,12 @@ const EmployerEmployeeSearchPage = () => {
                   {isSelected &&
                     `${' '}${searchOption.filterList[category as EmployeeSearchCategoryEnType].length}`}
                 </p>
-                <DisclosureIcon strokeColor={isSelected ? '#fff' : '#8F919D'} />
+                <Icon
+                  icon={DisclosureIcon}
+                  fillColor={
+                    isSelected ? 'fill-text-invert' : 'fill-text-alternative'
+                  }
+                />
               </button>
             );
           })}
@@ -146,7 +152,7 @@ const EmployerEmployeeSearchPage = () => {
               isOpenSortBottomSheet && 'rotate-180'
             }`}
           >
-            <DownArrowIcon strokeColor={'#A9ABB8'} />
+            <Icon icon={DownArrowIcon} strokeColor={'stroke-text-assistive'} />
           </div>
         </button>
       </section>
