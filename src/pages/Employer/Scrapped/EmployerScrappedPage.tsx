@@ -5,17 +5,13 @@ import { useInfiniteGetEmployeeResumeList } from '@/hooks/api/useResume';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useUserStore } from '@/store/user';
-import { EmployeeResumeListItemType } from '@/types/api/resumes';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const EmployerScrappedPage = () => {
   const handleBackButtonClick = useNavigateBack();
   const { account_type } = useUserStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [resumeData, setResumeData] = useState<EmployeeResumeListItemType[]>(
-    [],
-  );
 
   const {
     data,
@@ -24,10 +20,11 @@ const EmployerScrappedPage = () => {
     isFetchingNextPage,
     isLoading: isInitialLoading,
   } = useInfiniteGetEmployeeResumeList(
-    { size: 5 },
+    { size: 5, is_book_marked: true },
     account_type === UserType.OWNER,
-    true, // 북마크 여부
   );
+
+  const resumeData = data?.pages?.flatMap((page) => page.data.resumes) || [];
 
   const targetRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -35,13 +32,6 @@ const EmployerScrappedPage = () => {
       fetchNextPage().finally(() => setIsLoading(false));
     }
   }, !!hasNextPage);
-
-  useEffect(() => {
-    if (data && data.pages.length > 0) {
-      const result = data.pages.flatMap((page) => page.data.resumes);
-      setResumeData(result);
-    }
-  }, [data]);
 
   return (
     <>
