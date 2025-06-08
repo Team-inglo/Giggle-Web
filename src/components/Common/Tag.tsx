@@ -1,5 +1,6 @@
-import TagCheckIcon from '@/assets/icons/TagCheckIcon';
-import TagDeleteIcon from '@/assets/icons/TagDeleteIcon';
+import TagCheckIcon from '@/assets/icons/TagCheckIcon.svg?react';
+import TagDeleteIcon from '@/assets/icons/TagDeleteIcon.svg?react';
+import Icon from '@/components/Common/Icon';
 
 type TagProps = {
   value: string; // 내용
@@ -28,11 +29,11 @@ const Tag = ({
     <div
       className={`w-fit h-fit flex items-center gap-[0.5rem] ${padding} ${backgroundColor} ${color} ${borderColor} ${borderColor ? 'border' : ''} ${fontStyle} ${isRounded ? 'rounded' : 'rounded-sm'}`}
     >
-      {hasCheckIcon && <TagCheckIcon color={color} />}
+      {hasCheckIcon && <Icon icon={TagCheckIcon} fillColor={color} />}
       {value}
       {onDelete && (
         <button onClick={() => onDelete(value)}>
-          <TagDeleteIcon color={'#252525'} />
+          <Icon icon={TagDeleteIcon} fillColor="fill-surface-invert" />
         </button>
       )}
     </div>
