@@ -56,7 +56,13 @@ const Navbar = () => {
 
   return (
     <div className="z-50 flex items-center justify-center">
-      <section className="fixed bottom-0 w-full pt-6 pb-10 px-12 bg-navbarGradient rounded-t-[2rem]">
+      <section
+        className="
+          fixed bottom-0 z-50 w-full
+          bg-[#FFFFFF] border-t-[0.5px] border-[#E2E5EB]
+          pt-[14px] pr-[24px] pb-[22px] pl-[24px]
+        "
+      >
         <div className="flex items-center justify-between">
           {renderNavItems(routes)}
         </div>
