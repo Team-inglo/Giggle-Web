@@ -7,7 +7,7 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useUserStore } from '@/store/user';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
 import { useCurrentPostIdStore } from '@/store/url';
@@ -77,9 +77,6 @@ const ScrappedJobPostsPage = () => {
   const { account_type } = useUserStore();
   const isLogin = !!account_type;
 
-  const [jobPostingData, setJobPostingData] = useState<JobPostingItemType[]>(
-    [],
-  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedSorting, setSelectedSorting] = useState<PostSortingType>(
     POST_SORTING.RECENT,
@@ -96,19 +93,15 @@ const ScrappedJobPostsPage = () => {
     isLogin,
   );
 
+  const jobPostingData =
+    data?.pages?.flatMap((page) => page.data.job_posting_list) || [];
+
   const targetRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetchingNextPage) {
       setIsLoading(true);
       fetchNextPage().finally(() => setIsLoading(false));
     }
   }, !!hasNextPage);
-
-  useEffect(() => {
-    if (data && data.pages.length > 0) {
-      const result = data.pages.flatMap((page) => page.data.job_posting_list);
-      setJobPostingData(result);
-    }
-  }, [data]);
 
   const onChangeSortType = (selectedSorting: PostSortingType) => {
     setSelectedSorting(selectedSorting);

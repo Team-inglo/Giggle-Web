@@ -1,14 +1,7 @@
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
 import { JobPostingItemType } from '@/types/common/jobPostingItem';
-import {
-  createContext,
-  MouseEvent,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, MouseEvent, ReactNode, useContext } from 'react';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
 import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
 import { usePutPostBookmark } from '@/hooks/api/usePost';
@@ -78,19 +71,12 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
   const { account_type } = useUserStore();
   const { mutate } = usePutPostBookmark();
 
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
-
   const onClickBookmark = (e: MouseEvent) => {
     e.stopPropagation();
     if (account_type === UserType.USER) {
       mutate(id);
-      setIsBookmark(!isBookmark);
     }
   };
-
-  useEffect(() => {
-    setIsBookmark(is_book_marked ?? false);
-  }, [setIsBookmark, is_book_marked]);
 
   return (
     <div className="w-full flex justify-between items-center">
@@ -100,7 +86,7 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
       <div className="w-6 h-6">
         {account_type === UserType.USER && isBookMarkButton && (
           <button onClick={(e) => onClickBookmark(e)}>
-            {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
+            {is_book_marked ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
           </button>
         )}
       </div>

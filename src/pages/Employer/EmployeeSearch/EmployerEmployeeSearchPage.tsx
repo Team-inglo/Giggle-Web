@@ -6,7 +6,7 @@ import {
   EMPLOYEE_SEARCH_OPTIONS,
   initialEmployerSearchFilterList,
 } from '@/constants/manageResume';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { POST_SORTING, POST_SORTING_KR } from '@/constants/postSearch';
 import {
   EmployeeSearchCategoryEnType,
@@ -21,7 +21,6 @@ import { useInfiniteGetEmployeeResumeList } from '@/hooks/api/useResume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { EmployeeResumeListItemType } from '@/types/api/resumes';
 import { formatResumeSearchFilter } from '@/utils/formatSearchFilter';
 import EmployerEmployeeCardList from '@/components/Employer/EmployeeSearch/EmployerEmployeeCardList';
 import useNavigateBack from '@/hooks/useNavigateBack';
@@ -46,9 +45,6 @@ const EmployerEmployeeSearchPage = () => {
   const [isOpenSortBottomSheet, setIsOpenSortBottomSheet] = useState(false);
   const [isOpenFilterBottomSheet, setIsOpenFilterBottomSheet] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [resumeData, setResumeData] = useState<EmployeeResumeListItemType[]>(
-    [],
-  );
 
   const {
     data,
@@ -61,19 +57,14 @@ const EmployerEmployeeSearchPage = () => {
     account_type === UserType.OWNER,
   );
 
+  const resumeData = data?.pages?.flatMap((page) => page.data.resumes) || [];
+
   const targetRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetchingNextPage) {
       setIsLoading(true);
       fetchNextPage().finally(() => setIsLoading(false));
     }
   }, !!hasNextPage);
-
-  useEffect(() => {
-    if (data && data.pages.length > 0) {
-      const result = data.pages.flatMap((page) => page.data.resumes);
-      setResumeData(result);
-    }
-  }, [data]);
 
   const handleClickSort = (selectedSort: PostSortingType) => {
     setSearchOption((prev) => ({ ...prev, sortType: selectedSort }));

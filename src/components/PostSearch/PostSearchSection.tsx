@@ -9,13 +9,12 @@ import FilterIcon from '@/assets/icons/FilterIcon.svg?react';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { PostSearchType } from '@/hooks/usePostSearch';
 import { useUserStore } from '@/store/user';
-import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import {
   PostSearchFilterItemType,
   PostSortingType,
 } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { formatPostSearchFilter } from '@/utils/formatSearchFilter';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postSearchTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
@@ -38,7 +37,6 @@ const PostSearchSection = ({
 
   const { account_type } = useUserStore();
 
-  const [postData, setPostData] = useState<JobPostingItemType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -64,6 +62,8 @@ const PostSearchSection = ({
   );
 
   const data = account_type ? userPostData : guestPostData;
+  const postData =
+    data?.pages?.flatMap((page) => page.data.job_posting_list) || [];
   const isInitialLoading = account_type
     ? postIsInitialLoading
     : guestIsInitialLoading;
@@ -83,13 +83,6 @@ const PostSearchSection = ({
       fetchNextPage().finally(() => setIsLoading(false));
     }
   }, !!hasNextPage);
-
-  useEffect(() => {
-    if (data && data.pages.length > 0) {
-      const result = data.pages.flatMap((page) => page.data.job_posting_list);
-      setPostData(result);
-    }
-  }, [data]);
 
   const handleUpdateFilterList = (newFilterList: PostSearchFilterItemType) => {
     updateSearchOption('filterList', newFilterList);

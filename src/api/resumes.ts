@@ -184,8 +184,14 @@ export const getEmployeeResumeList = async (
   req: GetEmployeeResumeListReq,
   page: number,
 ) => {
+  const { is_book_marked, ...rest } = req;
+
   const response = await api.get(`/owners/resumes/overviews`, {
-    params: { ...filterNullParams(req), page },
+    params: {
+      ...filterNullParams(rest),
+      page,
+      ...(is_book_marked ? { 'is-book-marked': true } : {}),
+    },
   });
   return response.data;
 };
