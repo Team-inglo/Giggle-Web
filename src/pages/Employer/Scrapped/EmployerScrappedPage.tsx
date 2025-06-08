@@ -5,13 +5,10 @@ import { useInfiniteGetEmployeeResumeList } from '@/hooks/api/useResume';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useUserStore } from '@/store/user';
-import { useState } from 'react';
 
 const EmployerScrappedPage = () => {
   const handleBackButtonClick = useNavigateBack();
   const { account_type } = useUserStore();
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     data,
@@ -28,8 +25,7 @@ const EmployerScrappedPage = () => {
 
   const targetRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetchingNextPage) {
-      setIsLoading(true);
-      fetchNextPage().finally(() => setIsLoading(false));
+      fetchNextPage();
     }
   }, !!hasNextPage);
 
@@ -44,7 +40,7 @@ const EmployerScrappedPage = () => {
       <div className="pt-4 pb-6">
         <EmployerEmployeeCardList
           resumeData={resumeData}
-          isLoading={isLoading}
+          isLoading={isFetchingNextPage}
           isInitialLoading={isInitialLoading}
         />
         <div ref={targetRef} className="h-1"></div>
