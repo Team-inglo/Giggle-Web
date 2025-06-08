@@ -22,7 +22,7 @@ import {
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { processAddressData } from '@/utils/map';
 
 type InformationInputSectionProps = {
   newEmployData: EmployerRegistrationRequestBody;
@@ -60,20 +60,13 @@ const InformationInputSection = ({
 
   // 검색된 주소 선택 시 state에 반영
   const handleAddressSelection = async (data: Address) => {
-    const convertedAddress = convertToAddress(data);
-    const coords = await getAddressCoords(
-      convertedAddress.address_name as string,
-    );
-    const x = coords.getLng();
-    const y = coords.getLat();
+    const newAddress = await processAddressData(data);
 
     setNewEmployData({
       ...newEmployData,
       address: {
         ...newEmployData.address,
-        ...convertedAddress,
-        longitude: y,
-        latitude: x,
+        ...newAddress,
       },
     });
     setIsAddressSearch(false);
