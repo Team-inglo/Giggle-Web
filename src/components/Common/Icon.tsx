@@ -11,6 +11,8 @@ type IconProps = {
   bgColor?: string;
   strokeColor?: string;
   fillColor?: string;
+  width?: string;
+  height?: string;
 } & React.SVGProps<SVGSVGElement>;
 
 const Icon = ({
@@ -19,8 +21,6 @@ const Icon = ({
   strokeColor,
   fillColor,
   className,
-  width = 20,
-  height = 20,
   ...props
 }: IconProps) => {
   const combinedClassName = [className, bgColor, strokeColor, fillColor]
@@ -29,8 +29,6 @@ const Icon = ({
 
   return (
     <IconComponent
-      width={width}
-      height={height}
       className={combinedClassName}
       {...props}
     />
