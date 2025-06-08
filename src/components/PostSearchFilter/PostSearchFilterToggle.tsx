@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react';
-import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
+import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIconSm.svg?react';
+import Icon from '@/components/Common/Icon';
 
 type PostSearchFilterToggleProps = {
   title: string;
@@ -22,7 +23,7 @@ const PostSearchFilterToggle = ({
           }`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <DownArrowIcon />
+          <Icon icon={DownArrowIcon} strokeColor={'stroke-text-strong'} />
         </button>
       </div>
       {isOpen && <div className="pt-4">{children}</div>}

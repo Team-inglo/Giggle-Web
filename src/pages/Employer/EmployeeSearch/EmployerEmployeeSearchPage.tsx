@@ -14,7 +14,7 @@ import {
 } from '@/types/api/resumes';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import EmployerEmployeeSearchSortBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchSortBottomSheet';
-import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
+import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIconSm.svg?react';
 import EmployerEmployeeSearchFilterBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchFilterBottomSheet';
 import DisclosureIcon from '@/assets/icons/DisclosureIcon.svg?react';
 import { useInfiniteGetEmployeeResumeList } from '@/hooks/api/useResume';
@@ -152,7 +152,7 @@ const EmployerEmployeeSearchPage = () => {
               isOpenSortBottomSheet && 'rotate-180'
             }`}
           >
-            <DownArrowIcon strokeColor={'#A9ABB8'} />
+            <Icon icon={DownArrowIcon} strokeColor={'stroke-text-assistive'} />
           </div>
         </button>
       </section>
