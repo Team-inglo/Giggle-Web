@@ -143,7 +143,7 @@ const MypageCard = ({
     if (content?.isValidRender()) {
       return content.component();
     }
-    if (isEmployer(pathname)) {
+    if (isEmployer(pathname) === 'ko') {
       return null;
     }
     // 데이터가 없을 때 +Add {title} 버튼 표시
