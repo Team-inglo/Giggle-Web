@@ -1,11 +1,13 @@
 import AlarmIcon from '@/assets/icons/Home/AlarmIcon.svg?react';
 import HeaderLogoIcon from '@/assets/icons/Home/HeaderLogoIcon.svg?react';
+import TranslateIcon from '@/assets/icons/Home/TranslateIcon.svg?react';
 import { useGetAlarms } from '@/hooks/api/useAlarm';
 import { useUserStore } from '@/store/user';
 import { AlarmItemType } from '@/types/api/alarm';
 import { useNavigate } from 'react-router-dom';
 import LoginBottomSheet from '@/components/Home/LoginBottomSheet';
 import { useState } from 'react';
+import LanguageBottomSheet from './LanguageBottomSheet';
 
 const HomeHeader = () => {
   const navigate = useNavigate();
@@ -13,6 +15,8 @@ const HomeHeader = () => {
   const { data } = useGetAlarms(1, 50, account_type ? true : false);
 
   const [isOpenLoginBottomSheet, setIsOpenLoginBottomSheet] =
+    useState<boolean>(false);
+  const [isOpenLanguageBottomSheet, setIsOpenLanguageBottomSheet] =
     useState<boolean>(false);
 
   const isNotReadAlarms = (alarms: AlarmItemType[]) => {
@@ -27,6 +31,10 @@ const HomeHeader = () => {
     else setIsOpenLoginBottomSheet(true);
   };
 
+  const handleClickTranslate = () => {
+    setIsOpenLanguageBottomSheet(true);
+  };
+
   return (
     <>
       <header className="w-full h-[3.5rem] px-[0.625rem] flex justify-between items-center border-b border-[#E2E5EB]">
@@ -38,6 +46,13 @@ const HomeHeader = () => {
 
         {/* 아이콘 영역 */}
         <div className="flex items-center gap-1">
+          {/* 번역 아이콘 */}
+          <button
+            className="w-[2.25rem] h-[2.25rem] flex justify-center items-center rounded-full"
+            onClick={handleClickTranslate}
+          >
+            <TranslateIcon />
+          </button>
           {/* 알림 아이콘 */}
           <button
             className="w-[2.25rem] h-[2.25rem] flex justify-center items-center relative rounded-full"
@@ -55,6 +70,11 @@ const HomeHeader = () => {
       <LoginBottomSheet
         isShowBottomsheet={isOpenLoginBottomSheet}
         setIsShowBottomSheet={setIsOpenLoginBottomSheet}
+      />
+
+      <LanguageBottomSheet
+        isShowBottomsheet={isOpenLanguageBottomSheet}
+        setIsShowBottomSheet={setIsOpenLanguageBottomSheet}
       />
     </>
   );
