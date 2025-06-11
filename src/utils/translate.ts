@@ -1,7 +1,7 @@
 // Google Translate 관련 타입 정의
 declare global {
   interface Window {
-    google: {
+    google?: {
       translate: {
         TranslateElement: new (
           config: { pageLanguage: string; autoDisplay: boolean },
