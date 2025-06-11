@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import BottomSheetLayout from '../Common/BottomSheetLayout';
 import { changeLanguage, getCurrentLanguage } from '@/utils/translate';
+import Icon from '@/components/Common/Icon';
+import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 
 interface LanguageBottomSheetProps {
   isShowBottomsheet: boolean;
@@ -99,13 +101,15 @@ const LanguageBottomSheet = ({
       {/* Google Translate 위젯을 위한 숨겨진 div */}
       <div id="google_translate_element" style={{ display: 'none' }}></div>
 
-      <div className="flex flex-col gap-4 p-4">
-        <h2 className="text-lg font-bold">언어 선택</h2>
-        <ul className="flex flex-col gap-2">
+      <div className="flex flex-col px-1">
+        <h2 className="py-3 head-3 text-text-strong heading-18-semibold">
+          언어 선택
+        </h2>
+        <ul className="flex flex-col">
           {LANGUAGES.map((lang) => (
-            <li key={lang.code}>
+            <li key={lang.code} className="relative">
               <button
-                className="w-full text-left p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                className="w-full text-left py-3 rounded-lg hover:bg-gray-100 transition-colors"
                 onClick={() => handleLanguageClick(lang.code)}
                 aria-label={`${lang.name}으로 언어 변경`}
                 aria-pressed={lang.code === currentLanguage}
@@ -113,6 +117,16 @@ const LanguageBottomSheet = ({
               >
                 {lang.name}
               </button>
+              {lang.code === currentLanguage && (
+                <div className="absolute right-0 top-3">
+                  <div className={`p-1 rounded-full bg-surface-base`}>
+                    <Icon
+                      icon={BottomSheetCheckIcon}
+                      strokeColor="stroke-surface-invert"
+                    />
+                  </div>
+                </div>
+              )}
             </li>
           ))}
         </ul>
