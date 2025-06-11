@@ -1,6 +1,5 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
-import PostDetailCompanyImageList from '@/components/PostDetail/PostDetailCompanyImageList';
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,6 +19,7 @@ import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
 import { handleGoExternalWebByDynamicUrl } from '@/utils/application';
 import CareerDetailContent from '@/components/PostDetail/CareerDetailContent';
+import PostDetailImageList from '@/components/PostDetail/PostDetailImageList';
 
 const CareerDetailPage = () => {
   const { account_type } = useUserStore();
@@ -71,8 +71,8 @@ const CareerDetailPage = () => {
         hasMenuButton={false}
         title="Detail"
       />
-      <PostDetailCompanyImageList
-        companyImageData={
+      <PostDetailImageList
+        imageData={
           postDetailData.data?.img_urls?.map((value: string, index: number) => {
             return { id: index, img_url: value };
           }) || []
