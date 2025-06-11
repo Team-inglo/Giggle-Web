@@ -45,7 +45,7 @@ export const employerRoutes = [
   {
     path: '/employer/post',
     svg: ApplicantsIcon,
-    label: '공고관리',
+    label: '내 공고',
   },
   {
     path: '/employer/scrapped',
