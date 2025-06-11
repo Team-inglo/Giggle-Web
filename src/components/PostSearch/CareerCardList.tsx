@@ -2,7 +2,7 @@ import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { useUserStore } from '@/store/user';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import { LoadingItem } from '@/components/Common/LoadingItem';
-import { postTranslation } from '@/constants/translation';
+import { infoTranslation, postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import Tag from '@/components/Common/Tag';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +31,18 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
     }
   };
 
+  const formatLeftDays = () => {
+    const leftDays = careerData?.left_days;
+    const isEmployer = isEmployerByAccountType(account_type);
+
+    if (leftDays === undefined) return infoTranslation.notEntered[isEmployer];
+
+    if (leftDays >= 0)
+      return `${leftDays}${postTranslation.daysLeft[isEmployer]}`;
+
+    return postTranslation.closed[isEmployer];
+  };
+
   const goToCareerDetailPage = (data: CareerListItemType) => {
     navigate(`/career/${data.id}`);
   };
@@ -41,7 +53,7 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
       onClick={() => goToCareerDetailPage(careerData)}
     >
       <Tag
-        value={`${careerData.left_days}`}
+        value={formatLeftDays()}
         padding="px-1 py-[0.188rem]"
         isRounded={false}
         hasCheckIcon={false}
