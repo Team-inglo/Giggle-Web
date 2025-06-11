@@ -11,7 +11,7 @@ const Navbar = () => {
 
   // 현재 경로에 따라 아이콘 색상 클래스 이름의 접미사를 반환합니다.
   const getIconColorSuffix = (path: string) => {
-    return location.pathname === path ? 'neutral-900' : 'text-alternative';
+    return location.pathname === path ? 'neutral-900' : 'neutral-400';
   };
 
   // 공통 렌더링 함수
@@ -37,7 +37,7 @@ const Navbar = () => {
               className={`flex flex-start caption-11-regular h-[0.9375rem] ${
                 location.pathname === route.path
                   ? 'text-text-normal'
-                  : 'text-neutral-400'
+                  : 'text-text-alternative'
               }`}
             >
               {route.label}
