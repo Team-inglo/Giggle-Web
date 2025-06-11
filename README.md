@@ -199,7 +199,7 @@ pnpm test:ui
 
 ### 테스트 가이드라인
 
-- 📋 **전체 가이드라인**: [TESTING_GUIDELINES.md](./TESTING_GUIDELINES.md) 참조
+- 📋 **테스트 가이드라인**: [유닛 테스트 가이드라인](https://github.com/Team-inglo/Giggle-Web/wiki/Unit-Test-Guideline) 참조
 - 🎯 **커버리지 목표**: 전체 80% 이상, 신규 기능 90% 이상
 - 🧪 **테스트 유형**: 컴포넌트, 훅, 유틸리티, 통합 테스트
 - 📏 **테스트 원칙**: 사용자 관점에서 작성, AAA 패턴 준수
