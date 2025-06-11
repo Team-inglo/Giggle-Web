@@ -42,13 +42,15 @@ const LanguageBottomSheet = ({
     document.body.appendChild(addGoogleTranslateScript);
 
     window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: 'ko',
-          autoDisplay: false,
-        },
-        'google_translate_element',
-      );
+      if (window.google) {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: 'ko',
+            autoDisplay: false,
+          },
+          'google_translate_element',
+        );
+      }
       // 초기화 완료 후 현재 언어 설정
       setCurrentLanguage(getCurrentLanguage());
       setIsInitialized(true); // 초기화 상태 업데이트
@@ -109,9 +111,9 @@ const LanguageBottomSheet = ({
           {LANGUAGES.map((lang) => (
             <li key={lang.code} className="relative">
               <button
-                className="w-full text-left py-3 rounded-lg hover:bg-gray-100 transition-colors"
+                className="w-full text-left py-3 rounded-lg"
                 onClick={() => handleLanguageClick(lang.code)}
-                aria-label={`${lang.name}으로 언어 변경`}
+                aria-label={`${lang.name}로 언어 변경`}
                 aria-pressed={lang.code === currentLanguage}
                 disabled={isChanging || !isInitialized}
               >

@@ -50,6 +50,7 @@ const HomeHeader = () => {
           <button
             className="w-[2.25rem] h-[2.25rem] flex justify-center items-center rounded-full"
             onClick={handleClickTranslate}
+            aria-label="언어 번역"
           >
             <TranslateIcon />
           </button>
@@ -57,6 +58,7 @@ const HomeHeader = () => {
           <button
             className="w-[2.25rem] h-[2.25rem] flex justify-center items-center relative rounded-full"
             onClick={handleClickAlarm}
+            aria-label="알림"
           >
             <AlarmIcon />
             {/* 알람이 있을 때만 표시 */}
