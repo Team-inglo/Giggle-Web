@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIcon';
+import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIconSm.svg?react';
+import Icon from '@/components/Common/Icon';
 
 type DropdownProps = {
   options: string[];
@@ -46,7 +47,7 @@ const SearchSortDropdown = ({ options, value, onSelect }: DropdownProps) => {
             isOpen && 'rotate-180'
           }`}
         >
-          <DownArrowIcon />
+          <Icon icon={DownArrowIcon} strokeColor={'stroke-text-strong'} />
         </div>
       </button>
       {isOpen && (

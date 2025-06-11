@@ -25,6 +25,7 @@ import {
 import { RESTYPE } from '@/types/api/common';
 import {
   AdditionalLanguageRequest,
+  EmployeeResumeListResponse,
   GetEmployeeResumeListReq,
   LanguagesLevelType,
   UserResumeDetailResponse,
@@ -32,6 +33,7 @@ import {
 import { WorkPreferenceType } from '@/types/postApply/resumeDetailItem';
 import { smartNavigate } from '@/utils/application';
 import {
+  InfiniteData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -300,7 +302,7 @@ export const useInfiniteGetEmployeeResumeList = (
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['resume', 'search', req],
+      queryKey: ['resume', 'list', req],
       queryFn: ({ pageParam = 1 }) => getEmployeeResumeList(req, pageParam),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPage) => {
@@ -352,19 +354,25 @@ export const usePutScrapResume = () => {
   return useMutation({
     mutationFn: putScrapResume,
     onMutate: async (resumeId) => {
-      // 진행 중인 쿼리 취소
-      await queryClient.cancelQueries({
-        queryKey: ['resume', 'detail', resumeId],
-      });
+      // 1. 진행 중인 쿼리 취소
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: ['resume', 'detail', resumeId] }),
+        queryClient.cancelQueries({ queryKey: ['resume', 'list'] }),
+      ]);
 
-      // 이전 데이터 백업
-      const previousData = queryClient.getQueryData([
+      // 2. 이전 데이터 백업
+      const previousDetail = queryClient.getQueryData([
         'resume',
         'detail',
         resumeId,
       ]);
+      const previousList = queryClient.getQueriesData<
+        InfiniteData<EmployeeResumeListResponse>
+      >({
+        queryKey: ['resume', 'list'],
+      });
 
-      // 낙관적 업데이트
+      // 3. 상세 캐시 낙관적 업데이트
       queryClient.setQueryData(
         ['resume', 'detail', resumeId],
         (old: RESTYPE<UserResumeDetailResponse>) => {
@@ -379,28 +387,57 @@ export const usePutScrapResume = () => {
         },
       );
 
-      return { previousData, resumeId };
+      // 4. 목록 캐시 낙관적 업데이트
+      previousList.forEach(([queryKey, previousList]) => {
+        if (!previousList) return;
+
+        const newPages = previousList.pages.map((page) => ({
+          ...page,
+          data: {
+            ...page.data,
+            resumes: page.data.resumes.map((resume) =>
+              resume.id === resumeId
+                ? {
+                    ...resume,
+                    is_bookmarked: !resume.is_bookmarked,
+                  }
+                : resume,
+            ),
+          },
+        }));
+
+        queryClient.setQueryData(queryKey, {
+          ...previousList,
+          pages: newPages,
+        });
+      });
+
+      return { previousDetail, previousList, resumeId };
     },
     onError: (_, __, context) => {
       // 에러 발생 시 이전 데이터로 롤백
-      if (context?.previousData) {
+      if (context?.previousDetail) {
         queryClient.setQueryData(
           ['resume', 'detail', context.resumeId],
-          context.previousData,
+          context.previousDetail,
         );
       }
+
+      if (context?.previousList) {
+        context.previousList.forEach(([queryKey, previousList]) => {
+          queryClient.setQueryData(queryKey, previousList);
+        });
+      }
+    },
+    onSettled: (_, __, ___, context) => {
+      // 성공/실패 관계없이 데이터 재fetch
+      queryClient.invalidateQueries({
+        queryKey: ['resume', 'detail', context?.resumeId],
+      });
+      queryClient.invalidateQueries({ queryKey: ['resume', 'list'] });
     },
     meta: {
       skipGlobalLoading: true,
-    },
-    onSettled: (_, __, resumeId) => {
-      // 성공/실패 관계없이 데이터 재fetch
-      queryClient.invalidateQueries({
-        queryKey: ['resume', 'detail', resumeId],
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
   });
 };

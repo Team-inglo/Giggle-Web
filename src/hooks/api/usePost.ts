@@ -17,8 +17,10 @@ import {
   GetApplyPostListReqType,
   GetEmployerPostListReqType,
   GetPostListReqType,
+  GetPostListResponse,
 } from '@/types/api/post';
 import {
+  InfiniteData,
   useInfiniteQuery,
   useMutation,
   UseMutationOptions,
@@ -29,6 +31,7 @@ import { smartNavigate } from '@/utils/application';
 import { useNavigate } from 'react-router-dom';
 import { initialJobPostingState } from '@/types/postCreate/postCreate';
 import { mapPostDetailDataToFormData } from '@/utils/post';
+import { PostDetailItemType } from '@/types/postDetail/postDetailItem';
 
 // 4.1 (게스트) 공고 리스트 조회 훅
 export const useGetPostGuestList = (
@@ -37,7 +40,7 @@ export const useGetPostGuestList = (
   page: number = 1,
 ) => {
   return useQuery({
-    queryKey: ['post', 'guest', req],
+    queryKey: ['post', 'list', 'guest', req],
     queryFn: () => getPostListGuest(req, page),
     enabled: isEnabled,
     staleTime: 0,
@@ -51,7 +54,7 @@ export const useInfiniteGetPostGuestList = (
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['post', 'guest', req],
+      queryKey: ['post', 'list', 'guest', req],
       queryFn: ({ pageParam = 1 }) => getPostListGuest(req, pageParam),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPage) => {
@@ -73,7 +76,7 @@ export const useInfiniteGetPostGuestList = (
 // 4.2 (게스트) 공고 상세 조회하기 훅
 export const useGetPostDetailGuest = (id: number, isEnabled: boolean) => {
   return useQuery({
-    queryKey: ['post', 'guest', id],
+    queryKey: ['post', 'detail', 'guest', id],
     queryFn: () => getPostDetailGuest(id),
     enabled: isEnabled,
   });
@@ -86,7 +89,7 @@ export const useGetPostList = (
   page: number = 1,
 ) => {
   return useQuery({
-    queryKey: ['post', req],
+    queryKey: ['post', 'list', 'user', req],
     queryFn: () => getPostList(req, page),
     enabled: isEnabled,
     staleTime: 0,
@@ -100,7 +103,7 @@ export const useInfiniteGetPostList = (
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['post', req],
+      queryKey: ['post', 'list', 'user', req],
       queryFn: ({ pageParam = 1 }) => getPostList(req, pageParam),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPage) => {
@@ -122,7 +125,7 @@ export const useInfiniteGetPostList = (
 // 4.4 (유학생/고용주) 공고 상세 조회하기 훅
 export const useGetPostDetail = (id: number, isEnabled: boolean) => {
   return useQuery({
-    queryKey: ['post', 'detail', id],
+    queryKey: ['post', 'detail', 'user', id],
     queryFn: () => getPostDetail(id),
     enabled: isEnabled,
   });
@@ -202,15 +205,95 @@ export const usePutPostBookmark = () => {
 
   return useMutation({
     mutationFn: putPostBookmark,
-    onError: (error) => {
-      console.error('북마크 추가/삭제 실패', error);
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['post'],
+    onMutate: async (postId) => {
+      // 1. 진행 중인 쿼리 취소
+      await Promise.all([
+        queryClient.cancelQueries({
+          queryKey: ['post', 'detail', 'user', postId],
+        }),
+        queryClient.cancelQueries({ queryKey: ['post', 'list', 'user'] }),
+      ]);
+
+      // 2. 이전 데이터 백업
+      const previousDetail = queryClient.getQueryData([
+        'post',
+        'detail',
+        'user',
+        postId,
+      ]);
+      const previousList = queryClient.getQueriesData<
+        InfiniteData<GetPostListResponse>
+      >({
+        queryKey: ['post', 'list', 'user'],
       });
+
+      // 3. 상세 캐시 낙관적 업데이트
+      queryClient.setQueryData(
+        ['post', 'detail', 'user', postId],
+        (old: RESTYPE<PostDetailItemType>) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              is_book_marked: !old.data.is_book_marked,
+            },
+          };
+        },
+      );
+
+      // 4. 목록 캐시 낙관적 업데이트
+      previousList.forEach(([queryKey, previousList]) => {
+        if (!previousList) return;
+
+        const newPages = previousList.pages.map((page) => ({
+          ...page,
+          data: {
+            ...page.data,
+            job_posting_list: page.data.job_posting_list.map((post) =>
+              post.id === postId
+                ? {
+                    ...post,
+                    is_book_marked: !post.is_book_marked,
+                  }
+                : post,
+            ),
+          },
+        }));
+
+        queryClient.setQueryData(queryKey, {
+          ...previousList,
+          pages: newPages,
+        });
+      });
+
+      return { previousDetail, previousList, postId };
     },
-    meta: { skipGlobalLoading: true },
+    onError: (_, __, context) => {
+      // 에러 발생 시 이전 데이터로 롤백
+      if (context?.previousDetail) {
+        queryClient.setQueryData(
+          ['post', 'detail', 'user', context.postId],
+          context.previousDetail,
+        );
+      }
+
+      if (context?.previousList) {
+        context.previousList.forEach(([queryKey, previousList]) => {
+          queryClient.setQueryData(queryKey, previousList);
+        });
+      }
+    },
+    onSettled: (_, __, ___, context) => {
+      // 성공/실패 관계없이 데이터 재fetch
+      queryClient.invalidateQueries({
+        queryKey: ['post', 'detail', 'user', context?.postId],
+      });
+      queryClient.invalidateQueries({ queryKey: ['post', 'list', 'user'] });
+    },
+    meta: {
+      skipGlobalLoading: true,
+    },
   });
 };
 

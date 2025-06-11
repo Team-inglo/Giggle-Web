@@ -1,12 +1,13 @@
 import PostSearchFilterToggle from '@/components/PostSearchFilter/PostSearchFilterToggle';
 import Tag from '@/components/Common/Tag';
-import ArrowIcon from '@/assets/icons/ArrowUp.tsx';
+import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { memo, useEffect, useState } from 'react';
 import { FILTER_CATEGORY } from '@/constants/postSearch';
 import { useUserStore } from '@/store/user';
 import { postSearchTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
+import Icon from '@/components/Common/Icon';
 
 type PostSearchFilterAreaInputProps = {
   setIsOpenAreaFilter: (value: boolean) => void;
@@ -88,7 +89,7 @@ const PostSearchFilterAreaInput = memo(
               <div
                 className={`flex items-center justify-center w-5 h-6 transition-transform duration-300 rotate-180`}
               >
-                <ArrowIcon isMarked={false} />
+                <Icon icon={ArrowIcon} strokeColor="stroke-text-assistive" />
               </div>
             </button>
           </div>

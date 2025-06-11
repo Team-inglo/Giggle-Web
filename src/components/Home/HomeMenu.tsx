@@ -24,7 +24,7 @@ const HomeMenu = () => {
         {
           icon: <RecommendPostIcon />,
           text: '인재추천',
-          onClick: () => setIsOpenCommingSoonBottomSheet(true),
+          onClick: () => navigate('/employer/search'),
         },
         {
           icon: <SavedPostIcon />,

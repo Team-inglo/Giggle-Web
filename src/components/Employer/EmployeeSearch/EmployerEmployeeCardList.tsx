@@ -7,7 +7,7 @@ import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import { postTranslation } from '@/constants/translation';
 import { EmployeeResumeListItemType } from '@/types/api/resumes';
 import { LoadingItem } from '@/components/Common/LoadingItem';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent } from 'react';
 import { usePutScrapResume } from '@/hooks/api/useResume';
 
 const EmployerEmployeeCard = ({
@@ -19,21 +19,14 @@ const EmployerEmployeeCard = ({
 
   const { mutate } = usePutScrapResume();
 
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
-
   const handleClickBookmark = (e: MouseEvent) => {
     e.stopPropagation();
     mutate(cardData.id);
-    setIsBookmark(!isBookmark);
   };
 
   const goToResumeDetailPage = (id: string) => {
     navigate(`/employer/search/${id}`);
   };
-
-  useEffect(() => {
-    setIsBookmark(cardData.is_bookmarked ?? false);
-  }, [cardData]);
 
   return (
     <article
@@ -57,7 +50,11 @@ const EmployerEmployeeCard = ({
               </span>
             </p>
             <button onClick={(e) => handleClickBookmark(e)}>
-              {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
+              {cardData?.is_bookmarked ? (
+                <BookmarkCheckedIcon />
+              ) : (
+                <BookmarkIcon />
+              )}
             </button>
           </div>
           <p className="text-text-alternative body-14-regular">

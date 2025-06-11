@@ -5,7 +5,7 @@ import { PostSearchType } from '@/hooks/usePostSearch';
 import { useUserStore } from '@/store/user';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { formatCareerSearchFilter } from '@/utils/formatSearchFilter';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { postSearchTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import {
@@ -14,7 +14,6 @@ import {
   POST_SORTING_KR,
 } from '@/constants/postSearch';
 import { UserType } from '@/constants/user';
-import { CareerListItemType } from '@/types/api/career';
 import {
   useInfiniteGetCareerGuestList,
   useInfiniteGetCareerList,
@@ -36,7 +35,6 @@ const CareerSearchSection = ({
 }: CareerSearchSectionProps) => {
   const { account_type } = useUserStore();
 
-  const [careerData, setCareerData] = useState<CareerListItemType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -62,6 +60,8 @@ const CareerSearchSection = ({
   );
 
   const data = account_type ? userCareerData : guestCareerData;
+  const careerData =
+    data?.pages?.flatMap((page) => page.data.career_list) || [];
   const isInitialLoading = account_type
     ? careerIsInitialLoading
     : guestIsInitialLoading;
@@ -77,13 +77,6 @@ const CareerSearchSection = ({
       fetchNextPage().finally(() => setIsLoading(false));
     }
   }, !!hasNextPage);
-
-  useEffect(() => {
-    if (data && data.pages.length > 0) {
-      const result = data.pages.flatMap((page) => page.data.career_list);
-      setCareerData(result);
-    }
-  }, [data]);
 
   const handleUpdateCareerCategory = (category: CareerCategoryKey) => {
     const categorySet = new Set(searchOption.careerCategory);

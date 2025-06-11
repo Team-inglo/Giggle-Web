@@ -92,6 +92,15 @@ export type EmployeeResumeListItemType = {
   is_bookmarked: boolean;
 };
 
+// 7.24 (고용주) 이력서 리스트 조회하기 response type
+export type EmployeeResumeListResponse = {
+  data: {
+    resumes: EmployeeResumeListItemType[];
+    has_next: boolean;
+    total_count: number;
+  };
+};
+
 // 7.24 (고용주) 이력서 리스트 조회하기 request type
 export type GetEmployeeResumeListReq = {
   size: number;

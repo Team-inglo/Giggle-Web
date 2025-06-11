@@ -4,6 +4,7 @@ import {
   MatchAscendingSortType,
   MatchKoEnAscendingSortType,
 } from '@/types/common/sort';
+import { JobPostingItemType } from '@/types/common/jobPostingItem';
 
 export type GetPostListReqType = {
   size: number;
@@ -34,4 +35,12 @@ export type GetEmployerPostListReqType = {
   page?: number;
   size: number;
   sorting: MatchKoEnAscendingSortType;
+};
+
+// 4.3 (유학생/고용주) 공고 리스트 조회 훅 response
+export type GetPostListResponse = {
+  data: {
+    job_posting_list: JobPostingItemType[];
+    has_next: boolean;
+  };
 };
