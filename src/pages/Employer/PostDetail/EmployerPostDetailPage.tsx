@@ -45,7 +45,7 @@ const EmployerPostDetailPage = () => {
         hasMenuButton={false}
         title="모집공고 상세"
       />
-      <PostDetailImageList imageData={data.data?.company_img_url_list} />
+      <PostDetailImageList imageData={data.data?.company_img_url_list || []} />
       <article className="w-full px-4 py-5 bg-surface-base">
         <h3 className="pb-1 heading-18-semibold text-text-strong line-clamp-2">
           {data.data?.title}

@@ -11,7 +11,7 @@ import { CareerListItemType } from '@/types/api/career';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
 import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
 import { usePutCareerBookmark } from '@/hooks/api/useCareer';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
 import { calculateTimeAgo } from '@/utils/calculateTimeAgo';
 import { CAREER_CATEGORY } from '@/constants/postSearch';
 
@@ -21,14 +21,9 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
 
   const { mutate } = usePutCareerBookmark();
 
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
-
   const onClickBookmark = (id: number, e: MouseEvent) => {
     e.stopPropagation();
-    if (account_type === UserType.USER) {
-      mutate(id);
-      setIsBookmark(!isBookmark);
-    }
+    if (account_type === UserType.USER) mutate(id);
   };
 
   const formatLeftDays = () => {

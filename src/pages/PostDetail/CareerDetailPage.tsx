@@ -120,7 +120,7 @@ const CareerDetailPage = () => {
         <footer className="w-full flex gap-2 z-20">
           {account_type && (
             <button
-              className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-lg bg-[#F4F4F980]"
+              className="flex justify-center items-center min-w-[3.25rem] w-[3.25rem] h-[3.25rem] rounded-lg bg-neutral-100"
               onClick={onClickBookmark}
             >
               {isBookmark ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
