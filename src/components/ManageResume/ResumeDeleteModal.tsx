@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import BottomSheetLayout from '../Common/BottomSheetLayout';
+import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 type ResumeDeleteModalProps = {
   onEditButton: () => void;
@@ -10,16 +10,7 @@ const ResumeDeleteModal = ({
   onEditButton,
   onDeleteButton,
 }: ResumeDeleteModalProps) => {
-  // 마운트/언마운트 시 스크롤 제어
-  useEffect(() => {
-    // 모달이 마운트되면 스크롤 비활성화
-    document.body.style.overflow = 'hidden';
-
-    // 컴포넌트 언마운트 시 스크롤 복원
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
+  useBodyScrollLock(true);
 
   return (
     <BottomSheetLayout

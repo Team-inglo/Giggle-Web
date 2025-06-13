@@ -191,6 +191,12 @@ export const initialFilterList: PostSearchFilterItemType = {
   [FILTER_CATEGORY.VISA]: [],
 };
 
+// 공고 검색 페이지 메뉴
+export const enum POST_SEARCH_PAGE_MENU {
+  POST = 'POST',
+  CAREER = 'CAREER',
+}
+
 // 커리어 검색 카테고리
 export const CAREER_CATEGORY = {
   ACTIVITY: 'Activity',
