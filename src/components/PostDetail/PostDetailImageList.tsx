@@ -2,6 +2,7 @@ import { CompanyImageUrlType } from '@/types/postDetail/postDetailItem';
 import { useCallback, useEffect, useState } from 'react';
 import CloseWhiteIcon from '@/assets/icons/CloseWhiteIcon.svg?react';
 import useEmblaCarousel from 'embla-carousel-react';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 type PostDetailImageListProps = {
   imageData: CompanyImageUrlType[];
@@ -12,6 +13,7 @@ const PostDetailImageList = ({ imageData }: PostDetailImageListProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [emblaRef, embla] = useEmblaCarousel({ loop: false });
+  useBodyScrollLock(isOpen);
 
   const onSelect = useCallback(() => {
     if (!embla) return;
@@ -22,21 +24,11 @@ const PostDetailImageList = ({ imageData }: PostDetailImageListProps) => {
     if (!embla) return;
     embla.on('select', onSelect);
     onSelect();
-  }, [embla, onSelect]);
 
-  // 모달 열림 상태에 따라 body 스크롤 제어
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-
-    // 모달이 닫힐 때 overflow 복구
     return () => {
-      document.body.style.overflow = 'auto';
+      embla.off('select', onSelect); // 이벤트 해제
     };
-  }, [isOpen]);
+  }, [embla, onSelect]);
 
   return (
     <>
