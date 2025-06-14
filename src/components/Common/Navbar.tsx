@@ -22,7 +22,7 @@ const Navbar = () => {
         <button
           key={index}
           onClick={() => navigate(route.path)}
-          className="flex flex-col items-center justify-center w-[3.125rem] h-[3.125rem] whitespace-nowrap"
+          className="flex flex-col items-center justify-center w-[3.1875rem] h-[3.1875rem] whitespace-nowrap"
         >
           <div className="w-[1.375rem] h-[1.375rem] flex items-center justify-center">
             <Icon
@@ -34,7 +34,7 @@ const Navbar = () => {
           {/* 텍스트도 강조 색상 조건부 처리 */}
           {route.label && (
             <span
-              className={`flex flex-start caption-11-regular h-[0.9375rem] ${
+              className={`flex flex-start caption-11-regular h-[0.9375rem] text-wrap text-center ${
                 location.pathname === route.path
                   ? 'text-text-normal'
                   : 'text-text-alternative'
@@ -60,7 +60,7 @@ const Navbar = () => {
       <section
         className="
           fixed bottom-0 w-full
-          bg-surface-base border-t-[0.03125rem] border-border-disabled
+          bg-surface-base border-t-[0.0625rem] border-border-disabled
            pt-[0.0625rem] pb-[2.125rem] px-4
            "
       >
