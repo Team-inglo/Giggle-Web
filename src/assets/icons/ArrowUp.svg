@@ -4,12 +4,12 @@ height="20"
 viewBox="0 0 20 20"
 fill="none"
 xmlns="http://www.w3.org/2000/svg"
+stroke="currentColor"
 >
 <g id="Iconography / Metaphor / ArrowUp">
   <path
     id="Path 5"
     d="M2.91667 12.9167L10 5.83333L17.0833 12.9167"
-    stroke="currentColor"
     strokeWidth="1.2"
     strokeLinecap="round"
     strokeLinejoin="round"

@@ -1,8 +1,8 @@
 import { profileTranslation } from '@/constants/translation';
 import { UserType } from '@/constants/user';
 import { useWithdraw } from '@/hooks/api/useAuth';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 import { useUserStore } from '@/store/user';
-import { useEffect } from 'react';
 
 type DeleteModalProps = {
   onDeleteButton: (value: boolean) => void;
@@ -12,16 +12,7 @@ const DeleteModal = ({ onDeleteButton }: DeleteModalProps) => {
   const { mutate: withdraw } = useWithdraw();
   const { account_type } = useUserStore();
 
-  // 마운트/언마운트 시 스크롤 제어
-  useEffect(() => {
-    // 모달이 마운트되면 스크롤 비활성화
-    document.body.style.overflow = 'hidden';
-
-    // 컴포넌트 언마운트 시 스크롤 복원
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, []); // 빈 의존성 배열 사용 (마운트/언마운트 시에만 실행)
+  useBodyScrollLock(true);
 
   // 계정 삭제 훅
   const handleAccountDelete = () => {

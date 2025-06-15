@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
-import Icon from './Icon';
+import Icon from '@/components/Common/Icon';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {

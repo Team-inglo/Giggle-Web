@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import useBottomSheet from '@/hooks/useBottomSheet';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 type BottomSheetLayoutProps = {
   isAvailableHidden: boolean; // 아래로 내렸을 때 사라지도록 하는 여부
@@ -28,6 +29,8 @@ const BottomSheetLayout = ({
   const { isOpen, setIsOpen, onDragEnd, controls, viewHeight } =
     useBottomSheet(setIsShowBottomSheet);
 
+  useBodyScrollLock(isOpen && isFixedBackground);
+
   useEffect(() => {
     setIsOpen(isShowBottomsheet);
   }, [isShowBottomsheet, setIsOpen]);
@@ -39,15 +42,6 @@ const BottomSheetLayout = ({
       setContentHeight(height);
     }
   }, [children]);
-
-  useEffect(() => {
-    if (isOpen && isFixedBackground) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = 'auto';
-
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen, isFixedBackground]);
 
   // 앱에서 window.innerheight값이 없는 경우
   if (!viewHeight) return <></>;

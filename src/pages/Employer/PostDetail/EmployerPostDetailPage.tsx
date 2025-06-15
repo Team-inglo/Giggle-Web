@@ -1,7 +1,6 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmployerPostDetailButton from '@/components/Employer/PostDetail/EmployerPostDetailButton';
-import PostDetailCompanyImageList from '@/components/PostDetail/PostDetailCompanyImageList';
 import PostDetailContent from '@/components/PostDetail/PostDetailContent';
 import { UserType } from '@/constants/user';
 import { useGetPostDetail } from '@/hooks/api/usePost';
@@ -15,6 +14,7 @@ import { WorkPeriodInfo } from '@/constants/documents';
 import { WorkPeriod } from '@/types/api/document';
 import { workDaysPerWeekToText } from '@/utils/post';
 import { formatMoney } from '@/utils/formatMoney';
+import PostDetailImageList from '@/components/PostDetail/PostDetailImageList';
 
 const EmployerPostDetailPage = () => {
   const { account_type } = useUserStore();
@@ -45,9 +45,7 @@ const EmployerPostDetailPage = () => {
         hasMenuButton={false}
         title="모집공고 상세"
       />
-      <PostDetailCompanyImageList
-        companyImageData={data.data?.company_img_url_list}
-      />
+      <PostDetailImageList imageData={data.data?.company_img_url_list || []} />
       <article className="w-full px-4 py-5 bg-surface-base">
         <h3 className="pb-1 heading-18-semibold text-text-strong line-clamp-2">
           {data.data?.title}

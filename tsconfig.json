@@ -4,5 +4,7 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  "compilerOptions": { "types": ["kakao.maps.d.ts"] }
+  "compilerOptions": {
+    "types": ["kakao.maps.d.ts", "vitest/globals"]
+  }
 }

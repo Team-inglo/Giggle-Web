@@ -33,7 +33,7 @@ const Tag = ({
       {value}
       {onDelete && (
         <button onClick={() => onDelete(value)}>
-          <Icon icon={TagDeleteIcon} fillColor="fill-surface-invert" />
+          <Icon icon={TagDeleteIcon} fillColor="text-surface-invert" />
         </button>
       )}
     </div>

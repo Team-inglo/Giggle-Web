@@ -120,7 +120,7 @@ const EmployerEmployeeSearchPage = () => {
                 <Icon
                   icon={DisclosureIcon}
                   fillColor={
-                    isSelected ? 'fill-text-invert' : 'fill-text-alternative'
+                    isSelected ? 'text-text-invert' : 'text-text-alternative'
                   }
                 />
               </button>

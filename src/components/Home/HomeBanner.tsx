@@ -109,6 +109,10 @@ const HomeBanner = () => {
     if (!embla) return;
     embla.on('select', onSelect);
     onSelect();
+
+    return () => {
+      embla.off('select', onSelect); // 이벤트 해제
+    };
   }, [embla, onSelect]);
 
   return (
