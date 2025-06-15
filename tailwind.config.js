@@ -99,8 +99,8 @@ export default {
           assistive: '#A9ABB8', // neutral.500
           disabled: '#C3C5D0', // neutral.400
           invert: '#FFFFFF', // neutral.0
-          error: '#FF4D5F', // statusRed.300
-          success: '#0066FF', // statusBlue.300
+          error: '#FF4D5F', // status-red.300
+          success: '#0066FF', // status-blue.300
           primary: '#FEF387', // brand.500
         },
         surface: {
@@ -120,8 +120,8 @@ export default {
           normal: '#C3C5D0', // neutral.400
           alternative: '#D0DAE3', // neutral.300
           disabled: '#EBEDF2', // neutral.200
-          error: '#FF4D5F', // statusRed.300
-          success: '#0066FF', // statusBlue.300
+          error: '#FF4D5F', // status-red.300
+          success: '#0066FF', // status-blue.300
         },
         primary: {
           normal: '#FEF387',
