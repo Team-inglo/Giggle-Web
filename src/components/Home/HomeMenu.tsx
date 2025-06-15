@@ -70,15 +70,15 @@ const HomeMenu = () => {
 
   return (
     <>
-      <nav className="p-4 flex justify-center gap-2">
+      <nav className="p-4 w-full flex items-start justify-center gap-2">
         {menuItems.map((item, index) => (
           <button
             key={index}
-            className="w-[4.875rem] h-[4.875rem] flex flex-col items-center gap-2 px-1 py-3 rounded-lg"
+            className="w-[4.875rem] h-[4.875rem] flex-1 flex flex-col items-center justify-start gap-2 px-1 py-3 rounded-lg"
             onClick={() => checkLogin(item.onClick)}
           >
             {item.icon}
-            <p className="button-14-semibold text-[#333333] break-keep">
+            <p className="h-[1.0625rem] button-14-semibold text-[#333333] break-keep">
               {item.text}
             </p>
           </button>
