@@ -40,11 +40,11 @@ const SIZE_STYLES: Record<InfoBannerSize, string> = {
 };
 
 type InfoBannerPropsType = {
-  state: InfoBannerState;
-  size: InfoBannerSize;
+  state?: InfoBannerState;
+  size?: InfoBannerSize;
   hasIcon?: boolean;
   hasButton?: boolean;
-  text: string;
+  text?: string;
   buttonText?: string;
   onClickButton?: () => void;
 };
@@ -72,7 +72,11 @@ const InfoBanner = ({
         {text}
       </p>
       {hasButton && (
-        <button className="flex items-center px-1" onClick={onClickButton}>
+        <button
+          type="button"
+          className="flex items-center px-1"
+          onClick={onClickButton}
+        >
           {buttonText}
         </button>
       )}
