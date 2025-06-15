@@ -33,6 +33,27 @@ describe('InfoBanner', () => {
       expect(screen.getByText(defaultProps.text)).toBeInTheDocument();
     });
 
+    it('props가 전달되지 않았을 때 기본값으로 렌더링되어야 한다', () => {
+      render(
+        <InfoBanner
+          state={InfoBannerState.INFO}
+          size={InfoBannerSize.MD}
+          text="기본값 테스트"
+        />,
+      );
+
+      const banner = screen.getByText('기본값 테스트').closest('section');
+
+      // Default state: INFO
+      expect(banner).toHaveClass('bg-neutral-100', 'text-text-normal');
+      // Default size: MD
+      expect(banner).toHaveClass('min-h-10', 'p-2', 'body-14-medium');
+      // Default hasIcon: true
+      expect(screen.getByTestId('info-icon')).toBeInTheDocument();
+      // Default hasButton: false
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
+
     describe.each([
       {
         state: InfoBannerState.INFO,
