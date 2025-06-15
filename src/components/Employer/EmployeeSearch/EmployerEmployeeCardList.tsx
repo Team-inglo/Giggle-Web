@@ -69,7 +69,7 @@ const EmployerEmployeeCard = ({
           padding="py-[0.188rem] px-[0.25rem]"
           isRounded={true}
           hasCheckIcon={false}
-          backgroundColor="bg-statusBlue-300/10"
+          backgroundColor="bg-status-blue-300/10"
           color="text-text-success"
           fontStyle="caption-12-semibold"
         />

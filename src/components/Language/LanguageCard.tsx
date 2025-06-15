@@ -127,7 +127,7 @@ const LanguageCard = ({
           <h5 className="pb-[0.125rem] button-14-semibold  text-text-strong">
             {title}
           </h5>
-          <div className="px-1.5 py-0.5 rounded-sm text-statusBlue-300 bg-statusBlue-100 caption-11-semibold">
+          <div className="px-1.5 py-0.5 rounded-sm text-status-blue-300 bg-status-blue-100 caption-11-semibold">
             {account_type === UserType.OWNER
               ? `${level} ${profileTranslation.level[isEmployer(pathname)]}`
               : `LEVEL ${level}`}

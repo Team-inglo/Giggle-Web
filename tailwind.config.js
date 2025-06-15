@@ -68,16 +68,23 @@ export default {
           950: '#17181A',
           1000: '#000000',
         },
-        statusRed: {
-          100: '#FFF3F4',
-          200: '#FFCACF',
-          300: '#FF4D5F',
-          400: '#E33E4E',
-        },
-        statusBlue: {
-          100: '#E0EDFF',
-          200: '#A6C9FF',
-          300: '#0066FF',
+        status: {
+          red: {
+            100: '#FFF3F4',
+            200: '#FFCACF',
+            300: '#FF4D5F',
+            400: '#E33E4E',
+          },
+          blue: {
+            100: '#E0EDFF',
+            200: '#A6C9FF',
+            300: '#0066FF',
+          },
+          green: {
+            100: '#E6F7ED',
+            200: '#B1E7C3',
+            300: '#1DAA55',
+          },
         },
 
         // ──────────────────────────────
@@ -91,8 +98,8 @@ export default {
           assistive: '#A9ABB8', // neutral.500
           disabled: '#C3C5D0', // neutral.400
           invert: '#FFFFFF', // neutral.0
-          error: '#FF4D5F', // statusRed.300
-          success: '#0066FF', // statusBlue.300
+          error: '#FF4D5F', // status-red.300
+          success: '#0066FF', // status-blue.300
           primary: '#FEF387', // brand.500
         },
         surface: {
@@ -112,8 +119,8 @@ export default {
           normal: '#C3C5D0', // neutral.400
           alternative: '#D0DAE3', // neutral.300
           disabled: '#EBEDF2', // neutral.200
-          error: '#FF4D5F', // statusRed.300
-          success: '#0066FF', // statusBlue.300
+          error: '#FF4D5F', // status-red.300
+          success: '#0066FF', // status-blue.300
         },
         primary: {
           normal: '#FEF387',
