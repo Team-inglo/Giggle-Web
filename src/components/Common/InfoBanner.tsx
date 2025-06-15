@@ -68,13 +68,13 @@ const InfoBanner = ({
       <div className="w-6 h-6 flex items-center justify-center">
         {hasIcon && stateProperties.icon}
       </div>
-      <p className="flex items-center w-full px-1 py-0.5 text-start flex-1">
-        {text}
-      </p>
+      <div className="flex items-center w-full px-1 py-0.5 flex-1">
+        <p className="line-clamp-2 text-start w-full">{text}</p>
+      </div>
       {hasButton && (
         <button
           type="button"
-          className="flex items-center px-1"
+          className="flex items-center px-1 underline underline-offset-4"
           onClick={onClickButton}
         >
           {buttonText}
