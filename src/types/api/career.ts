@@ -7,7 +7,7 @@ export type CareerListItemType = {
   visa?: string[] | null;
   host_name?: string; // 주최
   organizer_name?: string; // 주관
-  left_days?: string; // 남은 날짜
+  left_days?: number; // 남은 날짜
   status?: string;
   recruitment_start_date?: string;
   recruitment_end_date?: string;

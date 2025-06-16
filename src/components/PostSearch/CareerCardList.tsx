@@ -2,7 +2,7 @@ import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { useUserStore } from '@/store/user';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import { LoadingItem } from '@/components/Common/LoadingItem';
-import { postTranslation } from '@/constants/translation';
+import { infoTranslation, postTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
 import Tag from '@/components/Common/Tag';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { CareerListItemType } from '@/types/api/career';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
 import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
 import { usePutCareerBookmark } from '@/hooks/api/useCareer';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
 import { calculateTimeAgo } from '@/utils/calculateTimeAgo';
 import { CAREER_CATEGORY } from '@/constants/postSearch';
 
@@ -21,14 +21,21 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
 
   const { mutate } = usePutCareerBookmark();
 
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
-
   const onClickBookmark = (id: number, e: MouseEvent) => {
     e.stopPropagation();
-    if (account_type === UserType.USER) {
-      mutate(id);
-      setIsBookmark(!isBookmark);
-    }
+    if (account_type === UserType.USER) mutate(id);
+  };
+
+  const formatLeftDays = () => {
+    const leftDays = careerData?.left_days;
+    const isEmployer = isEmployerByAccountType(account_type);
+
+    if (leftDays === undefined) return infoTranslation.notEntered[isEmployer];
+
+    if (leftDays >= 0)
+      return `${leftDays}${postTranslation.daysLeft[isEmployer]}`;
+
+    return postTranslation.closed[isEmployer];
   };
 
   const goToCareerDetailPage = (data: CareerListItemType) => {
@@ -41,7 +48,7 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
       onClick={() => goToCareerDetailPage(careerData)}
     >
       <Tag
-        value={`${careerData.left_days}`}
+        value={formatLeftDays()}
         padding="px-1 py-[0.188rem]"
         isRounded={false}
         hasCheckIcon={false}

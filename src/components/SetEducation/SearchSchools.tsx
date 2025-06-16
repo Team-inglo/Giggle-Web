@@ -6,6 +6,7 @@ import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
 import { School } from '@/types/api/document';
 import { useGetSearchSchools } from '@/hooks/api/useResume';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 type SearchSchoolsProps = {
   setSchool: (school: School) => void;
@@ -30,6 +31,7 @@ const SearchSchools = ({
 
   // TODO: 무한 스크롤 구현
   const { data: getSchoolList } = useGetSearchSchools(searchSchool, page, size);
+  useBodyScrollLock(true);
 
   useEffect(() => {
     if (getSchoolList) {
@@ -54,14 +56,6 @@ const SearchSchools = ({
     setSearchSchool(value);
     setPage(1); // 새로운 검색어가 들어오면 페이지를 초기화
   };
-
-  // 모달이 열렸을 떄 스크롤 방지
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
 
   return (
     <>
