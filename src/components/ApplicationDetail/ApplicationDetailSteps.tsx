@@ -1,6 +1,3 @@
-import CheckStepIcon from '@/assets/icons/ApplicationDetail/CheckStepIcon.svg?react';
-import CurrentStepIcon from '@/assets/icons/ApplicationDetail/CurrentStepIcon.svg?react';
-import UncheckStepIcon from '@/assets/icons/ApplicationDetail/UncheckStepIcon.svg?react';
 import SuccessIcon from '@/assets/icons/ApplicationDetail/SuccessIcon.svg?react';
 import RejectIcon from '@/assets/icons/ApplicationDetail/RejectIcon.svg?react';
 import MessageIcon from '@/assets/icons/ApplicationDetail/MessageIcon.svg?react';
@@ -25,16 +22,6 @@ type ApplicationDetailStepsProps = {
 const ApplicationDetailSteps = ({ step }: ApplicationDetailStepsProps) => {
   const { account_type } = useUserStore();
   const [isShowBottomsheet, setIsShowBottomSheet] = useState<boolean>(false);
-
-  const stepIconStyler = (currentStep: number) => {
-    if (findCurrentStep(step) > currentStep) {
-      return <CheckStepIcon />;
-    } else if (findCurrentStep(step) === currentStep) {
-      return <CurrentStepIcon />;
-    } else {
-      return <UncheckStepIcon />;
-    }
-  };
 
   const createMessageUI = {
     // 성공 메시지
@@ -142,12 +129,10 @@ const ApplicationDetailSteps = ({ step }: ApplicationDetailStepsProps) => {
           {APPLICATION_STEP_EXPLAIN_DATA.map((data) => (
             <ApplicationDetailStepBarLayout
               key={data.step}
-              stepIcon={stepIconStyler(data.step)}
               step={findCurrentStep(step)}
               currentStep={data.step}
               title={data.title[isEmployerByAccountType(account_type)]}
               explain={data.explain[isEmployerByAccountType(account_type)]}
-              isLastStep={data.step === 6}
             />
           ))}
         </div>
