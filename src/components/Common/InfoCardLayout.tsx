@@ -14,7 +14,7 @@ const InfoCardLayout = ({
   rightTopElement,
 }: InfoCardLayoutProps) => {
   return (
-    <section className="w-full py-6 px-4 bg-white rounded-lg">
+    <section className="w-full py-6 px-4 bg-white">
       <div className="flex items-center">
         <div className="flex items-center gap-2">
           {icon && <div>{icon}</div>}
