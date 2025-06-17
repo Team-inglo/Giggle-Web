@@ -7,6 +7,7 @@ import {
 } from '@/types/api/profile';
 import { isValidPhoneNumber } from './information';
 import { initialAddress } from '../types/api/users';
+import { getNationalityEnumFromEn } from './resume';
 
 // GET 데이터를 PATCH 요청 데이터로 변환
 export const changeValidData = (
@@ -40,11 +41,7 @@ export const transformToProfileRequest = (
     birth: data.birth ? data.birth.replace(/-/g, '/') : '',
     gender:
       data.gender.charAt(0).toUpperCase() + data.gender.slice(1).toLowerCase(),
-    nationality: data.nationality
-      .toLowerCase()
-      .split('_')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' '),
+    nationality: getNationalityEnumFromEn(data.nationality) as NationalityType,
     visa: data.visa.replace(/_/g, '-'),
     phone_number: data.phone_number,
     is_profile_img_changed: false,
