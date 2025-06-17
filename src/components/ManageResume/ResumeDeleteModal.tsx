@@ -14,13 +14,13 @@ const ResumeDeleteModal = ({
 
   return (
     <BottomSheetLayout
-      isAvailableHidden={false}
+      isAvailableHidden={true}
       isShowBottomsheet={true}
       isFixedBackground={true}
     >
       <div className="w-full flex flex-col bg-white rounded-[1.125rem] overflow-hidden">
         <div>
-          <h1 className="pb-3 heading-18-semibold text-text-strong">
+          <h1 className="py-3 heading-18-semibold text-text-strong">
             Are you sure you want to delete?
           </h1>
         </div>
@@ -29,14 +29,14 @@ const ResumeDeleteModal = ({
             className="py-3 w-full flex justify-start items-center body-16-regular text-text-strong"
             onClick={onEditButton}
           >
-            수정하기
+            Edit
           </button>
           {onDeleteButton && (
             <button
               className="py-3 w-full flex justify-start items-start body-16-regular text-text-error"
               onClick={onDeleteButton}
             >
-              삭제하기
+              Delete
             </button>
           )}
         </div>
