@@ -4,11 +4,13 @@ import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 type ResumeDeleteModalProps = {
   onEditButton: () => void;
   onDeleteButton?: () => void;
+  setIsShowBottomSheet?: (isShow: boolean) => void;
 };
 
 const ResumeDeleteModal = ({
   onEditButton,
   onDeleteButton,
+  setIsShowBottomSheet = () => {},
 }: ResumeDeleteModalProps) => {
   useBodyScrollLock(true);
 
@@ -17,6 +19,7 @@ const ResumeDeleteModal = ({
       isAvailableHidden={true}
       isShowBottomsheet={true}
       isFixedBackground={true}
+      setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full flex flex-col bg-white rounded-[1.125rem] overflow-hidden">
         <div>

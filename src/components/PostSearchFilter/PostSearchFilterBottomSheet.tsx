@@ -30,7 +30,7 @@ const PostSearchFilterBottomSheet = ({
 
   return (
     <BottomSheetLayout
-      isAvailableHidden={true}
+      isAvailableHidden={false}
       isShowBottomsheet={true}
       isFixedBackground={false}
     >
