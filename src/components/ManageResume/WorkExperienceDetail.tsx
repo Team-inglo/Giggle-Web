@@ -38,6 +38,7 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
         <ResumeDeleteModal
           onEditButton={() => navigate(`/resume/work-experience/edit/${selectedId}`)}
           onDeleteButton={handleDelete}
+          setIsShowBottomSheet={() => setModalOpen(false)}
         />
       )}
       <div className="flex flex-col gap-2">

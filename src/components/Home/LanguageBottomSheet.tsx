@@ -98,7 +98,7 @@ const LanguageBottomSheet = ({
     <BottomSheetLayout
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
-      isAvailableHidden={false}
+      isAvailableHidden={true}
     >
       {/* Google Translate 위젯을 위한 숨겨진 div */}
       <div id="google_translate_element" style={{ display: 'none' }}></div>

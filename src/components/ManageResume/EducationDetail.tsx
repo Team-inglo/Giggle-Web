@@ -39,6 +39,7 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
         <ResumeDeleteModal
           onEditButton={() => navigate(`/resume/education/${selectedId}`)}
           onDeleteButton={handleDelete}
+          setIsShowBottomSheet={() => setModalOpen(false)}
         />
       )}
       <div className="flex flex-col gap-2">
