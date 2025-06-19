@@ -4,11 +4,18 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import LanguageBottomSheet from './LanguageBottomSheet';
-import { changeLanguage, getCurrentLanguage } from '@/utils/translate';
+import {
+  changeLanguage,
+  getCurrentLanguage,
+  revertToOriginal,
+  setTranslateElementInstance,
+} from '@/utils/translate';
 
 vi.mock('@/utils/translate', () => ({
   changeLanguage: vi.fn(),
   getCurrentLanguage: vi.fn(),
+  revertToOriginal: vi.fn(),
+  setTranslateElementInstance: vi.fn(),
 }));
 
 vi.mock('@/assets/icons/BottomSheetCheckIcon.svg?react', () => ({
@@ -17,6 +24,8 @@ vi.mock('@/assets/icons/BottomSheetCheckIcon.svg?react', () => ({
 
 const mockChangeLanguage = changeLanguage as Mock;
 const mockGetCurrentLanguage = getCurrentLanguage as Mock;
+const mockRevertToOriginal = revertToOriginal as Mock;
+const mockSetTranslateElementInstance = setTranslateElementInstance as Mock;
 
 describe('LanguageBottomSheet', () => {
   let setIsShowBottomSheetMock: Mock;
@@ -24,6 +33,7 @@ describe('LanguageBottomSheet', () => {
   beforeEach(() => {
     setIsShowBottomSheetMock = vi.fn();
     mockChangeLanguage.mockResolvedValue(undefined); // 기본값 성공
+    mockRevertToOriginal.mockResolvedValue(undefined); // 기본값 성공
     mockGetCurrentLanguage.mockReturnValue('ko'); // 기본값 한국어
 
     // 전역 google translate 환경 모킹
@@ -63,7 +73,7 @@ describe('LanguageBottomSheet', () => {
       // Assert
       expect(screen.getByText('언어 선택')).toBeInTheDocument();
       const englishButton = screen.getByRole('button', {
-        name: 'English로 언어 변경',
+        name: 'English(으)로 언어 변경',
       });
       expect(englishButton).toBeInTheDocument();
       expect(englishButton).toBeDisabled();
@@ -78,7 +88,7 @@ describe('LanguageBottomSheet', () => {
         />,
       );
       const englishButton = screen.getByRole('button', {
-        name: 'English로 언어 변경',
+        name: 'English(으)로 언어 변경',
       });
 
       // Act: 스크립트 콜백 실행 시뮬레이션
@@ -89,6 +99,24 @@ describe('LanguageBottomSheet', () => {
         expect(englishButton).not.toBeDisabled();
       });
       expect(mockGetCurrentLanguage).toHaveBeenCalled();
+    });
+
+    it('Google Translate 스크립트가 초기화되면 setTranslateElementInstance가 호출되어야 한다(Google Translate 위젯 인스턴스 저장)', async () => {
+      // Arrange
+      render(
+        <LanguageBottomSheet
+          isShowBottomsheet={true}
+          setIsShowBottomSheet={setIsShowBottomSheetMock}
+        />,
+      );
+
+      // Act: 스크립트 콜백 실행 시뮬레이션
+      window.googleTranslateElementInit?.();
+
+      // Assert
+      await waitFor(() => {
+        expect(mockSetTranslateElementInstance).toHaveBeenCalled();
+      });
     });
   });
 
@@ -108,7 +136,7 @@ describe('LanguageBottomSheet', () => {
 
       // Assert
       const englishButton = await screen.findByRole('button', {
-        name: 'English로 언어 변경',
+        name: 'English(으)로 언어 변경',
       });
       const listItem = englishButton.closest('li');
       expect(listItem).not.toBeNull();
@@ -118,7 +146,31 @@ describe('LanguageBottomSheet', () => {
       expect(checkIcon).toBeInTheDocument();
     });
 
-    it('다른 언어를 선택하면 changeLanguage가 호출되고 바텀시트가 닫혀야 한다', async () => {
+    it("'없음' 옵션을 클릭하면 바텀시트가 닫히고 번역이 초기화되어야 한다(revertToOriginal 호출)", async () => {
+      // Arrange
+      const user = userEvent.setup();
+      render(
+        <LanguageBottomSheet
+          isShowBottomsheet={true}
+          setIsShowBottomSheet={setIsShowBottomSheetMock}
+        />,
+      );
+      window.googleTranslateElementInit?.(); // 초기화
+
+      // Act
+      const noneButton = await screen.findByRole('button', {
+        name: '없음(으)로 언어 변경',
+      });
+      await user.click(noneButton);
+
+      // Assert
+      expect(mockRevertToOriginal).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(setIsShowBottomSheetMock).toHaveBeenCalledWith(false);
+      });
+    });
+
+    it('다른 언어를 선택하면 바텀시트가 닫히고 언어가 변경되어야 한다(changeLanguage 호출)', async () => {
       // Arrange
       const user = userEvent.setup();
       render(
@@ -131,7 +183,7 @@ describe('LanguageBottomSheet', () => {
 
       // Act
       const englishButton = await screen.findByRole('button', {
-        name: 'English로 언어 변경',
+        name: 'English(으)로 언어 변경',
       });
       await user.click(englishButton);
 
@@ -155,7 +207,7 @@ describe('LanguageBottomSheet', () => {
 
       // Act
       const koreanButton = await screen.findByRole('button', {
-        name: '한국어로 언어 변경',
+        name: '한국어(으)로 언어 변경',
       });
       await user.click(koreanButton);
 
