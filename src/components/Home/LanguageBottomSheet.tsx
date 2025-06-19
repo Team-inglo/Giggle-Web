@@ -162,7 +162,7 @@ const LanguageBottomSheet = ({
               <button
                 className="w-full text-left py-3 rounded-lg"
                 onClick={() => handleLanguageClick(lang.code)}
-                aria-label={`${lang.name}로 언어 변경`}
+                aria-label={`${lang.name}(으)로 언어 변경`}
                 aria-pressed={lang.code === currentLanguage}
                 disabled={isChanging || !isInitialized}
               >
