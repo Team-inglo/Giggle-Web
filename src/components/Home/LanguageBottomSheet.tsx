@@ -46,9 +46,15 @@ const LanguageBottomSheet = ({
       .goog-te-banner-frame.skiptranslate {
           display: none !important;
       }
+      html,
       body {
-          top: 0px !important;
+        top: 0px !important;
+        margin-top: 0px !important;
       }
+      body > div.skiptranslate,
+      svg.VIpgJd-ZVi9od-aZ2wEe,
+      div.VIpgJd-ZVi9od-aZ2wEe-OiiCO,
+      div.VIpgJd-ZVi9od-aZ2wEe-OiiCO-ti6hGc,
       #goog-gt-tt {
         display: none !important;
       }
