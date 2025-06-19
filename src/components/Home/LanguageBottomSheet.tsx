@@ -1,6 +1,11 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import BottomSheetLayout from '../Common/BottomSheetLayout';
-import { changeLanguage, getCurrentLanguage } from '@/utils/translate';
+import {
+  changeLanguage,
+  getCurrentLanguage,
+  revertToOriginal,
+  setTranslateElementInstance,
+} from '@/utils/translate';
 import Icon from '@/components/Common/Icon';
 import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 
@@ -15,6 +20,7 @@ interface Language {
 }
 
 const LANGUAGES: Language[] = [
+  { code: 'none', name: '없음' },
   { code: 'ko', name: '한국어' },
   { code: 'en', name: 'English' },
   { code: 'ja', name: '日本語' },
@@ -32,6 +38,32 @@ const LanguageBottomSheet = ({
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
   useEffect(() => {
+    // Google Translate의 기본 UI(배너, 툴팁)를 숨기는 스타일을 주입합니다.
+    // 번역 중 간헐적으로 나타나는 UI가 화면을 가리는 문제를 해결합니다.
+    const style = document.createElement('style');
+    style.id = 'google-translate-override';
+    style.innerHTML = `
+      .goog-te-banner-frame.skiptranslate {
+          display: none !important;
+      }
+      body {
+          top: 0px !important;
+      }
+      #goog-gt-tt {
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      const styleElement = document.getElementById('google-translate-override');
+      if (styleElement) {
+        document.head.removeChild(styleElement);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     // 스크립트가 이미 주입되었거나, BottomSheet가 보이지 않으면 실행하지 않음
     if (isInitialized || !isShowBottomsheet) return;
 
@@ -43,13 +75,14 @@ const LanguageBottomSheet = ({
 
     window.googleTranslateElementInit = () => {
       if (window.google) {
-        new window.google.translate.TranslateElement(
+        const instance = new window.google.translate.TranslateElement(
           {
             pageLanguage: 'ko',
             autoDisplay: false,
           },
           'google_translate_element',
         );
+        setTranslateElementInstance(instance);
       }
       // 초기화 완료 후 현재 언어 설정
       setCurrentLanguage(getCurrentLanguage());
@@ -76,8 +109,24 @@ const LanguageBottomSheet = ({
   }, [isShowBottomsheet, isInitialized]);
 
   const handleLanguageClick = async (langCode: string) => {
-    if (langCode === currentLanguage || isChanging) {
-      if (langCode === currentLanguage) setIsShowBottomSheet(false);
+    if (isChanging) return;
+
+    if (langCode === 'none') {
+      setIsChanging(true);
+      try {
+        await revertToOriginal();
+        setCurrentLanguage('ko');
+        setIsShowBottomSheet(false);
+      } catch (error) {
+        console.error('언어 복원에 실패했습니다.', error);
+      } finally {
+        setIsChanging(false);
+      }
+      return;
+    }
+
+    if (langCode === currentLanguage) {
+      setIsShowBottomSheet(false);
       return;
     }
 

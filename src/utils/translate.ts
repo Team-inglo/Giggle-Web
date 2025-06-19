@@ -1,4 +1,10 @@
 // Google Translate 관련 타입 정의
+
+// Google Translate 위젯 인스턴스의 타입 정의
+interface GoogleTranslateElementInstance {
+  [key: string]: { restore?: () => void };
+}
+
 declare global {
   interface Window {
     google?: {
@@ -6,12 +12,22 @@ declare global {
         TranslateElement: new (
           config: { pageLanguage: string; autoDisplay: boolean },
           elementId: string,
-        ) => void;
+        ) => GoogleTranslateElementInstance;
       };
     };
     googleTranslateElementInit?: () => void;
   }
 }
+
+// Google Translate 위젯 인스턴스를 저장하는 변수
+let translateElementInstance: GoogleTranslateElementInstance | null = null;
+
+// Google Translate 위젯 인스턴스를 설정
+export const setTranslateElementInstance = (
+  instance: GoogleTranslateElementInstance,
+) => {
+  translateElementInstance = instance;
+};
 
 // Google Translate 위젯의 select 요소를 기다리는 함수
 const waitForGoogleTranslateWidget = (
@@ -61,11 +77,45 @@ export const getCurrentLanguage = (): string => {
     return selectElement.value;
   }
 
-  // 쿠키를 fallback으로 확인 (초기 로드 시 유용)
+  // 쿠키를 fallback으로 확인
   const cookieMatch = document.cookie.match('(^|;) ?googtrans=([^;]*)(;|$)');
   if (cookieMatch) {
     return cookieMatch[2].split('/')[2];
   }
 
   return 'ko'; // 기본값
+};
+
+// Google Translate 위젯의 restore() 함수를 호출하여 번역을 되돌리는 함수
+export const revertToOriginal = async () => {
+  // 저장된 인스턴스에서 restore 함수를 찾아 실행
+  let restoreCalled = false;
+  if (translateElementInstance) {
+    for (const key in translateElementInstance) {
+      if (
+        Object.prototype.hasOwnProperty.call(translateElementInstance, key) &&
+        translateElementInstance[key] &&
+        typeof translateElementInstance[key].restore === 'function'
+      ) {
+        translateElementInstance[key].restore();
+        restoreCalled = true;
+        break;
+      }
+    }
+  }
+
+  // restore 함수를 찾을 수 없으면 에러 발생
+  if (!restoreCalled) {
+    const errorMessage =
+      'Google Translate 인스턴스에서 restore() 함수를 찾을 수 없거나 인스턴스가 없습니다.';
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+
+  // 번역 설정이 유지되지 않도록 googtrans 쿠키를 제거
+  const cookieMatch = document.cookie.match('(^|;) ?googtrans=([^;]*)(;|$)');
+  if (cookieMatch) {
+    document.cookie =
+      'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
 };
