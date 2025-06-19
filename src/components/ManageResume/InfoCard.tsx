@@ -26,7 +26,7 @@ const InfoCard = <T,>({
       <InfoCardLayout icon={icon} title={title} rightTopElement={rightElement}>
         <button
           onClick={onAddClick}
-          className="w-full py-4 text-center border border-dashed border-blue-300 bg-blue-300/10 rounded-lg text-text-success flex items-center justify-center"
+          className="w-full py-4 text-center border border-dashed border-status-blue-300 bg-status-blue-50 rounded-lg text-text-success flex items-center justify-center"
         >
           <span className="mr-1">+</span>
           {addButtonText || `Add ${title}`}
