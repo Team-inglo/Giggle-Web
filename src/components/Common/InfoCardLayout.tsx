@@ -14,18 +14,18 @@ const InfoCardLayout = ({
   rightTopElement,
 }: InfoCardLayoutProps) => {
   return (
-    <section className="w-full py-6 px-4 bg-white rounded-lg">
+    <section className="w-full py-6 px-4 bg-surface-base">
       <div className="flex items-center">
         <div className="flex items-center gap-2">
           {icon && <div>{icon}</div>}
-          <h3 className="heading-18-semibold text-[#191919]">{title}</h3>
+          <h3 className="heading-18-semibold text-text-strong">{title}</h3>
         </div>
         {rightTopElement && (
           <div className="ml-auto self-end">{rightTopElement}</div>
         )}
       </div>
       {children && (
-        <div className="mt-3 pt-3 border-t border-[#F8F8F8]">{children}</div>
+        <div className="mt-3 pt-3 border-t border-surface-secondary">{children}</div>
       )}
     </section>
   );
