@@ -7,6 +7,8 @@ export const findCurrentStep = (step: ApplicationStepType) => {
   switch (step) {
     case APPLICATION_STEP.RESUME_UNDER_REVIEW:
       return 1;
+    case APPLICATION_STEP.RESUME_REJECTED:
+      return 1;
     case APPLICATION_STEP.WAITING_FOR_INTERVIEW:
       return 2;
     case APPLICATION_STEP.FILLING_OUT_DOCUMENTS:

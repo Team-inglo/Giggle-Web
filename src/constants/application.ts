@@ -42,66 +42,66 @@ export const APPLICATION_STEP_EXPLAIN_DATA: ApplicationStepExplainType[] = [
   {
     step: 1,
     title: {
-      ko: '지원자의 이력서가 도착했어요! ✏️',
+      ko: '이력서 확인',
       en: 'Resume under review ✏️',
     },
     explain: {
-      ko: '지원자의 이력서를 살펴보고, 채용 가능 여부를 결정해 주세요!',
-      en: 'The employer is reviewing your resume. We’ll let you know!',
+      ko: '',
+      en: '',
     },
   },
   {
     step: 2,
     title: {
-      ko: '면접 일정 조율하기 💬',
+      ko: '면접 진행',
       en: 'Get ready for your interview 💬',
     },
     explain: {
-      ko: '지원자와 면접 날짜를 잡고, 근무 조건도 확인해 보세요.',
+      ko: '지원자와 면접을 진행해요',
       en: 'Check your contract and work details before the interview.',
     },
   },
   {
     step: 3,
     title: {
-      ko: '지원자가 근로계약서를 작성했어요 📝',
+      ko: '지원자서류 확인',
       en: 'Preparing your documents 📝',
     },
     explain: {
-      ko: '지원자의 근로계약서를 확인하고, 취업허가서도 준비해 주세요.',
+      ko: '지원자가 제출한 서류를 직접 확인해요',
       en: 'Gather all required documents for your work permit.',
     },
   },
   {
     step: 4,
     title: {
-      ko: '학교에서 서류 검토 중이에요 🔍',
+      ko: '서류 검토 진행',
       en: 'School review in progress 🔍',
     },
     explain: {
-      ko: '지원자의 학교 담당자가 서류를 확인하고 있어요. 검토가 끝나면 다음 단계로 넘어갑니다!',
+      ko: '소속 학교에서 지원자서류를 검토해요',
       en: 'Your school’s international student coordinator will review your documents.',
     },
   },
   {
     step: 5,
     title: {
-      ko: '취업허가 승인을 기다리고 있어요 🇰🇷',
+      ko: '고용허가 진행',
       en: 'Work permit in progress 🇰🇷',
     },
     explain: {
-      ko: '지원자가 작성된 서류를 기반으로 민원을 신청하였어요. 승인이 허가될 때까지 잠시 기다려주세요!',
+      ko: '고용허가 신청을 자동으로 진행해요',
       en: 'Your application is being processed through HiKorea',
     },
   },
   {
     step: 6,
     title: {
-      ko: '취업허가 결과를 확인해 주세요 🎉',
+      ko: '결과 확인',
       en: 'Last step! Register now 🎉',
     },
     explain: {
-      ko: '취업허가가 승인되었는지 확인하고, 최종 결과를 등록해주세요.',
+      ko: '최종 채용 여부를 확정해요',
       en: 'Submit your work permit status from HiKorea',
     },
   },
