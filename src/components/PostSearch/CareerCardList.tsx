@@ -141,10 +141,12 @@ const CareerCardList = ({
   }
 
   return (
-    <div className="flex flex-row flex-wrap flex-1 gap-4">
-      {careerData.map((value: CareerListItemType) => (
-        <CareerCard careerData={value} key={value.id} />
-      ))}
+    <div className="flex flex-col flex-1 gap-4">
+      <div className="flex flex-row flex-wrap gap-4">
+        {careerData.map((value: CareerListItemType) => (
+          <CareerCard careerData={value} key={value.id} />
+        ))}
+      </div>
       {isLoading && <LoadingItem />}
     </div>
   );
