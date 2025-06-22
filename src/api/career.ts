@@ -1,6 +1,7 @@
 import { GetCareerListReqType } from '@/types/api/career';
 import { api } from '.';
 import { filterNullParams } from '@/utils/filterNullParams';
+import { convertKeysToKebabCase } from '@/utils/convertKeysToKebabCase';
 
 // 14.1 (게스트) 커리어 리스트 조회
 export const getCareerListGuest = async (
@@ -23,14 +24,16 @@ export const getCareerDetailGuest = async (id: number) => {
 export const getCareerList = async (
   req: GetCareerListReqType,
   page: number,
-  is_book_marked: boolean = false,
 ) => {
-  const response = await api.get(
-    `/users/careers/overviews?is-book-marked=${is_book_marked}`,
-    {
-      params: { ...filterNullParams(req), page },
-    },
-  );
+  const convertedParams = convertKeysToKebabCase({
+    ...filterNullParams(req),
+    page,
+  });
+
+  const response = await api.get('/users/careers/overviews', {
+    params: convertedParams,
+  });
+
   return response.data;
 };
 
