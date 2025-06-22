@@ -69,16 +69,19 @@ export const formatCareerSearchFilter = ({
   searchText = '',
   careerSortType = 'POPULAR',
   careerCategory = [],
+  isBookMarked = false,
 }: {
   searchText: string;
   careerSortType: string;
   careerCategory: string[];
+  isBookMarked?: boolean;
 }) => {
   const newSearchFilter = {
     size: 5,
     search: searchText ?? null,
     sorting: careerSortType as PostSortingType | POST_SEARCH_MENU,
     category: careerCategory.join(','),
+    isBookMarked,
   };
 
   return newSearchFilter;
