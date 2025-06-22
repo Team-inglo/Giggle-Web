@@ -58,13 +58,11 @@ export const useGetCareerDetailGuest = (id: number, isEnabled: boolean) => {
 export const useInfiniteGetCareerList = (
   req: GetCareerListReqType,
   isEnabled: boolean,
-  is_book_marked: boolean = false,
 ) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['career', 'list', 'user', req],
-      queryFn: ({ pageParam = 1 }) =>
-        getCareerList(req, pageParam, is_book_marked),
+      queryFn: ({ pageParam = 1 }) => getCareerList(req, pageParam), // 파라미터 단순화
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPage) => {
         return lastPage.data.has_next ? allPage.length + 1 : undefined;
