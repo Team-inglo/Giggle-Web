@@ -1,7 +1,7 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import { LoadingItem } from '@/components/Common/LoadingItem';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
-import { POST_SEARCH_MENU, POST_SORTING } from '@/constants/postSearch';
+import { POST_SEARCH_MENU } from '@/constants/postSearch';
 import { useInfiniteGetPostList } from '@/hooks/api/usePost';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useNavigateBack from '@/hooks/useNavigateBack';
@@ -12,8 +12,9 @@ import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
 import { useCurrentPostIdStore } from '@/store/url';
 import { useNavigate } from 'react-router-dom';
-import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
-import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
+
+const FILTERS = ['Job Posting', 'Career'] as const;
+type FilterType = (typeof FILTERS)[number];
 
 const ScrappedJobPostList = ({
   jobPostingData,
@@ -30,7 +31,7 @@ const ScrappedJobPostList = ({
 
   if (jobPostingData?.length === 0) {
     return (
-      <div className="flex-1 flex flex-col justify-center items-center gap-1">
+      <div className="flex flex-col items-center justify-center flex-1 gap-1">
         <EmptyJobIcon />
         <h3 className="heading-20-semibold text-[#252525]">
           No saved jobs yet!
@@ -78,9 +79,8 @@ const ScrappedJobPostsPage = () => {
   const isLogin = !!account_type;
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedSorting, setSelectedSorting] = useState<PostSortingType>(
-    POST_SORTING.RECENT,
-  );
+  const [selectedFilter, setSelectedFilter] =
+    useState<FilterType>('Job Posting');
 
   const {
     data,
@@ -89,12 +89,17 @@ const ScrappedJobPostsPage = () => {
     isFetchingNextPage,
     isLoading: isInitialLoading,
   } = useInfiniteGetPostList(
-    { size: 5, type: POST_SEARCH_MENU.BOOKMARKED, sorting: selectedSorting },
+    { size: 5, type: POST_SEARCH_MENU.BOOKMARKED },
     isLogin,
   );
 
-  const jobPostingData =
+  const allData =
     data?.pages?.flatMap((page) => page.data.job_posting_list) || [];
+  const filteredData = allData.filter((post) => {
+    if (selectedFilter === 'Job Posting') return !post.is_career;
+    if (selectedFilter === 'Career') return post.is_career;
+    return true;
+  });
 
   const targetRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -103,37 +108,50 @@ const ScrappedJobPostsPage = () => {
     }
   }, !!hasNextPage);
 
-  const onChangeSortType = (selectedSorting: PostSortingType) => {
-    setSelectedSorting(selectedSorting);
-  };
-
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div className="flex flex-col w-full min-h-screen">
       <BaseHeader
         hasBackButton
         onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
-        title="Scrapped Job Posts"
+        title="Scrapped Posts"
       />
-      <div className="w-full pt-6 pb-2 px-4 flex justify-between items-center border-b border-border-disabled">
-        <h3 className=" caption-12-regular text-text-alternative">
-          {jobPostingData.length} scrapped Job Posts
-        </h3>
-        <SearchSortDropdown
-          options={Object.values(POST_SORTING).map((value) =>
-            value.toLowerCase(),
-          )}
-          value={selectedSorting.toLowerCase()}
-          onSelect={(value) => onChangeSortType(value as PostSortingType)}
-        />
+
+      <div className="flex gap-2 px-4 pb-2">
+        {FILTERS.map((filter) => {
+          const isSelected = filter === selectedFilter;
+
+          // 필터별 카운트 계산
+          const count = allData.filter((post) => {
+            if (filter === 'Job Posting') return !post.is_career;
+            if (filter === 'Career') return post.is_career;
+            return true;
+          }).length;
+
+          return (
+            <button
+              key={filter}
+              className={`flex items-center gap-1 py-2 pl-[0.875rem] pr-[0.875rem] border border-border-disabled rounded-[3.125rem] body-14-regular ${
+                isSelected
+                  ? 'bg-surface-invert text-text-invert'
+                  : 'text-text-alternative'
+              }`}
+              onClick={() => setSelectedFilter(filter)}
+            >
+              <p>{filter}</p>
+              <span className="ml-1">{count}</span>
+            </button>
+          );
+        })}
       </div>
+
       {isInitialLoading ? (
-        <div className="flex-1 flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center justify-center flex-1">
           <LoadingPostItem />
         </div>
       ) : (
-        <div className="flex-1 pb-6 flex flex-row gap-4">
-          <ScrappedJobPostList jobPostingData={jobPostingData} />
+        <div className="flex flex-row flex-1 gap-4 pb-6">
+          <ScrappedJobPostList jobPostingData={filteredData} />
           {isLoading && <LoadingItem />}
         </div>
       )}
