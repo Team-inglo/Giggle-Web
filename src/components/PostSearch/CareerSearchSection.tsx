@@ -18,6 +18,8 @@ import {
   useInfiniteGetCareerGuestList,
   useInfiniteGetCareerList,
 } from '@/hooks/api/useCareer';
+import Chip from '@/components/Common/Chip';
+import { ChipState } from '@/types/common/chip';
 
 type CareerCategoryKey = keyof typeof CAREER_CATEGORY;
 
@@ -98,20 +100,19 @@ const CareerSearchSection = ({
           const isSelected = searchOption.careerCategory.includes(key);
 
           return (
-            <button
+            <Chip
               key={key}
-              className={`py-2 px-[0.875rem] rounded-[3.125rem] caption-12-regular ${isSelected ? 'text-text-invert bg-surface-invert' : 'text-text-strong bg-surface-secondary'}`}
+              state={isSelected ? ChipState.ACTIVE : ChipState.PRESSED}
+              text={label}
               onClick={() =>
                 handleUpdateCareerCategory(key as CareerCategoryKey)
               }
-            >
-              {label}
-            </button>
+            />
           );
         })}
       </nav>
       <section className="flex-1 flex flex-col items-center w-full pb-24">
-        <div className="w-full py-2 px-4 flex justify-between items-center">
+        <div className="w-full py-2 px-4 flex justify-between items-center border-b border-border-disabled">
           <h3 className="caption-12-regular text-text-normal">
             {careerData.length}{' '}
             {
