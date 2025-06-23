@@ -43,7 +43,7 @@ const IntroductionInput = ({
       <InputLayout title="Tell us about yourself">
         <div
           onClick={handleFocusTextArea}
-          className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-border-alternative shadow-inputFieldShadow p-2"
+          className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-alternative"
         >
           <textarea
             ref={textareaRef}
@@ -55,7 +55,7 @@ const IntroductionInput = ({
                 introduction: limitInputValueLength(e.target.value, 200),
               }))
             }
-            className="h-auto body-14-regular placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
+            className="h-auto body-16-medium placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
           />
         </div>
       </InputLayout>

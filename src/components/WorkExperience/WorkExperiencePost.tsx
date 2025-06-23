@@ -119,9 +119,9 @@ const WorkExperiencePost = ({
           onClick={handleOngoingToggle}
         >
           <div
-            className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-[#FEF387] border-0' : 'border-[#F4F4F9]'}`}
+            className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-primary-normal border-0' : 'border-border-alternative'}`}
           />
-          <p className="caption-12-regular text-[#656565]">
+          <p className="caption-12-regular text-text-assistive">
             It's in progress right now
           </p>
         </div>
@@ -130,16 +130,16 @@ const WorkExperiencePost = ({
       <InputLayout title="Description" isOptional>
         <div
           onClick={handleFocusTextArea}
-          className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow p-2"
+          className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-alternative"
         >
           <textarea
             ref={textareaRef}
             placeholder="Please write an article that introduces you."
             value={workExperienceData.description}
             onChange={handleTextareaChange}
-            className="h-auto body-14-regular placeholder:text-[#abb0b9] text-[#1E1926] w-full resize-none outline-none"
+            className="h-auto body-16-medium placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
           />
-          <span className="caption-12-regular text-[#464646] text-end">
+          <span className="caption-12-regular text-text-assistive text-end">
             {workExperienceData.description.length}/200
           </span>
         </div>
