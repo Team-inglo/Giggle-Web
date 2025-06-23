@@ -97,17 +97,17 @@ const Input = ({
 
   return (
     <div
-      className={`w-full h-[3.25rem] flex gap-2 whitespace-nowrap items-center justify-between text-left body-14-medium border-[0.05rem] rounded-[0.625rem] ${inputStyler(currentStatus)} bg-white pl-4 py-[0.875rem]`}
+      className={`w-full h-[3.25rem] flex gap-2 whitespace-nowrap items-center justify-between text-left body-16-medium border-[0.05rem] rounded-[0.625rem] ${inputStyler(currentStatus)} bg-white pl-4 py-[0.875rem] pr-[0.875rem]`}
     >
       {/* 접두사가 존재할 경우 표시합니다. */}
       {isPrefix && (
-        <div className="w-8 body-14-medium text-text-assistive">{prefix}</div>
+        <div className="w-8 body-16-medium text-text-assistive">{prefix}</div>
       )}
       {/* 검색 타입일 경우 검색 아이콘을 표시합니다. */}
       <input
         placeholder={placeholder}
         value={value ?? ''}
-        className={'w-full outline-none placeholder:text-[var(--input-color)]'}
+        className={'w-full outline-none placeholder:text-text-assistive'}
         onClick={() => handleFocus('click')}
         onBlur={handleBlur}
         onChange={handleInputChange}
@@ -130,7 +130,7 @@ const Input = ({
       {canDelete && <CloseIcon onClick={onDelete} />}
       {/* 단위가 존재할 경우 표시합니다. */}
       {isUnit && (
-        <div className="text-right w-full body-14-medium text-text-assistive">
+        <div className="text-right w-full body-16-medium text-text-assistive">
           <div className="w-full">{unit}</div>
         </div>
       )}

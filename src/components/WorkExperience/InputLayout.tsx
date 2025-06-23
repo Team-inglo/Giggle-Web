@@ -15,10 +15,10 @@ const InputLayout = ({
 }: InputLayOutProps) => {
   return (
     <div>
-      <p className={`${width} button-14-medium text-text-alternative p-1`}>
+      <p className={`${width} body-14-medium text-text-alternative p-1`}>
         {title}
         {isOptional && (
-          <span className="text-text-alternative caption-12-regular pl-1">
+          <span className="text-text-alternative body-14-medium pl-1">
             (optional)
           </span>
         )}

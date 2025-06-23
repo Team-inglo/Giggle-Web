@@ -49,7 +49,7 @@ const RequestModifyPage = () => {
           />
           <InputLayout title="Reason for Request">
             <textarea
-              className="w-full h-[7.5rem] px-4 py-[0.875rem] border-[0.05rem] border-border-alternative rounded-[0.625rem] body-16-medium outline-none resize-none"
+              className="w-full h-[7.5rem] px-4 py-[0.875rem] border-[0.05rem] border-border-assistive rounded-[0.625rem] body-16-medium outline-none resize-none"
               placeholder="Write a contract review"
               value={reasonInput}
               onChange={(e) =>

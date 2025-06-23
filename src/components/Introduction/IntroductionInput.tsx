@@ -43,7 +43,7 @@ const IntroductionInput = ({
       <InputLayout title="Tell us about yourself">
         <div
           onClick={handleFocusTextArea}
-          className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-alternative"
+          className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-assistive"
         >
           <textarea
             ref={textareaRef}
