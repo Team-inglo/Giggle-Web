@@ -223,3 +223,9 @@ export const putScrapResume = async (id: string) => {
   const response = await api.put(`/owners/resumes/${id}/book-mark-resumes`);
   return response.data;
 };
+
+// 15.2 (유학생) 이력서 진행률 조회하기 (임시)
+export const getResumeProgress = async () => {
+  const response = await api.get(`/users/resumes/progress/`);
+  return response.data;
+};

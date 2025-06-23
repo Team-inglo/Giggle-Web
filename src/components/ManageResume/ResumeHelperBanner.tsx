@@ -6,6 +6,7 @@ import ChevronRightIcon from '@/assets/icons/Chevron.svg?react';
 import { motion } from 'framer-motion';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
+import { useGetResumeProgress } from '@/hooks/api/useResume';
 
 // 이력서 진행률을 시각적으로 표시하는 프로그레스 바 컴포넌트
 const ProgressBar = ({
@@ -43,7 +44,7 @@ const ResumeHelperBanner = () => {
   const navigate = useNavigate();
 
   // TODO: API 연동 시 실제 이력서 진행도를 받아와야 함
-  const resumeProgress = 60;
+  const { data: resumeProgress } = useGetResumeProgress();
 
   const isUser = account_type === UserType.USER;
   const isResumeIncomplete = resumeProgress < 100;
@@ -71,7 +72,10 @@ const ResumeHelperBanner = () => {
                 Boost your chances of getting contacted by 90%!
               </p>
             </div>
-            <div className="w-6 h-6 flex items-center justify-center">
+            <div
+              className="w-6 h-6 flex items-center justify-center"
+              aria-label="go to manage resume page"
+            >
               <Icon name="arrow-right" icon={ChevronRightIcon} />
             </div>
           </section>
