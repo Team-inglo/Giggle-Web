@@ -18,7 +18,6 @@ const EmployerPostDetailButton = () => {
             type={buttonTypeKeys.BACK}
             bgColor="bg-surface-secondary"
             fontColor="text-text-normal"
-            isBorder={false}
             title="삭제"
             onClick={() => setIsOpenDeleteBottomSheet(true)}
           />
@@ -26,7 +25,6 @@ const EmployerPostDetailButton = () => {
             type={buttonTypeKeys.CONTINUE}
             bgColor="bg-surface-primary"
             fontColor="text-text-normal"
-            isBorder={false}
             title="편집"
             onClick={() =>
               navigate(`/employer/post/edit/${id}`, {

@@ -126,7 +126,6 @@ const WorkDayTimeWithRestBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor={isAvailableSubmit() ? `bg-[#FEF387]` : `bg-[#F4F4F9]`}
           fontColor={isAvailableSubmit() ? `text-[#1E1926]` : `text-[#BDBDBD]`}
-          isBorder={false}
           title={'추가하기'}
           onClick={returnResult}
         />

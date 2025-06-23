@@ -50,7 +50,6 @@ const CommingSoonBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-[#FEF387]"
           fontColor="text-[#1E1926]"
-          isBorder={false}
           title="Okay"
           onClick={() => setIsShowBottomSheet(false)}
         />

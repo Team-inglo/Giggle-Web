@@ -87,7 +87,6 @@ and what makes you a great candidate"
           bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-disabled'}
           fontColor={isValid ? 'text-text-strong' : 'text-text-disabled'}
           title="Save"
-          isBorder={false}
           onClick={isValid ? handleSubmit : undefined}
         />
       </BottomButtonPanel>

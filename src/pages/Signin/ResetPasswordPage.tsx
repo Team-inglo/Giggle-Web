@@ -232,7 +232,6 @@ const ResetPasswordPage = () => {
                     fontColor={
                       isValid ? 'text-text-normal' : 'text-text-disabled'
                     }
-                    isBorder={false}
                     title={'다음'}
                     onClick={isValid ? handleReissuePassword : undefined}
                   />

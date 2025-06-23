@@ -119,7 +119,6 @@ const NewPasswordStep = ({
               type="large"
               bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
               fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              isBorder={false}
               title={
                 signInputTranclation.continue[
                   isEmployerByAccountType(account_type)

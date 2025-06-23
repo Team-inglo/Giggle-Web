@@ -45,7 +45,6 @@ const LevelBottomSheet = ({
         <Button
           type="large"
           title="Select"
-          isBorder={false}
           bgColor="bg-[#FEF387]"
           fontColor="text-[#1E1926]"
           onClick={() => setBottomSheetOpen(false)}

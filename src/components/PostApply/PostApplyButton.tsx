@@ -52,7 +52,6 @@ const PostApplyButton = () => {
             bgColor="bg-surface-secondary"
             fontColor="text-text-normal"
             title="Edit"
-            isBorder={false}
             onClick={() => navigate('/profile/manage-resume')}
           />
           <Button
@@ -60,7 +59,6 @@ const PostApplyButton = () => {
             bgColor={'bg-[#FEF387]'}
             fontColor="text-text-strong"
             title="Apply Now"
-            isBorder={false}
             onClick={onClickApply}
           />
         </section>

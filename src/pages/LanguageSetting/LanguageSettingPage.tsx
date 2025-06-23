@@ -43,7 +43,6 @@ const LanguageSettingPage = () => {
           bgColor="bg-[#FEF387]"
           fontColor="text-[##1E1926]"
           title="Save"
-          isBorder={false}
           onClick={handleSaveButton}
         />
       </BottomButtonPanel>

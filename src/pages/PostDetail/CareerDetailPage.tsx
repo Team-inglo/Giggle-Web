@@ -130,7 +130,6 @@ const CareerDetailPage = () => {
             type={buttonTypeKeys.APPLY}
             bgColor={'bg-primary-normal'}
             fontColor={'text-text-strong'}
-            isBorder={false}
             title="Apply Now"
             onClick={() =>
               handleGoExternalWebByDynamicUrl(

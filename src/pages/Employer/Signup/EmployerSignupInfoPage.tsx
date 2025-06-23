@@ -144,7 +144,6 @@ const EmployerSignupInfoPage = () => {
             {isValid ? (
               <Button
                 type="large"
-                isBorder={false}
                 bgColor="bg-surface-primary"
                 fontColor="text-text-normal"
                 title="완료"
@@ -155,7 +154,6 @@ const EmployerSignupInfoPage = () => {
             ) : (
               <Button
                 type="large"
-                isBorder={false}
                 bgColor="bg-surface-secondary"
                 fontColor="text-text-disabled"
                 title="완료"

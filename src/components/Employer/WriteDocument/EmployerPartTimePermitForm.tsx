@@ -108,7 +108,6 @@ const EmployerPartTimePermitForm = ({
               type="large"
               bgColor="bg-surface-primary"
               fontColor="text-text-strong"
-              isBorder={false}
               title={'작성완료'}
             />
           </ValidatedSubmitButton>

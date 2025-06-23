@@ -60,7 +60,6 @@ const ContactRecruiterBottomSheet = ({
           bgColor={'bg-primary-normal'}
           fontColor="text-surface-invert"
           title={'Contact'}
-          isBorder={false}
           onClick={() =>
             sendPhoneNumberToApp(data?.data?.recruiter_phone_number)
           }
@@ -70,7 +69,6 @@ const ContactRecruiterBottomSheet = ({
           bgColor={'bg-primary-neutral'}
           fontColor="text-surface-invert"
           title={'Maybe later'}
-          isBorder={false}
           onClick={() => setIsShowBottomSheet(false)}
         />
       </footer>

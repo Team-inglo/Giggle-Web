@@ -136,7 +136,6 @@ const SigninInputSection = () => {
               type="large"
               bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
               fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              isBorder={false}
               title="로그인"
               onClick={isValid ? handleSubmit : undefined}
             />

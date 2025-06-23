@@ -76,7 +76,6 @@ const PostLanguagePage = () => {
             bgColor={selectedLanguage ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
             fontColor={selectedLanguage ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
             title="Select"
-            isBorder={false}
             onClick={() => setStep(2)}
           />
         )}
@@ -87,7 +86,6 @@ const PostLanguagePage = () => {
             bgColor="bg-[#FEF387]"
             fontColor="text-[#1E1926]"
             title="Done"
-            isBorder={false}
             onClick={handleSubmit}
           />
         )}

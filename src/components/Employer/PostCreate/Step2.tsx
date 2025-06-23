@@ -29,8 +29,8 @@ const Step2 = ({
     const isDeadLineValid =
       recruitment_dead_line === null || // 상시모집
       (typeof recruitment_dead_line === 'string' &&
-        (recruitment_dead_line !== '' &&
-          validateDateInput(recruitment_dead_line)));
+        recruitment_dead_line !== '' &&
+        validateDateInput(recruitment_dead_line));
 
     const isFormValid =
       !!address.address_name &&
@@ -66,7 +66,6 @@ const Step2 = ({
               type={buttonTypeKeys.BACK}
               bgColor="bg-surface-secondary"
               fontColor="text-text-normal"
-              isBorder={false}
               title="이전"
               onClick={() => onPrev()}
             />
@@ -77,7 +76,7 @@ const Step2 = ({
               validationFn={validatePostInfo}
               onClick={() => onNext()}
             >
-              <Button type="large" isBorder={false} title="다음" />
+              <Button type="large" title="다음" />
             </ValidatedSubmitButton>
           </div>
         </BottomButtonPanel>

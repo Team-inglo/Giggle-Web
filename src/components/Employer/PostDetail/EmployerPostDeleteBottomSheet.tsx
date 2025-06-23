@@ -41,7 +41,6 @@ const EmployerPostDeleteBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-surface-primary"
           fontColor="text-text-normal"
-          isBorder={false}
           title="삭제"
           onClick={onClickDelete}
         />
@@ -49,7 +48,6 @@ const EmployerPostDeleteBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-surface-secondary"
           fontColor="text-text-normal"
-          isBorder={false}
           title="아니요"
           onClick={() => setIsShowBottomSheet(false)}
         />

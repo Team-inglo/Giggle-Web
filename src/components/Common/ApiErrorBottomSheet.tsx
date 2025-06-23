@@ -36,7 +36,6 @@ const ApiErrorBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-surface-primary"
           fontColor="text-text-normal"
-          isBorder={false}
           title={'뒤로가기'}
           onClick={handleClickBackButton}
         />

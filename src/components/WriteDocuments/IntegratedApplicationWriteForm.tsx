@@ -164,7 +164,6 @@ const IntegratedApplicationWriteForm = ({
               type="large"
               bgColor="bg-surface-primary"
               fontColor="text-text-strong"
-              isBorder={false}
               title={isEdit ? 'Modify' : 'Create'}
             />
           </ValidatedSubmitButton>

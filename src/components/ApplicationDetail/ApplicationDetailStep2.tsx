@@ -10,7 +10,6 @@ const ApplicationDetailStep2 = () => {
           bgColor={'bg-primary-neutral'}
           fontColor="text-text-disabled"
           title="Check the application documents"
-          isBorder={false}
         />
       </section>
     </>

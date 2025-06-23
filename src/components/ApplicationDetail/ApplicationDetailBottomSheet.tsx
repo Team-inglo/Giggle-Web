@@ -64,7 +64,6 @@ const ApplicationDetailBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-[#1E1926]"
           fontColor="text-[#FEF387]"
-          isBorder={false}
           title={blackButtonTitle}
           onClick={onClickBlackButton}
         />
@@ -72,7 +71,6 @@ const ApplicationDetailBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-[#FEF387]"
           fontColor="text-[#1E1926]"
-          isBorder={false}
           title={yellowButtonTitle}
           onClick={onClickYellowButton}
         />

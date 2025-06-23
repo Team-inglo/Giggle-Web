@@ -69,7 +69,6 @@ const PostSearchFilterBottomSheet = ({
             title={
               postSearchTranslation.reset[isEmployerByAccountType(account_type)]
             }
-            isBorder={false}
             onClick={onClickReset}
           />
           <Button
@@ -79,7 +78,6 @@ const PostSearchFilterBottomSheet = ({
             title={
               postSearchTranslation.apply[isEmployerByAccountType(account_type)]
             }
-            isBorder={false}
             onClick={onClickSubmit}
           />
         </div>

@@ -49,7 +49,7 @@ const Step4 = ({
 
     return renderField<JobPostingForm>({
       field: updatedField,
-      name: field.name as Path<JobPostingForm>
+      name: field.name as Path<JobPostingForm>,
     });
   };
 
@@ -68,7 +68,6 @@ const Step4 = ({
             type={buttonTypeKeys.BACK}
             bgColor="bg-[#F4F4F9]"
             fontColor="text-text-normal"
-            isBorder={false}
             title="이전"
             onClick={() => onPrev()}
           />
@@ -77,7 +76,7 @@ const Step4 = ({
             validationFn={validatePostInfo}
             onClick={() => onNext()}
           >
-            <Button type="large" isBorder={false} title="다음" />
+            <Button type="large" title="다음" />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>

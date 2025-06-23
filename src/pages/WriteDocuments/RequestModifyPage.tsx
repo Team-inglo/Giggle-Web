@@ -68,7 +68,6 @@ const RequestModifyPage = () => {
           <BottomButtonPanel>
             <Button
               type="large"
-              isBorder={false}
               bgColor="bg-[#FEF387]"
               fontColor="text-[#1E1926]"
               title="Request"

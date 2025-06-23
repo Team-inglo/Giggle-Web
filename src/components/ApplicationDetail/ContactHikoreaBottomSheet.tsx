@@ -60,7 +60,6 @@ const ContactHikoreaBottomSheet = ({
           bgColor={'bg-primary-normal'}
           fontColor="text-surface-invert"
           title={'Go to Hikorea'}
-          isBorder={false}
           onClick={() => handleGoExternalWeb('hikorea')}
         />
         <Button
@@ -68,7 +67,6 @@ const ContactHikoreaBottomSheet = ({
           bgColor={'bg-primary-neutral'}
           fontColor="text-surface-invert"
           title={'Completed'}
-          isBorder={false}
           onClick={handleCompleteApplyHikorea}
         />
       </footer>

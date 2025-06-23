@@ -34,7 +34,6 @@ const LogoutBottomSheet = ({
           <Button
             type="large"
             title={profileTranslation.yes[isEmployer(pathname)]}
-            isBorder={false}
             bgColor="bg-surface-primary"
             fontColor="text-text-normal"
             onClick={handleLogout}
@@ -43,7 +42,6 @@ const LogoutBottomSheet = ({
           <Button
             type="large"
             title={profileTranslation.no[isEmployer(pathname)]}
-            isBorder={false}
             bgColor="bg-surface-secondary"
             fontColor="text-text-normal"
             onClick={handleLogoutCancel}

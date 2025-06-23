@@ -138,7 +138,6 @@ const PartTimePermitWriteForm = ({
               type="large"
               bgColor="bg-surface-primary"
               fontColor="text-text-strong"
-              isBorder={false}
               title={'Complete'}
             />
           </ValidatedSubmitButton>
