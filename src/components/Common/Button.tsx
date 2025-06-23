@@ -4,13 +4,13 @@ import { ReactNode, useState } from 'react';
 import PressOverlay from './PressedOverlay';
 
 type ButtonProps = {
-  type: buttonTypeUnion; // 정의된 버튼을 5가지 타입으로 나누었습니다.
-  size?: 'md' | 'lg';
+  type: buttonTypeUnion; // 버튼의 시맨틱 타입 (e.g., PRIMARY, NEUTRAL, DISABLED)
+  size?: 'md' | 'lg'; // 버튼의 크기 (md, lg), 지정하지 않으면 type에 따른 기본 스타일 적용
   bgColor?: string; // 버튼의 배경색 (optional)
   fontColor?: string; // 버튼 글자색 (optional)
   title?: string; // 버튼에 포함되는 글자 (optional)
   onClick?: () => void; // 클릭 이벤트 핸들러 (optional)
-  children?: ReactNode;
+  children?: ReactNode; // 버튼 내부에 렌더링될 요소. title보다 우선순위가 높음(optional)
 };
 
 const Button = ({
@@ -23,11 +23,20 @@ const Button = ({
   children,
 }: ButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
+
+  // DISABLED, INACTIVE 상태에서는 onClick 이벤트가 발생하지 않도록 막는 핸들러
+  const handleClick = () => {
+    if (type !== buttonTypeKeys.DISABLED && type !== buttonTypeKeys.INACTIVE)
+      onClick?.();
+  };
+
+  // 클릭/터치 상호작용 시작 시 '눌림' 상태를 활성화 (DISABLED, INACTIVE 상태에서는 제외)
   const handlePressStart = () => {
     if (type !== buttonTypeKeys.DISABLED && type !== buttonTypeKeys.INACTIVE)
       setIsPressed(true);
   };
 
+  // 사용자의 클릭/터치 상호작용 종료 시 '눌림' 상태를 비활성화
   const handlePressEnd = () => {
     setIsPressed(false);
   };
@@ -83,7 +92,7 @@ const Button = ({
         } ${baseButtonStyle} ${getButtonStyle()} ${bgColor} ${fontColor} ${
           isPressed ? 'scale-95' : ''
         }`}
-        onClick={onClick}
+        onClick={handleClick}
         onTouchStart={handlePressStart}
         onTouchEnd={handlePressEnd}
         onTouchCancel={handlePressEnd}
@@ -91,9 +100,8 @@ const Button = ({
         onMouseUp={handlePressEnd}
         onMouseLeave={handlePressEnd}
       >
-        {type === buttonTypeKeys.SCRAP && <ScrapIcon />}
-        <div>{title}</div>
-        {children}
+        {/* SCRAP 타입은 아이콘을, 그 외에는 children 또는 title을 렌더링 */}
+        {type === buttonTypeKeys.SCRAP ? <ScrapIcon /> : children || title}
         <PressOverlay isPressed={isPressed} buttonType={type} />
       </button>
     </>
