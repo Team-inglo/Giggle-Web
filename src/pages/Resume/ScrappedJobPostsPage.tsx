@@ -1,8 +1,9 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import { LoadingItem } from '@/components/Common/LoadingItem';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
-import { POST_SEARCH_MENU, POST_SORTING } from '@/constants/postSearch';
+import { POST_SEARCH_MENU } from '@/constants/postSearch';
 import { useInfiniteGetPostList } from '@/hooks/api/usePost';
+import { useInfiniteGetCareerList } from '@/hooks/api/useCareer';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useUserStore } from '@/store/user';
@@ -10,11 +11,14 @@ import { JobPostingItemType } from '@/types/common/jobPostingItem';
 import { useState } from 'react';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
+import CareerCardList from '@/components/PostSearch/CareerCardList';
 import { useCurrentPostIdStore } from '@/store/url';
 import { useNavigate } from 'react-router-dom';
-import SearchSortDropdown from '@/components/Common/SearchSortDropdown';
-import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 
+const FILTERS = ['Job Posting', 'Career'] as const;
+type FilterType = (typeof FILTERS)[number];
+
+// JobPosting 리스트 렌더링 컴포넌트
 const ScrappedJobPostList = ({
   jobPostingData,
 }: {
@@ -28,9 +32,9 @@ const ScrappedJobPostList = ({
     navigate(`/post/${data.id}`);
   };
 
-  if (jobPostingData?.length === 0) {
+  if (jobPostingData.length === 0) {
     return (
-      <div className="flex-1 flex flex-col justify-center items-center gap-1">
+      <div className="flex flex-col items-center justify-center flex-1 gap-1">
         <EmptyJobIcon />
         <h3 className="heading-20-semibold text-[#252525]">
           No saved jobs yet!
@@ -77,64 +81,112 @@ const ScrappedJobPostsPage = () => {
   const { account_type } = useUserStore();
   const isLogin = !!account_type;
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedSorting, setSelectedSorting] = useState<PostSortingType>(
-    POST_SORTING.RECENT,
-  );
+  const [selectedFilter, setSelectedFilter] =
+    useState<FilterType>('Job Posting');
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading: isInitialLoading,
-  } = useInfiniteGetPostList(
-    { size: 5, type: POST_SEARCH_MENU.BOOKMARKED, sorting: selectedSorting },
-    isLogin,
-  );
-
-  const jobPostingData =
-    data?.pages?.flatMap((page) => page.data.job_posting_list) || [];
-
-  const targetRef = useInfiniteScroll(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      setIsLoading(true);
-      fetchNextPage().finally(() => setIsLoading(false));
-    }
-  }, !!hasNextPage);
-
-  const onChangeSortType = (selectedSorting: PostSortingType) => {
-    setSelectedSorting(selectedSorting);
+  // JobPosting 데이터 요청
+  const postRequestParams = {
+    size: 5,
+    type: POST_SEARCH_MENU.BOOKMARKED,
+    isCareer: false,
+    isBookMarked: true,
   };
 
+  const {
+    data: postData,
+    fetchNextPage: fetchPostNextPage,
+    hasNextPage: hasPostNextPage,
+    isFetchingNextPage: isFetchingPostNextPage,
+    isLoading: isPostLoading,
+  } = useInfiniteGetPostList(postRequestParams, isLogin);
+
+  const postList =
+    postData?.pages?.flatMap((page) => page.data.job_posting_list) || [];
+
+  // Career 데이터 요청
+  const careerRequestParams = {
+    size: 5,
+    sorting: 'RECENT',
+    isBookMarked: true,
+  };
+
+  const {
+    data: careerData,
+    fetchNextPage: fetchCareerNextPage,
+    hasNextPage: hasCareerNextPage,
+    isFetchingNextPage: isFetchingCareerNextPage,
+    isLoading: isCareerLoading,
+  } = useInfiniteGetCareerList(careerRequestParams, isLogin);
+
+  const careerList =
+    careerData?.pages?.flatMap((page) => page.data.career_list) || [];
+
+  // InfiniteScroll hook
+  const targetRef = useInfiniteScroll(() => {
+    if (selectedFilter === 'Job Posting') {
+      if (hasPostNextPage && !isFetchingPostNextPage) fetchPostNextPage();
+    } else {
+      if (hasCareerNextPage && !isFetchingCareerNextPage) fetchCareerNextPage();
+    }
+  }, true);
+
+  const isInitialLoading =
+    selectedFilter === 'Job Posting' ? isPostLoading : isCareerLoading;
+  const isFetchingNextPage =
+    selectedFilter === 'Job Posting'
+      ? isFetchingPostNextPage
+      : isFetchingCareerNextPage;
+
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div className="flex flex-col w-full min-h-screen">
       <BaseHeader
         hasBackButton
         onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
-        title="Scrapped Job Posts"
+        title="Scrapped Posts"
       />
-      <div className="w-full pt-6 pb-2 px-4 flex justify-between items-center border-b border-border-disabled">
-        <h3 className=" caption-12-regular text-text-alternative">
-          {jobPostingData.length} scrapped Job Posts
-        </h3>
-        <SearchSortDropdown
-          options={Object.values(POST_SORTING).map((value) =>
-            value.toLowerCase(),
-          )}
-          value={selectedSorting.toLowerCase()}
-          onSelect={(value) => onChangeSortType(value as PostSortingType)}
-        />
+
+      {/* 필터 버튼 */}
+      <div className="flex gap-2 px-4 pb-2">
+        {FILTERS.map((filter) => {
+          const isSelected = filter === selectedFilter;
+          const count =
+            filter === 'Job Posting' ? postList.length : careerList.length;
+
+          return (
+            <button
+              key={filter}
+              className={`flex items-center gap-1 py-2 pl-[0.875rem] pr-[0.875rem] border border-border-disabled rounded-[3.125rem] body-14-regular ${
+                isSelected
+                  ? 'bg-surface-invert text-text-invert'
+                  : 'text-text-alternative'
+              }`}
+              onClick={() => setSelectedFilter(filter)}
+            >
+              <p>{filter}</p>
+              <span>{count}</span>
+            </button>
+          );
+        })}
       </div>
+
+      {/* 데이터 렌더링 */}
       {isInitialLoading ? (
-        <div className="flex-1 flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center justify-center flex-1">
           <LoadingPostItem />
         </div>
       ) : (
-        <div className="flex-1 pb-6 flex flex-row gap-4">
-          <ScrappedJobPostList jobPostingData={jobPostingData} />
-          {isLoading && <LoadingItem />}
+        <div className="flex flex-row flex-1 gap-4 pb-6">
+          {selectedFilter === 'Job Posting' ? (
+            <ScrappedJobPostList jobPostingData={postList} />
+          ) : (
+            <CareerCardList
+              careerData={careerList}
+              isLoading={isFetchingNextPage}
+              isInitialLoading={isInitialLoading}
+            />
+          )}
+          {isFetchingNextPage && <LoadingItem />}
         </div>
       )}
       <div ref={targetRef} className="h-1"></div>

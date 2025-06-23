@@ -44,7 +44,7 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
 
   return (
     <article
-      className="w-full border-t border-border-disabled p-4 bg-surface-base"
+      className="w-full p-4 border-t border-border-disabled bg-surface-base"
       onClick={() => goToCareerDetailPage(careerData)}
     >
       <Tag
@@ -56,7 +56,7 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
         color="text-text-error"
         fontStyle="caption-12-regular"
       />
-      <div className="w-full py-1 flex justify-between items-center">
+      <div className="flex items-center justify-between w-full py-1">
         <h3 className="heading-18-semibold text-text-strong line-clamp-2">
           {careerData.title}
         </h3>
@@ -72,18 +72,18 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
           )}
         </div>
       </div>
-      <p className="pb-4 caption-12-regular text-text-alternative whitespace-normal">
+      <p className="pb-4 whitespace-normal caption-12-regular text-text-alternative">
         {careerData.career_category &&
           CAREER_CATEGORY[careerData.career_category]}
         <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
         {careerData.visa?.join(', ')?.replace(/_/g, '-')}
       </p>
-      <p className="pb-1 button-14-semibold text-text-normal whitespace-normal">
+      <p className="pb-1 whitespace-normal button-14-semibold text-text-normal">
         {careerData.organizer_name}
         <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
         {careerData.host_name}
       </p>
-      <div className="w-full flex items-center justify-between">
+      <div className="flex items-center justify-between w-full">
         <p className="caption-12-regular text-text-alternative">
           {careerData.recruitment_start_date} ~{' '}
           {careerData.recruitment_end_date}
@@ -112,7 +112,7 @@ const CareerCardList = ({
 
   if (isInitialLoading) {
     return (
-      <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center justify-center flex-1">
         <LoadingPostItem />
       </div>
     );
@@ -120,7 +120,7 @@ const CareerCardList = ({
 
   if (careerData?.length === 0) {
     return (
-      <div className="w-full px-4 flex-1 flex flex-col justify-center items-center gap-1">
+      <div className="flex flex-col items-center justify-center flex-1 w-full gap-1 px-4">
         <EmptyJobIcon />
         <h3 className="heading-20-semibold text-[#252525]">
           {
@@ -141,12 +141,14 @@ const CareerCardList = ({
   }
 
   return (
-    <>
-      {careerData.map((value: CareerListItemType) => (
-        <CareerCard careerData={value} key={value.id} />
-      ))}
+    <div className="flex flex-col flex-1 gap-4">
+      <div className="flex flex-row flex-wrap gap-4">
+        {careerData.map((value: CareerListItemType) => (
+          <CareerCard careerData={value} key={value.id} />
+        ))}
+      </div>
       {isLoading && <LoadingItem />}
-    </>
+    </div>
   );
 };
 
