@@ -58,7 +58,7 @@ const EducationForm = ({
           {mode === 'post' ? 'Add Education' : 'Modify Education'}
         </div>
         {/* 교육 기관 타입 선택 */}
-        <InputLayout title="Education Levels" isEssential={true}>
+        <InputLayout title="Education Levels">
           <Dropdown
             value={educationData.education_level}
             placeholder="2-Year university"
@@ -67,7 +67,7 @@ const EducationForm = ({
           />
         </InputLayout>
         {/* 학교명 선택 */}
-        <InputLayout title="Name Of School" isEssential={true}>
+        <InputLayout title="Name Of School">
           <div
             className="w-full py-2.5 px-4 flex items-center gap-2.5 border border-solid border-surface-tertiary rounded-xl"
             onClick={() => setSearchOpen(true)}
@@ -84,7 +84,7 @@ const EducationForm = ({
           </div>
         </InputLayout>
         {/* 전공 입력 */}
-        <InputLayout title="Department (major)" isEssential={true}>
+        <InputLayout title="Department (major)">
           <Dropdown
             value={educationData.major}
             placeholder="Education Title"
@@ -93,7 +93,7 @@ const EducationForm = ({
           />
         </InputLayout>
         {/* 학년 입력 */}
-        <InputLayout title="Grade" isEssential={true}>
+        <InputLayout title="Grade">
           <Input
             inputType={InputType.TEXT}
             placeholder="Grade"
@@ -107,7 +107,7 @@ const EducationForm = ({
           />
         </InputLayout>
         {/* 학점 입력 */}
-        <InputLayout title="Credit" isEssential={true}>
+        <InputLayout title="Credit">
           <Input
             inputType={InputType.TEXT}
             placeholder="0.0"
@@ -117,7 +117,7 @@ const EducationForm = ({
           />
         </InputLayout>
         {/* 입학 날짜 입력 */}
-        <InputLayout title="Entrance Date" isEssential={true}>
+        <InputLayout title="Entrance Date">
           <Input
             inputType={InputType.TEXT}
             placeholder="YYYY-MM-DD"
@@ -129,7 +129,7 @@ const EducationForm = ({
           />
         </InputLayout>
         {/* 졸업 날짜 입력 */}
-        <InputLayout title="Graduation Date" isEssential={true}>
+        <InputLayout title="Graduation Date">
           <Input
             inputType={InputType.TEXT}
             placeholder="YYYY-MM-DD"

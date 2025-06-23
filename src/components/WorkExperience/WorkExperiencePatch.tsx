@@ -70,7 +70,7 @@ const WorkExperiencePatch = ({
         Modify Work Experience
       </div>
       {/* title 입력 */}
-      <InputLayout title="Experience Title" isEssential={true}>
+      <InputLayout title="Experience Title">
         <Input
           inputType={InputType.TEXT}
           placeholder="Experience Title"
@@ -80,7 +80,7 @@ const WorkExperiencePatch = ({
         />
       </InputLayout>
       {/* 장소 입력 */}
-      <InputLayout title="Workplace" isEssential={true}>
+      <InputLayout title="Workplace">
         <Input
           inputType={InputType.TEXT}
           placeholder="Workplace"
@@ -90,7 +90,7 @@ const WorkExperiencePatch = ({
         />
       </InputLayout>
       {/* 시작 날짜 입력 */}
-      <InputLayout title="Start Date" isEssential={true}>
+      <InputLayout title="Start Date">
         <Input
           inputType={InputType.TEXT}
           placeholder="YYYY-MM-DD"
@@ -102,7 +102,7 @@ const WorkExperiencePatch = ({
         />
       </InputLayout>
       {/* 끝 날짜 입력 */}
-      <InputLayout title="End Date" isEssential={true} width="w-fit">
+      <InputLayout title="End Date" width="w-fit">
         <Input
           inputType={InputType.TEXT}
           placeholder="YYYY-MM-DD"
@@ -125,7 +125,7 @@ const WorkExperiencePatch = ({
         </div>
       </InputLayout>
       {/* 상세설명 입력 */}
-      <InputLayout title="Description" isEssential={false} isOptional={true}>
+      <InputLayout title="Description" isOptional>
         <div
           onClick={handleFocusTextArea}
           className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow p-2"

@@ -144,7 +144,7 @@ const EditProfilePage = () => {
                 onImageUpdate={setProfileImage}
               />
               {/* 이름 작성 */}
-              <InputLayout title="First Name" isEssential={true}>
+              <InputLayout title="First Name">
                 <Input
                   inputType={InputType.TEXT}
                   placeholder="First Name"
@@ -159,7 +159,7 @@ const EditProfilePage = () => {
                 />
               </InputLayout>
               {/* 성 작성 */}
-              <InputLayout title="Last Name" isEssential={true}>
+              <InputLayout title="Last Name">
                 <Input
                   inputType={InputType.TEXT}
                   placeholder="Last Name"
@@ -173,7 +173,7 @@ const EditProfilePage = () => {
                   canDelete={false}
                 />
               </InputLayout>
-              <InputLayout title="Gender" isEssential={true}>
+              <InputLayout title="Gender">
                 <div className="w-full flex flex-row gap-8">
                   <RadioButton
                     value={GenderType.MALE as string}
@@ -208,7 +208,7 @@ const EditProfilePage = () => {
                 </div>
               </InputLayout>
               {/* 생년월일 선택 */}
-              <InputLayout title="Date of birth" isEssential={false} isOptional>
+              <InputLayout title="Date of birth" isOptional>
                 <Input
                   inputType={InputType.TEXT}
                   placeholder="YYYY-MM-DD"
@@ -220,7 +220,7 @@ const EditProfilePage = () => {
                 />
               </InputLayout>
               {/* 국적 선택 */}
-              <InputLayout title="Nationality" isEssential={false} isOptional>
+              <InputLayout title="Nationality" isOptional>
                 <Dropdown
                   value={
                     getNationalityEnFromEnum(userData.nationality || '') || ''
@@ -237,7 +237,7 @@ const EditProfilePage = () => {
               </InputLayout>
               <div className="w-full flex flex-col gap-[1.125rem]">
                 {/* 주소 검색 입력 input */}
-                <InputLayout title="Address" isEssential={false} isOptional>
+                <InputLayout title="Address" isOptional>
                   <div onClick={() => setIsAddressSearch(true)}>
                     <Input
                       inputType={InputType.SEARCH}
@@ -270,7 +270,6 @@ const EditProfilePage = () => {
                     </div>
                     <InputLayout
                       title="Detailed Address"
-                      isEssential={false}
                       isOptional
                     >
                       <Input
@@ -299,7 +298,7 @@ const EditProfilePage = () => {
                 )}
               </div>
               {/* 비자 선택 */}
-              <InputLayout title="Visa Status" isEssential={true}>
+              <InputLayout title="Visa Status">
                 <Dropdown
                   value={userData.visa}
                   placeholder="Select Visa Status"
@@ -310,7 +309,7 @@ const EditProfilePage = () => {
                 />
               </InputLayout>
               {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
-              <InputLayout title="Telephone No." isEssential={true}>
+              <InputLayout title="Telephone No.">
                 <div className="w-full flex gap-2 justify-between items-start">
                   <div className="w-full">
                     <Dropdown

@@ -54,7 +54,7 @@ const Step2 = ({
       <>
         <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
           {PostFormFields.step2.map((field) => (
-            <InputLayout key={field.name} title={field.title} isEssential>
+            <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>
           ))}

@@ -61,7 +61,6 @@ const NewPasswordStep = ({
         </div>
         <div className="flex flex-col gap-4">
           <InputLayout
-            isEssential
             title={
               profileTranslation.newPassword[
                 isEmployerByAccountType(account_type)
@@ -84,7 +83,6 @@ const NewPasswordStep = ({
             )}
           </InputLayout>
           <InputLayout
-            isEssential
             title={
               profileTranslation.confirmPassword[
                 isEmployerByAccountType(account_type)

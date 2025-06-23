@@ -113,7 +113,7 @@ const PartTimePermitWriteForm = ({
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
           {PartTimePermitFormFields.map((field) => (
-            <InputLayout key={field.name} title={field.title} isEssential>
+            <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>
           ))}

@@ -201,10 +201,7 @@ const SignupInput = ({
       />
       <div className="flex flex-col gap-2">
         <div className="flex flex-col mb-[7.125rem]">
-          <InputLayout
-            isEssential
-            title={signInputTranclation.email[isEmployer(pathname)]}
-          >
+          <InputLayout title={signInputTranclation.email[isEmployer(pathname)]}>
             <div className="flex gap-2">
               <Input
                 inputType={InputType.TEXT}
@@ -310,7 +307,6 @@ const SignupInput = ({
             {/* 비밀번호 입력 input */}
           </InputLayout>
           <InputLayout
-            isEssential
             title={signInputTranclation.password[isEmployer(pathname)]}
           >
             <Input
@@ -327,7 +323,6 @@ const SignupInput = ({
             )}
           </InputLayout>
           <InputLayout
-            isEssential
             title={signInputTranclation.confirmPassword[isEmployer(pathname)]}
           >
             <Input
