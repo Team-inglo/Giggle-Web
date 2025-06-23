@@ -31,15 +31,16 @@ const PressOverlay = ({
   return (
     <div
       className={`
-        absolute inset-0 
-        pointer-events-none 
-        transition-opacity duration-150 
+        absolute inset-0
+        pointer-events-none
+        transition-opacity duration-150
+        bg-neutral-700
         ${className}
-        ${color ? `bg-[${color}]` : `bg-neutral-700`}
       `}
       style={{
         opacity: isPressed ? getOpacity() : 0,
         borderRadius: borderRadius,
+        ...(color && { backgroundColor: color }),
       }}
     />
   );
