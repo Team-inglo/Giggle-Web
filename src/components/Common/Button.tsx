@@ -1,15 +1,16 @@
 import ScrapIcon from '@/assets/icons/Scrap.svg?react';
 import { buttonTypeKeys, buttonTypeUnion } from '@/constants/components';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import PressOverlay from './PressedOverlay';
 
-type buttonProps = {
+type ButtonProps = {
   type: buttonTypeUnion; // 정의된 버튼을 5가지 타입으로 나누었습니다.
   size?: 'md' | 'lg';
   bgColor?: string; // 버튼의 배경색 (optional)
   fontColor?: string; // 버튼 글자색 (optional)
   title?: string; // 버튼에 포함되는 글자 (optional)
   onClick?: () => void; // 클릭 이벤트 핸들러 (optional)
+  children?: ReactNode;
 };
 
 const Button = ({
@@ -19,7 +20,8 @@ const Button = ({
   fontColor,
   title,
   onClick,
-}: buttonProps) => {
+  children,
+}: ButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const handlePressStart = () => {
     if (type !== buttonTypeKeys.DISABLED && type !== buttonTypeKeys.INACTIVE)
@@ -91,6 +93,7 @@ const Button = ({
       >
         {type === buttonTypeKeys.SCRAP && <ScrapIcon />}
         <div>{title}</div>
+        {children}
         <PressOverlay isPressed={isPressed} buttonType={type} />
       </button>
     </>
