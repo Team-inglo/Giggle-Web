@@ -14,6 +14,8 @@ import { JobPostingCard } from '@/components/Common/JobPostingCard';
 import CareerCardList from '@/components/PostSearch/CareerCardList';
 import { useCurrentPostIdStore } from '@/store/url';
 import { useNavigate } from 'react-router-dom';
+import Chip from '@/components/Common/Chip';
+import { ChipState } from '@/types/common/chip';
 
 const FILTERS = ['Job Posting', 'Career'] as const;
 type FilterType = (typeof FILTERS)[number];
@@ -47,7 +49,7 @@ const ScrappedJobPostList = ({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full divide-y divide-border-disabled">
       {jobPostingData.map((post) => (
         <article
           className="w-full"
@@ -147,25 +149,19 @@ const ScrappedJobPostsPage = () => {
       />
 
       {/* 필터 버튼 */}
-      <div className="flex gap-2 px-4 pb-2">
+      <div className="flex gap-2 px-4 pt-4">
         {FILTERS.map((filter) => {
           const isSelected = filter === selectedFilter;
           const count =
             filter === 'Job Posting' ? postList.length : careerList.length;
 
           return (
-            <button
+            <Chip
               key={filter}
-              className={`flex items-center gap-1 py-2 pl-[0.875rem] pr-[0.875rem] border border-border-disabled rounded-[3.125rem] body-14-regular ${
-                isSelected
-                  ? 'bg-surface-invert text-text-invert'
-                  : 'text-text-alternative'
-              }`}
+              state={isSelected ? ChipState.ACTIVE : ChipState.PRESSED}
+              text={`${filter} ${count}`}
               onClick={() => setSelectedFilter(filter)}
-            >
-              <p>{filter}</p>
-              <span>{count}</span>
-            </button>
+            />
           );
         })}
       </div>

@@ -112,7 +112,7 @@ const CareerSearchSection = ({
         })}
       </nav>
       <section className="flex-1 flex flex-col items-center w-full pb-24">
-        <div className="w-full py-2 px-4 flex justify-between items-center">
+        <div className="w-full py-2 px-4 flex justify-between items-center border-b border-border-disabled">
           <h3 className="caption-12-regular text-text-normal">
             {careerData.length}{' '}
             {
