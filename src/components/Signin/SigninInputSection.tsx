@@ -9,6 +9,7 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import { signInputTranclation } from '@/constants/translation';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
+import { buttonTypeKeys } from '@/constants/components';
 
 const SigninInputSection = () => {
   const navigate = useNavigate();
@@ -133,9 +134,8 @@ const SigninInputSection = () => {
         <div className="w-full flex items-center justify-center">
           <div className="w-full flex flex-col items-center gap-6">
             <Button
-              type="large"
-              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
+              type={isValid ? buttonTypeKeys.PRIMARY : buttonTypeKeys.DISABLED}
+              size="lg"
               title="로그인"
               onClick={isValid ? handleSubmit : undefined}
             />
