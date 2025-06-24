@@ -135,10 +135,7 @@ const ResetPasswordPage = () => {
             <PageTitle title={'찾으려는 계정의\n이메일을 입력해주세요'} />
             <div className="flex flex-col gap-2">
               <div className="flex flex-col mb-[7.125rem]">
-                <InputLayout
-                  isEssential
-                  title={signInputTranclation.email['ko']}
-                >
+                <InputLayout title={signInputTranclation.email['ko']}>
                   <div className="flex gap-2">
                     <Input
                       inputType={InputType.TEXT}

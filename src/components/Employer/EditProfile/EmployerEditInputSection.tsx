@@ -141,7 +141,7 @@ const EmployerEditInputSection = ({
               회사/점포 정보 수정
             </div>
             {/* 이름 입력 */}
-            <InputLayout title="회사/점포명" isEssential>
+            <InputLayout title="회사/점포명">
               <Input
                 inputType={InputType.TEXT}
                 placeholder="회사/점포명을 입력해주세요"
@@ -159,7 +159,7 @@ const EmployerEditInputSection = ({
               />
             </InputLayout>
             {/* 대표자명 입력 */}
-            <InputLayout title="대표자명" isEssential>
+            <InputLayout title="대표자명">
               <Input
                 inputType={InputType.TEXT}
                 placeholder="대표자명을 입력해주세요"
@@ -179,7 +179,7 @@ const EmployerEditInputSection = ({
             {/* 주소 입력 */}
             <div className="w-full flex flex-col gap-[1.125rem]">
               {/* 주소 검색 입력 input */}
-              <InputLayout title="회사/점포주소" isEssential>
+              <InputLayout title="회사/점포주소">
                 <div onClick={() => setIsAddressSearch(true)}>
                   <Input
                     inputType={InputType.SEARCH}
@@ -208,7 +208,7 @@ const EmployerEditInputSection = ({
                   ></MapMarker>
                 </Map>
               </div>
-              <InputLayout title="상세 주소" isEssential>
+              <InputLayout title="상세 주소">
                 <Input
                   inputType={InputType.TEXT}
                   placeholder="ex) 101-dong"
@@ -233,7 +233,7 @@ const EmployerEditInputSection = ({
               </InputLayout>
             </div>
             {/* 사업자 등록번호 입력 */}
-            <InputLayout title="사업자 등록번호" isEssential>
+            <InputLayout title="사업자 등록번호">
               <Input
                 inputType={InputType.TEXT}
                 placeholder="X X X / X X / X X X X X"
@@ -252,7 +252,7 @@ const EmployerEditInputSection = ({
               />
             </InputLayout>
             {/* 개인 휴대폰 번호 입력 */}
-            <InputLayout title="대표자 전화번호" isEssential>
+            <InputLayout title="대표자 전화번호">
               <div className="w-full flex flex-row gap-2 justify-between">
                 <div className="w-full h-[2.75rem]">
                   <Dropdown
@@ -283,7 +283,7 @@ const EmployerEditInputSection = ({
               </div>
             </InputLayout>
             {/* 회사 로고 입력 */}
-            <InputLayout title="회사 로고" isEssential={false}>
+              <InputLayout title="회사 로고">
               <div className="w-full flex flex-col items-center justify-start">
                 <div className="w-full flex items-center justify-start">
                   <label

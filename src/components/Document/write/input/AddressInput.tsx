@@ -23,14 +23,12 @@ interface AddressInputProps<
   name: TName;
   placeholder: string;
   label?: string;
-  isEssential?: boolean;
 }
 
 const AddressInput = <T extends FieldValues>({
   name,
   placeholder,
   label = 'Detailed Address',
-  isEssential = true,
 }: AddressInputProps<T>) => {
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const { control } = useFormContext<T>();
@@ -108,7 +106,7 @@ const AddressInput = <T extends FieldValues>({
                     control={control}
                     name={`${name}.address_detail` as any}
                     render={({ field: detailField }) => (
-                      <InputLayout title={label} isEssential={isEssential}>
+                      <InputLayout title={label}>
                         <Input
                           inputType={InputType.TEXT}
                           placeholder="ex) 101-dong"

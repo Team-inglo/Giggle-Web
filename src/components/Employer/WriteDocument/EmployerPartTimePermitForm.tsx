@@ -92,7 +92,7 @@ const EmployerPartTimePermitForm = ({
         <div className="p-4 [&>*:last-child]:mb-40 flex flex-col gap-4">
           {/** 고용주 작성 정보 */}
           {PartTimePermitEmployerFormFields.map((field) => (
-            <InputLayout key={field.name} title={field.title} isEssential>
+            <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>
           ))}

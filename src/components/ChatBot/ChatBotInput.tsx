@@ -36,10 +36,10 @@ const ChatBotInput = ({ addChatData, setIsChatLoading }: ChatBotInputProps) => {
   };
 
   return (
-    <section className="fixed bottom-0 left-0 w-full px-[1.5rem] pt-[0.75rem] pb-[3.125rem] shadow-cardShadow bg-white">
+    <section className="fixed bottom-0 left-0 w-full px-[1.5rem] pt-[0.75rem] pb-[3.125rem] bg-white">
       <div className="w-full relative">
         <textarea
-          className="w-full h-[3.5rem] py-[1rem] px-[1rem] body-14-regular text-[#464646] rounded-[0.75rem] border border-[#EBEEF1] resize-none"
+          className="w-full h-[3.5rem] py-[0.875rem] px-4 body-14-medium text-text-assistive rounded-[0.625rem] border-[0.05rem] border-border-alternative resize-none"
           placeholder="Type a message..."
           onChange={(e) => setText(e.target.value)}
           value={text}

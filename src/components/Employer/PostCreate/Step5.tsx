@@ -48,7 +48,6 @@ const Step5 = ({
           <InputLayout
             key={field.name}
             title={field.title}
-            isEssential={field.name === 'body.description'}
           >
             {renderFormField(field)}
           </InputLayout>

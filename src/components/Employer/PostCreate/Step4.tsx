@@ -57,7 +57,7 @@ const Step4 = ({
     <div className="w-full py-6 flex flex-col">
       <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
         {PostFormFields.step4.map((field) => (
-          <InputLayout key={field.name} title={field.title} isEssential>
+          <InputLayout key={field.name} title={field.title}>
             {renderFormField(field)}
           </InputLayout>
         ))}

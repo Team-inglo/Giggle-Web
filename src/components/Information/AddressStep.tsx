@@ -65,7 +65,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
         ) : (
           <div className="w-full flex flex-col px-4 gap-[1.125rem] [&>*:last-child]:mb-32">
             {/* 주소 검색 입력 input */}
-            <InputLayout title="Main Address" isEssential={false} isOptional>
+            <InputLayout title="Main Address" isOptional>
               <div onClick={() => setIsAddressSearch(true)}>
                 <Input
                   inputType={InputType.SEARCH}
@@ -96,11 +96,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
                     ></MapMarker>
                   </Map>
                 </div>
-                <InputLayout
-                  title="Detailed Address"
-                  isEssential={false}
-                  isOptional
-                >
+                <InputLayout title="Detailed Address" isOptional>
                   <Input
                     inputType={InputType.TEXT}
                     placeholder="ex) 101-dong"

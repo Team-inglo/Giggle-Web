@@ -50,7 +50,6 @@ const CurrentPasswordStep = ({
           </p>
         </div>
         <InputLayout
-          isEssential
           title={
             profileTranslation.currentPassword[
               isEmployerByAccountType(account_type)

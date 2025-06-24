@@ -2,32 +2,23 @@ import { ReactNode } from 'react';
 
 type InputLayOutProps = {
   title: string;
-  isEssential: boolean;
-  isOptional?: boolean; // isOptional 속성 추가
-  width?: string; // width 속성 string 전달
+  isOptional?: boolean;
+  width?: string;
   children: ReactNode;
 };
 
 const InputLayout = ({
   title,
   children,
-  isEssential,
   isOptional,
   width,
 }: InputLayOutProps) => {
   return (
     <div>
-      <p
-        className={`${width} button-14-semibold text-text-strong px-1 py-[6px]`}
-      >
+      <p className={`${width} body-14-medium text-text-alternative p-1`}>
         {title}
-        {isEssential && (
-          <span className="text-text-error body-16-regular ml-[0.125rem]">
-            *
-          </span>
-        )}
         {isOptional && (
-          <span className="text-text-alternative caption-12-regular pl-1">
+          <span className="text-text-alternative body-14-medium pl-1">
             (optional)
           </span>
         )}
