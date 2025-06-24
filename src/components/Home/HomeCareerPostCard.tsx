@@ -22,7 +22,19 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
       onClick={goToCareerDetailPage}
     >
       {/* 썸네일 영역 (CareerListItemType에는 img가 없는 상태라 빈 박스로 처리) */}
-      <div className="w-full h-[6.75rem] rounded-lg border border-border-alternative bg-surface-secondary"></div>
+      <div className="w-full h-[6.75rem] rounded-lg border border-border-alternative bg-surface-secondary">
+        {careerData.img_urls && careerData.img_urls.length > 0 ? (
+          <img
+            src={careerData.img_urls[0] ? careerData.img_urls[0] : ''}
+            alt="career-thumbnail"
+            className="object-cover w-full h-full rounded-lg"
+          />
+        ) : (
+          <div className="flex items-center justify-center w-full h-full text-text-alternative">
+            No Image
+          </div>
+        )}
+      </div>
 
       <div className="block">
         {/* 제목 */}
