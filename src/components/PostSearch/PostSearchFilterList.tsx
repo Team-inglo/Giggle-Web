@@ -43,12 +43,13 @@ const PostSearchFilterList = ({
     const region2Depth = filterList[FILTER_CATEGORY.REGION_2DEPTH];
     const region3Depth = filterList[FILTER_CATEGORY.REGION_3DEPTH];
 
-    const filteredRegions = region1Depth.map((region, index) => {
-      return {
-        category: 'region',
-        value: `${region} ${region2Depth[index]} ${region3Depth[index] === 'none' ? '' : region3Depth[index]}`,
-      };
-    });
+    const filteredRegions =
+      region1Depth?.map((region, index) => {
+        return {
+          category: 'region',
+          value: `${region} ${region2Depth[index]} ${region3Depth[index] === 'none' ? '' : region3Depth[index]}`,
+        };
+      }) ?? [];
 
     const tagList = [...filteredValues, ...filteredRegions];
     return tagList;
@@ -119,7 +120,7 @@ const PostSearchFilterList = ({
 
   return (
     <section className="flex-1 w-full py-2">
-      <div className="w-full min-h-8 pl-4 pr-14 flex items-center gap-1 overflow-x-scroll whitespace-nowrap no-scrollbar">
+      <div className="flex items-center w-full gap-1 pl-4 overflow-x-scroll min-h-8 pr-14 whitespace-nowrap no-scrollbar">
         {formatFilterListToTag()?.map((filter, index) => (
           <Tag
             key={`${index}_${filter.category}`}

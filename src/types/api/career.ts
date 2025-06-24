@@ -13,6 +13,7 @@ export type CareerListItemType = {
   recruitment_end_date?: string;
   created_at?: string;
   is_book_marked?: boolean; // 유학생인 경우
+  img_urls?: string[] | null; // 이미지 URL 목록
 };
 
 export type GetCareerListReqType = {

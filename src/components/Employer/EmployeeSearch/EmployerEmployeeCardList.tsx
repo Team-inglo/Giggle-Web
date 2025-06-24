@@ -16,7 +16,6 @@ const EmployerEmployeeCard = ({
   cardData: EmployeeResumeListItemType;
 }) => {
   const navigate = useNavigate();
-
   const { mutate } = usePutScrapResume();
 
   const handleClickBookmark = (e: MouseEvent) => {
@@ -24,79 +23,95 @@ const EmployerEmployeeCard = ({
     mutate(cardData.id);
   };
 
-  const goToResumeDetailPage = (id: string) => {
-    navigate(`/employer/search/${id}`);
+  const goToResumeDetailPage = () => {
+    navigate(`/employer/search/${cardData.id}`);
   };
 
   return (
     <article
-      className="w-full p-4"
-      onClick={() => goToResumeDetailPage(cardData.id)}
+      className="w-[9.063rem] m-1 flex flex-col gap-2 rounded-lg"
+      onClick={goToResumeDetailPage}
     >
-      <div className="pb-3 flex justify-between items-center gap-2">
-        <div className="w-20 h-20 rounded-full overflow-hidden">
+      {/* 이미지에만 border 적용 */}
+      <div className="w-full h-[6.75rem] rounded-lg overflow-hidden border border-border-alternative">
+        {cardData?.profile_img_url ? (
           <img
             src={cardData.profile_img_url}
-            alt="profile image"
-            className="w-full h-full object-cover"
+            alt="profile"
+            className="object-cover w-full h-full"
           />
-        </div>
-        <div className="flex-1">
-          <div className="w-full pb-[0.125rem] flex justify-between items-center">
-            <p className="text-text-strong heading-18-semibold">
-              {cardData?.name}{' '}
-              <span className="pl-1 text-text-alternative caption-12-regular">
-                {cardData?.nationality}
-              </span>
-            </p>
-            <button onClick={(e) => handleClickBookmark(e)}>
+        ) : (
+          <div className="flex items-center justify-center w-full h-full text-white bg-gradient-to-r from-purple-500 to-pink-500">
+            No Image
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-[0.125rem] px-2 pb-2">
+        <h3 className="min-h-10 button-16-semibold text-text-normal line-clamp-2">
+          {cardData?.name}
+        </h3>
+
+        <p className="caption-12-regular text-text-alternative line-clamp-1">
+          {cardData?.title || '친절한 서비스를 고객을 맞게 만들어보아요!'}
+        </p>
+
+        <div className="flex flex-wrap items-center justify-between gap-1">
+          <div className="flex flex-wrap items-center gap-1">
+            {cardData?.industry && (
+              <Tag
+                value={cardData.industry}
+                padding="py-[0.188rem] px-[0.25rem]"
+                isRounded={false}
+                hasCheckIcon={false}
+                backgroundColor="bg-status-blue-300/10"
+                color="text-text-success"
+                fontStyle="caption-12-regular"
+              />
+            )}
+            {cardData?.visa && (
+              <Tag
+                value={cardData.visa.replace(/_/g, '-')}
+                padding="py-[0.188rem] px-[0.25rem]"
+                isRounded={false}
+                hasCheckIcon={false}
+                backgroundColor="bg-surface-secondary"
+                color="text-text-alternative"
+                fontStyle="caption-12-regular"
+              />
+            )}
+          </div>
+
+          <div className="flex items-center gap-1 caption-12-regular text-text-alternative">
+            <button onClick={handleClickBookmark}>
               {cardData?.is_bookmarked ? (
                 <BookmarkCheckedIcon />
               ) : (
                 <BookmarkIcon />
               )}
             </button>
+            {cardData?.bookmark_count ?? 0}
           </div>
-          <p className="text-text-alternative body-14-regular">
-            {cardData?.address}
-          </p>
         </div>
-      </div>
-      <p className="text-text-normal body-14-medium">{cardData?.title}</p>
-      <div className="pt-2 flex items-center gap-1 flex-wrap">
-        <Tag
-          value={cardData?.industry}
-          padding="py-[0.188rem] px-[0.25rem]"
-          isRounded={true}
-          hasCheckIcon={false}
-          backgroundColor="bg-status-blue-300/10"
-          color="text-text-success"
-          fontStyle="caption-12-semibold"
-        />
-        <Tag
-          value={cardData?.visa?.replace(/_/g, '-')}
-          padding="py-[0.188rem] px-[0.25rem]"
-          isRounded={true}
-          hasCheckIcon={false}
-          backgroundColor="bg-surface-secondary"
-          color="text-text-alternative"
-          fontStyle="caption-12-semibold"
-        />
       </div>
     </article>
   );
 };
 
 type EmployerEmployeeCardListProps = {
+  title?: string;
   resumeData: EmployeeResumeListItemType[];
   isLoading: boolean;
   isInitialLoading: boolean;
+  onSeeMoreClick?: () => void;
 };
 
 const EmployerEmployeeCardList = ({
+  title,
   resumeData,
   isLoading,
   isInitialLoading,
+  onSeeMoreClick,
 }: EmployerEmployeeCardListProps) => {
   if (isInitialLoading) {
     return (
@@ -106,14 +121,14 @@ const EmployerEmployeeCardList = ({
     );
   }
 
-  if (resumeData?.length === 0) {
+  if (!resumeData || resumeData.length === 0) {
     return (
       <div className="w-full px-4 pt-[20vh] flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
         <h3 className="heading-20-semibold text-text-strong">
           찾고 계신 인재가 없어요.
         </h3>
-        <p className="body-14-regular text-text-alternative text-center">
+        <p className="text-center body-14-regular text-text-alternative">
           {postTranslation.emptySearchResultContent.ko}
         </p>
       </div>
@@ -121,14 +136,29 @@ const EmployerEmployeeCardList = ({
   }
 
   return (
-    <>
-      <main className="flex flex-col divide-y divide-[#F8F8F8]">
-        {resumeData.map((value: EmployeeResumeListItemType) => (
-          <EmployerEmployeeCard cardData={value} key={value.id} />
+    <div className="flex flex-col gap-2">
+      {title && (
+        <div className="flex items-center justify-between py-1">
+          <h3 className="text-black heading-18-semibold">{title}</h3>
+          {onSeeMoreClick && (
+            <button
+              className="caption-12-regular text-[#9397A1]"
+              onClick={onSeeMoreClick}
+            >
+              See More
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
+        {resumeData.map((value) => (
+          <EmployerEmployeeCard key={value.id} cardData={value} />
         ))}
-      </main>
+      </div>
+
       {isLoading && <LoadingItem />}
-    </>
+    </div>
   );
 };
 

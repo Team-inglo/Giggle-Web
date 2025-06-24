@@ -4,7 +4,10 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { PostSearchType } from '@/hooks/usePostSearch';
 import { useUserStore } from '@/store/user';
 import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
-import { formatCareerSearchFilter } from '@/utils/formatSearchFilter';
+import {
+  formatCareerSearchFilterForUser,
+  formatCareerSearchFilterForGuest,
+} from '@/utils/formatSearchFilter';
 import { useState } from 'react';
 import { postSearchTranslation } from '@/constants/translation';
 import { isEmployerByAccountType } from '@/utils/signup';
@@ -34,40 +37,56 @@ const CareerSearchSection = ({
   updateSearchOption,
 }: CareerSearchSectionProps) => {
   const { account_type } = useUserStore();
+  const isLogin = account_type === UserType.USER;
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // 게스트 요청
   const {
     data: guestCareerData,
     fetchNextPage: guestFetchNextPage,
-    hasNextPage: guesthasNextPage,
+    hasNextPage: guestHasNextPage,
     isFetchingNextPage: guestIsFetchingNextPage,
     isLoading: guestIsInitialLoading,
   } = useInfiniteGetCareerGuestList(
-    formatCareerSearchFilter(searchOption),
-    !account_type ? true : false,
+    formatCareerSearchFilterForGuest({
+      page: 1,
+      size: 5,
+      searchText: searchOption.searchText,
+      careerSortType: searchOption.careerSortType,
+      careerCategory: searchOption.careerCategory,
+    }),
+    !isLogin,
   );
 
+  // 유저 요청
   const {
     data: userCareerData,
     fetchNextPage: userFetchNextPage,
-    hasNextPage: userhasNextPage,
+    hasNextPage: userHasNextPage,
     isFetchingNextPage: userIsFetchingNextPage,
-    isLoading: careerIsInitialLoading,
+    isLoading: userIsInitialLoading,
   } = useInfiniteGetCareerList(
-    formatCareerSearchFilter(searchOption),
-    account_type === UserType.USER ? true : false,
+    formatCareerSearchFilterForUser({
+      page: 1,
+      size: 5,
+      searchText: searchOption.searchText,
+      careerSortType: searchOption.careerSortType,
+      careerCategory: searchOption.careerCategory,
+      isBookMarked: false,
+    }),
+    isLogin,
   );
 
-  const data = account_type ? userCareerData : guestCareerData;
+  const data = isLogin ? userCareerData : guestCareerData;
   const careerData =
     data?.pages?.flatMap((page) => page.data.career_list) || [];
-  const isInitialLoading = account_type
-    ? careerIsInitialLoading
+  const isInitialLoading = isLogin
+    ? userIsInitialLoading
     : guestIsInitialLoading;
-  const fetchNextPage = account_type ? userFetchNextPage : guestFetchNextPage;
-  const hasNextPage = account_type ? userhasNextPage : guesthasNextPage;
-  const isFetchingNextPage = account_type
+  const fetchNextPage = isLogin ? userFetchNextPage : guestFetchNextPage;
+  const hasNextPage = isLogin ? userHasNextPage : guestHasNextPage;
+  const isFetchingNextPage = isLogin
     ? userIsFetchingNextPage
     : guestIsFetchingNextPage;
 
@@ -80,10 +99,8 @@ const CareerSearchSection = ({
 
   const handleUpdateCareerCategory = (category: CareerCategoryKey) => {
     const categorySet = new Set(searchOption.careerCategory);
-
     if (categorySet.has(category)) categorySet.delete(category);
     else categorySet.add(category);
-
     updateSearchOption('careerCategory', [...categorySet]);
   };
 
@@ -93,10 +110,9 @@ const CareerSearchSection = ({
 
   return (
     <>
-      <nav className="w-full min-h-8 px-4 py-3 flex items-center gap-2 overflow-x-scroll whitespace-nowrap no-scrollbar">
+      <nav className="flex items-center w-full gap-2 px-4 py-3 overflow-x-scroll min-h-8 whitespace-nowrap no-scrollbar">
         {Object.entries(CAREER_CATEGORY).map(([key, label]) => {
           const isSelected = searchOption.careerCategory.includes(key);
-
           return (
             <button
               key={key}
@@ -110,8 +126,9 @@ const CareerSearchSection = ({
           );
         })}
       </nav>
-      <section className="flex-1 flex flex-col items-center w-full pb-24">
-        <div className="w-full py-2 px-4 flex justify-between items-center">
+
+      <section className="flex flex-col items-center flex-1 w-full pb-24">
+        <div className="flex items-center justify-between w-full px-4 py-2">
           <h3 className="caption-12-regular text-text-normal">
             {careerData.length}{' '}
             {
