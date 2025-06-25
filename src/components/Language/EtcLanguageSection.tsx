@@ -15,7 +15,7 @@ const EtcLanguageSection = ({
   selectedLanguage,
   setSelectedLanguage,
 }: EtcLanguageSectionProps) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(selectedLanguage.language || '');
   const [filteredLanguages, setFilteredLanguages] = useState(languageList);
 
   // 검색어에 따라 언어 리스트 필터링
@@ -37,7 +37,7 @@ const EtcLanguageSection = ({
       />
       <div className="mt-6 flex flex-col gap-3">
         {/* 검색된 언어 리스트 */}
-        {filteredLanguages.map((language) => (
+        {search.length > 0 && filteredLanguages.map((language) => (
           <EtcLanguageCard
             key={language.id}
             language={language}

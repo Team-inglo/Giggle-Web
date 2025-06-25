@@ -551,3 +551,39 @@ export const initialEmployerSearchFilterList: EmployeeSearchFilterItemType = {
   [EMPLOYEE_SEARCH_CATEGORY.MAJOR]: [],
   [EMPLOYEE_SEARCH_CATEGORY.NATIONALITY]: [],
 };
+
+export const languageProficiencyLevels: KoEnEnumType[] = [
+  {
+    en: "Not able to use at all",
+    ko: "전혀 사용할 수 없음",
+    enum: "NOT_USABLE"
+  },
+  {
+    en: "Can understand basic words",
+    ko: "기본 단어 이해 가능",
+    enum: "BASIC_UNDERSTANDING"
+  },
+  {
+    en: "Basic conversation possible",
+    ko: "기본 대화 가능",
+    enum: "BASIC_CONVERSATION"
+  },
+  {
+    en: "Comfortable for work",
+    ko: "업무에 편안함",
+    enum: "WORK_COMFORTABLE"
+  },
+  {
+    en: "Fluent (Advanced level)",
+    ko: "유창함 (고급 수준)",
+    enum: "FLUENT"
+  },
+  {
+    en: "Native or near-native",
+    ko: "원어민 또는 원어민 수준",
+    enum: "NATIVE"
+  }
+];
+
+export const languageProficiencyLevelsEn: string[] = languageProficiencyLevels.map((level) => level.en);
+export const languageProficiencyLevelsKo: string[] = languageProficiencyLevels.map((level) => level.ko);
