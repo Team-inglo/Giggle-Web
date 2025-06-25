@@ -7,6 +7,17 @@ export const buttonTypeKeys = {
   BACK: 'back',
   CONTINUE: 'continue',
   SCRAP: 'scrap',
-} as const
+  PRIMARY: 'primary',
+  NEUTRAL: 'neutral',
+  TERTIARY: 'tertiary',
+  DISABLED: 'disabled',
+  INACTIVE: 'inactive',
+} as const;
 
-export type buttonTypeUnion = typeof buttonTypeKeys[keyof typeof buttonTypeKeys]
+export type buttonTypeUnion =
+  (typeof buttonTypeKeys)[keyof typeof buttonTypeKeys];
+
+export enum ButtonSize {
+  MD = 'md',
+  LG = 'lg',
+}

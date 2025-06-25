@@ -12,7 +12,6 @@ const ApplicationDetailStep7 = () => {
         type={buttonTypeKeys.APPLY}
         bgColor={'bg-primary-normal'}
         fontColor="text-surface-invert"
-        isBorder={false}
         title="Check the application documents"
         onClick={() =>
           navigate(`/application-documents/${id}`, {

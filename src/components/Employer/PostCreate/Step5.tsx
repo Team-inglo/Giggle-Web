@@ -59,7 +59,6 @@ const Step5 = ({
             type={buttonTypeKeys.BACK}
             bgColor="bg-surface-secondary"
             fontColor="text-text-normal"
-            isBorder={false}
             title="이전"
             onClick={() => onPrev()}
           />
@@ -68,7 +67,7 @@ const Step5 = ({
             validationFn={validatePostInfo}
             onClick={handleSubmit}
           >
-            <Button type="large" isBorder={false} title="완료" />
+            <Button type="large" title="완료" />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>

@@ -84,7 +84,6 @@ const CurrentPasswordStep = ({
               fontColor={
                 password?.length > 0 ? 'text-text-normal' : 'text-text-disabled'
               }
-              isBorder={false}
               title={
                 signInputTranclation.continue[
                   isEmployerByAccountType(account_type)

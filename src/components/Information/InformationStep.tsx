@@ -239,7 +239,6 @@ const InformationStep = ({
             type="large"
             bgColor={isInvalid ? 'bg-[#F4F4F9]' : 'bg-[#fef387]'}
             fontColor={isInvalid ? '' : 'text-[#222]'}
-            isBorder={false}
             title="Next"
             onClick={handleNextClick}
           />

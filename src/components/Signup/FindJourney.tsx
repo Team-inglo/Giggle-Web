@@ -50,7 +50,6 @@ const FindJourney = ({
               accountType ? 'bg-surface-primary' : 'bg-surface-secondary'
             }
             fontColor={accountType ? 'text-text-normal' : 'text-text-disabled'}
-            isBorder={false}
             title="다음으로"
             onClick={accountType ? onSignUpClick : undefined}
           />

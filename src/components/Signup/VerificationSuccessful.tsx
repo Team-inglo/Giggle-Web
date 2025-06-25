@@ -30,7 +30,6 @@ const VerificationSuccessful = ({
             type="large"
             bgColor={'bg-surface-primary'}
             fontColor={'text-text-normal'}
-            isBorder={false}
             title={buttonText}
             onClick={onNext}
           />

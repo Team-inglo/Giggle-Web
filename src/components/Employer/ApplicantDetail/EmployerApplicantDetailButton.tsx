@@ -28,7 +28,6 @@ const EmployerApplicantDetailButton = ({
             bgColor={'bg-primary-normal'}
             fontColor="text-surface-invert"
             title="이력서 확인하기"
-            isBorder={false}
             onClick={() =>
               navigate(`/employer/applicant/${applicant_id}/resume/accept`)
             }
@@ -42,7 +41,6 @@ const EmployerApplicantDetailButton = ({
               bgColor={'bg-primary-normal'}
               fontColor="text-surface-invert"
               title="면접 일정 조율하기"
-              isBorder={false}
               onClick={() => setIsShowBottomSheet(true)}
             />
             <EmployerApplicantContactBottomSheet
@@ -58,7 +56,6 @@ const EmployerApplicantDetailButton = ({
             bgColor={'bg-primary-normal'}
             fontColor="text-surface-invert"
             title="신청 서류 확인하기"
-            isBorder={false}
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
             }
@@ -71,7 +68,6 @@ const EmployerApplicantDetailButton = ({
             bgColor={'bg-primary-normal'}
             fontColor="text-surface-invert"
             title="신청 서류 확인하기"
-            isBorder={false}
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
             }
@@ -84,7 +80,6 @@ const EmployerApplicantDetailButton = ({
             bgColor={'bg-primary-normal'}
             fontColor="text-surface-invert"
             title="신청 서류 확인하기"
-            isBorder={false}
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
             }
@@ -97,7 +92,6 @@ const EmployerApplicantDetailButton = ({
             bgColor={'bg-primary-normal'}
             fontColor="text-surface-invert"
             title="신청 서류 확인하기"
-            isBorder={false}
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
             }
@@ -110,7 +104,6 @@ const EmployerApplicantDetailButton = ({
             bgColor={'bg-primary-normal'}
             fontColor="text-surface-invert"
             title="신청 서류 확인하기"
-            isBorder={false}
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
             }
@@ -127,7 +120,6 @@ const EmployerApplicantDetailButton = ({
                 ? '2주 이상 대기 중입니다.'
                 : '이력서를 거절했습니다.'
             }
-            isBorder={false}
           />
         );
     }

@@ -79,7 +79,6 @@ const ApplicationResultPage = () => {
           bgColor={'bg-primary-normal'}
           fontColor="text-surface-invert"
           title="Submit result"
-          isBorder={false}
           onClick={onClickRegistration}
         />
       </BottomButtonPanel>

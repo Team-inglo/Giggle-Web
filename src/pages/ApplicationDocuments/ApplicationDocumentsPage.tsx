@@ -90,7 +90,6 @@ const ApplicationDocumentsPage = () => {
                           : 'text-text-disabled'
                       }
                       title="Completed"
-                      isBorder={false}
                       {...(isDocumentComplete(data?.data) && {
                         onClick: () => submitDocuments(Number(currentPostId)),
                       })}

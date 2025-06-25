@@ -137,7 +137,6 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
               ? ''
               : 'text-[#222]'
           }
-          isBorder={false}
           title="Next"
           onClick={
             newAddress.address_detail &&

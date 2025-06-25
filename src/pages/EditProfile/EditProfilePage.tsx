@@ -351,7 +351,6 @@ const EditProfilePage = () => {
               bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
               fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
               onClick={isValid ? handleSubmit : undefined}
-              isBorder={false}
             />
           </BottomButtonPanel>
         </div>

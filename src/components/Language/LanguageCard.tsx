@@ -114,7 +114,6 @@ const LanguageCard = ({
             <Button
               type="large"
               title="Select"
-              isBorder={false}
               bgColor="bg-surface-primary"
               fontColor="text-text-strong"
               onClick={handleLevelChange}

@@ -219,7 +219,6 @@ const WorkPreferencePage = () => {
           bgColor={isFormValid ? 'bg-surface-primary' : 'bg-surface-disabled'}
           fontColor={isFormValid ? 'text-text-strong' : 'text-text-disabled'}
           title="Save"
-          isBorder={false}
           onClick={handleSubmit}
         />
       </BottomButtonPanel>

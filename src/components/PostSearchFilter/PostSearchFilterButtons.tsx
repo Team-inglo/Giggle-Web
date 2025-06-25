@@ -28,7 +28,6 @@ const PostSearchFilterButtons = ({
         bgColor="bg-surface-secondary"
         fontColor="text-text-normal button-16-semibold"
         title={buttonTranslation.reset[isEmployerByAccountType(account_type)]}
-        isBorder={false}
         onClick={onClickReset}
       />
       <Button
@@ -36,7 +35,6 @@ const PostSearchFilterButtons = ({
         bgColor="bg-surface-primary"
         fontColor="text-text-strong button-16-semibold"
         title={buttonTranslation.apply[isEmployerByAccountType(account_type)]}
-        isBorder={false}
         onClick={onClickApply}
       />
     </section>

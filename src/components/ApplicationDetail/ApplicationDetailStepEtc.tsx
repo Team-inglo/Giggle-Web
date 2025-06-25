@@ -22,7 +22,6 @@ const ApplicationDetailStepEtc = ({
               ? "I'm on standby for more than two weeks"
               : 'Your resume has been rejected'
           }
-          isBorder={false}
         />
       </section>
     </>

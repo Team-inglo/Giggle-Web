@@ -72,7 +72,6 @@ const PostDetailApplyButton = ({
               isRecruiting ? 'bg-primary-normal' : 'bg-surface-secondary'
             }
             fontColor={isRecruiting ? 'text-text-strong' : 'text-text-disabled'}
-            isBorder={false}
             title="Apply Now"
             {...(isRecruiting && { onClick: onClickApply })}
           />

@@ -57,7 +57,6 @@ const BookmarkContactPanel = ({
             type={buttonTypeKeys.APPLY}
             bgColor={'bg-surface-primary'}
             fontColor={'text-text-strong'}
-            isBorder={false}
             title="연락하기"
             onClick={onClickApply}
           />

@@ -104,7 +104,6 @@ const SearchSchools = ({
               bgColor={selectedSchool ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
               fontColor={selectedSchool ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
               title="Select"
-              isBorder={false}
               onClick={selectedSchool ? handleSubmit : undefined}
             />
           </div>

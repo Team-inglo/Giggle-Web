@@ -9,7 +9,6 @@ const ApplicationDetailStep1 = () => {
           bgColor={'bg-primary-neutral'}
           fontColor="text-text-disabled"
           title="Waiting for employer approval"
-          isBorder={false}
         />
       </section>
     </>

@@ -133,10 +133,9 @@ const SigninInputSection = () => {
         <div className="w-full flex items-center justify-center">
           <div className="w-full flex flex-col items-center gap-6">
             <Button
-              type="large"
-              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              isBorder={false}
+              type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+              size={Button.Size.LG}
+              isFullWidth={true}
               title="로그인"
               onClick={isValid ? handleSubmit : undefined}
             />

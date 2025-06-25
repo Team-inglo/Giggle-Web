@@ -55,7 +55,6 @@ const ServerErrorBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-[#FEF387]"
           fontColor="text-[#1E1926]"
-          isBorder={false}
           title={
             account_type === UserType.OWNER
               ? '고객센터에 문의하기'
@@ -67,7 +66,6 @@ const ServerErrorBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-[#F4F4F9]"
           fontColor="text-[#191919]"
-          isBorder={false}
           title={account_type === UserType.OWNER ? '알겠어요' : 'Okay'}
           onClick={handleClickBackButton}
         />

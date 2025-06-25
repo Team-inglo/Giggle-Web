@@ -347,7 +347,6 @@ const SignupInput = ({
               type="large"
               bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
               fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              isBorder={false}
               title={signInputTranclation.continue[isEmployer(pathname)]}
               onClick={isValid ? onSignUpClick : undefined}
             />
