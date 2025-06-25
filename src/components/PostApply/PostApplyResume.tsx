@@ -10,6 +10,7 @@ import MypageCard from '@/components/ManageResume/MypageCard';
 import ResumeProfileCard from '@/components/ManageResume/ResumeProfileCard';
 import { useCallback } from 'react';
 import useResumeData from '@/hooks/useResumeData';
+import ButtonText from '../Common/ButtonText';
 
 const PostApplyResume = () => {
   const navigate = useNavigate();
@@ -66,12 +67,12 @@ const PostApplyResume = () => {
             content: data.data?.introduction ?? '',
           }}
           rightElement={
-            <button
-              className="caption-12-regular text-text-alternative"
+            <ButtonText
+              size={ButtonText.Size.SM}
+              variant={ButtonText.Variant.ALTERNATIVE}
+              text={data.data?.introduction ? 'Edit' : 'Add'}
               onClick={handleIntroductionClick}
-            >
-              {data.data?.introduction ? 'Edit' : 'Add'}
-            </button>
+            />
           }
         />
         <InfoCard
@@ -80,12 +81,12 @@ const PostApplyResume = () => {
           onAddClick={() => navigateToSection('/')}
           rightElement={
             account_type === UserType.USER && (
-              <button
-                className="caption-12-regular text-text-alternative"
+              <ButtonText
+                size={ButtonText.Size.SM}
+                variant={ButtonText.Variant.ALTERNATIVE}
+                text="Edit"
                 onClick={handleVisaClick}
-              >
-                Edit
-              </button>
+              />
             )
           }
           renderContent={() => (
@@ -105,52 +106,52 @@ const PostApplyResume = () => {
           type={ManageResumeType.WORKEXPERIENCE}
           workExperienceData={data.data?.work_experience}
           rightElement={
-            <button
-              className="caption-12-regular text-text-alternative"
+            <ButtonText
+              size={ButtonText.Size.SM}
+              variant={ButtonText.Variant.ALTERNATIVE}
+              text="Add"
               onClick={() => navigateToSection('/resume/work-experience')}
-            >
-              Add
-            </button>
+            />
           }
         />
         <MypageCard
           type={ManageResumeType.EDUCATION}
           educationData={data.data?.education}
           rightElement={
-            <button
-              className="caption-12-regular text-text-alternative"
+            <ButtonText
+              size={ButtonText.Size.SM}
+              variant={ButtonText.Variant.ALTERNATIVE}
+              text="Add"
               onClick={() => navigateToSection('/resume/education')}
-            >
-              Add
-            </button>
+            />
           }
         />
         <MypageCard
           type={ManageResumeType.LANGUAGE}
           languageData={data.data?.languages}
           rightElement={
-            <button
-              className="caption-12-regular text-text-alternative"
+            <ButtonText
+              size={ButtonText.Size.SM}
+              variant={ButtonText.Variant.ALTERNATIVE}
+              text="Add"
               onClick={() => navigateToSection('/resume/language/add')}
-            >
-              Add
-            </button>
+            />
           }
         />
         <MypageCard
           type={ManageResumeType.WORKPREFERENCES}
           workPreferencesData={data.data?.work_preference}
           rightElement={
-            <button
-              className="caption-12-regular text-text-alternative"
+            <ButtonText
+              size={ButtonText.Size.SM}
+              variant={ButtonText.Variant.ALTERNATIVE}
+              text="Edit"
               onClick={() =>
                 navigateToSection('/resume/work-preference', {
                   isEdit: true,
                 })
               }
-            >
-              Edit
-            </button>
+            />
           }
         />
       </section>
