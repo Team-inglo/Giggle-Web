@@ -88,7 +88,6 @@ const VisaSelectBottomSheet = ({
               title={
                 buttonTranslation.reset[isEmployerByAccountType(account_type)]
               }
-              isBorder={false}
               onClick={handleReset}
             />
             <Button
@@ -100,7 +99,6 @@ const VisaSelectBottomSheet = ({
                   isEmployerByAccountType(account_type)
                 ]
               }
-              isBorder={false}
               onClick={handleSubmit}
             />
           </div>

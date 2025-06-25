@@ -79,6 +79,7 @@ const LanguageCard = ({
         <ResumeDeleteModal
           onEditButton={openLevelBottomSheet}
           onDeleteButton={handleDelete}
+          setIsShowBottomSheet={() => setModalOpen(false)}
         />
       )}
       {/* 언어 레벨 선택 바텀 시트 */}
@@ -113,7 +114,6 @@ const LanguageCard = ({
             <Button
               type="large"
               title="Select"
-              isBorder={false}
               bgColor="bg-surface-primary"
               fontColor="text-text-strong"
               onClick={handleLevelChange}

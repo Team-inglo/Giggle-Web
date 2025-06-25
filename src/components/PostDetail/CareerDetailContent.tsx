@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CareerDetailContentMenu } from '@/constants/postDetail';
 import {
   careerDetailTranslation,
@@ -10,6 +10,7 @@ import { EducationLevelInfo } from '@/constants/post';
 import { EducationLevel } from '@/types/postCreate/postCreate';
 import { UserType } from '@/constants/user';
 import { CareerDetailItemType } from '@/types/api/career';
+import { IFRAME_STYLE_TAG } from '@/constants/iframe';
 
 const MenuTab = ({
   isSelected,
@@ -113,34 +114,94 @@ const DescriptionSection = ({
   details?: string;
   isEmployer: 'ko' | 'en';
 }) => {
-  const [showDetailOverview, setShowDetailOverview] = useState<boolean>(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [iframeHeight, setIframeHeight] = useState<number>(0); // iframe 하위 컨텐츠 높이
 
-  const shouldTruncate = details && details.length > 255;
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (
+        event.source === iframeRef.current?.contentWindow && // 출처 확인
+        event.origin === 'null' && // srcDoc인 경우 origin이 'null'
+        event.data?.type === 'setHeight' &&
+        typeof event.data.height === 'number'
+      ) {
+        setIframeHeight(event.data.height);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
-  const displayText =
-    shouldTruncate && !showDetailOverview
-      ? `${details.slice(0, 255)}...`
-      : details;
+  const responsiveContent = useMemo(() => {
+    if (!details) return '';
+
+    return `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="UTF-8" />
+            ${IFRAME_STYLE_TAG}
+          </head>
+          <body>
+          <div>${details}</div>
+          <script>
+            // iframe 내부에서 부모(React)에게 자신의 높이를 알려주는 함수
+            function sendHeight() {
+            const content = document.documentElement
+            if (!content) return;
+
+            // 브라우저가 렌더링을 마친 다음 실행
+            requestAnimationFrame(() => {
+                const height = Math.max(
+                  content.scrollHeight,
+                  content.offsetHeight
+                );
+                window.parent.postMessage({ type: 'setHeight', height }, '*');
+              });
+            }
+
+            window.addEventListener('load', sendHeight);
+            window.addEventListener('DOMContentLoaded', sendHeight);
+
+            // 콘텐츠가 동적으로 변경되는 경우를 감지하기 위해 MutationObserver 사용
+            const observer = new MutationObserver(() => {
+              sendHeight();
+            });
+
+            // 관찰 대상: body 내부의 모든 자식 요소 변화 감지
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true,
+              characterData: true,
+            });
+          </script>
+          </body>
+        </html>
+      `;
+  }, [details]);
+
+  // iframe 사용
+  const renderWithIframe = useCallback(() => {
+    if (!responsiveContent) return <></>;
+
+    return (
+      <iframe
+        ref={iframeRef}
+        className="w-full border-0"
+        srcDoc={responsiveContent}
+        title="HTML Content"
+        sandbox="allow-scripts"
+        style={{ height: `${iframeHeight}px` }}
+      />
+    );
+  }, [responsiveContent, iframeHeight]);
 
   return (
     <article className="w-full px-4 py-6 bg-surface-base">
       <h3 className="pb-5 heading-18-semibold text-text-strong">
         {careerDetailTranslation.description[isEmployer]}
       </h3>
-      <div className="flex flex-col gap-3 w-full">
-        <p className="text-text-strong body-14-regular whitespace-pre-wrap break-all">
-          {displayText}
-        </p>
-
-        {shouldTruncate && !showDetailOverview && (
-          <button
-            onClick={() => setShowDetailOverview(true)}
-            className="w-full py-3 px-[0.625rem] border border-border-disabled rounded-[0.625rem]"
-          >
-            {postTranslation.seeMore[isEmployer]}
-          </button>
-        )}
-      </div>
+      <div className="w-full">{renderWithIframe()}</div>
     </article>
   );
 };

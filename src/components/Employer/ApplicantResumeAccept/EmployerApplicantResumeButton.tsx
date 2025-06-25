@@ -30,7 +30,6 @@ const EmployerApplicantResumeButton = () => {
           bgColor="bg-surface-secondary"
           fontColor="text-text-normal"
           title="거절"
-          isBorder={false}
           onClick={() => onClickAcceptButton(false)}
         />
         <Button
@@ -38,7 +37,6 @@ const EmployerApplicantResumeButton = () => {
           bgColor="bg-surface-primary"
           fontColor="text-text-normal"
           title="수락"
-          isBorder={false}
           onClick={() => onClickAcceptButton(true)}
         />
       </div>

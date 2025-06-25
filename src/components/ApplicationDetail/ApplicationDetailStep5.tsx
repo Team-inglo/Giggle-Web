@@ -17,7 +17,6 @@ const ApplicationDetailStep5 = () => {
           type={buttonTypeKeys.LARGE}
           bgColor={'bg-primary-normal'}
           fontColor="text-surface-invert"
-          isBorder={false}
           title="Apply through HiKorea"
           onClick={() => setIsShowBottomSheet(true)}
         />
@@ -25,7 +24,6 @@ const ApplicationDetailStep5 = () => {
           type={buttonTypeKeys.APPLY}
           bgColor={'bg-primary-neutral'}
           fontColor="text-surface-invert"
-          isBorder={false}
           title="Check the application documents"
           onClick={() =>
             navigate(`/application-documents/${id}`, {

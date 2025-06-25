@@ -138,7 +138,6 @@ const EducationPage = () => {
                   bgColor="bg-surface-secondary"
                   fontColor="text-text-normal"
                   title="Reset"
-                  isBorder={false}
                   onClick={isValid ? handleReset : undefined}
                 />
                 <Button
@@ -150,7 +149,6 @@ const EducationPage = () => {
                     isValid ? 'text-text-normal' : 'text-text-disabled'
                   }
                   title="Save"
-                  isBorder={false}
                   onClick={isValid ? handleSubmit : undefined}
                 />
               </div>
@@ -162,7 +160,6 @@ const EducationPage = () => {
                 }
                 fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
                 title="Save"
-                isBorder={false}
                 onClick={isValid ? handleSubmit : undefined}
               />
             )}

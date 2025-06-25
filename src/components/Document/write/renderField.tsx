@@ -86,7 +86,7 @@ export const RenderField = <
               <div className="w-full flex flex-col items-start justify-start">
                 <div className="w-full flex flex-col items-center justify-start">
                   <textarea
-                    className={`w-full ${field.textareaHeight} px-[1rem] py-[0.75rem] border border-border-alternative rounded-[0.75rem] body-14-regular outline-none resize-none`}
+                    className={`w-full ${field.textareaHeight} px-4 py-[0.875rem] border-[0.05rem] border-border-assistive rounded-[0.625rem] body-16-medium outline-none resize-none`}
                     placeholder={field.placeholder}
                     value={value as string}
                     onChange={onChange}

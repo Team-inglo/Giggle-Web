@@ -12,11 +12,7 @@ import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 
-const Step1 = ({
-  onNext,
-}: {
-  onNext: () => void;
-}) => {
+const Step1 = ({ onNext }: { onNext: () => void }) => {
   const validatePostInfo = (data: JobPostingForm) => {
     const {
       body: { title, job_category, work_day_times, hourly_rate, work_period },
@@ -45,7 +41,7 @@ const Step1 = ({
     <div className="w-full py-6 flex flex-col">
       <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
         {PostFormFields.step1.map((field) => (
-          <InputLayout key={field.name} title={field.title} isEssential>
+          <InputLayout key={field.name} title={field.title}>
             {renderFormField(field)}
           </InputLayout>
         ))}
@@ -57,7 +53,7 @@ const Step1 = ({
           validationFn={validatePostInfo}
           onClick={() => onNext()}
         >
-          <Button type="large" isBorder={false} title="다음" />
+          <Button type="large" title="다음" />
         </ValidatedSubmitButton>
       </BottomButtonPanel>
     </div>

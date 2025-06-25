@@ -68,7 +68,6 @@ const PostWorkExperiencePage = () => {
             bgColor={isEditing ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
             fontColor={isEditing ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
             title="Save"
-            isBorder={false}
             onClick={isEditing ? handleSubmit : undefined}
           />
         </div>

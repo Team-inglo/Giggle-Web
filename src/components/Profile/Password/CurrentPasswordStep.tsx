@@ -50,7 +50,6 @@ const CurrentPasswordStep = ({
           </p>
         </div>
         <InputLayout
-          isEssential
           title={
             profileTranslation.currentPassword[
               isEmployerByAccountType(account_type)
@@ -85,7 +84,6 @@ const CurrentPasswordStep = ({
               fontColor={
                 password?.length > 0 ? 'text-text-normal' : 'text-text-disabled'
               }
-              isBorder={false}
               title={
                 signInputTranclation.continue[
                   isEmployerByAccountType(account_type)

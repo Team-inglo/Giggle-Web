@@ -49,7 +49,6 @@ const PostDetailConfirmBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-[#FEF387]"
           fontColor="text-[#1E1926]"
-          isBorder={false}
           title="Check other announcements"
           onClick={() => navigate('/search')}
         />
@@ -57,7 +56,6 @@ const PostDetailConfirmBottomSheet = ({
           type={buttonTypeKeys.LARGE}
           bgColor="bg-[#FEF387]"
           fontColor="text-[#1E1926]"
-          isBorder={false}
           title="Proceed with Application"
           onClick={() => navigate(`/post/apply/${id}`)}
         />

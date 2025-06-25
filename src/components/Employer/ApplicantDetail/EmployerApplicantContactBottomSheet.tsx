@@ -74,7 +74,6 @@ const EmployerApplicantContactBottomSheet = ({
           bgColor={'bg-primary-normal'}
           fontColor="text-surface-invert"
           title={'이미 면접을 완료했어요'}
-          isBorder={false}
           onClick={onClickComplete}
         />
         <Button
@@ -82,7 +81,6 @@ const EmployerApplicantContactBottomSheet = ({
           bgColor={'bg-primary-neutral'}
           fontColor="text-surface-invert"
           title={'나중에 할게요'}
-          isBorder={false}
           onClick={() => setIsShowBottomSheet(false)}
         />
       </footer>

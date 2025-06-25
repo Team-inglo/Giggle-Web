@@ -12,7 +12,6 @@ const ApplicationDetailStep6 = () => {
         type={buttonTypeKeys.LARGE}
         bgColor={'bg-primary-normal'}
         fontColor="text-surface-invert"
-        isBorder={false}
         title="Register the results"
         onClick={() => navigate(`/application/result/${id}`)}
       />
@@ -20,7 +19,6 @@ const ApplicationDetailStep6 = () => {
         type={buttonTypeKeys.APPLY}
         bgColor={'bg-primary-neutral'}
         fontColor="text-surface-invert"
-        isBorder={false}
         title="Check the application documents"
         onClick={() =>
           navigate(`/application-documents/${id}`, {

@@ -141,7 +141,6 @@ const AgreeModalInner = ({
         fontColor={
           essentialAgreeList.slice(0, 3).includes(false) ? '' : 'text-[#222]'
         }
-        isBorder={false}
         title="Agree"
         onClick={
           essentialAgreeList.slice(0, 3).includes(false)

@@ -108,7 +108,6 @@ const PatchWorkExperiencePage = () => {
             bgColor="bg-surface-secondary"
             fontColor="text-text-normal"
             title="Reset"
-            isBorder={false}
             onClick={handleReset}
           />
           {/* patch 버튼 */}
@@ -117,7 +116,6 @@ const PatchWorkExperiencePage = () => {
             bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
             fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
             title="Save"
-            isBorder={false}
             onClick={isValid ? handleSubmit : undefined}
           />
         </div>

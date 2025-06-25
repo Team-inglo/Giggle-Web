@@ -99,7 +99,6 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
             bgColor="bg-surface-secondary"
             fontColor="text-text-strong"
             title={'초기화'}
-            isBorder={false}
             onClick={handleReset}
           />
           <Button
@@ -107,7 +106,6 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
             bgColor="bg-surface-primary"
             fontColor="text-text-strong"
             title={'적용하기'}
-            isBorder={false}
             onClick={handleSubmit}
           />
         </div>

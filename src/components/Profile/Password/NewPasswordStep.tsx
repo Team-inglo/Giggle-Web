@@ -61,7 +61,6 @@ const NewPasswordStep = ({
         </div>
         <div className="flex flex-col gap-4">
           <InputLayout
-            isEssential
             title={
               profileTranslation.newPassword[
                 isEmployerByAccountType(account_type)
@@ -84,7 +83,6 @@ const NewPasswordStep = ({
             )}
           </InputLayout>
           <InputLayout
-            isEssential
             title={
               profileTranslation.confirmPassword[
                 isEmployerByAccountType(account_type)
@@ -119,7 +117,6 @@ const NewPasswordStep = ({
               type="large"
               bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
               fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              isBorder={false}
               title={
                 signInputTranclation.continue[
                   isEmployerByAccountType(account_type)

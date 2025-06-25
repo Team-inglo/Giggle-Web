@@ -29,7 +29,7 @@ const LanguageStep = ({ onNext }: LanguageStepProps) => {
       </div>
       <div className="w-full flex flex-col gap-[1.125rem] px-4">
         {/* 언어 선택 작성 */}
-        <InputLayout title="Language" isEssential={true}>
+        <InputLayout title="Language">
           <Dropdown
             value={language}
             placeholder="Select Language"
@@ -44,7 +44,6 @@ const LanguageStep = ({ onNext }: LanguageStepProps) => {
           type="large"
           bgColor={language === '' ? 'bg-[#F4F4F9]' : 'bg-[#fef387]'}
           fontColor={language === '' ? '' : 'text-[#222]'}
-          isBorder={false}
           title="Next"
           onClick={
             language === ''

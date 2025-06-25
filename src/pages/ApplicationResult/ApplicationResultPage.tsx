@@ -64,7 +64,7 @@ const ApplicationResultPage = () => {
             Share your experience
           </h3>
           <textarea
-            className="min-h-24 w-full px-4 py-3 border border-border-alternative rounded body-14-regular focus:outline-none resize-none"
+            className="min-h-24 w-full px-4 py-[0.875rem] border-[0.05rem] border-border-assistive rounded-[0.625rem] body-16-medium focus:outline-none resize-none"
             placeholder="Was the process smooth? Any challenges? 💬"
             value={feedback}
             onChange={(e) =>
@@ -79,7 +79,6 @@ const ApplicationResultPage = () => {
           bgColor={'bg-primary-normal'}
           fontColor="text-surface-invert"
           title="Submit result"
-          isBorder={false}
           onClick={onClickRegistration}
         />
       </BottomButtonPanel>
