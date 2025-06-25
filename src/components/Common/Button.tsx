@@ -1,7 +1,11 @@
 import ScrapIcon from '@/assets/icons/Scrap.svg?react';
-import { ButtonSize, buttonTypeKeys, buttonTypeUnion } from '@/constants/components';
+import {
+  ButtonSize,
+  buttonTypeKeys,
+  buttonTypeUnion,
+} from '@/constants/components';
 import { ReactNode, useState } from 'react';
-import PressOverlay from './PressedOverlay';
+import PressOverlay, { PressStrength } from './PressedOverlay';
 import { motion } from 'framer-motion';
 
 type ButtonProps = {
@@ -44,6 +48,20 @@ const Button = ({
   // 사용자의 클릭/터치 상호작용 종료 시 '눌림' 상태를 비활성화
   const handlePressEnd = () => {
     setIsPressed(false);
+  };
+
+  // 버튼 타입에 따라 다른 강도의 시각적 피드백을 주기 위해 투명도를 매핑
+  const getPressStrength = (): PressStrength => {
+    switch (type) {
+      case buttonTypeKeys.PRIMARY:
+        return PressOverlay.pressStrengthKeys.STRONG;
+      case buttonTypeKeys.NEUTRAL:
+        return PressOverlay.pressStrengthKeys.NORMAL;
+      case buttonTypeKeys.TERTIARY:
+        return PressOverlay.pressStrengthKeys.LIGHT;
+      default:
+        return PressOverlay.pressStrengthKeys.LIGHT;
+    }
   };
 
   const baseButtonStyle =
@@ -122,7 +140,7 @@ const Button = ({
       >
         {/* SCRAP 타입은 아이콘을, 그 외에는 children 또는 title을 렌더링 */}
         {type === buttonTypeKeys.SCRAP ? <ScrapIcon /> : children || title}
-        <PressOverlay isPressed={isPressed} buttonType={type} />
+        <PressOverlay isPressed={isPressed} strength={getPressStrength()} />
       </motion.button>
     </>
   );
