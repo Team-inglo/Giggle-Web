@@ -1,11 +1,13 @@
 import ScrapIcon from '@/assets/icons/Scrap.svg?react';
-import { buttonTypeKeys, buttonTypeUnion } from '@/constants/components';
+import { ButtonSize, buttonTypeKeys, buttonTypeUnion } from '@/constants/components';
 import { ReactNode, useState } from 'react';
 import PressOverlay from './PressedOverlay';
+import { motion } from 'framer-motion';
 
 type ButtonProps = {
   type: buttonTypeUnion; // 버튼의 시맨틱 타입 (e.g., PRIMARY, NEUTRAL, DISABLED)
-  size?: 'md' | 'lg'; // 버튼의 크기 (md, lg), 지정하지 않으면 type에 따른 기본 스타일 적용
+  size?: ButtonSize; // 버튼의 크기 (md, lg), 지정하지 않으면 type에 따른 기본 스타일 적용
+  isFullWidth?: boolean; // 버튼의 너비를 100%로 설정할지 여부
   bgColor?: string; // 버튼의 배경색 (optional)
   fontColor?: string; // 버튼 글자색 (optional)
   title?: string; // 버튼에 포함되는 글자 (optional)
@@ -16,6 +18,7 @@ type ButtonProps = {
 const Button = ({
   type,
   size,
+  isFullWidth,
   bgColor,
   fontColor,
   title,
@@ -23,6 +26,8 @@ const Button = ({
   children,
 }: ButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
+  const isDisabled =
+    type !== buttonTypeKeys.DISABLED && type !== buttonTypeKeys.INACTIVE;
 
   // DISABLED, INACTIVE 상태에서는 onClick 이벤트가 발생하지 않도록 막는 핸들러
   const handleClick = () => {
@@ -42,7 +47,7 @@ const Button = ({
   };
 
   const baseButtonStyle =
-    'flex justify-center items-center relative transition-transform duration-150 ease-in-out';
+    'flex justify-center items-center relative overflow-hidden';
 
   const getButtonStyle = () => {
     switch (type) {
@@ -78,20 +83,35 @@ const Button = ({
   const getButtonStyleBySize = () => {
     switch (size) {
       case 'md':
-        return 'w-full px-4 py-3 rounded-xl button-14-semibold';
+        return 'px-4 py-3 rounded-xl button-14-semibold';
       case 'lg':
-        return 'w-full px-5 py-4 rounded-xl button-16-semibold';
+        return 'px-5 py-4 rounded-xl button-16-semibold';
     }
   };
 
   return (
     <>
-      <button
+      <motion.button
         className={`${
           size && getButtonStyleBySize()
         } ${baseButtonStyle} ${getButtonStyle()} ${bgColor} ${fontColor} ${
-          isPressed ? 'scale-95' : ''
+          isFullWidth ? 'w-full' : ''
         }`}
+        initial={{
+          scale: 1,
+        }}
+        animate={{
+          scale: isPressed ? 0.95 : 1,
+        }}
+        transition={
+          isDisabled
+            ? undefined
+            : {
+                type: 'spring',
+                stiffness: 400,
+                damping: 20,
+              }
+        }
         onClick={handleClick}
         onTouchStart={handlePressStart}
         onTouchEnd={handlePressEnd}
@@ -103,9 +123,12 @@ const Button = ({
         {/* SCRAP 타입은 아이콘을, 그 외에는 children 또는 title을 렌더링 */}
         {type === buttonTypeKeys.SCRAP ? <ScrapIcon /> : children || title}
         <PressOverlay isPressed={isPressed} buttonType={type} />
-      </button>
+      </motion.button>
     </>
   );
 };
+
+Button.Type = buttonTypeKeys;
+Button.Size = ButtonSize;
 
 export default Button;

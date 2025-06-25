@@ -16,3 +16,8 @@ export const buttonTypeKeys = {
 
 export type buttonTypeUnion =
   (typeof buttonTypeKeys)[keyof typeof buttonTypeKeys];
+
+export enum ButtonSize {
+  MD = 'md',
+  LG = 'lg',
+}
