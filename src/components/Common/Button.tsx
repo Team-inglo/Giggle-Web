@@ -52,7 +52,7 @@ const Button = ({
   const getButtonStyle = () => {
     switch (type) {
       case buttonTypeKeys.LARGE:
-        return 'py-4 rounded-xl button-16-semibold';
+        return 'w-full py-4 rounded-xl button-16-semibold';
       case buttonTypeKeys.SMALL:
         return 'w-[24vw] py-3 rounded-lg button-14-semibold';
       case buttonTypeKeys.APPLY:
