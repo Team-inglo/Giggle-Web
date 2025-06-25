@@ -31,18 +31,16 @@ const Button = ({
 }: ButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const isDisabled =
-    type !== buttonTypeKeys.DISABLED && type !== buttonTypeKeys.INACTIVE;
+    type === buttonTypeKeys.DISABLED || type === buttonTypeKeys.INACTIVE;
 
   // DISABLED, INACTIVE 상태에서는 onClick 이벤트가 발생하지 않도록 막는 핸들러
   const handleClick = () => {
-    if (type !== buttonTypeKeys.DISABLED && type !== buttonTypeKeys.INACTIVE)
-      onClick?.();
+    if (!isDisabled) onClick?.();
   };
 
   // 클릭/터치 상호작용 시작 시 '눌림' 상태를 활성화 (DISABLED, INACTIVE 상태에서는 제외)
   const handlePressStart = () => {
-    if (type !== buttonTypeKeys.DISABLED && type !== buttonTypeKeys.INACTIVE)
-      setIsPressed(true);
+    if (!isDisabled) setIsPressed(true);
   };
 
   // 사용자의 클릭/터치 상호작용 종료 시 '눌림' 상태를 비활성화
