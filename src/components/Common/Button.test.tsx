@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Button from './Button';
 import { buttonTypeKeys } from '@/constants/components';
@@ -70,20 +70,25 @@ describe('Button', () => {
     ];
 
     test.each(interactiveTypes)(
-      'disabled 또는 inactive 타입이 아닌 버튼은 클릭/터치 시 scale이 변화하고 PressedLayout이 나타나야 한다.',
-      (type) => {
+      'disabled 또는 inactive 타입이 아닌 버튼은 클릭/터치 시 style.transform scale이 변화해야 한다.',
+      async (type) => {
         render(<Button type={type} title={type} />);
         const button = screen.getByRole('button', { name: type });
 
-        // PressedOverlay는 isPressed와 getOpacity() 결과에 따라 opacity가 결정
-        // 여기서는 scale 변화로 상호작용을 검증
-        expect(button).not.toHaveClass('scale-95');
+        // 초기 상태에는 transform이 적용되지 않음 (framer-motion 최적화)
+        expect(button).toHaveStyle('transform: none');
 
         fireEvent.mouseDown(button);
-        expect(button).toHaveClass('scale-95');
+        // 눌렸을 때 scale(0.95)로 변경될 때까지 기다림
+        await waitFor(() => {
+          expect(button).toHaveStyle('transform: scale(0.95)');
+        });
 
         fireEvent.mouseUp(button);
-        expect(button).not.toHaveClass('scale-95');
+        // 떼었을 때 다시 초기 상태로 복귀할 때까지 기다림
+        await waitFor(() => {
+          expect(button).toHaveStyle('transform: none');
+        });
       },
     );
 
@@ -93,15 +98,16 @@ describe('Button', () => {
     ];
 
     test.each(nonInteractiveTypes)(
-      'disabled 또는 inactive 타입 버튼은 클릭/터치해도 scale이 변화하지 않아야 한다.',
+      'disabled 또는 inactive 타입 버튼은 클릭/터치해도 style.transform scale이 변화하지 않아야 한다.',
       (type) => {
         render(<Button type={type} title={type} />);
         const button = screen.getByRole('button', { name: type });
 
-        expect(button).not.toHaveClass('scale-95');
+        // 비활성 버튼은 항상 transform: none 상태를 유지
+        expect(button).toHaveStyle('transform: none');
 
         fireEvent.mouseDown(button);
-        expect(button).not.toHaveClass('scale-95');
+        expect(button).toHaveStyle('transform: none');
       },
     );
 
