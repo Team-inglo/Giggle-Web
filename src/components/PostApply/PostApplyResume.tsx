@@ -134,7 +134,7 @@ const PostApplyResume = () => {
               size={ButtonText.Size.SM}
               variant={ButtonText.Variant.ALTERNATIVE}
               text="Edit"
-              onClick={() => navigateToSection('/resume/language/add')}
+              onClick={() => navigateToSection('/resume/language/edit')}
             />
           }
         />
