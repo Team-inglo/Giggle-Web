@@ -43,7 +43,7 @@ const PressOverlay = ({
         absolute inset-x-[-24%] inset-y-0
         pointer-events-none
         transition-opacity duration-150
-        bg-neutral-700
+        ${color ? `bg-${color}` : 'bg-neutral-700'}
         w-[calc(100%+48%)]
         h-full
         ${className}
@@ -51,7 +51,6 @@ const PressOverlay = ({
       style={{
         opacity: isPressed ? getOpacity() : 0,
         borderRadius: borderRadius,
-        ...(color && { backgroundColor: color }), // color prop이 있으면 배경색을 오버라이드
       }}
     />
   );
