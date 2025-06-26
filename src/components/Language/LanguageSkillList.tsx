@@ -9,31 +9,31 @@ type LanguageSkillListProps = {
   data: LanguageSummaryType;
 };
 
+const languageSkills = [
+  { key: 'topik_level', title: 'TOPIK', maxLevel: 6 },
+  {
+    key: 'social_integration_level',
+    title: 'Social Integration Program',
+    maxLevel: 5,
+  },
+  { key: 'sejong_institute', title: 'Sejong Institute', maxLevel: 6 },
+];
+
 const LanguageSkillList = ({ data }: LanguageSkillListProps) => {
   const navigate = useNavigate();
   return (
     <>
       <div className="flex flex-col px-4 gap-4">
-        {data?.topik_level !== 0 && (
-          <LanguageSkillCard
-            title="TOPIK"
-            level={data.topik_level}
-            maxLevel={6}
-          />
-        )}
-        {data?.social_integration_level !== 0 && (
-          <LanguageSkillCard
-            title="Social Integration Program"
-            level={data.social_integration_level}
-            maxLevel={5}
-          />
-        )}
-        {data?.sejong_institute !== 0 && (
-          <LanguageSkillCard
-            title="Sejong Institute"
-            level={data.sejong_institute}
-            maxLevel={6}
-          />
+        {languageSkills.map(
+          (skill) =>
+            data[skill.key as keyof LanguageSummaryType] !== 0 && (
+              <LanguageSkillCard
+                key={skill.key}
+                title={skill.title}
+                level={data[skill.key as keyof LanguageSummaryType] as number}
+                maxLevel={skill.maxLevel}
+              />
+            ),
         )}
         {data?.additional_language?.length > 0 &&
           data?.additional_language.map((lang) => (
