@@ -14,17 +14,23 @@ const LanguageManageDetail = ({ data }: LanguageManageDetailProps) => {
   return (
     <>
       <div className="flex flex-col divide-y divide-surface-secondary">
-        <LanguageCard title="TOPIK" level={data.topik} maxLevel={6} />
-        <LanguageCard
-          title={profileTranslation.socialIntegration[isEmployer(pathname)]}
-          level={data.social_integration}
-          maxLevel={5}
-        />
-        <LanguageCard
-          title={profileTranslation.sejongInstitute[isEmployer(pathname)]}
-          level={data.sejong_institute}
-          maxLevel={6}
-        />
+        {data.topik !== 0 && (
+          <LanguageCard title="TOPIK" level={data.topik} maxLevel={6} />
+        )}
+        {data.social_integration !== 0 && (
+          <LanguageCard
+            title={profileTranslation.socialIntegration[isEmployer(pathname)]}
+            level={data.social_integration}
+            maxLevel={5}
+          />
+        )}
+        {data.sejong_institute !== 0 && (
+          <LanguageCard
+            title={profileTranslation.sejongInstitute[isEmployer(pathname)]}
+            level={data.sejong_institute}
+            maxLevel={6}
+          />
+        )}
         {data.etc.length > 0 &&
           data.etc.map((lang) => (
             <EtcLanguageCard

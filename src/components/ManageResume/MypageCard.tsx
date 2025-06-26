@@ -44,6 +44,14 @@ const MypageCard = ({
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
   const { account_type } = useUserStore();
+
+  // 각 언어 레벨이 모두 0, 기타 언어가 없으면 언어 카드 렌더링 안 함
+  const isValidLanguageData =
+    languageData?.topik !== 0 ||
+    languageData?.social_integration !== 0 ||
+    languageData?.sejong_institute !== 0 ||
+    languageData?.etc.length > 0;
+
   // '+' 버튼을 눌렀을 떄 이동되는 경로와 아이콘을 매칭
   const iconAndPath = {
     [ManageResumeType.VISA]: { path: '' },
@@ -105,7 +113,7 @@ const MypageCard = ({
       title: profileTranslation.education[isEmployer(pathname)],
     },
     [ManageResumeType.LANGUAGE]: {
-      isValidRender: () => !!languageData,
+      isValidRender: () => isValidLanguageData,
       component: () => <LanguageManageDetail data={languageData!} />,
       title: profileTranslation.languages[isEmployer(pathname)],
     },
