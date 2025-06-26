@@ -8,7 +8,9 @@ import EtcLevelSection from '@/components/Language/EtcLevelSection';
 import { LanguageList } from '@/constants/language_data';
 import { usePostEtcLanguageLevel } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
+import { LanguageProficiencyLevel } from '@/types/api/resumes';
 import { EtcLanguageData } from '@/types/manageResume/manageResume';
+import { getLanguageProficiencyLevelEnumFromEn } from '@/utils/resume';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 // 초기 값
@@ -34,7 +36,12 @@ const PostLanguagePage = () => {
   const { mutate } = usePostEtcLanguageLevel();
   const handleSubmit = () => {
     // API - 7.7 언어 - ETC 생성하기
-    mutate({ language_name: selectedLanguage.language, level: Number(level) });
+    mutate({
+      language_name: selectedLanguage.language,
+      level: getLanguageProficiencyLevelEnumFromEn(
+        level,
+      ) as LanguageProficiencyLevel,
+    });
   };
 
   return (
