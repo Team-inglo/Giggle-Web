@@ -14,6 +14,7 @@ import {
 } from '@/utils/resume';
 import LevelBottomSheet from '@/components/Language/LevelBottomSheet';
 import { getLanguageProficiencyLevelKoFromEnum } from '../../utils/resume';
+import { useLocation } from 'react-router-dom';
 
 type EtcLanguageCardProps = {
   title: string;
@@ -21,11 +22,12 @@ type EtcLanguageCardProps = {
   etcLanguageId: number;
 };
 
-const EtcLanguageCard = ({
+const EtcLanguageSkillCard = ({
   title,
   level,
   etcLanguageId,
 }: EtcLanguageCardProps) => {
+  const { pathname } = useLocation();
   const { account_type } = useUserStore();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
@@ -77,17 +79,23 @@ const EtcLanguageCard = ({
       )}
       <div className="flex justify-between items-center w-full py-4">
         <section className="flex gap-2 items-center">
-          <h5 className="pb-[0.125rem] button-14-semibold text-text-strong">
+          <h5
+            className={`${
+              pathname === '/resume/language/edit'
+                ? 'button-14-semibold'
+                : 'heading-18-semibold'
+            } pb-[0.125rem]  text-text-strong`}
+          >
             {title}
           </h5>
-          <div className="px-1.5 py-0.5 rounded-sm text-status-blue-300 bg-status-blue-100 caption-11-semibold">
+          <div className="px-1.5 py-0.5 rounded-md text-status-blue-300 bg-status-blue-100 caption-12-semibold">
             {account_type === UserType.OWNER
               ? getLanguageProficiencyLevelKoFromEnum(level)
               : getLanguageProficiencyLevelEnFromEnum(level)}
           </div>
         </section>
         <div className="flex items-center gap-2">
-          {account_type === UserType.USER && (
+          {pathname === '/resume/language/edit' && (
             <div className="flex justify-center items-center">
               <MenuIcon
                 onClick={() => setModalOpen(true)}
@@ -101,4 +109,4 @@ const EtcLanguageCard = ({
   );
 };
 
-export default EtcLanguageCard;
+export default EtcLanguageSkillCard;
