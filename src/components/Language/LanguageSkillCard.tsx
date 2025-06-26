@@ -18,6 +18,7 @@ const LanguageSkillCard = ({
   level,
   maxLevel,
 }: LanguageSkillCardProps) => {
+  const LEVEL_NOT_ENTERED = 0;
   const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(level);
 
@@ -87,11 +88,11 @@ const LanguageSkillCard = ({
           </h5>
           {/* TODO: 언어 레벨 표시, Badge 컴포넌트 완성되는대로 수정 */}
           <div className="px-1.5 py-0.5 rounded-md text-status-blue-300 bg-status-blue-100 caption-12-semibold">
-            {level !== 0 && `LEVEL ${level}`}
+            {level !== LEVEL_NOT_ENTERED && `LEVEL ${level}`}
           </div>
         </section>
         <div className="flex items-center gap-2">
-          {level == 0 ? (
+          {level === LEVEL_NOT_ENTERED ? (
             <div className="flex justify-center items-center">
               <Button
                 type={Button.Type.NEUTRAL}
