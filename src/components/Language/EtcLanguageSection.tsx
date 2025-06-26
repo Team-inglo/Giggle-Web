@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import EtcLanguageCard from '@/components/Language/EtcLanguageCard';
 import Input from '@/components/Common/Input';
 import { InputType } from '@/types/common/input';
 import { EtcLanguageData } from '@/types/manageResume/manageResume';
+import LanguageSelectCard from '@/components/Language/LanguageSelectCard';
 
 type EtcLanguageSectionProps = {
   languageList: EtcLanguageData[];
@@ -37,14 +37,15 @@ const EtcLanguageSection = ({
       />
       <div className="mt-6 flex flex-col gap-3">
         {/* 검색된 언어 리스트 */}
-        {search.length > 0 && filteredLanguages.map((language) => (
-          <EtcLanguageCard
-            key={language.id}
-            language={language}
-            setSelectedLanguage={setSelectedLanguage}
-            isSelected={selectedLanguage.id === language.id}
-          />
-        ))}
+        {search.length > 0 &&
+          filteredLanguages.map((language) => (
+            <LanguageSelectCard
+              key={language.id}
+              language={language}
+              setSelectedLanguage={setSelectedLanguage}
+              isSelected={selectedLanguage.id === language.id}
+            />
+          ))}
       </div>
     </>
   );

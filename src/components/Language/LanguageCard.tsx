@@ -2,65 +2,40 @@ import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import { useState } from 'react';
 import Button from '@/components/Common/Button';
-import {
-  useDeleteEtcLanguageLevel,
-  usePatchEtcLanguageLevel,
-  usePatchLanguagesLevel,
-} from '@/hooks/api/useResume';
-import NumberRadioButton from '@/components/Language/NumberRadioButton';
+import { usePatchLanguagesLevel } from '@/hooks/api/useResume';
 import { LanguagesLevelType } from '@/types/api/resumes';
-import ResumeDeleteModal from '@/components/ManageResume/ResumeDeleteModal';
 import { profileTranslation } from '@/constants/translation';
 import { useLocation } from 'react-router-dom';
 import { isEmployer } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
+import Icon from '@/components/Common/Icon';
+import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 
 type LanguageCardProps = {
   title: string;
   level: number;
-  etcLanguageId?: number;
   maxLevel: number;
 };
 
-const LanguageCard = ({
-  title,
-  level,
-  etcLanguageId,
-  maxLevel,
-}: LanguageCardProps) => {
+const LanguageCard = ({ title, level, maxLevel }: LanguageCardProps) => {
   const pathname = useLocation().pathname;
   const { account_type } = useUserStore();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(level);
 
-  const { mutate: deleteEtcLanguage } = useDeleteEtcLanguageLevel();
   const { mutate: patchLanguagesLevel } = usePatchLanguagesLevel();
-  const { mutate: patchEtcLanguageLevel } = usePatchEtcLanguageLevel();
 
   const handleLevelChange = () => {
-    // 기타 언어 수정
-    if (etcLanguageId) {
-      patchEtcLanguageLevel({
-        id: etcLanguageId,
-        data: {
-          language_name: title,
-          level: selectedLevel,
-        },
-      });
-    }
-    // 기본 언어 수정
-    else {
-      const formattedTitle = title.toLowerCase().replace(/\s+/g, '-');
-      patchLanguagesLevel({
-        type:
-          formattedTitle === 'social-integration'
-            ? 'social-integration-program'
-            : (formattedTitle as LanguagesLevelType),
-        level: selectedLevel,
-      });
-    }
+    const formattedTitle = title.toLowerCase().replace(/\s+/g, '-');
+    patchLanguagesLevel({
+      type:
+        formattedTitle === 'social-integration'
+          ? 'social-integration-program'
+          : (formattedTitle as LanguagesLevelType),
+      level: selectedLevel as number,
+    });
+
     setLevelBottomSheetOpen(false);
   };
 
@@ -69,19 +44,8 @@ const LanguageCard = ({
     setLevelBottomSheetOpen(true);
   };
 
-  const handleDelete = () => {
-    if (etcLanguageId) deleteEtcLanguage(etcLanguageId);
-  };
-
   return (
     <>
-      {modalOpen && (
-        <ResumeDeleteModal
-          onEditButton={openLevelBottomSheet}
-          onDeleteButton={handleDelete}
-          setIsShowBottomSheet={() => setModalOpen(false)}
-        />
-      )}
       {/* 언어 레벨 선택 바텀 시트 */}
       {levelBottomSheetOpen && (
         <BottomSheetLayout
@@ -89,24 +53,21 @@ const LanguageCard = ({
           isShowBottomsheet={true}
           setIsShowBottomSheet={setLevelBottomSheetOpen}
         >
-          <div className="heading-20-semibold text-text-strong pb-3">
+          <div className="heading-20-semibold text-text-strong pt-2 pb-3 px-1">
             Choose your {title} Grade
           </div>
-          {/* 언어 등급 선택 (0 ~ maxLevel) */}
-          <div className="w-full h-[48vh] overflow-x-scroll no-scrollbar">
-            {[...Array(maxLevel + 1).keys()].map((grade) => (
+          {/* 언어 등급 선택 (1 ~ maxLevel) */}
+          <div className="w-full h-[48vh] px-1 no-scrollbar">
+            {[...Array(maxLevel).keys()].map((grade) => (
               <div
                 key={grade}
                 className="w-full flex items-center justify-between py-3"
+                onClick={() => setSelectedLevel(grade + 1)}
               >
                 <div className="body-16-regular text-text-normal">
-                  Grade {grade}
+                  Grade {grade + 1}
                 </div>
-                <NumberRadioButton
-                  value={grade}
-                  setValue={() => setSelectedLevel(grade)}
-                  isOn={selectedLevel === grade}
-                />
+                {selectedLevel === grade + 1 && <Icon icon={CheckIcon} />}
               </div>
             ))}
           </div>
@@ -134,22 +95,14 @@ const LanguageCard = ({
           </div>
         </section>
         <div className="flex items-center gap-2">
-          {account_type === UserType.USER &&
-            (etcLanguageId ? (
-              <div className="flex justify-center items-center">
-                <MenuIcon
-                  onClick={() => setModalOpen(true)}
-                  className="cursor-pointer"
-                />
-              </div>
-            ) : (
-              <div className="flex justify-center items-center">
-                <MenuIcon
-                  onClick={openLevelBottomSheet}
-                  className="cursor-pointer"
-                />
-              </div>
-            ))}
+          {account_type === UserType.USER && (
+            <div className="flex justify-center items-center">
+              <MenuIcon
+                onClick={openLevelBottomSheet}
+                className="cursor-pointer"
+              />
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
-import Icon from '../Common/Icon';
+import Icon from '@/components/Common/Icon';
 import { languageProficiencyLevelsEn } from '@/constants/manageResume';
 
 type LevelBottomSheetProps = {
