@@ -35,7 +35,6 @@ const AddTrigger = ({
 
   const getColorStyle = (type: string) => {
     if (type === 'pressOverlay') {
-      console.log(color);
       switch (color) {
         case AddTriggerColorType.BLUE:
           return 'status-blue-200';
