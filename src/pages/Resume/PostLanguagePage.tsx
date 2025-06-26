@@ -11,7 +11,7 @@ import useNavigateBack from '@/hooks/useNavigateBack';
 import { LanguageProficiencyLevel } from '@/types/api/resumes';
 import { EtcLanguageData } from '@/types/manageResume/manageResume';
 import { getLanguageProficiencyLevelEnumFromEn } from '@/utils/resume';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 
 // 초기 값
 const initialLanguage = {
@@ -76,10 +76,7 @@ const PostLanguagePage = () => {
                 canDelete={false}
               />
             </div>
-            <EtcLevelSection
-              level={level}
-              setLevel={setLevel as unknown as Dispatch<SetStateAction<string>>}
-            />
+            <EtcLevelSection level={level} setLevel={setLevel} />
           </>
         )}
       </div>
