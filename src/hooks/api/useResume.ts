@@ -71,7 +71,7 @@ export const useGetEducation = (id: string) => {
 // 7.4 (유학생) 언어 요약 조회하기
 export const useGetLanguageSummary = () => {
   return useQuery({
-    queryKey: ['languageSummary'],
+    queryKey: ['resume', 'languageSummary'],
     queryFn: getLanguageSummary,
   });
 };
