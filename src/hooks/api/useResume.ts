@@ -134,7 +134,7 @@ export const usePostEtcLanguageLevel = () => {
   return useMutation({
     mutationFn: postEtcLanguageLevel,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/manage-resume');
+      smartNavigate(navigate, '/profile/language/edit', { forceSkip: true });
     },
     onError: (error) => {
       alert('이미 존재하는 언어입니다');
@@ -149,7 +149,7 @@ export const usePatchIntroduction = () => {
   return useMutation({
     mutationFn: patchIntroduction,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/manage-resume');
+      smartNavigate(navigate, '/profile/manage-resume', { forceSkip: true });
     },
     onError: (error) => {
       console.error('자기소개 작성 실패', error);
