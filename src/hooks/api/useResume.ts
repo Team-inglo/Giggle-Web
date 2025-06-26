@@ -5,6 +5,7 @@ import {
   deleteWorkExperience,
   getEducation,
   getEmployeeResumeList,
+  getLanguageSummary,
   getResume,
   getResumeDetail,
   getSearchSchools,
@@ -64,6 +65,14 @@ export const useGetEducation = (id: string) => {
     queryKey: ['education', id],
     queryFn: () => getEducation(id),
     enabled: !!id,
+  });
+};
+
+// 7.4 (유학생) 언어 요약 조회하기
+export const useGetLanguageSummary = () => {
+  return useQuery({
+    queryKey: ['languageSummary'],
+    queryFn: getLanguageSummary,
   });
 };
 

@@ -1,5 +1,5 @@
 import { EmploymentType, JobCategory } from '@/types/postCreate/postCreate';
-import { LanguageProficiencyLevel} from '@/types/api/resumes';
+import { LanguageProficiencyLevel } from '@/types/api/resumes';
 
 export type IntroductionType = {
   title: string;
@@ -39,6 +39,13 @@ export type LanguageListType = {
   social_integration: number;
   sejong_institute: number;
   etc: LanguageType[];
+};
+
+export type LanguageSummaryType = {
+  topik_level: number;
+  social_integration_level: number;
+  sejong_institute: number;
+  additional_language: LanguageType[];
 };
 
 export type PersonalInformationType = {
