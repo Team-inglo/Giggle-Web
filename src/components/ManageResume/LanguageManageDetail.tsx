@@ -3,6 +3,7 @@ import LanguageCard from '@/components/Language/LanguageCard';
 import { useLocation } from 'react-router-dom';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
+import EtcLanguageCard from '../Language/EtcLanguageCard';
 
 type LanguageManageDetailProps = {
   data: LanguageListType;
@@ -26,12 +27,11 @@ const LanguageManageDetail = ({ data }: LanguageManageDetailProps) => {
         />
         {data.etc.length > 0 &&
           data.etc.map((lang) => (
-            <LanguageCard
+            <EtcLanguageCard
               key={lang.id}
               title={lang.language_name}
               level={lang.level}
               etcLanguageId={lang.id}
-              maxLevel={10}
             />
           ))}
       </div>
