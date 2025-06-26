@@ -13,7 +13,7 @@ import {
   getLanguageProficiencyLevelEnumFromEn,
 } from '@/utils/resume';
 import LevelBottomSheet from '@/components/Language/LevelBottomSheet';
-import { getLanguageProficiencyLevelKoFromEnum } from '../../utils/resume';
+import { getLanguageProficiencyLevelKoFromEnum } from '@/utils/resume';
 import { useLocation } from 'react-router-dom';
 
 type EtcLanguageCardProps = {

@@ -60,6 +60,7 @@ const PostLanguagePage = () => {
             languageList={languageList}
             selectedLanguage={selectedLanguage}
             setSelectedLanguage={setSelectedLanguage}
+            clearLevel={() => setLevel('')}
           />
         )}
         {/* 2단계: 레벨 선택 */}

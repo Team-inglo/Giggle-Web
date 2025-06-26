@@ -8,12 +8,21 @@ type EtcLanguageSectionProps = {
   languageList: EtcLanguageData[];
   selectedLanguage: EtcLanguageData;
   setSelectedLanguage: Dispatch<SetStateAction<EtcLanguageData>>;
+  clearLevel: () => void;
+};
+
+const initialLanguage: EtcLanguageData = {
+  id: 0,
+  language: '',
+  country_name: '',
+  img_url: '',
 };
 
 const EtcLanguageSection = ({
   languageList,
   selectedLanguage,
   setSelectedLanguage,
+  clearLevel,
 }: EtcLanguageSectionProps) => {
   const [search, setSearch] = useState(selectedLanguage.language || '');
   const [filteredLanguages, setFilteredLanguages] = useState(languageList);
@@ -26,13 +35,19 @@ const EtcLanguageSection = ({
     setFilteredLanguages(filteredLang);
   }, [search]);
 
+  const handleSearch = (value: string) => {
+    setSelectedLanguage(initialLanguage);
+    setSearch(value);
+    clearLevel();
+  };
+
   return (
     <>
       <Input
         inputType={InputType.SEARCH}
         placeholder="Search Language"
         value={search}
-        onChange={(value) => setSearch(value)}
+        onChange={(value) => handleSearch(value)}
         canDelete={false}
       />
       <div className="mt-6 flex flex-col gap-3">

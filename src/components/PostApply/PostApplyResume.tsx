@@ -10,7 +10,7 @@ import MypageCard from '@/components/ManageResume/MypageCard';
 import ResumeProfileCard from '@/components/ManageResume/ResumeProfileCard';
 import { useCallback } from 'react';
 import useResumeData from '@/hooks/useResumeData';
-import ButtonText from '../Common/ButtonText';
+import ButtonText from '@/components/Common/ButtonText';
 
 const PostApplyResume = () => {
   const navigate = useNavigate();

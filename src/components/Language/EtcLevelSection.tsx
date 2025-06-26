@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import LevelBottomSheet from '@/components/Language/LevelBottomSheet';
-import Icon from '../Common/Icon';
+import Icon from '@/components/Common/Icon';
 import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 
 type EtcLevelSectionProps = {
@@ -14,10 +14,10 @@ const EtcLevelSection = ({ level, setLevel }: EtcLevelSectionProps) => {
   return (
     <>
       <div className="flex mt-3" onClick={() => setBottomSheetOpen(true)}>
-        <div className="w-full h-[3.25rem] relative rounded-[0.625rem] bg-white border-[0.05rem] border-border-assistive box-border flex flex-row items-center justify-center px-4 py-[0.875rem] pl-4 text-left body-16-medium">
+        <div className="w-full h-[3.25rem] relative rounded-[0.625rem] bg-surface-base border-[0.05rem] border-border-assistive box-border flex flex-row items-center justify-center px-4 py-[0.875rem] pl-4 text-left body-16-medium">
           <div className="flex-1 h-5 flex flex-row items-center justify-between">
             <input
-              className="w-full relative leading-5 outline-none bg-white"
+              className="w-full relative leading-5 outline-none bg-surface-base"
               value={level ?? ''}
               placeholder="Select Level"
               readOnly
