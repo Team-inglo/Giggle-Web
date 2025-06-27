@@ -35,45 +35,41 @@ const EducationForm = ({
   const handleInputChange = (field: string, value: string | number) => {
     setEducationData((prev) => ({ ...prev, [field]: value }));
   };
-  const handleNumberChange = (field: 'grade' | 'gpa', value: string) => {
+
+  const handleGradeChange = (value: string) => {
+    // 1~6 사이의 숫자만 추출
+    const formattedValue = value === 'null' ? '' : value;
+    const processedValue = formattedValue.replace(/[^1-6]/g, '').slice(0, 1);
+    setEducationData((prev) => ({ ...prev, grade: processedValue }));
+  };
+
+  const handleGpaChange = (value: string) => {
     const formattedValue = value === 'null' ? '' : value;
 
-    if (field === 'grade') {
-      const processedValue = formattedValue.replace(/[^1-6]/g, '').slice(0, 1);
-
-      setEducationData((prev) => ({
-        ...prev,
-        grade: processedValue,
-      }));
+    if (formattedValue === '') {
+      setEducationData((prev) => ({ ...prev, gpa: '' }));
       return;
     }
 
-    if (field === 'gpa') {
-      if (formattedValue === '') {
-        setEducationData((prev) => ({ ...prev, gpa: '' }));
-        return;
-      }
+    // 숫자와 소수점만 추출하고 첫 자리는 0-4로 제한
+    const numericValue = formattedValue.replace(/[^0-9.]/g, '');
+    const firstDigitLimited = numericValue.replace(/^[5-9]/, '4');
 
-      // 숫자와 소수점만 추출하고 첫 자리는 0-4로 제한
-      const numericValue = formattedValue.replace(/[^0-9.]/g, '');
-      const firstDigitLimited = numericValue.replace(/^[5-9]/, '4');
+    // 패턴 매칭으로 포맷팅
+    const match = firstDigitLimited.match(/^([0-4])\.?(\d)?/);
+    const processedValue = match
+      ? match[2] !== undefined
+        ? `${match[1]}.${match[2]}`
+        : firstDigitLimited.includes('.')
+          ? `${match[1]}.`
+          : match[1]
+      : '';
 
-      // 패턴 매칭으로 포맷팅
-      const match = firstDigitLimited.match(/^([0-4])\.?(\d)?/);
-      const processedValue = match
-        ? match[2] !== undefined
-          ? `${match[1]}.${match[2]}`
-          : firstDigitLimited.includes('.')
-            ? `${match[1]}.`
-            : match[1]
-        : '';
-
-      setEducationData((prev) => ({
-        ...prev,
-        gpa: processedValue,
-      }));
-      return;
-    }
+    setEducationData((prev) => ({
+      ...prev,
+      gpa: processedValue,
+    }));
+    return;
   };
 
   return (
@@ -124,7 +120,7 @@ const EducationForm = ({
                 ? ''
                 : String(educationData.grade)
             }
-            onChange={(value) => handleNumberChange('grade', value)}
+            onChange={(value) => handleGradeChange(value)}
             canDelete={false}
           />
         </InputLayout>
@@ -134,11 +130,12 @@ const EducationForm = ({
             inputType={InputType.TEXT}
             placeholder="Enter your GPA (ex. 3.5)"
             value={String(educationData.gpa)}
-            onChange={(value) => handleNumberChange('gpa', value)}
+            onChange={(value) => handleGpaChange(value)}
             canDelete={false}
           />
         </InputLayout>
         <div className="flex flex-row gap-2">
+          {/* 입학 날짜 입력 */}
           <InputLayout title="Entrance Date">
             <Input
               inputType={InputType.TEXT}
@@ -163,7 +160,6 @@ const EducationForm = ({
             />
           </InputLayout>
         </div>
-        {/* 입학 날짜 입력 */}
       </div>
     </>
   );
