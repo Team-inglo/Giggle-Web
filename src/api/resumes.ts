@@ -41,6 +41,12 @@ export const getEducation = async (
   return response.data;
 };
 
+// 7.4 (유학생) 언어 요약 조회하기
+export const getLanguageSummary = async () => {
+  const response = await api.get('/users/resumes/languages/summaries');
+  return response.data;
+};
+
 // 7.5 경력 생성하기
 export const postWorkExperience = async (
   workExperience: WorkExperienctRequest,

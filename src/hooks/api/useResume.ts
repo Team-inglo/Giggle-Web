@@ -5,6 +5,7 @@ import {
   deleteWorkExperience,
   getEducation,
   getEmployeeResumeList,
+  getLanguageSummary,
   getResume,
   getResumeDetail,
   getResumeProgress,
@@ -68,6 +69,14 @@ export const useGetEducation = (id: string) => {
   });
 };
 
+// 7.4 (유학생) 언어 요약 조회하기
+export const useGetLanguageSummary = () => {
+  return useQuery({
+    queryKey: ['resume', 'languageSummary'],
+    queryFn: getLanguageSummary,
+  });
+};
+
 // 7.11 (유학생) 언어 - TOPIK 레벨 수정하기
 // 7.12 (유학생) 언어 - SOCIAL INTEGRATION PROGRAM 레벨 수정하기
 // 7.13 (유학생) 언어 - SEJONG INSTITUTE 레벨 수정하기
@@ -126,7 +135,7 @@ export const usePostEtcLanguageLevel = () => {
   return useMutation({
     mutationFn: postEtcLanguageLevel,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/manage-resume');
+      smartNavigate(navigate, '/profile/language/edit', { forceSkip: true });
     },
     onError: (error) => {
       alert('이미 존재하는 언어입니다');
@@ -141,7 +150,7 @@ export const usePatchIntroduction = () => {
   return useMutation({
     mutationFn: patchIntroduction,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/manage-resume');
+      smartNavigate(navigate, '/profile/manage-resume', { forceSkip: true });
     },
     onError: (error) => {
       console.error('자기소개 작성 실패', error);

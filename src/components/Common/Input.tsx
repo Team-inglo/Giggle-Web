@@ -138,4 +138,7 @@ const Input = ({
   );
 };
 
+Input.Type = InputType;
+Input.Status = INPUT_STATUS;
+
 export default Input;

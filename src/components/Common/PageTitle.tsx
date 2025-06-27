@@ -5,7 +5,7 @@ interface PageTitleProps {
 
 const PageTitle = ({ title, content }: PageTitleProps) => {
   return (
-    <div className="flex flex-col justify-center px-4 py-6 gap-2 heading-24-semibold break-keep h-[11.25rem] w-full">
+    <div className="flex flex-col justify-center px-4 pt-6 pb-12 gap-2 heading-24-semibold break-keep w-full">
       <p className="relative whitespace-pre-line">{title}</p>
       {content && (
         <div>

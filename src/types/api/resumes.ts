@@ -55,8 +55,17 @@ export type LanguagesLevelType =
 
 export type AdditionalLanguageRequest = {
   language_name: string;
-  level: number;
+  level: LanguageProficiencyLevel;
 };
+
+export enum LanguageProficiencyLevel {
+  NOT_ABLE_TO_USE_AT_ALL = 'NOT_ABLE_TO_USE_AT_ALL',
+  CAN_UNDERSTAND_BASIC_WORDS = 'CAN_UNDERSTAND_BASIC_WORDS',
+  BASIC_CONVERSATION_POSSIBLE = 'BASIC_CONVERSATION_POSSIBLE',
+  COMFORTABLE_FOR_WORK = 'COMFORTABLE_FOR_WORK',
+  FLUENT = 'FLUENT',
+  NATIVE_OR_NEAR_NATIVE = 'NATIVE_OR_NEAR_NATIVE',
+}
 
 type visa = {
   visa: VisaType; //Enum(D_2_1, D_2_2, D_2_3, D_2_4, D_2_6, D_2_7, D_2_8, D_4_1, D_4_7, F_2),

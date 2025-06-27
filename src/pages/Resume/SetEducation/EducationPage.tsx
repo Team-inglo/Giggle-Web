@@ -57,6 +57,7 @@ const EducationPage = () => {
         education_level: educationData.education_level as EducationLevelType,
         gpa: educationData.gpa ? parseFloat(String(educationData.gpa)) : 0,
         grade: educationData.grade ? Number(educationData.grade) : 0,
+        major: getMajorEnumFromEn(educationData.major || '') || '',
       };
       postMutate(formattedEducationData as EducationRequest);
     } else {

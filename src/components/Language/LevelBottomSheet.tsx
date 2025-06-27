@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction } from 'react';
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
-import NumberRadioButton from '@/components/Language/NumberRadioButton';
 import Button from '@/components/Common/Button';
+import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
+import Icon from '@/components/Common/Icon';
+import { languageProficiencyLevelsEn } from '@/constants/manageResume';
 
 type LevelBottomSheetProps = {
-  level: number;
-  setLevel: Dispatch<SetStateAction<number>>;
+  level: string;
+  setLevel: Dispatch<SetStateAction<string>>;
   setBottomSheetOpen: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -20,36 +22,31 @@ const LevelBottomSheet = ({
       isShowBottomsheet={true}
       setIsShowBottomSheet={setBottomSheetOpen}
     >
-      <div className="heading-20-semibold text-[#1E1926] py-3 pb-8 text-center">
-        Select your Language Level
+      <div className="heading-18-semibold text-text-strong px-1 py-3 text-left">
+        Select your Language Proficiency
       </div>
       {/* ETC 언어 등급 선택 0~10 */}
-      <div className="w-full h-[48vh] overflow-x-scroll">
-        {[...Array(11).keys()].map((grade) => (
+      <div className="w-full h-[48vh] px-1">
+        {languageProficiencyLevelsEn.map((languageLevel) => (
           <div
-            key={grade}
-            className="w-full flex items-center justify-between px-2.5 py-2.5"
+            key={languageLevel}
+            className="w-full flex items-center justify-between py-3"
+            onClick={() => setLevel(languageLevel)}
           >
-            <div className="ml-2 body-14-regular text-[#656565]">
-              Grade {grade}
+            <div className="body-16-regular text-text-strong text-left">
+              {languageLevel}
             </div>
-            <NumberRadioButton
-              value={grade}
-              setValue={() => setLevel(grade)}
-              isOn={level === grade}
-            />
+            {level === languageLevel && <Icon icon={CheckIcon} />}
           </div>
         ))}
       </div>
-      <div className="bg-grayGradient">
-        <Button
-          type="large"
-          title="Select"
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
-          onClick={() => setBottomSheetOpen(false)}
-        />
-      </div>
+      <Button
+        type={Button.Type.PRIMARY}
+        size={Button.Size.LG}
+        title="Select"
+        onClick={() => setBottomSheetOpen(false)}
+        isFullWidth
+      />
     </BottomSheetLayout>
   );
 };
