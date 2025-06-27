@@ -10,6 +10,17 @@ import {
 } from '@/types/postResume/postEducation';
 import { WorkExperienctRequest } from '@/types/api/resumes';
 
+// 날짜 형식 유효성 검사
+const isValidDateString = (dateStr: string): boolean => {
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(dateStr)) return false;
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== dateStr) {
+    return false;
+  }
+  return true;
+};
+
 // 날짜 형식 변경
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -66,32 +77,20 @@ export const educationDataValidation = (data: PostEducationType): boolean => {
     return false;
   }
 
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   // 5. start_date가 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
-  if (data.start_date) {
-    if (!dateRegex.test(data.start_date)) return false;
-    const startDate = new Date(data.start_date);
-    if (
-      isNaN(startDate.getTime()) ||
-      startDate.toISOString().slice(0, 10) !== data.start_date
-    ) {
-      return false;
-    }
+  if (data.start_date && !isValidDateString(data.start_date)) {
+    return false;
   }
 
   // 6. end_date가 존재할 경우, 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
   if (data.end_date) {
-    if (!dateRegex.test(data.end_date)) return false;
-    const endDate = new Date(data.end_date);
-    if (
-      isNaN(endDate.getTime()) ||
-      endDate.toISOString().slice(0, 10) !== data.end_date
-    ) {
-      return false;
-    }
+    if (!isValidDateString(data.end_date)) return false;
 
     // 7. end_date가 start_date보다 미래여야 함
-    if (data.start_date && endDate <= new Date(data.start_date)) {
+    if (
+      data.start_date &&
+      new Date(data.end_date) <= new Date(data.start_date)
+    ) {
       return false;
     }
   }
@@ -109,7 +108,6 @@ export const educationDataValidation = (data: PostEducationType): boolean => {
 };
 
 //두 객체가 동일한지 비교하는 함수
-
 export const isObjectEqual = <T>(
   obj1: T | undefined,
   obj2: T | undefined,
@@ -195,31 +193,17 @@ export const workExperienceDataValidation = (
     return false;
   }
 
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
   // 2. start_date가 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
-  if (!dateRegex.test(start_date)) return false;
-  const startDate = new Date(start_date);
-  if (
-    isNaN(startDate.getTime()) ||
-    startDate.toISOString().slice(0, 10) !== start_date
-  ) {
+  if (!isValidDateString(start_date)) {
     return false;
   }
 
   // 3. end_date가 존재할 경우, 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
   if (end_date) {
-    if (!dateRegex.test(end_date)) return false;
-    const endDate = new Date(end_date);
-    if (
-      isNaN(endDate.getTime()) ||
-      endDate.toISOString().slice(0, 10) !== end_date
-    ) {
-      return false;
-    }
+    if (!isValidDateString(end_date)) return false;
 
     // 4. end_date가 start_date보다 미래여야 함
-    if (endDate <= startDate) {
+    if (new Date(end_date) <= new Date(start_date)) {
       return false;
     }
   }
