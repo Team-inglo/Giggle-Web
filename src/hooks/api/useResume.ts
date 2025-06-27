@@ -7,6 +7,7 @@ import {
   getEmployeeResumeList,
   getResume,
   getResumeDetail,
+  getResumeProgress,
   getSearchSchools,
   getWorkExperience,
   getWorkPreference,
@@ -327,6 +328,14 @@ export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
     queryKey: ['resume', 'detail', id],
     queryFn: () => getResumeDetail(id),
     enabled: isEnabled,
+  });
+};
+
+// 7.26 (유학생) 이력서 완성도 조회하기
+export const useGetResumeProgress = () => {
+  return useQuery({
+    queryKey: ['resume', 'progress'],
+    queryFn: getResumeProgress,
   });
 };
 
