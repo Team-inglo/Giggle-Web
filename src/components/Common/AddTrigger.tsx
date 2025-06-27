@@ -29,10 +29,10 @@ const AddTrigger = ({
   title,
   handleClick,
 }: AddTriggerProps) => {
-  const { isPressed, pressHandlers } = usePress();
+  const { isPressed, pressHandlers } = usePress(); // 터치/클릭 인터렉션 핸들러
   const baseStyle =
     'w-full p-4 text-center rounded-lg flex items-center justify-center overflow-hidden button-14-semibold relative';
-
+  // AddTrigger, PressOverlay 색상 스타일 반환
   const getColorStyle = (type: string) => {
     if (type === 'pressOverlay') {
       switch (color) {
@@ -51,6 +51,7 @@ const AddTrigger = ({
       }
     }
   };
+  // AddTrigger 레이아웃 스타일 반환
   const getLayoutStyle = () => {
     switch (type) {
       case AddTriggerType.FILLED:
@@ -59,7 +60,7 @@ const AddTrigger = ({
         return `border-${getColorStyle('fill')} border-dashed`;
     }
   };
-
+  // PressOverlay 강도 반환
   const getPressOverlayType = () => {
     switch (type) {
       case AddTriggerType.FILLED:

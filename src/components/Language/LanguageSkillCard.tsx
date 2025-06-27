@@ -18,14 +18,14 @@ const LanguageSkillCard = ({
   level,
   maxLevel,
 }: LanguageSkillCardProps) => {
-  const LEVEL_NOT_ENTERED = 0;
+  const LEVEL_NOT_ENTERED = 0; // 언어 레벨 미입력 상태
   const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(level);
 
   const { mutate: patchLanguagesLevel } = usePatchLanguagesLevel();
 
   const handleLevelChange = () => {
-    const formattedTitle = title.toLowerCase().replace(/\s+/g, '-');
+    const formattedTitle = title.toLowerCase().replace(/\s+/g, '-'); // 언어 레벨 변경 시 포맷팅
     patchLanguagesLevel({
       type:
         formattedTitle === 'social-integration'
@@ -33,10 +33,10 @@ const LanguageSkillCard = ({
           : (formattedTitle as LanguagesLevelType),
       level: selectedLevel as number,
     });
-
+    // 언어 레벨 선택 바텀 시트 닫기
     setLevelBottomSheetOpen(false);
   };
-
+  // 언어 레벨 선택 바텀 시트 열기
   const openLevelBottomSheet = () => {
     setSelectedLevel(level);
     setLevelBottomSheetOpen(true);

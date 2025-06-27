@@ -36,6 +36,7 @@ const EtcLanguageSection = ({
   }, [search]);
 
   const handleSearch = (value: string) => {
+    // 검색어 변경 시 선택된 언어, 레벨 초기화
     setSelectedLanguage(initialLanguage);
     setSearch(value);
     clearLevel();

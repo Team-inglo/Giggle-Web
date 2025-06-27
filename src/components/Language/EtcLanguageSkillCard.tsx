@@ -29,14 +29,15 @@ const EtcLanguageSkillCard = ({
 }: EtcLanguageCardProps) => {
   const { pathname } = useLocation();
   const { account_type } = useUserStore();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false); // 언어 삭제 모달 상태
+  const [levelBottomSheetOpen, setLevelBottomSheetOpen] = useState(false); // 언어 레벨 선택 바텀 시트 상태
   const [selectedLevel, setSelectedLevel] =
-    useState<LanguageProficiencyLevel>(level);
+    useState<LanguageProficiencyLevel>(level); // 선택된 언어 레벨
 
-  const { mutate: deleteEtcLanguage } = useDeleteEtcLanguageLevel();
-  const { mutate: patchEtcLanguageLevel } = usePatchEtcLanguageLevel();
+  const { mutate: deleteEtcLanguage } = useDeleteEtcLanguageLevel(); // 언어 삭제 함수
+  const { mutate: patchEtcLanguageLevel } = usePatchEtcLanguageLevel(); // 언어 레벨 변경 함수
 
+  // 언어 레벨 변경 함수
   const handleLevelChange = () => {
     patchEtcLanguageLevel({
       id: etcLanguageId,
@@ -61,6 +62,7 @@ const EtcLanguageSkillCard = ({
 
   return (
     <>
+      {/* 언어 삭제 모달 */}
       {modalOpen && (
         <ResumeDeleteModal
           onEditButton={openLevelBottomSheet}
@@ -68,6 +70,7 @@ const EtcLanguageSkillCard = ({
           setIsShowBottomSheet={() => setModalOpen(false)}
         />
       )}
+      {/* 언어 레벨 선택 바텀 시트 */}
       {levelBottomSheetOpen && (
         <LevelBottomSheet
           level={selectedLevel}
@@ -88,6 +91,7 @@ const EtcLanguageSkillCard = ({
           >
             {title}
           </h5>
+          {/* 언어 레벨 표시 */}
           <div className="px-1.5 py-0.5 rounded-md text-status-blue-300 bg-status-blue-100 caption-12-semibold">
             {account_type === UserType.OWNER
               ? getLanguageProficiencyLevelKoFromEnum(level)
@@ -95,6 +99,7 @@ const EtcLanguageSkillCard = ({
           </div>
         </section>
         <div className="flex items-center gap-2">
+          {/* 언어 편집/삭제 메뉴(PostLanguagePage) */}
           {pathname === '/resume/language/edit' && (
             <div className="flex justify-center items-center">
               <MenuIcon

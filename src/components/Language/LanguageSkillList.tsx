@@ -24,6 +24,7 @@ const LanguageSkillList = ({ data }: LanguageSkillListProps) => {
   return (
     <>
       <div className="flex flex-col px-4 gap-4">
+        {/* TOPIK, 사회 통합 프로그램, 세종 학당 등급 */}
         {languageSkills.map(
           (skill) =>
             data[skill.key as keyof LanguageSummaryType] !== 0 && (
@@ -35,6 +36,7 @@ const LanguageSkillList = ({ data }: LanguageSkillListProps) => {
               />
             ),
         )}
+        {/* 기타 언어 */}
         {data?.additional_language?.length > 0 &&
           data?.additional_language.map((lang) => (
             <EtcLanguageSkillCard
@@ -44,6 +46,7 @@ const LanguageSkillList = ({ data }: LanguageSkillListProps) => {
               etcLanguageId={lang.id}
             />
           ))}
+        {/* 언어 추가 */}
         <AddTrigger
           icon={PlusIcon}
           type={AddTrigger.Type.TEXT}
