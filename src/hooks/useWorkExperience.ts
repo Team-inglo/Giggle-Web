@@ -4,7 +4,7 @@ import {
   usePostWorkExperience,
 } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
-import { WorkExperienctRequest } from '@/types/api/resumes';
+import { WorkExperienceRequest } from '@/types/api/resumes';
 import {
   isObjectEqual,
   workExperienceDataValidation,
@@ -31,9 +31,9 @@ export const useWorkExperience = () => {
   };
 
   const [workExperienceData, setWorkExperienceData] =
-    useState<WorkExperienctRequest>(initialData); // 현재 입력된 데이터
+    useState<WorkExperienceRequest>(initialData); // 현재 입력된 데이터
   const [initialPatchData, setInitialPatchData] =
-    useState<WorkExperienctRequest>(initialData); // 초기 데이터
+    useState<WorkExperienceRequest>(initialData); // 초기 데이터
 
   const [isValid, setIsValid] = useState<boolean>(false); // 유효성 검사 결과
 

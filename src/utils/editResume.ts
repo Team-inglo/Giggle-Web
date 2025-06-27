@@ -8,7 +8,7 @@ import {
   GetEducationType,
   PostEducationType,
 } from '@/types/postResume/postEducation';
-import { WorkExperienctRequest } from '@/types/api/resumes';
+import { WorkExperienceRequest } from '@/types/api/resumes';
 
 // 날짜 형식 유효성 검사
 const isValidDateString = (dateStr: string): boolean => {
@@ -182,7 +182,7 @@ export const formatArea = (area: AreaType) => {
 };
 
 export const workExperienceDataValidation = (
-  data: WorkExperienctRequest,
+  data: WorkExperienceRequest,
 ): boolean => {
   if (!data) return false;
 

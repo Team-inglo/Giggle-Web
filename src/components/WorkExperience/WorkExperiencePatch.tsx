@@ -2,13 +2,13 @@ import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
 import { useEffect, useRef, useState, ChangeEvent } from 'react';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { WorkExperienctRequest } from '@/types/api/resumes';
+import { WorkExperienceRequest } from '@/types/api/resumes';
 import { formatDateInput } from '@/utils/information';
 
 type WorkExperiencePatchProps = {
-  workExperienceData: WorkExperienctRequest;
+  workExperienceData: WorkExperienceRequest;
   setWorkExperienceData: React.Dispatch<
-    React.SetStateAction<WorkExperienctRequest>
+    React.SetStateAction<WorkExperienceRequest>
   >;
 };
 
@@ -35,7 +35,7 @@ const WorkExperiencePatch = ({
   };
 
   const handleInputChange = (
-    field: keyof WorkExperienctRequest,
+    field: keyof WorkExperienceRequest,
     value: string,
   ) => {
     setWorkExperienceData((prev) => ({ ...prev, [field]: value }));
