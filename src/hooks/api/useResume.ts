@@ -331,6 +331,14 @@ export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
   });
 };
 
+// 7.26 (유학생) 이력서 완성도 조회하기
+export const useGetResumeProgress = () => {
+  return useQuery({
+    queryKey: ['resume', 'progress'],
+    queryFn: getResumeProgress,
+  });
+};
+
 // 9.1 (유학생) 학교 검색하기
 export const useGetSearchSchools = (
   search: string,
@@ -440,13 +448,5 @@ export const usePutScrapResume = () => {
     meta: {
       skipGlobalLoading: true,
     },
-  });
-};
-
-// 15.2 (유학생) 이력서 진행률 조회하기 (임시)
-export const useGetResumeProgress = () => {
-  return useQuery({
-    queryKey: ['resume', 'progress'],
-    queryFn: () => getResumeProgress(),
   });
 };

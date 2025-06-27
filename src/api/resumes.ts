@@ -202,6 +202,12 @@ export const getResumeDetail = async (id: string) => {
   return response.data;
 };
 
+// 7.26 (유학생) 이력서 완성도 조회하기
+export const getResumeProgress = async () => {
+  const response = await api.get(`/users/resumes/completion-rate`);
+  return response.data;
+};
+
 // 9.1 (유학생) 학교 검색하기
 export const getSearchSchools = async ({
   search,
@@ -221,11 +227,5 @@ export const getSearchSchools = async ({
 // 15.1 (고용주) 인재 스크랩 추가/삭제
 export const putScrapResume = async (id: string) => {
   const response = await api.put(`/owners/resumes/${id}/book-mark-resumes`);
-  return response.data;
-};
-
-// 15.2 (유학생) 이력서 진행률 조회하기 (임시)
-export const getResumeProgress = async () => {
-  const response = await api.get(`/users/resumes/progress/`);
   return response.data;
 };

@@ -9,14 +9,12 @@ import { buttonTypeKeys } from '@/constants/components';
 import { useGetResumeProgress } from '@/hooks/api/useResume';
 
 // 공통 텍스트 컴포넌트
-const BannerTextContent = () => (
+const BannerTextContent = ({ text }: { text: string }) => (
   <div className="flex flex-col items-start gap-0.5">
     <h2 className="button-14-semibold text-text-strong">
       Let's finish your resume
     </h2>
-    <p className="caption-12-regular text-text-alternative">
-      Boost your chances of getting contacted by 90%!
-    </p>
+    <p className="caption-12-regular text-text-alternative">{text}</p>
   </div>
 );
 
@@ -49,20 +47,24 @@ const ProgressBar = ({
   );
 };
 
+type BannerProps = {
+  resumeProgress: number;
+  onClick?: () => void;
+  text?: string;
+};
+
 // 홈 화면용 배너: 전체 클릭 가능, 클릭 시 /profile/manage-resume 페이지로 이동, 우측 상단 화살표 아이콘 표시
 const HomeResumeHelperBanner = ({
   resumeProgress,
   onClick,
-}: {
-  resumeProgress: number;
-  onClick: () => void;
-}) => (
+  text,
+}: BannerProps) => (
   <div
     className="flex flex-col p-4 gap-3 border border-border-disabled rounded-xl"
     onClick={onClick}
   >
     <section className="flex items-start justify-between">
-      <BannerTextContent />
+      <BannerTextContent text={text || ''} />
       <div
         className="w-6 h-6 flex items-center justify-center"
         aria-label="go to manage resume page"
@@ -78,13 +80,11 @@ const HomeResumeHelperBanner = ({
 const ProfileResumeHelperBanner = ({
   resumeProgress,
   onClick,
-}: {
-  resumeProgress: number;
-  onClick: () => void;
-}) => (
+  text,
+}: BannerProps) => (
   <div className="flex flex-col p-4 gap-3 border border-border-disabled rounded-xl">
     <section className="flex items-start justify-between">
-      <BannerTextContent />
+      <BannerTextContent text={text || ''} />
     </section>
     <ProgressBar resumeProgress={resumeProgress} />
     <Button
@@ -99,14 +99,10 @@ const ProfileResumeHelperBanner = ({
 );
 
 // 이력서 관리 페이지용 배너: 배경색, 레이아웃 변경 및 우측 상단에 진행률 텍스트 표시
-const ManageResumeHelperBanner = ({
-  resumeProgress,
-}: {
-  resumeProgress: number;
-}) => (
+const ManageResumeHelperBanner = ({ resumeProgress, text }: BannerProps) => (
   <div className="flex flex-col p-4 gap-3 bg-blue-50">
     <section className="flex items-start justify-between">
-      <BannerTextContent />
+      <BannerTextContent text={text || ''} />
       <p className="button-14-semibold text-status-blue-300">
         {resumeProgress}%
       </p>
@@ -139,6 +135,7 @@ const ResumeHelperBanner = () => {
       return (
         <HomeResumeHelperBanner
           resumeProgress={resumeProgress}
+          text={resumeProgress?.data.completion_text}
           onClick={handleNavigate}
         />
       );
@@ -147,12 +144,18 @@ const ResumeHelperBanner = () => {
       return (
         <ProfileResumeHelperBanner
           resumeProgress={resumeProgress}
+          text={resumeProgress?.data.completion_text}
           onClick={handleNavigate}
         />
       );
     // 이력서 관리 페이지
     case '/profile/manage-resume':
-      return <ManageResumeHelperBanner resumeProgress={resumeProgress} />;
+      return (
+        <ManageResumeHelperBanner
+          resumeProgress={resumeProgress?.data.completion_rate}
+          text={resumeProgress?.data.completion_text}
+        />
+      );
     default:
       return null;
   }
