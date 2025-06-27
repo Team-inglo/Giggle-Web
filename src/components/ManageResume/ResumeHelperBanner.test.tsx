@@ -36,7 +36,12 @@ describe('ResumeHelperBanner', () => {
   describe('조건부 렌더링', () => {
     it('유학생 유저가 아닐 경우 렌더링되지 않아야 한다', () => {
       mockedUseUserStore.mockReturnValue({ account_type: UserType.OWNER });
-      mockedUseGetResumeProgress.mockReturnValue({ data: 50 });
+      mockedUseGetResumeProgress.mockReturnValue({
+        data: {
+          data: { completion_rate: 50, completion_text: 'test' },
+        },
+        isLoading: false,
+      });
       mockedUseLocation.mockReturnValue({ pathname: '/' });
 
       const { container } = render(<ResumeHelperBanner />);
@@ -46,7 +51,12 @@ describe('ResumeHelperBanner', () => {
 
     it('이력서가 100% 완성된 경우 렌더링되지 않아야 한다', () => {
       mockedUseUserStore.mockReturnValue({ account_type: UserType.USER });
-      mockedUseGetResumeProgress.mockReturnValue({ data: 100 });
+      mockedUseGetResumeProgress.mockReturnValue({
+        data: {
+          data: { completion_rate: 100, completion_text: 'test' },
+        },
+        isLoading: false,
+      });
       mockedUseLocation.mockReturnValue({ pathname: '/' });
 
       const { container } = render(<ResumeHelperBanner />);
@@ -56,7 +66,12 @@ describe('ResumeHelperBanner', () => {
 
     it('유학생 유저이고 이력서가 미완성인 경우 렌더링되어야 한다', () => {
       mockedUseUserStore.mockReturnValue({ account_type: UserType.USER });
-      mockedUseGetResumeProgress.mockReturnValue({ data: 80 });
+      mockedUseGetResumeProgress.mockReturnValue({
+        data: {
+          data: { completion_rate: 80, completion_text: 'test' },
+        },
+        isLoading: false,
+      });
       mockedUseLocation.mockReturnValue({ pathname: '/' });
 
       render(<ResumeHelperBanner />);
@@ -68,7 +83,12 @@ describe('ResumeHelperBanner', () => {
   describe('경로 기반 렌더링 및 상호작용', () => {
     beforeEach(() => {
       mockedUseUserStore.mockReturnValue({ account_type: UserType.USER });
-      mockedUseGetResumeProgress.mockReturnValue({ data: 60 });
+      mockedUseGetResumeProgress.mockReturnValue({
+        data: {
+          data: { completion_rate: 60, completion_text: 'test' },
+        },
+        isLoading: false,
+      });
     });
 
     describe("홈페이지('/')에 있을 때", () => {
@@ -139,7 +159,6 @@ describe('ResumeHelperBanner', () => {
       });
 
       it('우측 상단에 진행률 퍼센트를 표시해야 한다', () => {
-        mockedUseGetResumeProgress.mockReturnValue({ data: 60 });
         render(<ResumeHelperBanner />);
 
         const header = screen.getByText("Let's finish your resume")

@@ -12,7 +12,7 @@ import { BannerListType } from '@/types/api/banner';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { bannerTranslation } from '@/constants/translation';
 import { useNavigate } from 'react-router-dom';
-import ResumeHelperBanner from '../ManageResume/ResumeHelperBanner';
+import ResumeHelperBanner from '@/components/ManageResume/ResumeHelperBanner';
 
 const RenderBannerList = ({
   data,

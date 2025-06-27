@@ -113,6 +113,12 @@ export type GetEmployeeResumeListReq = {
   is_book_marked?: boolean;
 };
 
+// 7.26 (유학생) 이력서 완성도 조회하기
+export type ResumeProgressResponse = {
+  completion_rate: number;
+  completion_text: string;
+};
+
 // (고용주) 이력서 리스트 조회 검색 필터
 export type EmployeeSearchCategoryEnType =
   keyof typeof EMPLOYEE_SEARCH_CATEGORY; // 'VISA' | 'INDUSTRY' | ...

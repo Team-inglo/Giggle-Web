@@ -58,23 +58,25 @@ const HomeResumeHelperBanner = ({
   resumeProgress,
   onClick,
   text,
-}: BannerProps) => (
-  <div
-    className="flex flex-col p-4 gap-3 border border-border-disabled rounded-xl"
-    onClick={onClick}
-  >
-    <section className="flex items-start justify-between">
-      <BannerTextContent text={text || ''} />
-      <div
-        className="w-6 h-6 flex items-center justify-center"
-        aria-label="go to manage resume page"
-      >
-        <Icon name="arrow-right" icon={ChevronRightIcon} />
-      </div>
-    </section>
-    <ProgressBar resumeProgress={resumeProgress} />
-  </div>
-);
+}: BannerProps) => {
+  return (
+    <div
+      className="flex flex-col p-4 gap-3 border border-border-disabled rounded-xl"
+      onClick={onClick}
+    >
+      <section className="flex items-start justify-between">
+        <BannerTextContent text={text || ''} />
+        <div
+          className="w-6 h-6 flex items-center justify-center"
+          aria-label="go to manage resume page"
+        >
+          <Icon name="arrow-right" icon={ChevronRightIcon} />
+        </div>
+      </section>
+      <ProgressBar resumeProgress={resumeProgress} />
+    </div>
+  );
+};
 
 // 프로필 페이지용 배너: '이력서 관리' 버튼을 통해서만 페이지 이동 가능
 const ProfileResumeHelperBanner = ({
@@ -121,8 +123,7 @@ const ResumeHelperBanner = () => {
   const { data: resumeProgress } = useGetResumeProgress();
 
   const isUser = account_type === UserType.USER;
-  const isResumeIncomplete = resumeProgress < 100;
-
+  const isResumeIncomplete = Number(resumeProgress?.data.completion_rate) < 100;
   // 일반 유저가 아니거나 이력서가 100% 완성된 경우에는 배너를 렌더링하지 않음
   if (!isUser || !isResumeIncomplete) return null;
 
@@ -134,7 +135,7 @@ const ResumeHelperBanner = () => {
     case '/':
       return (
         <HomeResumeHelperBanner
-          resumeProgress={resumeProgress}
+          resumeProgress={resumeProgress?.data.completion_rate || 0}
           text={resumeProgress?.data.completion_text}
           onClick={handleNavigate}
         />
@@ -143,7 +144,7 @@ const ResumeHelperBanner = () => {
     case '/profile':
       return (
         <ProfileResumeHelperBanner
-          resumeProgress={resumeProgress}
+          resumeProgress={resumeProgress?.data.completion_rate || 0}
           text={resumeProgress?.data.completion_text}
           onClick={handleNavigate}
         />
@@ -152,7 +153,7 @@ const ResumeHelperBanner = () => {
     case '/profile/manage-resume':
       return (
         <ManageResumeHelperBanner
-          resumeProgress={resumeProgress?.data.completion_rate}
+          resumeProgress={resumeProgress?.data.completion_rate || 0}
           text={resumeProgress?.data.completion_text}
         />
       );

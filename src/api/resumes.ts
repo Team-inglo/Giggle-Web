@@ -7,6 +7,7 @@ import {
   UserResumeDetailResponse,
   WorkExperienctRequest,
   WorkExperienceResponse,
+  ResumeProgressResponse,
 } from '@/types/api/resumes';
 import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
@@ -203,7 +204,9 @@ export const getResumeDetail = async (id: string) => {
 };
 
 // 7.26 (유학생) 이력서 완성도 조회하기
-export const getResumeProgress = async () => {
+export const getResumeProgress = async (): Promise<
+  RESTYPE<ResumeProgressResponse>
+> => {
   const response = await api.get(`/users/resumes/completion-rate`);
   return response.data;
 };
