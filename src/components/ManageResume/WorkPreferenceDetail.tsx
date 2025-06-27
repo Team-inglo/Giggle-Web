@@ -13,7 +13,7 @@ const WorkPreferenceDetail = ({ data }: WorkPreferenceProps) => {
   return (
     <div className="flex flex-col divide-y divide-neutral-100">
       {/* Preferred Work Area */}
-      <div className="body-14-medium text-text-strong mb-2">
+      <div className="body-14-medium text-text-strong mb-2 py-4">
         {profileTranslation.workPreferenceRegion[isEmployer(pathname)]}
         <div className="flex flex-wrap gap-2">
           {data.preference_addresses.map((area, idx) => (

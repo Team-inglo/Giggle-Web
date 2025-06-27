@@ -91,7 +91,7 @@ const PostApplyResume = () => {
           }
           renderContent={() => (
             <>
-              <p className="pb-2 button-16-semibold text-text-strong">
+              <p className="pb-2 button-16-semibold text-text-strong pt-3">
                 {data.data?.visa.visa.replace(/_/g, '-')}
               </p>
               <p className="caption-12-regular text-text-normal">

@@ -36,16 +36,18 @@ const WorkExperienceDetail = ({ data }: WorkExperienceDetailProps) => {
     <>
       {modalOpen && (
         <ResumeDeleteModal
-          onEditButton={() => navigate(`/resume/work-experience/edit/${selectedId}`)}
+          onEditButton={() =>
+            navigate(`/resume/work-experience/edit/${selectedId}`)
+          }
           onDeleteButton={handleDelete}
           setIsShowBottomSheet={() => setModalOpen(false)}
         />
       )}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 divide-y divide-surface-secondary">
         {data.map((work) => (
           <div
             key={work.id}
-            className="w-full flex justify-between items-start rounded-lg"
+            className="w-full flex justify-between items-start pt-3"
           >
             <div className="flex flex-col gap-0.5">
               <h5 className="pb-[0.125rem] button-16-semibold text-text-strong">
