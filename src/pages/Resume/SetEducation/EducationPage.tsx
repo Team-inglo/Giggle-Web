@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import Button from '@/components/Common/Button';
 import EducationForm from '@/components/SetEducation/EducationForm';
-import { buttonTypeKeys } from '@/constants/components';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import {
   InitialEducationData,
@@ -24,6 +23,7 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EducationLevelType } from '@/types/postApply/resumeDetailItem';
 import { getMajorEnumFromEn } from '@/utils/resume';
+import PageTitle from '@/components/Common/PageTitle';
 
 const EducationPage = () => {
   const { id } = useParams();
@@ -64,7 +64,7 @@ const EducationPage = () => {
       const isUnchanged = isObjectEqual(educationData, initialData);
       if (isUnchanged) {
         //TODO: 이력서 페이지 리팩토링 후 이동 경로 수정
-        navigate('/profile/edit-resume');
+        navigate('/profile/manage-resume');
         return;
       }
 
@@ -123,8 +123,8 @@ const EducationPage = () => {
               hasMenuButton={false}
               title="Education"
             />
+            <PageTitle title={`Let's add your\neducation background! 🎓`} />
             <EducationForm
-              mode={mode}
               educationData={educationData}
               setEducationData={setEducationData}
               initialSchool={schoolData}
@@ -134,31 +134,25 @@ const EducationPage = () => {
             {mode === 'patch' ? (
               <div className="w-full flex gap-2">
                 <Button
-                  type={buttonTypeKeys.LARGE}
-                  bgColor="bg-surface-secondary"
-                  fontColor="text-text-normal"
+                  type={Button.Type.NEUTRAL}
+                  size={Button.Size.LG}
+                  isFullWidth
                   title="Reset"
                   onClick={isValid ? handleReset : undefined}
                 />
                 <Button
-                  type={buttonTypeKeys.LARGE}
-                  bgColor={
-                    isValid ? 'bg-surface-primary' : 'bg-surface-secondary'
-                  }
-                  fontColor={
-                    isValid ? 'text-text-normal' : 'text-text-disabled'
-                  }
+                  type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+                  size={Button.Size.LG}
+                  isFullWidth
                   title="Save"
                   onClick={isValid ? handleSubmit : undefined}
                 />
               </div>
             ) : (
               <Button
-                type={buttonTypeKeys.LARGE}
-                bgColor={
-                  isValid ? 'bg-surface-primary' : 'bg-surface-secondary'
-                }
-                fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
+                type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+                size={Button.Size.LG}
+                isFullWidth
                 title="Save"
                 onClick={isValid ? handleSubmit : undefined}
               />
