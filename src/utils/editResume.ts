@@ -8,6 +8,7 @@ import {
   GetEducationType,
   PostEducationType,
 } from '@/types/postResume/postEducation';
+import { WorkExperienctRequest } from '@/types/api/resumes';
 
 // 날짜 형식 변경
 export const formatDate = (dateString: string) => {
@@ -65,15 +66,34 @@ export const educationDataValidation = (data: PostEducationType): boolean => {
     return false;
   }
 
-  // 5. start_date는 yyyy-mm-dd 형식이어야 함
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  if (data.start_date && !dateRegex.test(data.start_date)) {
-    return false;
+  // 5. start_date가 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (data.start_date) {
+    if (!dateRegex.test(data.start_date)) return false;
+    const startDate = new Date(data.start_date);
+    if (
+      isNaN(startDate.getTime()) ||
+      startDate.toISOString().slice(0, 10) !== data.start_date
+    ) {
+      return false;
+    }
   }
 
-  // 6. end_date도 start_date와 동일한 형식이어야 함
-  if (data.end_date && !dateRegex.test(data.end_date)) {
-    return false;
+  // 6. end_date가 존재할 경우, 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (data.end_date) {
+    if (!dateRegex.test(data.end_date)) return false;
+    const endDate = new Date(data.end_date);
+    if (
+      isNaN(endDate.getTime()) ||
+      endDate.toISOString().slice(0, 10) !== data.end_date
+    ) {
+      return false;
+    }
+
+    // 7. end_date가 start_date보다 미래여야 함
+    if (data.start_date && endDate <= new Date(data.start_date)) {
+      return false;
+    }
   }
 
   // 7. grade는 숫자여야 함
@@ -133,9 +153,7 @@ function convertStringsToApiAreas(areas: string[]): Array<{
 }
 
 // 소문자 직무 문자열 배열을 API 요청용 EmploymentType 배열로 변환
-function convertJobTypesToApiFormat(
-  jobTypes: string[],
-): EmploymentType[] {
+function convertJobTypesToApiFormat(jobTypes: string[]): EmploymentType[] {
   return jobTypes.map((jobType) => jobType.toUpperCase() as EmploymentType);
 }
 
@@ -163,4 +181,48 @@ export const formatEnumValue = (value: string) => {
 // 지역 표시 형식
 export const formatArea = (area: AreaType) => {
   return area.region_2depth_name || area.region_1depth_name;
+};
+
+export const workExperienceDataValidation = (
+  data: WorkExperienctRequest,
+): boolean => {
+  if (!data) return false;
+
+  const { title, workplace, start_date, end_date } = data;
+
+  // 1. 필수 필드 (title, workplace, start_date)가 비어있지 않아야 함
+  if (!title || !workplace || !start_date) {
+    return false;
+  }
+
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+  // 2. start_date가 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (!dateRegex.test(start_date)) return false;
+  const startDate = new Date(start_date);
+  if (
+    isNaN(startDate.getTime()) ||
+    startDate.toISOString().slice(0, 10) !== start_date
+  ) {
+    return false;
+  }
+
+  // 3. end_date가 존재할 경우, 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (end_date) {
+    if (!dateRegex.test(end_date)) return false;
+    const endDate = new Date(end_date);
+    if (
+      isNaN(endDate.getTime()) ||
+      endDate.toISOString().slice(0, 10) !== end_date
+    ) {
+      return false;
+    }
+
+    // 4. end_date가 start_date보다 미래여야 함
+    if (endDate <= startDate) {
+      return false;
+    }
+  }
+
+  return true;
 };
