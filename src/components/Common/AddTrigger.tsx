@@ -55,9 +55,13 @@ const AddTrigger = ({
   const getLayoutStyle = () => {
     switch (type) {
       case AddTriggerType.FILLED:
-        return `bg-${getColorStyle('fill')}/10 border-${getColorStyle('fill')} border-dashed`;
+        return color === AddTriggerColorType.BLUE
+          ? `bg-status-blue-300/10 border border-status-blue-300 border-dashed`
+          : `bg-status-gray-300/10 border border-status-gray-300 border-dashed`;
       case AddTriggerType.OUTLINED:
-        return `border-${getColorStyle('fill')} border-dashed`;
+        return color === AddTriggerColorType.BLUE
+          ? `border border-status-blue-300 border-dashed`
+          : `border border-status-gray-300 border-dashed`;
     }
   };
   // PressOverlay 강도 반환
