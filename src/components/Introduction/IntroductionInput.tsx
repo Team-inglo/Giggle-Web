@@ -19,7 +19,7 @@ const IntroductionInput = ({
   handleChange,
 }: IntroductionInputProps) => {
   return (
-    <div className="px-4 py-6 flex flex-col gap-6 pb-28">
+    <div className="px-4 flex flex-col gap-6 pb-28">
       <InputLayout title="Introduce yourself in one sentence!">
         <Input
           inputType={InputType.TEXT}
