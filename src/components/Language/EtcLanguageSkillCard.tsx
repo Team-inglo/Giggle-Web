@@ -37,6 +37,12 @@ const EtcLanguageSkillCard = ({
   const { mutate: deleteEtcLanguage } = useDeleteEtcLanguageLevel(); // 언어 삭제 함수
   const { mutate: patchEtcLanguageLevel } = usePatchEtcLanguageLevel(); // 언어 레벨 변경 함수
 
+  const getPadding = () => {
+    if (pathname === '/resume/language/edit') {
+      return 'py-2';
+    }
+    return 'py-4';
+  };
   // 언어 레벨 변경 함수
   const handleLevelChange = () => {
     patchEtcLanguageLevel({
@@ -49,6 +55,7 @@ const EtcLanguageSkillCard = ({
       },
     });
     setLevelBottomSheetOpen(false);
+    setModalOpen(false);
   };
 
   const openLevelBottomSheet = () => {
@@ -80,14 +87,16 @@ const EtcLanguageSkillCard = ({
           setBottomSheetOpen={handleLevelChange}
         />
       )}
-      <div className="flex justify-between items-center w-full py-4">
-        <section className="flex gap-2 items-center">
+      <div
+        className={`flex justify-between items-center w-full ${getPadding()}`}
+      >
+        <section className="flex gap-2 items-center justify-center">
           <h5
             className={`${
               pathname === '/resume/language/edit'
-                ? 'button-14-semibold'
-                : 'heading-18-semibold'
-            } pb-[0.125rem]  text-text-strong`}
+                ? 'heading-18-semibold'
+                : 'button-14-semibold'
+            } pb-[0.125rem] text-text-strong`}
           >
             {title}
           </h5>
@@ -101,7 +110,7 @@ const EtcLanguageSkillCard = ({
         <div className="flex items-center gap-2">
           {/* 언어 편집/삭제 메뉴(PostLanguagePage) */}
           {pathname === '/resume/language/edit' && (
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center w-6 h-6">
               <MenuIcon
                 onClick={() => setModalOpen(true)}
                 className="cursor-pointer"

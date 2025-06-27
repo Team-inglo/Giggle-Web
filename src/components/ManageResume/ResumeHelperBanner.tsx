@@ -5,7 +5,6 @@ import Icon from '@/components/Common/Icon';
 import ChevronRightIcon from '@/assets/icons/Chevron.svg?react';
 import { motion } from 'framer-motion';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { useGetResumeProgress } from '@/hooks/api/useResume';
 
 // 공통 텍스트 컴포넌트
@@ -90,12 +89,10 @@ const ProfileResumeHelperBanner = ({
     </section>
     <ProgressBar resumeProgress={resumeProgress} />
     <Button
-      type={buttonTypeKeys.LARGE}
-      isBorder={false}
+      type={Button.Type.NEUTRAL}
+      size={Button.Size.MD}
       onClick={onClick}
       title="Manage your Resume"
-      bgColor="bg-surface-secondary"
-      fontColor="text-text-strong"
     />
   </div>
 );
