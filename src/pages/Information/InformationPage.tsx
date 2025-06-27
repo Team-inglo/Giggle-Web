@@ -1,5 +1,6 @@
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import ProgressStepper from '@/components/Common/ProgressStepper';
 import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
 import AddressStep from '@/components/Information/AddressStep';
 import InformationStep from '@/components/Information/InformationStep';
@@ -88,23 +89,7 @@ const InformationPage = () => {
                 : setCurrentStep((prev) => prev - 1)
             }
           />
-          <div className="w-screen flex justify-center items-center sticky top-[3.75rem]">
-            <hr
-              className={`w-[33%] h-1 border-0 ${
-                currentStep >= 1 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-            <hr
-              className={`w-[33%] h-1 border-0 ${
-                currentStep >= 2 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-            <hr
-              className={`w-[34%] h-1 border-0 ${
-                currentStep >= 3 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-          </div>
+          <ProgressStepper totalCount={3} currentStep={currentStep} />
           <div className="w-full flex justify-center pt-4">
             {currentStep === 1 && (
               <InformationStep userInfo={userInfo} onNext={handleNext} />

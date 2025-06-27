@@ -22,6 +22,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LoadingItem } from '@/components/Common/LoadingItem';
 import { preparePostDataForSubmission } from '@/utils/post';
+import ProgressStepper from '@/components/Common/ProgressStepper';
 
 /**
  * 고용주 공고 등록/수정 통합 페이지 컴포넌트
@@ -135,16 +136,7 @@ const EmployerPostFormPage = () => {
         hasMenuButton={false}
         title={headerTitle}
       />
-      <div className="w-screen flex justify-center items-center sticky top-[3.75rem]">
-        {[...Array(5)].map((_, i) => (
-          <hr
-            key={i}
-            className={`w-[20%] h-1 border-0 ${
-              currentStep > i ? 'bg-surface-primary' : 'bg-surface-secondary'
-            }`}
-          />
-        ))}
-      </div>
+      <ProgressStepper totalCount={5} currentStep={currentStep} />
       {isModalOpen ? (
         <CompleteModal
           title={completeTitle}
