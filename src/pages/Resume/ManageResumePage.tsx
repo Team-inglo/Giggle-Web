@@ -1,4 +1,5 @@
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import ResumeHelperBanner from '@/components/ManageResume/ResumeHelperBanner';
 import PostApplyResume from '@/components/PostApply/PostApplyResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 
@@ -13,6 +14,7 @@ const ManageResumePage = () => {
         hasMenuButton={false}
         title="Manage Resume"
       />
+      <ResumeHelperBanner />
       <PostApplyResume />
     </>
   );
