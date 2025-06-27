@@ -20,6 +20,8 @@ import { isEmployer } from '@/utils/signup';
 import { getKoreanAbilityLevel } from '@/utils/resume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
+import AddTrigger from '@/components/Common/AddTrigger';
+import PlusIcon from '@/assets/icons/PlusIcon.svg?react';
 
 type MypageCardProps = {
   type: ManageResumeType;
@@ -44,6 +46,14 @@ const MypageCard = ({
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
   const { account_type } = useUserStore();
+
+  // 각 언어 레벨이 모두 0, 기타 언어가 없으면 언어 카드 렌더링 안 함
+  const isValidLanguageData =
+    languageData?.topik !== 0 ||
+    languageData?.social_integration !== 0 ||
+    languageData?.sejong_institute !== 0 ||
+    languageData?.etc.length > 0;
+
   // '+' 버튼을 눌렀을 떄 이동되는 경로와 아이콘을 매칭
   const iconAndPath = {
     [ManageResumeType.VISA]: { path: '' },
@@ -105,7 +115,7 @@ const MypageCard = ({
       title: profileTranslation.education[isEmployer(pathname)],
     },
     [ManageResumeType.LANGUAGE]: {
-      isValidRender: () => !!languageData,
+      isValidRender: () => isValidLanguageData,
       component: () => <LanguageManageDetail data={languageData!} />,
       title: profileTranslation.languages[isEmployer(pathname)],
     },
@@ -148,13 +158,13 @@ const MypageCard = ({
     }
     // 데이터가 없을 때 +Add {title} 버튼 표시
     return (
-      <button
-        onClick={handleClick}
-        className="w-full py-4 text-center border border-dashed border-blue-300 bg-blue-300/10 rounded-lg text-text-success flex items-center justify-center"
-      >
-        <span className="mr-1">+</span>
-        {`Add ${type}`}
-      </button>
+      <AddTrigger
+        icon={PlusIcon}
+        type={AddTrigger.Type.FILLED}
+        color={AddTrigger.ColorType.BLUE}
+        title={`Add ${type}`}
+        handleClick={handleClick}
+      />
     );
   };
 

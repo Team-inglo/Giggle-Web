@@ -1,14 +1,16 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import EtcLanguageCard from '@/components/Language/EtcLanguageCard';
+import Input from '@/components/Common/Input';
+import PageTitle from '@/components/Common/PageTitle';
 import EtcLanguageSection from '@/components/Language/EtcLanguageSection';
 import EtcLevelSection from '@/components/Language/EtcLevelSection';
-import { buttonTypeKeys } from '@/constants/components';
 import { LanguageList } from '@/constants/language_data';
 import { usePostEtcLanguageLevel } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
+import { LanguageProficiencyLevel } from '@/types/api/resumes';
 import { EtcLanguageData } from '@/types/manageResume/manageResume';
+import { getLanguageProficiencyLevelEnumFromEn } from '@/utils/resume';
 import { useState } from 'react';
 
 // 초기 값
@@ -29,12 +31,17 @@ const PostLanguagePage = () => {
   // 언어 레벨 추가 step 으로 관리 (1: 언어 선택, 2: 레벨 선택)
   const [step, setStep] = useState(1);
   // 선택한 언어 레벨 상태 관리
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState('');
 
   const { mutate } = usePostEtcLanguageLevel();
   const handleSubmit = () => {
     // API - 7.7 언어 - ETC 생성하기
-    mutate({ language_name: selectedLanguage.language, level: level });
+    mutate({
+      language_name: selectedLanguage.language,
+      level: getLanguageProficiencyLevelEnumFromEn(
+        level,
+      ) as LanguageProficiencyLevel,
+    });
   };
 
   return (
@@ -43,18 +50,17 @@ const PostLanguagePage = () => {
         hasBackButton={true}
         onClickBackButton={handleBackButtonClick}
         hasMenuButton={false}
-        title="Add Language"
+        title="Language"
       />
-      <div className="px-6 mb-32">
-        <h1 className="pt-6 pb-12 heading-24-semibold text-[#1E1926]">
-          Add Language
-        </h1>
+      <PageTitle title="Add Your Language Skills" />
+      <div className="px-4 mb-32">
         {/* 1단계: 언어 선택 */}
         {step === 1 && (
           <EtcLanguageSection
             languageList={languageList}
             selectedLanguage={selectedLanguage}
             setSelectedLanguage={setSelectedLanguage}
+            clearLevel={() => setLevel('')}
           />
         )}
         {/* 2단계: 레벨 선택 */}
@@ -62,7 +68,13 @@ const PostLanguagePage = () => {
           <>
             {/* 2단계에도 언어를 재설정할 수 있음 */}
             <div onClick={() => setStep(1)}>
-              <EtcLanguageCard language={selectedLanguage} isSelected={false} />
+              <Input
+                inputType={Input.Type.SEARCH}
+                placeholder="Search Language"
+                value={selectedLanguage.language}
+                onChange={() => {}}
+                canDelete={false}
+              />
             </div>
             <EtcLevelSection level={level} setLevel={setLevel} />
           </>
@@ -72,9 +84,13 @@ const PostLanguagePage = () => {
         {/* 1단계: 언어 선택 버튼 */}
         {step === 1 && (
           <Button
-            type={buttonTypeKeys.LARGE}
-            bgColor={selectedLanguage ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-            fontColor={selectedLanguage ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+            size={Button.Size.LG}
+            type={
+              selectedLanguage.language
+                ? Button.Type.PRIMARY
+                : Button.Type.DISABLED
+            }
+            isFullWidth
             title="Select"
             onClick={() => setStep(2)}
           />
@@ -82,9 +98,9 @@ const PostLanguagePage = () => {
         {/* 2단계: submit 버튼(레벨 선택) */}
         {step === 2 && (
           <Button
-            type={buttonTypeKeys.LARGE}
-            bgColor="bg-[#FEF387]"
-            fontColor="text-[#1E1926]"
+            size={Button.Size.LG}
+            type={level ? Button.Type.PRIMARY : Button.Type.DISABLED}
+            isFullWidth
             title="Done"
             onClick={handleSubmit}
           />

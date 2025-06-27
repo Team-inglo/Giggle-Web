@@ -4,9 +4,10 @@ import {
   buttonTypeKeys,
   buttonTypeUnion,
 } from '@/constants/components';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import PressOverlay, { PressStrength } from './PressedOverlay';
 import { motion } from 'framer-motion';
+import { usePress } from '@/hooks/usePress';
 
 type ButtonProps = {
   type: buttonTypeUnion; // 버튼의 시맨틱 타입 (e.g., PRIMARY, NEUTRAL, DISABLED)
@@ -29,23 +30,13 @@ const Button = ({
   onClick,
   children,
 }: ButtonProps) => {
-  const [isPressed, setIsPressed] = useState(false);
+  const { isPressed, pressHandlers } = usePress();
   const isDisabled =
     type === buttonTypeKeys.DISABLED || type === buttonTypeKeys.INACTIVE;
 
   // DISABLED, INACTIVE 상태에서는 onClick 이벤트가 발생하지 않도록 막는 핸들러
   const handleClick = () => {
     if (!isDisabled) onClick?.();
-  };
-
-  // 클릭/터치 상호작용 시작 시 '눌림' 상태를 활성화 (DISABLED, INACTIVE 상태에서는 제외)
-  const handlePressStart = () => {
-    if (!isDisabled) setIsPressed(true);
-  };
-
-  // 사용자의 클릭/터치 상호작용 종료 시 '눌림' 상태를 비활성화
-  const handlePressEnd = () => {
-    setIsPressed(false);
   };
 
   // 버튼 타입에 따라 다른 강도의 시각적 피드백을 주기 위해 투명도를 매핑
@@ -129,12 +120,7 @@ const Button = ({
               }
         }
         onClick={handleClick}
-        onTouchStart={handlePressStart}
-        onTouchEnd={handlePressEnd}
-        onTouchCancel={handlePressEnd}
-        onMouseDown={handlePressStart}
-        onMouseUp={handlePressEnd}
-        onMouseLeave={handlePressEnd}
+        {...(!isDisabled && pressHandlers)}
       >
         {/* SCRAP 타입은 아이콘을, 그 외에는 children 또는 title을 렌더링 */}
         {type === buttonTypeKeys.SCRAP ? <ScrapIcon /> : children || title}

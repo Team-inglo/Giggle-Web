@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ProfileImage from '@/components/Common/ProfileImage';
 import { useState } from 'react';
 import { usePatchResumePublic } from '@/hooks/api/useResume';
-import ToggleButton from '../Common/ToggleButton';
+import ToggleButton from '@/components/Common/ToggleButton';
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
 
