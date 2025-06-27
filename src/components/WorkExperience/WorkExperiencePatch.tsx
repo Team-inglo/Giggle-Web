@@ -66,11 +66,9 @@ const WorkExperiencePatch = ({
 
   return (
     <div className="p-6 flex flex-col gap-3">
-      <div className="heading-24-semibold mb-6 text-[#1E1926]">
-        Modify Work Experience
-      </div>
+      <div className="head-1 mb-6 text-[#1E1926]">Modify Work Experience</div>
       {/* title 입력 */}
-      <InputLayout title="Experience Title">
+      <InputLayout title="Experience Title" isEssential={true}>
         <Input
           inputType={InputType.TEXT}
           placeholder="Experience Title"
@@ -80,7 +78,7 @@ const WorkExperiencePatch = ({
         />
       </InputLayout>
       {/* 장소 입력 */}
-      <InputLayout title="Workplace">
+      <InputLayout title="Workplace" isEssential={true}>
         <Input
           inputType={InputType.TEXT}
           placeholder="Workplace"
@@ -90,7 +88,7 @@ const WorkExperiencePatch = ({
         />
       </InputLayout>
       {/* 시작 날짜 입력 */}
-      <InputLayout title="Start Date">
+      <InputLayout title="Start Date" isEssential={true}>
         <Input
           inputType={InputType.TEXT}
           placeholder="YYYY-MM-DD"
@@ -102,7 +100,7 @@ const WorkExperiencePatch = ({
         />
       </InputLayout>
       {/* 끝 날짜 입력 */}
-      <InputLayout title="End Date" width="w-fit">
+      <InputLayout title="End Date" isEssential={true} width="w-fit">
         <Input
           inputType={InputType.TEXT}
           placeholder="YYYY-MM-DD"
@@ -119,25 +117,23 @@ const WorkExperiencePatch = ({
           <div
             className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-[#FEF387] border-0' : 'border-[#F4F4F9]'}`}
           />
-          <p className="caption-12-regular text-[#656565]">
-            It's in progress right now
-          </p>
+          <p className="body-3 text-[#656565]">It's in progress right now</p>
         </div>
       </InputLayout>
       {/* 상세설명 입력 */}
-      <InputLayout title="Description" isOptional>
+      <InputLayout title="Description" isEssential={false} isOptional={true}>
         <div
           onClick={handleFocusTextArea}
-          className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-assistive"
+          className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow p-2"
         >
           <textarea
             ref={textareaRef}
             placeholder="Please write an article that introduces you."
             value={workExperienceData.description}
             onChange={handleTextareaChange}
-            className="h-auto body-16-medium placeholder:text-text-assistive w-full resize-none outline-none"
+            className="h-auto body-2 placeholder:text-[#abb0b9] text-[#1E1926] w-full resize-none outline-none"
           />
-          <span className="caption-12-regular text-text-assistive text-end">
+          <span className="caption text-[#464646] text-end">
             {workExperienceData.description.length}/200
           </span>
         </div>

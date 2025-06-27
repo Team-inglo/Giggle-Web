@@ -55,6 +55,7 @@ export const useGetWorkExperience = (id: string) => {
   return useQuery({
     queryKey: ['workExperience', id],
     queryFn: () => getWorkExperience(id),
+    enabled: !!id,
   });
 };
 

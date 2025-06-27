@@ -5,30 +5,28 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import { WorkExperienctRequest } from '@/types/api/resumes';
 import { formatDateInput } from '@/utils/information';
 
-type WorkExperiencePostProps = {
+type WorkExperienceFormProps = {
   workExperienceData: WorkExperienctRequest;
   setWorkExperienceData: React.Dispatch<
     React.SetStateAction<WorkExperienctRequest>
   >;
 };
 
-const WorkExperiencePost = ({
+const WorkExperienceForm = ({
   workExperienceData,
   setWorkExperienceData,
-}: WorkExperiencePostProps) => {
+}: WorkExperienceFormProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  // 경력 "진행 중" 인지 여부
   const [isOngoing, setIsOngoing] = useState(false);
 
-  // "진행 중" 체크 시 end_date 초기화
   const handleOngoingToggle = () => {
-    setIsOngoing((prev) => !prev);
-    if (!isOngoing) {
+    const newIsOngoing = !isOngoing;
+    setIsOngoing(newIsOngoing);
+    if (newIsOngoing) {
       handleInputChange('end_date', '');
     }
   };
 
-  // 텍스트 입력 공간 클릭시 포커스 이동
   const handleFocusTextArea = () => {
     textareaRef.current?.focus();
     const length = textareaRef.current!.value.length;
@@ -40,7 +38,10 @@ const WorkExperiencePost = ({
     field: keyof WorkExperienctRequest,
     value: string,
   ) => {
-    setWorkExperienceData({ ...workExperienceData, [field]: value });
+    if ((field === 'title' || field === 'workplace') && value.length > 20) {
+      return;
+    }
+    setWorkExperienceData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,11 +54,16 @@ const WorkExperiencePost = ({
     field: 'start_date' | 'end_date',
     value: string,
   ) => {
-    handleInputChange(field, value.replace(/\//g, '-'));
-    if (field === 'end_date') {
-      setIsOngoing(false); // 날짜 선택 시 "진행 중" 상태 해제
+    const formattedValue = formatDateInput(value);
+    handleInputChange(field, formattedValue);
+    if (field === 'end_date' && value) {
+      setIsOngoing(false);
     }
   };
+
+  useEffect(() => {
+    setIsOngoing(!workExperienceData.end_date);
+  }, [workExperienceData.end_date]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -67,74 +73,64 @@ const WorkExperiencePost = ({
   }, [workExperienceData.description]);
 
   return (
-    <div className="p-6 flex flex-col gap-3">
-      <div className="heading-24-semibold mb-6 text-[rgb(30,25,38)]">
-        Add Work Experience
-      </div>
-      {/* titl 입력 */}
-      <InputLayout title="Experience Title">
+    <div className="px-4 flex flex-col gap-6 pb-28">
+      <InputLayout title="Job Title">
         <Input
           inputType={InputType.TEXT}
-          placeholder="Experience Title"
+          placeholder="ex. Cafe part-time job"
           value={workExperienceData.title}
           onChange={(value) => handleInputChange('title', value)}
           canDelete={false}
         />
       </InputLayout>
-      {/* 장소 입력 */}
-      <InputLayout title="Workplace">
+      <InputLayout title="Worksplace">
         <Input
           inputType={InputType.TEXT}
-          placeholder="Workplace"
+          placeholder="ex. Starbucks(Hongdae)"
           value={workExperienceData.workplace}
           onChange={(value) => handleInputChange('workplace', value)}
           canDelete={false}
         />
       </InputLayout>
-      {/* 시작 날짜 입력 */}
-      <InputLayout title="Start Date">
-        <Input
-          inputType={InputType.TEXT}
-          placeholder="YYYY-MM-DD"
-          value={workExperienceData.start_date || ''}
-          onChange={(value) =>
-            handleDateChange('start_date', formatDateInput(value))
-          }
-          canDelete={false}
-        />
-      </InputLayout>
-      {/* 끝 날짜 입력 */}
-      <InputLayout title="End Date">
-        <Input
-          inputType={InputType.TEXT}
-          placeholder="YYYY-MM-DD"
-          value={workExperienceData.end_date || ''}
-          onChange={(value) =>
-            handleDateChange('end_date', formatDateInput(value))
-          }
-          canDelete={false}
-        />
-        <div
-          className="flex items-center gap-3 mt-2 cursor-pointer"
-          onClick={handleOngoingToggle}
-        >
-          <div
-            className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-primary-normal border-0' : 'border-border-alternative'}`}
+      <div className="flex flex-row gap-2">
+        <InputLayout title="Start Date">
+          <Input
+            inputType={InputType.TEXT}
+            placeholder="YYYY-MM-DD"
+            value={workExperienceData.start_date || ''}
+            onChange={(value) => handleDateChange('start_date', value)}
+            canDelete={false}
           />
-          <p className="caption-12-regular text-text-assistive">
-            It's in progress right now
-          </p>
-        </div>
-      </InputLayout>
-      {/* 상세설명 입력 */}
-      <InputLayout title="Description" isOptional>
+        </InputLayout>
+        <InputLayout title="End Date">
+          <Input
+            inputType={InputType.TEXT}
+            placeholder="YYYY-MM-DD"
+            value={workExperienceData.end_date || ''}
+            onChange={(value) => handleDateChange('end_date', value)}
+            canDelete={false}
+          />
+        </InputLayout>
+      </div>
+      <div
+        className="flex items-center gap-3 -mt-4 cursor-pointer"
+        onClick={handleOngoingToggle}
+      >
+        <div
+          className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-primary-normal border-0' : 'border-border-alternative'}`}
+        />
+        <p className="caption-12-regular text-text-assistive">
+          It's in progress right now
+        </p>
+      </div>
+      <InputLayout title="Job Description" isOptional>
         <div
           onClick={handleFocusTextArea}
           className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-assistive"
         >
           <textarea
             ref={textareaRef}
-            placeholder="Please write an article that introduces you."
+            placeholder="Briefly describe what you did (ex. served food, cleaned tables, taught English)"
             value={workExperienceData.description}
             onChange={handleTextareaChange}
             className="h-auto body-16-medium placeholder:text-text-assistive w-full resize-none outline-none"
@@ -148,4 +144,4 @@ const WorkExperiencePost = ({
   );
 };
 
-export default WorkExperiencePost;
+export default WorkExperienceForm;
