@@ -341,10 +341,11 @@ export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
 };
 
 // 7.26 (유학생) 이력서 완성도 조회하기
-export const useGetResumeProgress = () => {
+export const useGetResumeProgress = (isUser: boolean) => {
   return useQuery({
     queryKey: ['resume', 'progress'],
     queryFn: getResumeProgress,
+    enabled: isUser
   });
 };
 
