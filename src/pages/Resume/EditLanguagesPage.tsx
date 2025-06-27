@@ -8,6 +8,15 @@ import useNavigateBack from '@/hooks/useNavigateBack';
 const EditLanguagesPage = () => {
   const { data: languageSummary, isPending } = useGetLanguageSummary();
   const handleBackButtonClick = useNavigateBack();
+
+  const renderLanguageSkillList = () => {
+    if (isPending) {
+      return <LoadingItem />;
+    } else if (!languageSummary?.success) {
+      return <></>;
+    }
+    return <LanguageSkillList data={languageSummary.data} />;
+  };
   return (
     <>
       <BaseHeader
@@ -17,13 +26,7 @@ const EditLanguagesPage = () => {
         onClickBackButton={handleBackButtonClick}
       />
       <PageTitle title={`Let's showcase\nyour language skills! 🌏`} />
-      {isPending ? (
-        <LoadingItem />
-      ) : !languageSummary?.success ? (
-        <></>
-      ) : (
-        <LanguageSkillList data={languageSummary.data} />
-      )}
+      {renderLanguageSkillList()}
     </>
   );
 };

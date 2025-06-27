@@ -60,7 +60,7 @@ import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
 import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
 import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
 import EmployerScrappedPage from '@/pages/Employer/Scrapped/EmployerScrappedPage';
-import EditLanguagesPage from './pages/Resume/EditLanguagesPage';
+import EditLanguagesPage from '@/pages/Resume/EditLanguagesPage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
