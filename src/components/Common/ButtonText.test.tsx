@@ -63,7 +63,9 @@ describe('ButtonText', () => {
       const contentContainer = screen.getByText('아이콘');
       const children = Array.from(contentContainer?.childNodes ?? []);
       const iconIndex = children.findIndex(
-        (node) => node.nodeName.toLowerCase() === 'svg',
+        (node) =>
+          node.nodeType === Node.ELEMENT_NODE &&
+          (node as HTMLElement).dataset.testid === 'svg-icon',
       );
       const textIndex = children.findIndex(
         (node) =>
@@ -85,7 +87,9 @@ describe('ButtonText', () => {
       const contentContainer = screen.getByText('아이콘');
       const children = Array.from(contentContainer?.childNodes ?? []);
       const iconIndex = children.findIndex(
-        (node) => node.nodeName.toLowerCase() === 'svg',
+        (node) =>
+          node.nodeType === Node.ELEMENT_NODE &&
+          (node as HTMLElement).dataset.testid === 'svg-icon',
       );
       const textIndex = children.findIndex(
         (node) =>
