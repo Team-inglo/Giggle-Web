@@ -67,7 +67,10 @@ const Icon = ({
     .join(' ');
 
   return (
-    <div className={sizeStyle && hasPadding ? sizeStyle.padding : ''}>
+    <div
+      className={sizeStyle && hasPadding ? sizeStyle.padding : ''}
+      data-testid="svg-icon"
+    >
       <IconComponent className={combinedClassName} {...props} />
     </div>
   );
