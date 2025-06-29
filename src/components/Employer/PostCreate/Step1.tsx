@@ -7,26 +7,26 @@ import {
 } from '@/constants/post';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
-import { MINIMUM_HOURLY_RATE } from '@/utils/document';
 import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
+import { validateDateInput } from '@/utils/information';
 
 const Step1 = ({ onNext }: { onNext: () => void }) => {
   const validatePostInfo = (data: JobPostingForm) => {
     const {
-      body: { title, job_category, work_day_times, hourly_rate, work_period },
+      body: { title, job_category, recruitment_dead_line },
     } = data;
 
     const isFormValid =
-      title !== '' &&
-      job_category !== '' &&
-      work_day_times?.length > 0 &&
-      work_period !== '' &&
-      !Number.isNaN(Number(hourly_rate)) &&
-      hourly_rate >= MINIMUM_HOURLY_RATE;
-
-    return isFormValid;
+      title !== '' && job_category !== '' && recruitment_dead_line !== '';
+    // 빈 문자열, null, 유효한 날짜 모두 처리
+    const isDeadLineValid =
+      recruitment_dead_line === null || // 상시모집
+      (typeof recruitment_dead_line === 'string' &&
+        recruitment_dead_line !== '' &&
+        validateDateInput(recruitment_dead_line));
+    return isFormValid && isDeadLineValid;
   };
 
   // 폼 필드 렌더링 함수

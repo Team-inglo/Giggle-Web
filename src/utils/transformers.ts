@@ -81,9 +81,9 @@ export const transformers = {
   employmentType: {
     transformValue: (option: string) => {
       switch (option) {
-        case '아르바이트':
+        case '알바':
           return EmploymentType.PARTTIME;
-        case '인턴십':
+        case '인턴':
           return EmploymentType.INTERNSHIP;
         default:
           return EmploymentType.PARTTIME;
@@ -91,9 +91,9 @@ export const transformers = {
     },
     compareValue: (value: EmploymentType, option: string) => {
       switch (option) {
-        case '아르바이트':
+        case '알바':
           return value === EmploymentType.PARTTIME;
-        case '인턴십':
+        case '인턴':
           return value === EmploymentType.INTERNSHIP;
         default:
           return false;

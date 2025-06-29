@@ -3,7 +3,6 @@ import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { buttonTypeKeys } from '@/constants/components';
-import { validateDateInput } from '@/utils/information';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { Path } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
@@ -12,6 +11,7 @@ import {
   PostFormField,
   PostFormFields,
 } from '@/constants/post';
+import { MINIMUM_HOURLY_RATE } from '@/utils/document';
 
 const Step2 = ({
   onNext,
@@ -22,21 +22,17 @@ const Step2 = ({
 }) => {
   const validatePostInfo = (data: JobPostingForm) => {
     const {
-      body: { address, recruitment_dead_line },
+      body: { hourly_rate, work_period, work_day_times, address },
     } = data;
 
-    // 빈 문자열, null, 유효한 날짜 모두 처리
-    const isDeadLineValid =
-      recruitment_dead_line === null || // 상시모집
-      (typeof recruitment_dead_line === 'string' &&
-        recruitment_dead_line !== '' &&
-        validateDateInput(recruitment_dead_line));
-
     const isFormValid =
+      !Number.isNaN(Number(hourly_rate)) &&
+      hourly_rate >= MINIMUM_HOURLY_RATE &&
+      work_period !== '' &&
+      work_day_times?.length > 0 &&
       !!address.address_name &&
       !!address.address_detail &&
-      address.address_detail.length <= 50 &&
-      isDeadLineValid;
+      address.address_detail.length <= 50;
 
     return !!isFormValid;
   };
