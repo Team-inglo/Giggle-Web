@@ -25,11 +25,7 @@ const isEmailValid = (email: string): boolean => {
 
 // 전화번호 유효성 검사 함수
 const isValidPhoneNumber = (phone: Phone) => {
-  return (
-    phone.start !== '' &&
-    /^[0-9]{4}$/.test(phone.middle) &&
-    /^[0-9]{4}$/.test(phone.end)
-  );
+  return phone.start !== '' && /^[0-9]{4}-[0-9]{4}$/.test(phone.rest);
 };
 
 // 이수학기 유효성 검사 함수
@@ -288,6 +284,11 @@ type InputFormatter = (value: string) => string;
 const formatters: Record<string, InputFormatter> = {
   // 숫자만 허용
   'numbers-only': (value) => value.replace(/[^0-9]/g, ''),
+  'phone-rest': (value) => {
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    if (digitsOnly.length <= 4) return digitsOnly;
+    return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4, 8)}`;
+  },
   // 사업자등록번호 포맷 (000/00/00000)
   'business-id': (value) => {
     const digitsOnly = value.replace(/[^0-9]/g, '');

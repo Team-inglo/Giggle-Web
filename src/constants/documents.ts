@@ -155,8 +155,7 @@ export const initialPartTimePermitForm: PartTimePermitFormRequest = {
   phone_number: '',
   phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   email: '',
 };
@@ -321,8 +320,7 @@ export const initialLaborContractEmployerInfo: LaborContractEmployerInfo = {
   phone_number: '',
   phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   name: '',
   start_date: '', // yyyy-MM-dd
@@ -405,8 +403,7 @@ export const initialLaborContractEmployeeInfo: LaborContractEmployeeInfo = {
   phone_number: '',
   phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   signature_base64: '',
 };
@@ -421,30 +418,26 @@ export const initialIntegratedApplication: IntegratedApplicationData = {
   tele_phone_number: '',
   tele_phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   cell_phone_number: '',
   cell_phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   is_accredited: true,
   school_name: '',
   school_phone_number: '',
   school_phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   new_work_place_name: '',
   new_work_place_registration_number: '',
   new_work_place_phone_number: '',
   new_work_place_phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   annual_income_amount: 0,
   occupation: '',
@@ -547,8 +540,7 @@ export const initialPartTimePermitEmployerForm = {
   phone_number: '',
   phone: {
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   },
   signature_base64: '',
   work_period: WorkPeriod.ONE_DAY,

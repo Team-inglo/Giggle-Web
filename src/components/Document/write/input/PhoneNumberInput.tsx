@@ -22,13 +22,14 @@ const PhoneNumberInput = <T extends FieldValues>({
   const { control } = useFormContext<T>();
   return (
     <div className="w-full flex flex-row gap-2 justify-between mb-[0rem]">
-      <div className="w-full h-[2.75rem]">
+      <div className="flex-shrink-0 max-w-[30%] h-[2.75rem]">
         <Controller
           name={`${name}.start` as FieldPath<T>}
           control={control}
           defaultValue={'010' as PathValue<T, FieldPath<T>>}
           render={({ field }) => (
             <Dropdown
+              title=""
               value={field.value}
               placeholder="010"
               options={phone}
@@ -37,42 +38,26 @@ const PhoneNumberInput = <T extends FieldValues>({
           )}
         />
       </div>
-      <Controller
-        name={`${name}.middle` as FieldPath<T>}
-        control={control}
-        defaultValue={'' as PathValue<T, FieldPath<T>>}
-        render={({ field }) => (
-          <Input
-            inputType={InputType.TEXT}
-            placeholder="0000"
-            value={field.value}
-            onChange={(value) => {
-              // 포맷팅 적용 후 값 업데이트
-              const formattedValue = applyFormat(value, 'numbers-only');
-              field.onChange(formattedValue);
-            }}
-            canDelete={false}
-          />
-        )}
-      />
-      <Controller
-        name={`${name}.end` as FieldPath<T>}
-        control={control}
-        defaultValue={'' as PathValue<T, FieldPath<T>>}
-        render={({ field }) => (
-          <Input
-            inputType={InputType.TEXT}
-            placeholder="0000"
-            value={field.value}
-            onChange={(value) => {
-              // 포맷팅 적용 후 값 업데이트
-              const formattedValue = applyFormat(value, 'numbers-only');
-              field.onChange(formattedValue);
-            }}
-            canDelete={false}
-          />
-        )}
-      />
+      <div className="w-full h-[2.75rem]">
+        <Controller
+          name={`${name}.rest` as FieldPath<T>}
+          control={control}
+          defaultValue={'' as PathValue<T, FieldPath<T>>}
+          render={({ field }) => (
+            <Input
+              inputType={InputType.TEXT}
+              placeholder="'-' 없이 숫자만 입력"
+              value={field.value}
+              onChange={(value) => {
+                const formattedValue = applyFormat(value, 'phone-rest');
+                field.onChange(formattedValue);
+              }}
+              canDelete={false}
+              maxLength={9}
+            />
+          )}
+        />
+      </div>
     </div>
   );
 };

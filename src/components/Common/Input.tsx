@@ -28,6 +28,7 @@ type InputProps = {
   prefix?: string; // 접두사 내용
   isUnit?: boolean; // 단위 여부
   unit?: string; // 단위 내용
+  maxLength?: number; // 최대 글자수
 };
 
 // inputStyler 함수: 입력 필드의 상태에 따른 스타일을 반환합니다.
@@ -58,6 +59,7 @@ const Input = ({
   prefix,
   isUnit,
   unit,
+  maxLength,
 }: InputProps) => {
   // 현재 입력 필드의 상태를 관리합니다.
   const [currentStatus, setCurrentStatus] = useState<InputStatus>(
@@ -119,6 +121,7 @@ const Input = ({
             : 'text'
         }
         onFocus={(e) => isPreventFocus && e.target.blur()}
+        maxLength={maxLength}
       />
       {/* 비밀번호 타입일 경우 표시/숨김 토글 아이콘을 표시합니다. */}
       {/* TODO : 추후 아이콘 추가 되면 비밀번호 가시 여부에 따라서 다른 아이콘 적용*/}
