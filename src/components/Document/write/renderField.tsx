@@ -263,9 +263,6 @@ export const RenderField = <
     case 'image_upload':
       return (
         <div className="w-full">
-          <div className="w-full relative caption-12-regular px-1 pb-1.5 text-text-strong text-left">
-            {field.placeholder}
-          </div>
           <ImageUploadInput name={name} isEdit={field.isEdit as boolean} />
         </div>
       );
