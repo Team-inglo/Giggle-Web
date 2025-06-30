@@ -16,7 +16,7 @@ type PhoneNumberInputProps<T extends FieldValues = FieldValues> = {
   name?: FieldPath<T>;
 };
 
-const PhoneNumberInput = <T extends FieldValues>({
+const PhoneNumberInputController = <T extends FieldValues>({
   name,
 }: PhoneNumberInputProps<T>) => {
   const { control } = useFormContext<T>();
@@ -62,4 +62,4 @@ const PhoneNumberInput = <T extends FieldValues>({
   );
 };
 
-export default PhoneNumberInput;
+export default PhoneNumberInputController;

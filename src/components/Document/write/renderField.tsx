@@ -6,7 +6,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
-import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
+import PhoneNumberInputController from '@/components/Document/write/input/PhoneNumberInputController';
 import AddressInput from '@/components/Document/write/input/AddressInput';
 import DropdownInput, {
   KeyValueDropdownInput,
@@ -98,7 +98,7 @@ export const RenderField = <
         />
       );
     case 'phone':
-      return <PhoneNumberInput name={name} />;
+      return <PhoneNumberInputController name={name} />;
     case 'address':
       return (
         <AddressInput
