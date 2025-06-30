@@ -5,14 +5,15 @@ import {
   UserEditRequestBody,
   UserProfileDetailResponse,
 } from '@/types/api/profile';
-import { isValidPhoneNumber } from './information';
+import { formatPhoneNumber, isValidPhoneNumber } from './information';
 import { initialAddress } from '../types/api/users';
 import { getNationalityEnumFromEn } from './resume';
+import { Phone } from '@/types/api/document';
 
 // GET 데이터를 PATCH 요청 데이터로 변환
 export const changeValidData = (
   userData: UserEditRequestBody,
-  phoneNum: { start: string; middle: string; end: string },
+  phoneNum: Phone,
   isProfileImgChanged: boolean,
 ): UserEditRequestBody => {
   return {
@@ -25,7 +26,7 @@ export const changeValidData = (
       .replace(/ /g, '_') as NationalityType,
     visa: userData.visa.replace(/-/g, '_') as VisaType,
     // phone_number 통합
-    phone_number: `${phoneNum.start}-${phoneNum.middle}-${phoneNum.end}`,
+    phone_number: formatPhoneNumber(phoneNum),
     is_profile_img_changed: isProfileImgChanged,
     address: userData.address,
   };
@@ -76,7 +77,7 @@ export const transformToEmployerProfileRequest = (
 
 export const validateFieldValues = (
   userData: UserEditRequestBody,
-  phoneNum: { start: string; middle: string; end: string },
+  phoneNum: Phone,
 ) => {
   return Object.entries(userData).every(([key, value]) => {
     const typedKey = key as keyof UserEditRequestBody;
@@ -92,8 +93,12 @@ export const validateFieldValues = (
         // 생일이 현재 날짜보다 이전인지 확인
         if (value) return Date.parse(value as string) < Date.now();
         return true;
-      case 'phone_number':
-        return isValidPhoneNumber(phoneNum);
+      case 'phone_number': {
+        return isValidPhoneNumber({
+          start: phoneNum.start,
+          rest: phoneNum.rest,
+        });
+      }
       case 'address':
         // 주소는 필수 입력이 아니므로 체크하지 않으나, 만약 입력되어 있다면 detail이 50자 이하인지 확인
         if (value) {

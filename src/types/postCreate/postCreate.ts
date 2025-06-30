@@ -169,8 +169,7 @@ export const initialJobPostingState: JobPostingForm = {
     recruiter_phone_number: '',
     recruiter_phone: {
       start: '010',
-      middle: '',
-      end: '',
+      rest: '',
     },
     description: '',
     preferred_conditions: '',

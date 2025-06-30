@@ -27,8 +27,6 @@ export const isValidName = (name: string): boolean => {
 
 // 전화번호 유효성 검사 함수
 export const isValidPhoneNumber = (phone: { start: string; rest: string }) => {
-  console.log(phone);
-  console.log(/^[0-9]{4}-[0-9]{4}$/.test(phone.rest));
   return phone.start !== '' && /^[0-9]{4}-[0-9]{4}$/.test(phone.rest);
 };
 
@@ -39,13 +37,8 @@ export const limitInputValueLength = (value: string, maxLength: number) => {
   return value.slice(0, maxLength);
 };
 
-// 3개의 dropdown, input으로 나눠 받고 있는 state 통합하는 함수
+// 2개의 dropdown, input으로 나눠 받고 있는 state 통합하는 함수
 export const formatPhoneNumber = (phone: { start: string; rest: string }) => {
-  if (phone.rest.length === 8) {
-    const middle = phone.rest.slice(0, 4);
-    const end = phone.rest.slice(4);
-    return `${phone.start}-${middle}-${end}`;
-  }
   return `${phone.start}-${phone.rest}`;
 };
 
@@ -55,7 +48,7 @@ export const parsePhoneNumber = (phoneNumber: string) => {
     const [start, middle, end] = parts;
     return {
       start,
-      rest: `${middle}${end}`,
+      rest: `${middle}-${end}`,
     };
   }
   // 기본값 또는 다른 형식 처리
