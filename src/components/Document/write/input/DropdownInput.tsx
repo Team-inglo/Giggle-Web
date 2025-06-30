@@ -18,6 +18,7 @@ type BaseDropdownProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
+  title: string;
   placeholder: string;
 };
 
@@ -27,6 +28,7 @@ type DropdownProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseDropdownProps<TFieldValues, TName> & {
   options: string[];
+  title: string;
 };
 
 // key-value 드롭다운 props 타입
@@ -35,6 +37,7 @@ type KeyValueDropdownProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseDropdownProps<TFieldValues, TName> & {
   options: DropdownOption[];
+  title: string;
 };
 
 // 일반 드롭다운 컴포넌트
@@ -43,6 +46,7 @@ const DropdownInput = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   name,
+  title,
   placeholder,
   options,
 }: DropdownProps<TFieldValues, TName>) => {
@@ -54,6 +58,7 @@ const DropdownInput = <
 
   return (
     <Dropdown
+      title={title}
       value={field.value || ''}
       placeholder={placeholder}
       options={options}
@@ -68,6 +73,7 @@ const KeyValueDropdownInput = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   name,
+  title,
   placeholder,
   options,
 }: KeyValueDropdownProps<TFieldValues, TName>) => {
@@ -83,6 +89,7 @@ const KeyValueDropdownInput = <
 
   return (
     <Dropdown
+      title={title}
       value={displayValue}
       placeholder={placeholder}
       options={options.map((opt) => opt.name)}

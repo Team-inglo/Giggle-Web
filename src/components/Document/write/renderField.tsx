@@ -117,6 +117,7 @@ export const RenderField = <
         return (
           <KeyValueDropdownInput
             name={name}
+            title={field.label ?? ''}
             placeholder={field.placeholder}
             options={convertToDropdownOption(
               field.options as Record<
@@ -131,6 +132,7 @@ export const RenderField = <
       return (
         <DropdownInput
           name={name}
+          title={field.label ?? ''}
           placeholder={field.placeholder}
           options={Array.isArray(field.options) ? field.options : []}
         />
