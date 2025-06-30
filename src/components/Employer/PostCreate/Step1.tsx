@@ -38,8 +38,8 @@ const Step1 = ({ onNext }: { onNext: () => void }) => {
   };
 
   return (
-    <div className="w-full py-6 flex flex-col">
-      <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+    <div className="w-full pb-6 flex flex-col">
+      <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
         {PostFormFields.step1.map((field) => (
           <InputLayout key={field.name} title={field.title}>
             {renderFormField(field)}
@@ -53,7 +53,7 @@ const Step1 = ({ onNext }: { onNext: () => void }) => {
           validationFn={validatePostInfo}
           onClick={() => onNext()}
         >
-          <Button type="large" title="다음" />
+          <Button title="다음" isFullWidth type={Button.Type.PRIMARY} />
         </ValidatedSubmitButton>
       </BottomButtonPanel>
     </div>

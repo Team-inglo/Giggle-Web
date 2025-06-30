@@ -46,9 +46,9 @@ const Step2 = ({
   };
 
   return (
-    <div className="w-full h-full py-6 flex flex-col">
+    <div className="w-full h-full pb-6 flex flex-col">
       <>
-        <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+        <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
           {PostFormFields.step2.map((field) => (
             <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
@@ -72,7 +72,7 @@ const Step2 = ({
               validationFn={validatePostInfo}
               onClick={() => onNext()}
             >
-              <Button type="large" title="다음" />
+              <Button title="다음" type={Button.Type.DISABLED} />
             </ValidatedSubmitButton>
           </div>
         </BottomButtonPanel>

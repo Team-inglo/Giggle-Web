@@ -58,11 +58,6 @@ const DocumentFormInput = <
 
   return (
     <>
-      {description && (
-        <p className="caption-12-regular text-text-alternative px-1 pb-2">
-          {description}
-        </p>
-      )}
       <Input
         inputType={inputType}
         placeholder={placeholder}
@@ -82,6 +77,11 @@ const DocumentFormInput = <
         isUnit={isUnit}
         unit={unit}
       />
+      {description && (
+        <p className="caption-12-regular text-text-alternative px-1 py-1.5">
+          {description}
+        </p>
+      )}
     </>
   );
 };

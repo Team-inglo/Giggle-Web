@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Button from '@/components/Common/Button';
 import { cloneElement, ReactElement, useMemo } from 'react';
 import { FieldValues, useWatch } from 'react-hook-form';
 
@@ -58,8 +59,9 @@ const ValidatedSubmitButton = <T extends FieldValues>({
     ...children.props,
     onClick: isValid ? onClick : () => {},
     disabled: !isValid,
-    bgColor: isValid ? 'bg-surface-primary' : 'bg-surface-secondary',
-    fontColor: isValid ? 'text-text-normal' : 'text-text-disabled',
+    isFullWidth: true,
+    size: Button.Size.LG,
+    type: isValid ? Button.Type.PRIMARY : Button.Type.DISABLED,
     style: {
       ...(children.props?.style || {}),
     },

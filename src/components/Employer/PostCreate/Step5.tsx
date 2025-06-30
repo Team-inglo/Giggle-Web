@@ -42,13 +42,10 @@ const Step5 = ({
   };
 
   return (
-    <div className="w-full py-6 flex flex-col">
-      <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+    <div className="w-full pb-6 flex flex-col">
+      <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
         {PostFormFields.step5.map((field) => (
-          <InputLayout
-            key={field.name}
-            title={field.title}
-          >
+          <InputLayout key={field.name} title={field.title}>
             {renderFormField(field)}
           </InputLayout>
         ))}
@@ -67,7 +64,7 @@ const Step5 = ({
             validationFn={validatePostInfo}
             onClick={handleSubmit}
           >
-            <Button type="large" title="완료" />
+            <Button type={Button.Type.LARGE} title="완료" />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>

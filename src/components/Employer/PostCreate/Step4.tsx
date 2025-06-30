@@ -74,7 +74,7 @@ const Step4 = ({
             validationFn={validatePostInfo}
             onClick={() => onNext()}
           >
-            <Button type="large" title="다음" />
+            <Button type={Button.Type.LARGE} title="다음" />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>
