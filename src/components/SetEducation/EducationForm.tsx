@@ -93,13 +93,15 @@ const EducationForm = ({
         </InputLayout>
         {/* 학교명 선택 */}
         <InputLayout title="School Name">
-          <Input
-            inputType={InputType.SEARCH}
-            placeholder="Search your school name"
-            value={school?.name || ''}
-            onChange={() => {}}
-            canDelete={false}
-          />
+          <div onClick={() => setSearchOpen(true)}>
+            <Input
+              inputType={InputType.SEARCH}
+              placeholder="Search your school name"
+              value={school?.name || ''}
+              onChange={() => {}}
+              canDelete={false}
+            />
+          </div>
         </InputLayout>
         {/* 전공 입력 */}
         <InputLayout title="Major">

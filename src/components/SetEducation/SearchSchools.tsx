@@ -7,6 +7,10 @@ import { buttonTypeKeys } from '@/constants/components';
 import { School } from '@/types/api/document';
 import { useGetSearchSchools } from '@/hooks/api/useResume';
 import useBodyScrollLock from '@/hooks/useBodyScrollLock';
+import BottomButtonPanel from '../Common/BottomButtonPanel';
+import PageTitle from '../Common/PageTitle';
+import Icon from '@/components/Common/Icon';
+import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 
 type SearchSchoolsProps = {
   setSchool: (school: School) => void;
@@ -67,12 +71,9 @@ const SearchSchools = ({
             hasMenuButton={false}
             title="Education"
           />
-          <div className="px-6 mb-6">
-            <div className="heading-24-semibold text-[#1E1926] my-6">
-              Search for
-              <br />
-              educational institutions
-            </div>
+          <PageTitle title="Search for educational institutions" />
+
+          <div className="px-4 h-full">
             <Input
               inputType={InputType.SEARCH}
               placeholder="Search Name of school"
@@ -81,32 +82,39 @@ const SearchSchools = ({
               canDelete={true}
               onDelete={() => setSearchSchool('')}
             />
-            <div className="mt-6 p-2 body-14-regular text-[#656565] h-[26rem] overflow-scroll">
+            <div className="h-full mt-2 py-2 body-14-regular text-text-strong overflow-y-scroll">
               {schoolList.length > 0 &&
                 schoolList.map((school: School) => (
                   <div
                     key={school.id}
-                    className={`px-3.5 py-2.5 rounded-lg cursor-pointer ${
-                      selectedSchool?.id === school.id
-                        ? 'bg-[#FEF387] text-[#1E1926]'
-                        : 'bg-white text-[#656565]'
-                    }`}
+                    className={`flex flex-row justify-between items-center gap-2px-3.5 py-2.5 rounded-lg cursor-pointer`}
                     onClick={() => handleSelectSchool(school)}
                   >
-                    {school.name}
+                    <p className="text-text-strong body-14-regular">
+                      {school.name}
+                    </p>
+                    <div className="flex w-6 h-6 flex-shrink-0 justify-center items-center">
+                      {selectedSchool?.id === school.id && (
+                        <Icon icon={CheckIcon} />
+                      )}
+                    </div>
                   </div>
                 ))}
             </div>
           </div>
-          <div className="fixed w-full bottom-[3.125rem] px-6 pt-3 bg-grayGradient">
+          <BottomButtonPanel>
             <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor={selectedSchool ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-              fontColor={selectedSchool ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
+              type={
+                selectedSchool
+                  ? buttonTypeKeys.PRIMARY
+                  : buttonTypeKeys.DISABLED
+              }
+              size={Button.Size.LG}
+              isFullWidth
               title="Select"
               onClick={selectedSchool ? handleSubmit : undefined}
             />
-          </div>
+          </BottomButtonPanel>
         </div>
       )}
     </>
