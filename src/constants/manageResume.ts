@@ -11,11 +11,11 @@ export const enum ManageResumeType {
 }
 
 export const EducationLevels = [
-  'BACHELOR',
-  'ASSOCIATE',
-  'HIGHSCHOOL',
-  'MASTER',
-  'DOCTOR',
+  'Bachelor',
+  'Associate',
+  'Highschool',
+  'Master',
+  'Doctor',
 ];
 
 export type KoEnEnumType = {

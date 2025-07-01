@@ -70,11 +70,7 @@ const IntroductionPage = () => {
         hasMenuButton={false}
         title="Introduction"
       />
-      <PageTitle
-        title="Tell employers a little about yourself!"
-        content="Highlight your skills, experience,
-and what makes you a great candidate"
-      />
+      <PageTitle title="Tell employers a little about yourself!" />
       <IntroductionInput
         data={data}
         textareaRef={textareaRef}

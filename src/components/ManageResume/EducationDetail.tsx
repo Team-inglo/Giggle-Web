@@ -44,7 +44,7 @@ const EducationDetail = ({ data }: EducationDetailProps) => {
       )}
       <div className="flex flex-col gap-2">
         {data.map((education) => (
-          <div key={education.id} className="flex justify-between items-start">
+          <div key={education.id} className="flex justify-between items-start pt-3">
             <div>
               {/* 학력 정보 */}
               <div className="flex items-center gap-1 pb-[0.125rem]">
