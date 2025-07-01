@@ -80,7 +80,6 @@ const EmployerPostFormPage = () => {
         {
           onSuccess: (data) => {
             form.reset(data.data);
-            console.log(data.data);
             setIsLoading(false);
           },
           onError: () => {

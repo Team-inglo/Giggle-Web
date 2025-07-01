@@ -161,7 +161,7 @@ export const initialJobPostingState: JobPostingForm = {
     recruitment_dead_line: null,
     recruitment_number: 0,
     gender: Gender.MALE,
-    age_restriction: 0,
+    age_restriction: null,
     education_level: '',
     visa: [],
     recruiter_name: '',
