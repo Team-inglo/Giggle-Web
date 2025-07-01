@@ -115,11 +115,10 @@ const ResumeHelperBanner = () => {
   const { account_type } = useUserStore();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  // TODO: API 연동 시 실제 이력서 진행도를 받아와야 함
-  const { data: resumeProgress } = useGetResumeProgress();
-
   const isUser = account_type === UserType.USER;
+  const { data: resumeProgress } = useGetResumeProgress(isUser);
+
+
   const isResumeIncomplete = Number(resumeProgress?.data.completion_rate) < 100;
   // 일반 유저가 아니거나 이력서가 100% 완성된 경우에는 배너를 렌더링하지 않음
   if (!isUser || !isResumeIncomplete) return null;
