@@ -3,23 +3,24 @@ import Button from '@/components/Common/Button';
 import EducationForm from '@/components/SetEducation/EducationForm';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import PageTitle from '@/components/Common/PageTitle';
-import { useEducation } from '@/hooks/useEducation';
+import { useEducationApi } from '@/hooks/useEducationApi';
+import { useEducationForm } from '@/hooks/useEducationForm';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
+import useNavigateBack from '@/hooks/useNavigateBack';
 
 const EducationPage = () => {
-  const {
-    mode,
-    isPending,
-    educationData,
-    setEducationData,
-    initialData,
-    schoolData,
-    isValid,
-    pageTitle,
-    handleBackButtonClick,
-    handleSubmit,
-    handleReset,
-  } = useEducation();
+  const { mode, isPending, initialData, schoolData, submitEducation } =
+    useEducationApi();
+  const { educationData, setEducationData, isValid, handleReset, pageTitle } =
+    useEducationForm({ initialData, mode });
+
+  const handleBackButtonClick = useNavigateBack();
+
+  const handleSubmit = () => {
+    if (isValid) {
+      submitEducation(educationData);
+    }
+  };
 
   const isReady =
     mode === 'post' || (mode === 'patch' && initialData && !isPending);
@@ -52,14 +53,14 @@ const EducationPage = () => {
               size={Button.Size.LG}
               isFullWidth
               title="Reset"
-              onClick={isValid ? handleReset : undefined}
+              onClick={handleReset}
             />
             <Button
               type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
               size={Button.Size.LG}
               isFullWidth
               title="Save"
-              onClick={isValid ? handleSubmit : undefined}
+              onClick={handleSubmit}
             />
           </div>
         ) : (
@@ -68,7 +69,7 @@ const EducationPage = () => {
             size={Button.Size.LG}
             isFullWidth
             title="Save"
-            onClick={isValid ? handleSubmit : undefined}
+            onClick={handleSubmit}
           />
         )}
       </BottomButtonPanel>
