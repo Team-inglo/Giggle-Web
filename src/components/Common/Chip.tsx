@@ -44,4 +44,6 @@ const Chip = ({
   );
 };
 
+Chip.State = ChipState;
+
 export default Chip;
