@@ -698,4 +698,8 @@ export const documentTranslation = {
     ko: '상세주소는 50자 이내로 입력해주세요',
     en: 'max 50 characters.',
   },
+  optional: {
+    ko: '(옵션)',
+    en: '(optional)',
+  },
 };

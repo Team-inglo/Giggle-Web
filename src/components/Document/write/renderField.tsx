@@ -11,7 +11,9 @@ import AddressInput from '@/components/Document/write/input/AddressInput';
 import DropdownInput, {
   KeyValueDropdownInput,
 } from '@/components/Document/write/input/DropdownInput';
-import RadioGroup from '@/components/Document/write/input/RadioGroup';
+import RadioGroup, {
+  RadioGroupVariant,
+} from '@/components/Document/write/input/RadioGroup';
 import CheckboxGroup from '@/components/Document/write/input/CheckboxGroup';
 import WorkDayTimeWithRestInput from '@/components/Document/write/input/WorkDayTimeWithRestInput';
 import SignaturePad from '@/components/Document/write/SignaturePad';
@@ -22,8 +24,8 @@ import {
   IntegratedApplicationFormField,
   LaborContractEmployerFormField,
   PartTimePermitEmployerFormField,
-} from '@/constants/documents';
-import { PostFormField } from '@/constants/post';
+  PostFormField,
+} from '@/constants/formFields';
 import WorkDayTimeInput from './input/WorkDayTimeInput';
 import VisaDropdown from '@/components/Common/VisaDropdown';
 import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
@@ -117,7 +119,7 @@ export const RenderField = <
         return (
           <KeyValueDropdownInput
             name={name}
-            title={field.label ?? ''}
+            title={field.placeholder}
             placeholder={field.placeholder}
             options={convertToDropdownOption(
               field.options as Record<
@@ -132,7 +134,7 @@ export const RenderField = <
       return (
         <DropdownInput
           name={name}
-          title={field.label ?? ''}
+          title={field.placeholder}
           placeholder={field.placeholder}
           options={Array.isArray(field.options) ? field.options : []}
         />
@@ -160,7 +162,9 @@ export const RenderField = <
       return (
         <RadioGroup
           name={name}
+          type={field.selectType as RadioGroupVariant}
           options={Array.isArray(field.options) ? field.options : []}
+          optionsWithIcon={field.optionsWithIcon}
           description={field.description}
           transformer={field.transformer}
         />
@@ -213,6 +217,7 @@ export const RenderField = <
               <div className="flex flex-col gap-2">
                 <RadioGroup
                   name={name}
+                  type={field.selectType as RadioGroupVariant}
                   options={Array.isArray(field.options) ? field.options : []}
                   description={field.description}
                   transformer={field.transformer}

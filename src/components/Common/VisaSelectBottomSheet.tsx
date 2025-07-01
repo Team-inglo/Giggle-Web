@@ -56,7 +56,7 @@ const VisaSelectBottomSheet = ({
     >
       <div className="w-full flex-col">
         <div className="w-full h-[60vh] overflow-y-scroll no-scrollbar">
-          <h3 className="py-3 heading-18-semibold text-text-normal">
+          <h3 className="py-3 heading-18-semibold text-text-strong">
             {account_type === UserType.OWNER
               ? '비자를 선택해주세요.'
               : 'Please select visas'}
@@ -72,7 +72,7 @@ const VisaSelectBottomSheet = ({
                   {visa[isEmployerByAccountType(account_type)]}
                 </p>
                 <div
-                  className={`w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-full ${currentSelectVisas.includes(key as VisaGroup) ? 'bg-surface-invert' : 'bg-surface-disabled'}`}
+                  className={`w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-full ${currentSelectVisas.includes(key as VisaGroup) ? 'bg-surface-invert' : 'bg-surface-tertiary'}`}
                 >
                   <Icon icon={CheckIcon} fillColor="text-surface-base" />
                 </div>
