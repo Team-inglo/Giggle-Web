@@ -6,7 +6,7 @@ import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';

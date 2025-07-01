@@ -10,7 +10,7 @@ import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
 import { MINIMUM_HOURLY_RATE } from '@/utils/document';
 
 const Step2 = ({

@@ -8,7 +8,6 @@ import { isEmployerByAccountType } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
 import {
   EducationLevelInfo,
-  genderInfo,
   JobCategoryExtendedInfo,
   WorkTypeInfo,
 } from '@/constants/post';
@@ -23,6 +22,7 @@ import { Gender } from '@/types/api/users';
 import { UserType } from '@/constants/user';
 import { dayOfWeekToKorean } from '@/utils/post';
 import { calculateDays } from '@/utils/calculateDDay';
+import { genderInfo } from '@/constants/post';
 
 const InfoItem = ({
   label,

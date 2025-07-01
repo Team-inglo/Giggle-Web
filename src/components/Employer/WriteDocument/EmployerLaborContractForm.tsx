@@ -1,10 +1,9 @@
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import {
   EMPLOYER_LABOR_CONTRACT_REQUIRED_FIELDS,
-  initialLaborContractEmployerInfo,
   LaborContractEmployerFormField,
   LaborContractEmployerFormFields,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import {
   LaborContractDataResponse,
   LaborContractEmployerInfo,
@@ -19,6 +18,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '@/components/Common/Button';
+import { initialLaborContractEmployerInfo } from '@/constants/documents';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;

@@ -1,9 +1,8 @@
 import {
-  initialIntegratedApplication,
   IntegratedApplicationFormField,
   IntegratedApplicationformFields,
   REQUIRED_FIELDS,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import { IntegratedApplicationData, Phone } from '@/types/api/document';
 import { useState } from 'react';
 import { validateIntegratedApplication } from '@/utils/document';
@@ -21,6 +20,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '../Common/Button';
+import { initialIntegratedApplication } from '@/constants/documents';
 
 // 상수 정의
 type IntegratedApplicationFormProps = {

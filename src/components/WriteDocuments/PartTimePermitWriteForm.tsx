@@ -1,8 +1,7 @@
 import {
-  initialPartTimePermitForm,
   PartTimePermitFormField,
   PartTimePermitFormFields,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import {
   DocumentType,
   PartTimePermitData,
@@ -23,6 +22,7 @@ import { renderField } from '@/components/Document/write/renderField';
 import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '../Common/Button';
+import { initialPartTimePermitForm } from '@/constants/documents';
 
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof PartTimePermitFormRequest> = [

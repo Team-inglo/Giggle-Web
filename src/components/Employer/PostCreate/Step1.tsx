@@ -4,7 +4,7 @@ import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import { Path } from 'react-hook-form';
