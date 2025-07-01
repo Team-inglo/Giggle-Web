@@ -7,12 +7,14 @@ import {
 } from 'react-hook-form';
 import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
-import { documentTranslation } from '@/constants/translation';
+import { documentTranslation, postTranslation } from '@/constants/translation';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import type { Address } from 'react-daum-postcode';
 import { convertToAddress, getAddressCoords } from '@/utils/map';
 import { useState } from 'react';
 import { GiggleAddress } from '@/types/api/users';
+import { useLocation } from 'react-router-dom';
+import { isEmployer } from '../../../../utils/signup';
 
 interface AddressInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -27,6 +29,7 @@ const AddressInput = <T extends FieldValues>({
   name,
   placeholder,
 }: AddressInputProps<T>) => {
+  const { pathname } = useLocation();
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const { control } = useFormContext<T>();
   return (
@@ -88,7 +91,11 @@ const AddressInput = <T extends FieldValues>({
                     <div className="mt-3">
                       <Input
                         inputType={InputType.TEXT}
-                        placeholder="ex) 101-dong"
+                        placeholder={
+                          postTranslation.detailedAddressPlaceholder[
+                            isEmployer(pathname)
+                          ]
+                        }
                         value={detailField.value || ''}
                         onChange={detailField.onChange}
                         canDelete={false}

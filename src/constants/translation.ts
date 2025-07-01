@@ -523,6 +523,10 @@ export const postTranslation = {
     ko: '회사주소',
     en: 'Company Address',
   },
+  detailedAddressPlaceholder: {
+    ko: '상세 주소를 입력해주세요',
+    en: 'Enter detailed address',
+  },
   representativeName: {
     ko: '대표명',
     en: ' Representative Name',
