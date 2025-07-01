@@ -7,8 +7,6 @@ import {
 } from 'react-hook-form';
 import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
-import InputLayout from '@/components/WorkExperience/InputLayout';
 import { documentTranslation } from '@/constants/translation';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import type { Address } from 'react-daum-postcode';
@@ -28,7 +26,6 @@ interface AddressInputProps<
 const AddressInput = <T extends FieldValues>({
   name,
   placeholder,
-  label = 'Detailed Address',
 }: AddressInputProps<T>) => {
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
   const { control } = useFormContext<T>();
@@ -84,45 +81,26 @@ const AddressInput = <T extends FieldValues>({
                 />
               </div>
               {(value as GiggleAddress)?.address_name && (
-                <>
-                  <div className="w-full rounded-xl mt-3">
-                    <Map
-                      center={{
-                        lat: (value as GiggleAddress)?.latitude ?? 0,
-                        lng: (value as GiggleAddress)?.longitude ?? 0,
-                      }}
-                      style={{ width: '100%', height: '200px' }}
-                      className="rounded-xl"
-                    >
-                      <MapMarker
-                        position={{
-                          lat: (value as GiggleAddress)?.latitude ?? 0,
-                          lng: (value as GiggleAddress)?.longitude ?? 0,
-                        }}
-                      ></MapMarker>
-                    </Map>
-                  </div>
-                  <Controller
-                    control={control}
-                    name={`${name}.address_detail` as any}
-                    render={({ field: detailField }) => (
-                      <InputLayout title={label}>
-                        <Input
-                          inputType={InputType.TEXT}
-                          placeholder="ex) 101-dong"
-                          value={detailField.value || ''}
-                          onChange={detailField.onChange}
-                          canDelete={false}
-                        />
-                        {detailField.value && detailField.value.length > 50 && (
-                          <p className="text-text-error text-xs p-2">
-                            {documentTranslation.detailAddressTooLong.en}
-                          </p>
-                        )}
-                      </InputLayout>
-                    )}
-                  />
-                </>
+                <Controller
+                  control={control}
+                  name={`${name}.address_detail` as any}
+                  render={({ field: detailField }) => (
+                    <div className="mt-3">
+                      <Input
+                        inputType={InputType.TEXT}
+                        placeholder="ex) 101-dong"
+                        value={detailField.value || ''}
+                        onChange={detailField.onChange}
+                        canDelete={false}
+                      />
+                      {detailField.value && detailField.value.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.en}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                />
               )}
             </>
           )}

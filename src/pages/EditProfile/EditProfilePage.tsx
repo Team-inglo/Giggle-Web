@@ -21,7 +21,6 @@ import { visa } from '@/constants/information';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useGetUserProfile, usePatchUserProfile } from '@/hooks/api/useProfile';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { processAddressData } from '@/utils/map';
@@ -251,50 +250,30 @@ const EditProfilePage = () => {
                     />
                   </div>
                 </InputLayout>
-                {/* 검색한 위치를 보여주는 지도 */}
                 {userData.address.address_name !== '' && (
-                  <>
-                    <div className="w-full rounded-xl z-0">
-                      <Map
-                        center={{
-                          lat: userData.address?.latitude ?? 0,
-                          lng: userData.address?.longitude ?? 0,
-                        }}
-                        style={{ width: '100%', height: '200px' }}
-                        className="rounded-xl"
-                      >
-                        <MapMarker
-                          position={{
-                            lat: userData.address?.latitude ?? 0,
-                            lng: userData.address?.longitude ?? 0,
-                          }}
-                        ></MapMarker>
-                      </Map>
-                    </div>
-                    <InputLayout title="Detailed Address" isOptional>
-                      <Input
-                        inputType={InputType.TEXT}
-                        placeholder="ex) 101dong"
-                        value={userData.address.address_detail}
-                        onChange={(value) =>
-                          setUserData({
-                            ...userData,
-                            address: {
-                              ...userData.address,
-                              address_detail: value,
-                            },
-                          })
-                        }
-                        canDelete={false}
-                      />
-                      {userData.address.address_detail &&
-                        userData.address.address_detail.length > 50 && (
-                          <p className="text-text-error text-xs p-2">
-                            {documentTranslation.detailAddressTooLong.en}
-                          </p>
-                        )}
-                    </InputLayout>
-                  </>
+                  <InputLayout title="Detailed Address" isOptional>
+                    <Input
+                      inputType={InputType.TEXT}
+                      placeholder="ex) 101dong"
+                      value={userData.address.address_detail}
+                      onChange={(value) =>
+                        setUserData({
+                          ...userData,
+                          address: {
+                            ...userData.address,
+                            address_detail: value,
+                          },
+                        })
+                      }
+                      canDelete={false}
+                    />
+                    {userData.address.address_detail &&
+                      userData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.en}
+                        </p>
+                      )}
+                  </InputLayout>
                 )}
               </div>
               {/* 비자 선택 */}

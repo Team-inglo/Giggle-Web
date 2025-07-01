@@ -3,7 +3,6 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import { EmployerRegistrationRequestBody } from '@/types/api/employ';
 import { InputType } from '@/types/common/input';
 import { useEffect, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import FileAddIcon from '@/assets/icons/FileAddIcon.svg?react';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import GiggleLogo from '@/assets/icons/GiggleLogo.svg?react';
@@ -222,24 +221,6 @@ const InformationInputSection = ({
                     />
                   </div>
                 </InputLayout>
-                {/* 검색한 위치를 보여주는 지도 */}
-                <div className="w-full rounded-xl">
-                  <Map
-                    center={{
-                      lat: newEmployData.address?.latitude ?? 0,
-                      lng: newEmployData.address?.longitude ?? 0,
-                    }}
-                    style={{ width: '100%', height: '200px', zIndex: -100 }}
-                    className="rounded-xl"
-                  >
-                    <MapMarker
-                      position={{
-                        lat: newEmployData.address?.latitude ?? 0,
-                        lng: newEmployData.address?.longitude ?? 0,
-                      }}
-                    ></MapMarker>
-                  </Map>
-                </div>
                 <InputLayout title="상세 주소">
                   <Input
                     inputType={InputType.TEXT}
