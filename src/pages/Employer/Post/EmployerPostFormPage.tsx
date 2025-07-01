@@ -80,6 +80,7 @@ const EmployerPostFormPage = () => {
         {
           onSuccess: (data) => {
             form.reset(data.data);
+            console.log(data.data);
             setIsLoading(false);
           },
           onError: () => {
@@ -91,8 +92,9 @@ const EmployerPostFormPage = () => {
   }, [isEdit, parsedId, fetchDetail, form]);
 
   // 다음 step으로 이동
-  const handleNext = () => {
-    setCurrentStep((prev) => prev + 1);
+  const handleNext = (direction: 'next' | 'prev') => {
+    setCurrentStep((prev) => (direction === 'next' ? prev + 1 : prev - 1));
+    window.scrollTo(0, 0);
   };
 
   // 폼 제출 처리
@@ -159,27 +161,30 @@ const EmployerPostFormPage = () => {
             onSubmit={(e) => e.preventDefault()}
           >
             {currentStep === 1 && (
-              <Step1 key={`${parsedId || 'new'}-step1`} onNext={handleNext} />
+              <Step1
+                key={`${parsedId || 'new'}-step1`}
+                onNext={() => handleNext('next')}
+              />
             )}
             {currentStep === 2 && (
               <Step2
                 key={`${parsedId || 'new'}-step2`}
-                onNext={handleNext}
-                onPrev={() => setCurrentStep((prev) => prev - 1)}
+                onNext={() => handleNext('next')}
+                onPrev={() => handleNext('prev')}
               />
             )}
             {currentStep === 3 && (
               <Step3
                 key={`${parsedId || 'new'}-step3`}
-                onNext={handleNext}
-                onPrev={() => setCurrentStep((prev) => prev - 1)}
+                onNext={() => handleNext('next')}
+                onPrev={() => handleNext('prev')}
               />
             )}
             {currentStep === 4 && (
               <Step4
                 key={`${parsedId || 'new'}-step4`}
-                onNext={handleNext}
-                onPrev={() => setCurrentStep((prev) => prev - 1)}
+                onNext={() => handleNext('next')}
+                onPrev={() => handleNext('prev')}
                 isEdit={isEdit}
               />
             )}
