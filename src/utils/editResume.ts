@@ -8,6 +8,18 @@ import {
   GetEducationType,
   PostEducationType,
 } from '@/types/postResume/postEducation';
+import { WorkExperienceRequest } from '@/types/api/resumes';
+
+// 날짜 형식 유효성 검사
+const isValidDateString = (dateStr: string): boolean => {
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(dateStr)) return false;
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== dateStr) {
+    return false;
+  }
+  return true;
+};
 
 // 날짜 형식 변경
 export const formatDate = (dateString: string) => {
@@ -65,15 +77,22 @@ export const educationDataValidation = (data: PostEducationType): boolean => {
     return false;
   }
 
-  // 5. start_date는 yyyy-mm-dd 형식이어야 함
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  if (data.start_date && !dateRegex.test(data.start_date)) {
+  // 5. start_date가 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (data.start_date && !isValidDateString(data.start_date)) {
     return false;
   }
 
-  // 6. end_date도 start_date와 동일한 형식이어야 함
-  if (data.end_date && !dateRegex.test(data.end_date)) {
-    return false;
+  // 6. end_date가 존재할 경우, 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (data.end_date) {
+    if (!isValidDateString(data.end_date)) return false;
+
+    // 7. end_date가 start_date보다 미래여야 함
+    if (
+      data.start_date &&
+      new Date(data.end_date) <= new Date(data.start_date)
+    ) {
+      return false;
+    }
   }
 
   // 7. grade는 숫자여야 함
@@ -89,7 +108,6 @@ export const educationDataValidation = (data: PostEducationType): boolean => {
 };
 
 //두 객체가 동일한지 비교하는 함수
-
 export const isObjectEqual = <T>(
   obj1: T | undefined,
   obj2: T | undefined,
@@ -133,9 +151,7 @@ function convertStringsToApiAreas(areas: string[]): Array<{
 }
 
 // 소문자 직무 문자열 배열을 API 요청용 EmploymentType 배열로 변환
-function convertJobTypesToApiFormat(
-  jobTypes: string[],
-): EmploymentType[] {
+function convertJobTypesToApiFormat(jobTypes: string[]): EmploymentType[] {
   return jobTypes.map((jobType) => jobType.toUpperCase() as EmploymentType);
 }
 
@@ -163,4 +179,34 @@ export const formatEnumValue = (value: string) => {
 // 지역 표시 형식
 export const formatArea = (area: AreaType) => {
   return area.region_2depth_name || area.region_1depth_name;
+};
+
+export const workExperienceDataValidation = (
+  data: WorkExperienceRequest,
+): boolean => {
+  if (!data) return false;
+
+  const { title, workplace, start_date, end_date } = data;
+
+  // 1. 필수 필드 (title, workplace, start_date)가 비어있지 않아야 함
+  if (!title || !workplace || !start_date) {
+    return false;
+  }
+
+  // 2. start_date가 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (!isValidDateString(start_date)) {
+    return false;
+  }
+
+  // 3. end_date가 존재할 경우, 유효한 날짜 형식이고, 실제 존재하는 날짜인지 확인
+  if (end_date) {
+    if (!isValidDateString(end_date)) return false;
+
+    // 4. end_date가 start_date보다 미래여야 함
+    if (new Date(end_date) <= new Date(start_date)) {
+      return false;
+    }
+  }
+
+  return true;
 };

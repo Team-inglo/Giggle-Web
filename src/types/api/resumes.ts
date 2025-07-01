@@ -19,7 +19,7 @@ export type IntroductionRequest = {
 };
 
 // 경력사항 요청 타입
-export type WorkExperienctRequest = {
+export type WorkExperienceRequest = {
   title: string;
   workplace: string;
   start_date: string; // (yyyy-MM-dd),

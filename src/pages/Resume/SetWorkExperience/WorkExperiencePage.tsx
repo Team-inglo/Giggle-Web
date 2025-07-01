@@ -1,31 +1,25 @@
-import BaseHeader from '@/components/Common/Header/BaseHeader';
-import Button from '@/components/Common/Button';
-import EducationForm from '@/components/SetEducation/EducationForm';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
-import PageTitle from '@/components/Common/PageTitle';
-import { useEducationApi } from '@/hooks/useEducationApi';
-import { useEducationForm } from '@/hooks/useEducationForm';
+import Button from '@/components/Common/Button';
+import BaseHeader from '@/components/Common/Header/BaseHeader';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
-import useNavigateBack from '@/hooks/useNavigateBack';
+import PageTitle from '@/components/Common/PageTitle';
+import WorkExperienceForm from '@/components/WorkExperience/WorkExperienceForm';
+import { useWorkExperience } from '@/hooks/useWorkExperience';
 
-const EducationPage = () => {
-  const { mode, isPending, initialData, schoolData, submitEducation } =
-    useEducationApi();
-  const { educationData, setEducationData, isValid, handleReset, pageTitle } =
-    useEducationForm({ initialData, mode });
+const WorkExperiencePage = () => {
+  const {
+    mode,
+    isPending,
+    workExperienceData,
+    setWorkExperienceData,
+    isValid,
+    pageTitle,
+    handleBackButtonClick,
+    handleSubmit,
+    handleReset,
+  } = useWorkExperience();
 
-  const handleBackButtonClick = useNavigateBack();
-
-  const handleSubmit = () => {
-    if (isValid) {
-      submitEducation(educationData);
-    }
-  };
-
-  const isReady =
-    mode === 'post' || (mode === 'patch' && initialData && !isPending);
-
-  if (!isReady) {
+  if (mode === 'patch' && isPending) {
     return <LoadingOverLay />;
   }
 
@@ -36,13 +30,12 @@ const EducationPage = () => {
           hasBackButton={true}
           onClickBackButton={handleBackButtonClick}
           hasMenuButton={false}
-          title="Education"
+          title="Work Experience"
         />
         <PageTitle title={pageTitle} />
-        <EducationForm
-          educationData={educationData}
-          setEducationData={setEducationData}
-          initialSchool={schoolData}
+        <WorkExperienceForm
+          workExperienceData={workExperienceData}
+          setWorkExperienceData={setWorkExperienceData}
         />
       </div>
       <BottomButtonPanel>
@@ -60,7 +53,7 @@ const EducationPage = () => {
               size={Button.Size.LG}
               isFullWidth
               title="Save"
-              onClick={handleSubmit}
+              onClick={isValid ? handleSubmit : undefined}
             />
           </div>
         ) : (
@@ -69,7 +62,7 @@ const EducationPage = () => {
             size={Button.Size.LG}
             isFullWidth
             title="Save"
-            onClick={handleSubmit}
+            onClick={isValid ? handleSubmit : undefined}
           />
         )}
       </BottomButtonPanel>
@@ -77,4 +70,4 @@ const EducationPage = () => {
   );
 };
 
-export default EducationPage;
+export default WorkExperiencePage;

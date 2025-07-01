@@ -20,9 +20,7 @@ import ApplicationPage from '@/pages/Application/ApplicationPage';
 import ManageResumePage from '@/pages/Resume/ManageResumePage';
 import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
 import ScrappedJobPostsPage from '@/pages/Resume/ScrappedJobPostsPage';
-import PostWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PostWorkExperiencePage';
 import IntroductionPage from '@/pages/Resume/IntroductionPage';
-import PatchWorkExperiencePage from '@/pages/Resume/SetWorkExperience/PatchWorkExperiencePage';
 import ApplicationDetailPage from '@/pages/ApplicationDetail/ApplicationDetailPage';
 import ApplicationResultPage from '@/pages/ApplicationResult/ApplicationResultPage';
 import EmployerPostDetailPage from '@/pages/Employer/PostDetail/EmployerPostDetailPage';
@@ -61,6 +59,7 @@ import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
 import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
 import EmployerScrappedPage from '@/pages/Employer/Scrapped/EmployerScrappedPage';
 import EditLanguagesPage from '@/pages/Resume/EditLanguagesPage';
+import WorkExperiencePage from '@/pages/Resume/SetWorkExperience/WorkExperiencePage';
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -152,11 +151,11 @@ const Router = () => {
         <Route path="/resume/education/:id" element={<EducationPage />} />
         <Route
           path="/resume/work-experience"
-          element={<PostWorkExperiencePage />}
+          element={<WorkExperiencePage />}
         />
         <Route
           path="/resume/work-experience/edit/:id"
-          element={<PatchWorkExperiencePage />}
+          element={<WorkExperiencePage />}
         />
         <Route path="/career/:id" element={<CareerDetailPage />} />
         <Route

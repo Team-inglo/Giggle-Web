@@ -5,7 +5,7 @@ import {
   IntroductionRequest,
   LanguagesLevelType,
   UserResumeDetailResponse,
-  WorkExperienctRequest,
+  WorkExperienceRequest,
   WorkExperienceResponse,
   ResumeProgressResponse,
 } from '@/types/api/resumes';
@@ -49,7 +49,7 @@ export const getLanguageSummary = async () => {
 
 // 7.5 경력 생성하기
 export const postWorkExperience = async (
-  workExperience: WorkExperienctRequest,
+  workExperience: WorkExperienceRequest,
 ) => {
   const response = await api.post(
     `/users/resumes/work-experiences`,
@@ -90,7 +90,7 @@ export const patchWorkExperience = async ({
   workExperience,
 }: {
   id: string;
-  workExperience: WorkExperienctRequest;
+  workExperience: WorkExperienceRequest;
 }) => {
   const response = await api.patch(
     `/users/resumes/work-experiences/${id}`,

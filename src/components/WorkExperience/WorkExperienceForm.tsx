@@ -2,31 +2,31 @@ import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
 import { useEffect, useRef, useState, ChangeEvent } from 'react';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { WorkExperienctRequest } from '@/types/api/resumes';
+import { WorkExperienceRequest } from '@/types/api/resumes';
 import { formatDateInput } from '@/utils/information';
 
-type WorkExperiencePatchProps = {
-  workExperienceData: WorkExperienctRequest;
+type WorkExperienceFormProps = {
+  workExperienceData: WorkExperienceRequest;
   setWorkExperienceData: React.Dispatch<
-    React.SetStateAction<WorkExperienctRequest>
+    React.SetStateAction<WorkExperienceRequest>
   >;
 };
 
-const WorkExperiencePatch = ({
+const WorkExperienceForm = ({
   workExperienceData,
   setWorkExperienceData,
-}: WorkExperiencePatchProps) => {
+}: WorkExperienceFormProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isOngoing, setIsOngoing] = useState(false);
 
   const handleOngoingToggle = () => {
-    setIsOngoing((prev) => !prev);
-    if (!isOngoing) {
-      handleInputChange('end_date', ''); // "진행 중" 체크 시 end_date 초기화
+    const newIsOngoing = !isOngoing;
+    setIsOngoing(newIsOngoing);
+    if (newIsOngoing) {
+      handleInputChange('end_date', '');
     }
   };
 
-  // text area를 감싼 div 태크 영역 클릭시 text area의 마지막 글자로 자동 포커스되는 함수
   const handleFocusTextArea = () => {
     textareaRef.current?.focus();
     const length = textareaRef.current!.value.length;
@@ -35,9 +35,12 @@ const WorkExperiencePatch = ({
   };
 
   const handleInputChange = (
-    field: keyof WorkExperienctRequest,
+    field: keyof WorkExperienceRequest,
     value: string,
   ) => {
+    if ((field === 'title' || field === 'workplace') && value.length > 20) {
+      return;
+    }
     setWorkExperienceData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -51,11 +54,16 @@ const WorkExperiencePatch = ({
     field: 'start_date' | 'end_date',
     value: string,
   ) => {
-    handleInputChange(field, value.replace(/\//g, '-'));
-    if (field === 'end_date') {
-      setIsOngoing(false); // 날짜 선택 시 "진행 중" 상태 해제
+    const formattedValue = formatDateInput(value);
+    handleInputChange(field, formattedValue);
+    if (field === 'end_date' && value) {
+      setIsOngoing(false);
     }
   };
+
+  useEffect(() => {
+    setIsOngoing(!workExperienceData.end_date);
+  }, [workExperienceData.end_date]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -65,74 +73,64 @@ const WorkExperiencePatch = ({
   }, [workExperienceData.description]);
 
   return (
-    <div className="p-6 flex flex-col gap-3">
-      <div className="heading-24-semibold mb-6 text-[#1E1926]">
-        Modify Work Experience
-      </div>
-      {/* title 입력 */}
-      <InputLayout title="Experience Title">
+    <div className="px-4 flex flex-col gap-6 pb-28">
+      <InputLayout title="Job Title">
         <Input
           inputType={InputType.TEXT}
-          placeholder="Experience Title"
+          placeholder="ex. Cafe part-time job"
           value={workExperienceData.title}
           onChange={(value) => handleInputChange('title', value)}
           canDelete={false}
         />
       </InputLayout>
-      {/* 장소 입력 */}
-      <InputLayout title="Workplace">
+      <InputLayout title="Worksplace">
         <Input
           inputType={InputType.TEXT}
-          placeholder="Workplace"
+          placeholder="ex. Starbucks(Hongdae)"
           value={workExperienceData.workplace}
           onChange={(value) => handleInputChange('workplace', value)}
           canDelete={false}
         />
       </InputLayout>
-      {/* 시작 날짜 입력 */}
-      <InputLayout title="Start Date">
-        <Input
-          inputType={InputType.TEXT}
-          placeholder="YYYY-MM-DD"
-          value={workExperienceData.start_date || ''}
-          onChange={(value) =>
-            handleDateChange('start_date', formatDateInput(value))
-          }
-          canDelete={false}
-        />
-      </InputLayout>
-      {/* 끝 날짜 입력 */}
-      <InputLayout title="End Date" width="w-fit">
-        <Input
-          inputType={InputType.TEXT}
-          placeholder="YYYY-MM-DD"
-          value={workExperienceData.end_date || ''}
-          onChange={(value) =>
-            handleDateChange('end_date', formatDateInput(value))
-          }
-          canDelete={false}
-        />
-        <div
-          className="flex items-center gap-3 mt-2 cursor-pointer"
-          onClick={handleOngoingToggle}
-        >
-          <div
-            className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-[#FEF387] border-0' : 'border-[#F4F4F9]'}`}
+      <div className="flex flex-row gap-2">
+        <InputLayout title="Start Date">
+          <Input
+            inputType={InputType.TEXT}
+            placeholder="YYYY-MM-DD"
+            value={workExperienceData.start_date || ''}
+            onChange={(value) => handleDateChange('start_date', value)}
+            canDelete={false}
           />
-          <p className="caption-12-regular text-[#656565]">
-            It's in progress right now
-          </p>
-        </div>
-      </InputLayout>
-      {/* 상세설명 입력 */}
-      <InputLayout title="Description" isOptional>
+        </InputLayout>
+        <InputLayout title="End Date">
+          <Input
+            inputType={InputType.TEXT}
+            placeholder="YYYY-MM-DD"
+            value={workExperienceData.end_date || ''}
+            onChange={(value) => handleDateChange('end_date', value)}
+            canDelete={false}
+          />
+        </InputLayout>
+      </div>
+      <div
+        className="flex items-center gap-3 -mt-4 cursor-pointer"
+        onClick={handleOngoingToggle}
+      >
+        <div
+          className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-primary-normal border-0' : 'border-border-alternative'}`}
+        />
+        <p className="caption-12-regular text-text-assistive">
+          It's in progress right now
+        </p>
+      </div>
+      <InputLayout title="Job Description" isOptional>
         <div
           onClick={handleFocusTextArea}
           className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-assistive"
         >
           <textarea
             ref={textareaRef}
-            placeholder="Please write an article that introduces you."
+            placeholder="Briefly describe what you did (ex. served food, cleaned tables, taught English)"
             value={workExperienceData.description}
             onChange={handleTextareaChange}
             className="h-auto body-16-medium placeholder:text-text-assistive w-full resize-none outline-none"
@@ -146,4 +144,4 @@ const WorkExperiencePatch = ({
   );
 };
 
-export default WorkExperiencePatch;
+export default WorkExperienceForm;
