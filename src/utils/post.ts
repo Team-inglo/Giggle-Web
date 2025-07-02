@@ -251,3 +251,9 @@ export const preparePostDataForSubmission = (
     id,
   };
 };
+
+// 오늘 날짜 이후의 날짜인지 확인하는 함수
+export const isTodayOrFuture = (dateString: string): boolean => {
+  const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd 형식으로 변환
+  return dateString >= today; // 문자열 비교로도 가능 (yyyy-mm-dd 형식이므로)
+};

@@ -76,6 +76,8 @@ export const RenderField = <
           unit={field.unit}
           isPrefix={field.isPrefix}
           prefix={field.prefix}
+          isValid={(value) => field.isValid?.(value) ?? true}
+          errorMessage={field.errorMessage}
         />
       );
     case 'textarea':
@@ -86,13 +88,17 @@ export const RenderField = <
           render={({ field: { value, onChange } }) => (
             <div className="w-full self-stretch flex flex-col items-center justify-start caption-12-regular">
               <div className="w-full flex flex-col items-start justify-start">
-                <div className="w-full flex flex-col items-center justify-start">
+                <div className="w-full flex flex-col items-center justify-start  border-[0.05rem] border-border-assistive rounded-[0.625rem]">
                   <textarea
-                    className={`w-full ${field.textareaHeight} px-4 py-[0.875rem] border-[0.05rem] border-border-assistive rounded-[0.625rem] body-16-medium outline-none resize-none`}
+                    className={`w-full ${field.textareaHeight} px-4 py-[0.875rem] body-16-medium outline-none resize-none rounded-[0.625rem]`}
                     placeholder={field.placeholder}
                     value={value as string}
                     onChange={onChange}
+                    maxLength={field.maxLength}
                   />
+                  <span className="w-full caption-12-regular text-text-assistive text-end p-4">
+                    {value?.length}/{field.maxLength}
+                  </span>
                 </div>
               </div>
             </div>
@@ -263,6 +269,8 @@ export const RenderField = <
           isDate={field.isDate}
           format={field.format}
           inputType={field.inputType}
+          isValid={(value) => field.isValid?.(value) ?? true}
+          errorMessage={field.errorMessage}
         />
       );
     case 'image_upload':

@@ -34,6 +34,8 @@ import {
 } from '@/constants/documents';
 import { Nationalities } from '@/constants/manageResume';
 import { MINIMUM_WAGE } from '@/constants/wage';
+import { isEmailValid } from '@/utils/document';
+import { isTodayOrFuture } from '@/utils/post';
 
 export type SelectOption = {
   name: string;
@@ -60,6 +62,8 @@ type TextFormField = BaseFormField & {
   isPrefix?: boolean;
   prefix?: string;
   format?: string;
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 // 드롭다운 필드
@@ -115,6 +119,8 @@ type ValueWithCheckboxFormField = BaseFormField & {
   format?: string;
   isDate?: boolean;
   checkboxLabel?: string;
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 // 비자 드롭다운 필드
@@ -133,6 +139,7 @@ type ImageUploadFormField = BaseFormField & {
 type TextareaFormField = BaseFormField & {
   type: 'textarea';
   textareaHeight?: string;
+  maxLength?: number;
 };
 
 // PostFormField를 discriminated union으로 정의
@@ -180,6 +187,8 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       placeholder: '제목을 입력해주세요',
       inputType: InputType.TEXT,
       isRequired: true,
+      isValid: (value: string) => value.length <= 100,
+      errorMessage: '제목은 100자 이하로 입력해주세요',
     },
     {
       type: 'value_with_checkbox',
@@ -191,6 +200,9 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       format: 'date',
       isDate: true,
       checkboxLabel: '상시모집',
+      isValid: (value: string) => isTodayOrFuture(value),
+      errorMessage:
+        '오늘 이후의 날짜를 형식에 맞게 입력해 주세요 (ex.2026-07-01)',
     },
   ],
   step2: [
@@ -203,7 +215,10 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       isRequired: true,
       isUnit: true,
       unit: '원',
-      description: '2025년 기준 최저시급은 10,030원입니다.',
+      description: `2025년 기준 최저시급은 ${MINIMUM_WAGE[2025]}원입니다.`,
+      isValid: (value: string) =>
+        Number(value) >= MINIMUM_WAGE[2025] && Number(value) <= 1000000,
+      errorMessage: `2025년 기준 최저시급은 ${MINIMUM_WAGE[2025]}원입니다.`,
     },
     {
       type: 'dropdown',
@@ -286,12 +301,16 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       type: 'text',
       title: '담당자이름',
       placeholder: '채용 담당자 이름을 입력해주세요',
+      isValid: (value: string) => value.length <= 10,
+      errorMessage: '담당자 이름은 10자 이하로 입력해주세요',
     },
     {
       name: 'body.recruiter_email',
       type: 'text',
       title: '담당자이메일',
       placeholder: '채용 담당자 이메일을 입력해주세요',
+      isValid: isEmailValid,
+      errorMessage: '이메일 형식이 올바르지 않습니다',
     },
     {
       name: 'body.recruiter_phone',
@@ -315,6 +334,7 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       title: '공고 상세 내용',
       placeholder: '상세 내용을 입력해주세요',
       textareaHeight: 'h-[20vh]',
+      maxLength: 1000,
     },
     {
       name: 'body.preferred_conditions',
@@ -322,6 +342,8 @@ export const PostFormFields: Record<string, PostFormField[]> = {
       title: '우대 조건',
       placeholder: '우대 조건을 입력해주세요',
       isOptional: true,
+      isValid: (value: string) => value.length <= 50,
+      errorMessage: '우대 조건은 50자 이하로 입력해주세요',
     },
   ],
 };
@@ -419,6 +441,8 @@ export type LaborContractFormField = {
   selectType?: RadioGroupVariant;
   useKeyValue?: boolean;
   keyValueOptions?: { key: string; name: string }[];
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 // 표준근로계약서 폼 필드 정의
@@ -513,6 +537,8 @@ export type IntegratedApplicationFormField = {
   selectType?: RadioGroupVariant;
   useKeyValue?: boolean;
   keyValueOptions?: { key: string; name: string }[];
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 // 통합신청서 폼 필드 정의
@@ -721,6 +747,8 @@ export type PartTimePermitFormField = {
   selectType?: RadioGroupVariant;
   useKeyValue?: boolean;
   keyValueOptions?: { key: string; name: string }[];
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 export type CheckboxOption = {
@@ -762,8 +790,11 @@ export type LaborContractEmployerFormField = {
   variant?: 'checkbox' | 'button';
   label?: string;
   textareaHeight?: string;
+  maxLength?: number;
   useKeyValue?: boolean;
   keyValueOptions?: { key: string; name: string }[];
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 // 고용주 표준근로계약서 필수 검증 필드 목록
@@ -1040,6 +1071,8 @@ export type PartTimePermitEmployerFormField = {
   label?: string;
   useKeyValue?: boolean;
   keyValueOptions?: { key: string; name: string }[];
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 // 고용주 시간제 근로 허가서 필수 검증 필드 목록

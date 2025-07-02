@@ -17,7 +17,7 @@ const hasStringValue = (value: string): boolean => {
 };
 
 // 이메일 유효성 검사 함수
-const isEmailValid = (email: string): boolean => {
+export const isEmailValid = (email: string): boolean => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   return emailRegex.test(email);
 };

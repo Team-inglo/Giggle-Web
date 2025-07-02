@@ -113,7 +113,7 @@ export type JobPostingForm = {
     job_category: JobCategory | string;
     work_day_times: WorkDayTime[];
     work_period: WorkPeriod | string;
-    hourly_rate: number;
+    hourly_rate: number | null;
     employment_type: EmploymentType;
     address: GiggleAddress;
     recruitment_dead_line: string | null;
@@ -146,7 +146,7 @@ export const initialJobPostingState: JobPostingForm = {
       },
     ],
     work_period: '',
-    hourly_rate: 0,
+    hourly_rate: null,
     employment_type: EmploymentType.PARTTIME,
     address: {
       address_name: '',
