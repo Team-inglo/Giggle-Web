@@ -33,53 +33,121 @@ import {
   WorkPeriodInfo,
 } from '@/constants/documents';
 import { Nationalities } from '@/constants/manageResume';
+import { MINIMUM_WAGE } from '@/constants/wage';
 
 export type SelectOption = {
   name: string;
   icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 };
 
-// 공고 폼 필드 타입 정의
-export type PostFormField = {
-  type:
-    | 'text'
-    | 'dropdown'
-    | 'radio'
-    | 'work_day_time'
-    | 'number'
-    | 'phone'
-    | 'address'
-    | 'value_with_checkbox'
-    | 'visa_dropdown'
-    | 'image_upload'
-    | 'textarea';
+// 공고 폼 필드 타입 정의 - Discriminated Union으로 개선
+// 공통 속성을 가진 기본 타입
+type BaseFormField = {
   name: string; // body.title, body.job_category 등의 경로
   title: string;
   placeholder: string;
   description?: string;
-  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
-  optionsWithIcon?: SelectOption[];
-  inputType?: InputType;
   isRequired?: boolean;
+  isOptional?: boolean;
+};
+
+// 텍스트 입력 필드
+type TextFormField = BaseFormField & {
+  type: 'text';
+  inputType?: InputType;
   isUnit?: boolean;
   unit?: string;
   isPrefix?: boolean;
   prefix?: string;
-  dropdownValuesList?: string[];
-  variant?: 'checkbox' | 'button';
-  label?: string;
   format?: string;
-  transformer?: ValueTransformer;
-  isDate?: boolean;
-  checkboxLabel?: string;
-  selectType?: string;
-  isEdit?: boolean;
-  isImage?: boolean;
-  textareaHeight?: string;
+};
+
+// 드롭다운 필드
+type DropdownFormField = BaseFormField & {
+  type: 'dropdown';
+  options: string[] | Record<string, { name: string; [key: string]: unknown }>;
   useKeyValue?: boolean;
   keyValueOptions?: { key: string; name: string }[];
-  isOptional?: boolean;
+  dropdownValuesList?: string[];
 };
+
+// 라디오 버튼 필드
+type RadioFormField = BaseFormField & {
+  type: 'radio';
+  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
+  optionsWithIcon?: SelectOption[];
+  selectType?: string;
+  transformer?: ValueTransformer;
+  variant?: 'checkbox' | 'button';
+};
+
+// 근무 시간 필드
+type WorkDayTimeFormField = BaseFormField & {
+  type: 'work_day_time';
+};
+
+// 숫자 입력 필드
+type NumberFormField = BaseFormField & {
+  type: 'number';
+  inputType?: InputType;
+  isUnit?: boolean;
+  unit?: string;
+  format?: string;
+};
+
+// 전화번호 입력 필드
+type PhoneFormField = BaseFormField & {
+  type: 'phone';
+};
+
+// 주소 입력 필드
+type AddressFormField = BaseFormField & {
+  type: 'address';
+  label?: string;
+};
+
+// 체크박스와 함께 값 입력 필드
+type ValueWithCheckboxFormField = BaseFormField & {
+  type: 'value_with_checkbox';
+  inputType?: InputType;
+  isUnit?: boolean;
+  unit?: string;
+  format?: string;
+  isDate?: boolean;
+  checkboxLabel?: string;
+};
+
+// 비자 드롭다운 필드
+type VisaDropdownFormField = BaseFormField & {
+  type: 'visa_dropdown';
+};
+
+// 이미지 업로드 필드
+type ImageUploadFormField = BaseFormField & {
+  type: 'image_upload';
+  isEdit?: boolean;
+  isImage?: boolean;
+};
+
+// 텍스트 영역 필드
+type TextareaFormField = BaseFormField & {
+  type: 'textarea';
+  textareaHeight?: string;
+};
+
+// PostFormField를 discriminated union으로 정의
+export type PostFormField =
+  | TextFormField
+  | DropdownFormField
+  | RadioFormField
+  | WorkDayTimeFormField
+  | NumberFormField
+  | PhoneFormField
+  | AddressFormField
+  | ValueWithCheckboxFormField
+  | VisaDropdownFormField
+  | ImageUploadFormField
+  | TextareaFormField;
 
 export const PostFormFields: Record<string, PostFormField[]> = {
   step1: [
@@ -448,7 +516,7 @@ export type IntegratedApplicationFormField = {
 };
 
 // 통합신청서 폼 필드 정의
-export const IntegratedApplicationformFields: IntegratedApplicationFormField[] =
+export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
   [
     {
       type: 'text',
@@ -842,7 +910,7 @@ export const LaborContractEmployerFormFields: LaborContractEmployerFormField[] =
           LaborContractEmployerInfoProperty.HOURLY_RATE
         ].ko,
       placeholder: '시급을 입력해주세요',
-      description: '2025년 최소 시급은 10,030원입니다.',
+      description: `2025년 최소 시급은 ${MINIMUM_WAGE[2025]}원입니다.`,
       format: 'numbers-only',
       isRequired: true,
       isUnit: true,

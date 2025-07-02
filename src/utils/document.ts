@@ -9,8 +9,7 @@ import {
 } from '@/types/api/document';
 import { extractNumbersAsNumber } from './post';
 import { DropdownOption } from '@/components/Document/write/input/DropdownInput';
-
-export const MINIMUM_HOURLY_RATE = 10030;
+import { MINIMUM_WAGE } from '@/constants/wage';
 
 // string data의 공백 여부를 확인하는 함수
 const hasStringValue = (value: string): boolean => {
@@ -127,7 +126,7 @@ export const validateEmployerInformation = (
   // 시급 유효성 검사(0이 아닌지)
   if (
     !info.hourly_rate ||
-    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_HOURLY_RATE
+    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_WAGE[2025]
   ) {
     return false;
   }
@@ -176,7 +175,7 @@ export const validateLaborContractEmployerInformation = (
   // 시급 유효성 검사(0이 아닌지)
   if (
     !info.hourly_rate ||
-    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_HOURLY_RATE
+    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_WAGE[2025]
   ) {
     return false;
   }

@@ -11,7 +11,7 @@ import {
   PostFormField,
   PostFormFields,
 } from '@/constants/formFields';
-import { MINIMUM_HOURLY_RATE } from '@/utils/document';
+import { MINIMUM_WAGE } from '@/constants/wage';
 
 const Step2 = ({
   onNext,
@@ -27,7 +27,7 @@ const Step2 = ({
 
     const isFormValid =
       !Number.isNaN(Number(hourly_rate)) &&
-      hourly_rate >= MINIMUM_HOURLY_RATE &&
+      Number(hourly_rate) >= MINIMUM_WAGE[2025] &&
       work_period !== '' &&
       work_day_times?.length > 0 &&
       !!address.address_name &&

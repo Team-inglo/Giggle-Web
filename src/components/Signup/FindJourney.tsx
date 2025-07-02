@@ -29,6 +29,7 @@ const FindJourney = ({
         {/* 유학생, 고용주 타입 선택 카드 */}
         {cardData.map((card) => (
           <CardSelect
+            key={card.accountType}
             icon={card.icon}
             title={card.title}
             content={card.description}

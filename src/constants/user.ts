@@ -1,7 +1,7 @@
 import PeopleIcon from '@/assets/icons/PeopleIcon.svg?react';
 import BuildingIcon from '@/assets/icons/BuildingIcon.svg?react';
 
-export const enum UserType {
+export enum UserType {
   USER = 'USER',
   OWNER = 'OWNER',
 }

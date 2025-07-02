@@ -28,7 +28,6 @@ type DropdownProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseDropdownProps<TFieldValues, TName> & {
   options: string[];
-  title: string;
 };
 
 // key-value 드롭다운 props 타입
@@ -37,7 +36,6 @@ type KeyValueDropdownProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseDropdownProps<TFieldValues, TName> & {
   options: DropdownOption[];
-  title: string;
 };
 
 // 일반 드롭다운 컴포넌트

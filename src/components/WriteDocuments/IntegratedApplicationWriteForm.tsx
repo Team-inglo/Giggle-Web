@@ -1,6 +1,6 @@
 import {
   IntegratedApplicationFormField,
-  IntegratedApplicationformFields,
+  IntegratedApplicationFormFields,
   REQUIRED_FIELDS,
 } from '@/constants/formFields';
 import { IntegratedApplicationData, Phone } from '@/types/api/document';
@@ -127,7 +127,7 @@ const IntegratedApplicationWriteForm = ({
       >
         <div className="[&>*:last-child]:mb-20 flex flex-col gap-4">
           {/* 작성 폼 렌더링 */}
-          {IntegratedApplicationformFields.map((field) => (
+          {IntegratedApplicationFormFields.map((field) => (
             <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>

@@ -61,7 +61,7 @@ const RadioGroup = <T extends FieldValues = FieldValues>({
                   isSelected = transformer.compareValue(value, option.name);
                 } else {
                   // 기본 비교 로직: 직접 비교
-                  isSelected = value === option;
+                  isSelected = value === option.name;
                 }
                 return (
                   <CardSelect
