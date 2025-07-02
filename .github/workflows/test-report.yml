@@ -174,9 +174,9 @@ jobs:
               }
 
               // 커버리지 데이터 파싱
-              if (fs.existsSync('./coverage/coverage-summary.json')) {
+              if (fs.existsSync('./coverage/coverage-final.json')) {
                 try {
-                  const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
+                  const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-final.json', 'utf8'));
                   if (coverageData.total) {
                     summary.coverage = {
                       lines: coverageData.total.lines?.pct || 0,
