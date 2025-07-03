@@ -104,10 +104,12 @@ const WorkDayTimeBottomSheet = ({
               <h5 className="px-[0.25rem] py-[0.375rem] text-text-strong body-14-medium">
                 근무일자
               </h5>
-              <div className="flex gap-[0.5rem] items-center py-[0.25rem]">
+              <div
+                className="flex gap-[0.5rem] items-center py-[0.25rem]"
+                onClick={onClickCheckAllWeek}
+              >
                 <button
                   className={`flex items-center justify-center w-5 h-5 rounded-full ${isCheckAllWeek ? 'bg-surface-invert' : 'bg-surface-disabled'}`}
-                  onClick={onClickCheckAllWeek}
                 >
                   <div className="w-3.5 h-3.5 flex items-center justify-center">
                     <Icon icon={CheckIcon} fillColor="text-surface-base" />
@@ -136,10 +138,12 @@ const WorkDayTimeBottomSheet = ({
               <h5 className="px-[0.25rem] py-[0.375rem] text-text-strong body-14-medium">
                 근무시간
               </h5>
-              <div className="flex gap-[0.5rem] items-center py-[0.25rem]">
+              <div
+                className="flex gap-[0.5rem] items-center py-[0.25rem] cursor-pointer"
+                onClick={() => setIsCheckAllTime(!isCheckAllTime)}
+              >
                 <button
                   className={`flex items-center justify-center w-5 h-5 rounded-full ${isCheckAllTime ? 'bg-surface-invert' : 'bg-surface-disabled'}`}
-                  onClick={() => setIsCheckAllTime(!isCheckAllTime)}
                 >
                   <div className="w-3.5 h-3.5 flex items-center justify-center">
                     <Icon icon={CheckIcon} fillColor="text-surface-base" />

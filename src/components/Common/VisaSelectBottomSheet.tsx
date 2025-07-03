@@ -27,7 +27,6 @@ const VisaSelectBottomSheet = ({
   const { account_type } = useUserStore();
   const [currentSelectVisas, setCurrentSelectVisa] =
     useState<VisaGroup[]>(selectVisas);
-
   const handleSelectVisa = (visa: VisaGroup) => {
     if (currentSelectVisas.includes(visa)) {
       const filteredVisas = currentSelectVisas.filter(
