@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  goToPostCreatePage,
-} from '@/__tests__/e2e/auth-helpers';
+import { goToPostCreatePage } from '@/__tests__/e2e/auth-helpers';
 import { TEST_POST_DATA } from '@/__tests__/fixtures/post-data';
 import {
   completeStep1,
@@ -9,7 +7,7 @@ import {
   completeStep3,
   completeStep4,
   completeStep5,
-} from '@/__tests__/e2e/post-creation-validation.spec';
+} from '@/__tests__/e2e/domains/post/validation.spec';
 
 test.describe('공고 등록 절차', () => {
   test.beforeEach(async ({ page }) => {

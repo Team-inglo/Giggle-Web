@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  goToPostCreatePage,
-} from '@/__tests__/e2e/auth-helpers';
+import { goToPostCreatePage } from '@/__tests__/e2e/auth-helpers';
 import { TEST_POST_DATA } from '@/__tests__/fixtures/post-data';
 import { Page } from '@playwright/test';
 
