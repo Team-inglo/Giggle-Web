@@ -10,7 +10,7 @@ import Input from '@/components/Common/Input';
 import { documentTranslation, postTranslation } from '@/constants/translation';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import type { Address } from 'react-daum-postcode';
-import { convertToAddress, getAddressCoords } from '@/utils/map';
+import { convertToAddress } from '@/utils/map';
 import { useState } from 'react';
 import { GiggleAddress } from '@/types/api/users';
 import { useLocation } from 'react-router-dom';
@@ -52,14 +52,10 @@ const AddressInput = <T extends FieldValues>({
                 theme={{ pageBgColor: '#ffffff', bgColor: '#ffffff' }}
                 onComplete={async (data: Address) => {
                   const convertedAddress = convertToAddress(data);
-                  const coords = await getAddressCoords(
-                    convertedAddress.address_name as string,
-                  );
-
                   onChange({
                     ...convertedAddress,
-                    longitude: coords.getLng(),
-                    latitude: coords.getLat(),
+                    longitude: 127.027583,
+                    latitude: 37.501021,
                   });
                   setIsAddressSearch(false);
                 }}
@@ -102,7 +98,11 @@ const AddressInput = <T extends FieldValues>({
                       />
                       {detailField.value && detailField.value.length > 50 && (
                         <p className="text-text-error text-xs p-2">
-                          {documentTranslation.detailAddressTooLong.en}
+                          {
+                            documentTranslation.detailAddressTooLong[
+                              isEmployer(pathname)
+                            ]
+                          }
                         </p>
                       )}
                     </div>
