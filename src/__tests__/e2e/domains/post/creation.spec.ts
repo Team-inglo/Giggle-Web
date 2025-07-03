@@ -7,7 +7,7 @@ import {
   completeStep3,
   completeStep4,
   completeStep5,
-} from '@/__tests__/e2e/domains/post/validation.spec';
+} from '@/__tests__/e2e/shared/helpers/postFormHelpers';
 
 test.describe('공고 등록 절차', () => {
   test.beforeEach(async ({ page }) => {
