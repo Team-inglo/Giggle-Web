@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { goToPostCreatePage } from '@/__tests__/e2e/auth-helpers';
+import { goToPostCreatePage } from '@/__tests__/e2e/shared/helpers/auth-helpers';
 import { TEST_POST_DATA } from '@/__tests__/fixtures/post-data';
 import { Page } from '@playwright/test';
 
@@ -19,25 +19,7 @@ export const completeStep1 = async (page: Page) => {
   await page.getByRole('button', { name: /다음/ }).click();
 };
 
-export const completeStep2 = async (page: Page) => {
-  // 시급 입력
-  await page
-    .getByPlaceholder('0')
-    .first()
-    .fill(TEST_POST_DATA.step2.hourlyWage);
-
-  // 근무기간 선택
-  const workPeriodInput = page.getByPlaceholder('근무기간을 선택해주세요');
-  await workPeriodInput.click();
-  await page.getByText('1주 ~ 1개월', { exact: true }).click();
-
-  // 근무 시간 추가
-  await page.getByText('추가하기').click();
-  await page.getByText('요일무관', { exact: true }).click();
-  await page.getByText('시간무관', { exact: true }).click();
-  await page.getByRole('button', { name: '추가하기' }).nth(1).click();
-
-  // 근무지 주소 입력 - 직접 데이터 주입 방식
+const fillAddress = async (page: Page, address: string) => {
   const addressInput = page.getByPlaceholder('주소를 검색해주세요');
   await addressInput.click();
 
@@ -60,19 +42,43 @@ export const completeStep2 = async (page: Page) => {
   await searchInput.waitFor({ state: 'visible' });
 
   // 주소 검색
-  await searchInput.fill(TEST_POST_DATA.step2.address.address_name);
+  await searchInput.fill(address);
   await searchInput.press('Enter');
 
   // 검색 결과 대기
-  await page.waitForTimeout(1000);
-
-  // 검색 결과 클릭 (첫 번째 결과)
   const firstResult = daumFrame.locator('.link_post').first();
   await firstResult.waitFor({ state: 'visible' });
+
+  // 검색 결과 클릭 (첫 번째 결과)
+
   await firstResult.click();
 
   // 메인 페이지로 돌아올 때까지 대기
-  await page.waitForTimeout(1000);
+  await page
+    .getByPlaceholder(/상세/)
+    .waitFor({ state: 'visible', timeout: 5000 });
+};
+
+export const completeStep2 = async (page: Page) => {
+  // 시급 입력
+  await page
+    .getByPlaceholder('0')
+    .first()
+    .fill(TEST_POST_DATA.step2.hourlyWage);
+
+  // 근무기간 선택
+  const workPeriodInput = page.getByPlaceholder('근무기간을 선택해주세요');
+  await workPeriodInput.click();
+  await page.getByText('1주 ~ 1개월', { exact: true }).click();
+
+  // 근무 시간 추가
+  await page.getByText('추가하기').click();
+  await page.getByText('요일무관', { exact: true }).click();
+  await page.getByText('시간무관', { exact: true }).click();
+  await page.getByRole('button', { name: '추가하기' }).nth(1).click();
+
+  // 근무지 주소 입력
+  await fillAddress(page, TEST_POST_DATA.step2.address.address_name);
 
   // 상세 주소 필드가 나타났는지 확인하고 입력
   const detailAddressInput = page.getByPlaceholder(/상세/);
@@ -244,42 +250,8 @@ test.describe('공고 등록 유효성 검사', () => {
       await workPeriodInput.click();
       await page.getByText('1주 ~ 1개월', { exact: true }).click();
 
-      // 근무지 주소 입력 - frameLocator 사용
-      const addressInput = page.getByPlaceholder('주소를 검색해주세요');
-      await addressInput.click();
-
-      // DaumPostcode iframe이 로드될 때까지 대기
-      await page.waitForSelector('iframe');
-
-      // 이중 iframe 구조: 외부 iframe -> 내부 __daum__viewerFrame_1 iframe
-      const outerFrame = page.frameLocator('iframe');
-
-      // 내부 iframe이 로드될 때까지 대기
-      await outerFrame.locator('#__daum__viewerFrame_1').waitFor();
-
-      // 내부 iframe에 접근
-      const daumFrame = outerFrame.frameLocator('#__daum__viewerFrame_1');
-
-      // 주소 검색 input 찾기 (다음 우편번호 API의 실제 구조)
-      const searchInput = daumFrame.locator('#region_name');
-
-      // input이 나타날 때까지 대기
-      await searchInput.waitFor({ state: 'visible' });
-
-      // 주소 검색
-      await searchInput.fill(TEST_POST_DATA.step2.address.address_name);
-      await searchInput.press('Enter');
-
-      // 검색 결과 대기
-      await page.waitForTimeout(1000);
-
-      // 검색 결과 클릭 (첫 번째 결과)
-      const firstResult = daumFrame.locator('.link_post').first();
-      await firstResult.waitFor({ state: 'visible' });
-      await firstResult.click();
-
-      // 메인 페이지로 돌아올 때까지 대기
-      await page.waitForTimeout(1000);
+      // 근무지 주소 입력
+      await fillAddress(page, TEST_POST_DATA.step2.address.address_name);
     });
 
     await test.step('근무지 상세 주소 50자 유효성 검사', async () => {

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { goToPostCreatePage } from '@/__tests__/e2e/auth-helpers';
+import { goToPostCreatePage } from '@/__tests__/e2e/shared/helpers/auth-helpers';
 import { TEST_POST_DATA } from '@/__tests__/fixtures/post-data';
 import {
   completeStep1,
@@ -30,13 +30,13 @@ test.describe('공고 등록 절차', () => {
         await completeStep5(page);
         const completeButton = page.getByRole('button', { name: /완료/ });
         await completeButton.click();
-        await page.waitForTimeout(1000);
+        await page.waitForLoadState('networkidle');
       });
 
       await test.step('공고 등록 완료 확인', async () => {
         // 공고 등록 완료 후 상세 페이지로 이동하는지 확인
         // 실제로는 이미지 업로드 등의 필수 조건에 따라 달라질 수 있음
-        await page.waitForTimeout(2000);
+        await page.waitForURL(/.*\/employer\/post\/\d+/);
 
         // 성공적으로 등록되었다면 URL이 변경되며 공고 제목으로 확인
         await expect(page).toHaveURL(/.*\/employer\/post\/\d+/);

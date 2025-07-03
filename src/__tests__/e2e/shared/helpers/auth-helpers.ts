@@ -16,7 +16,7 @@ export async function loginAsEmployer(page: Page) {
   await passwordInput.fill(TEST_USERS.employer.password);
 
   // 로그인 버튼 클릭
-  await page.waitForTimeout(1000);
+  await page.waitForLoadState('networkidle');
   await page.getByRole('button', { name: '로그인' }).click();
 
   // 로그인 완료까지 대기
