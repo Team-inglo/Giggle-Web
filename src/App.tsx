@@ -13,6 +13,7 @@ import ApiErrorBottomSheet from './components/Common/ApiErrorBottomSheet';
 import { BrowserRouter } from 'react-router-dom';
 import { useErrorStore } from '@/store/error';
 import { useKakaoLoader } from 'react-kakao-maps-sdk';
+import Toast from './components/Common/Toast';
 
 function App() {
   useKakaoLoader({
@@ -74,6 +75,7 @@ function App() {
         />
       )}
       {isLoading && <LoadingOverLay />}
+      <Toast />
     </QueryClientProvider>
   );
 }
