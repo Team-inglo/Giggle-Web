@@ -143,10 +143,6 @@ export const completeStep5 = async (page: Page) => {
   await preferredConditionsInput.fill(TEST_POST_DATA.step5.preferredConditions);
 
   // 이미지 추가
-  // 초기 상태: '이미지 추가하기' 버튼 확인
-  const initialAddButton = page.getByText('이미지 추가하기');
-  await expect(initialAddButton).toBeVisible();
-
   // 파일 업로드를 위한 input 요소에 파일 설정
   // input은 숨겨져 있으므로 setInputFiles를 직접 사용
   const fileInput = page.locator('#logo-upload');

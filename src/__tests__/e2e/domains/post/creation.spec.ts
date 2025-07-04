@@ -18,9 +18,6 @@ test.describe('공고 등록 절차', () => {
     page,
   }) => {
     await test.step('공고 등록 페이지로 이동', async () => {
-      await page.getByRole('button', { name: /공고추가/ }).click();
-      await page.waitForLoadState('networkidle');
-
       await test.step('공고 게시', async () => {
         // 공고 등록 절차 완료
         await completeStep1(page);
