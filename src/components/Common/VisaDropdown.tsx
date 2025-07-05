@@ -22,7 +22,7 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
   return (
     <>
       <div className="w-full flex flex-col gap-2">
-        <div className="w-full relative rounded-lg bg-white border border-border-disabled box-border h-11 flex flex-row items-center justify-center px-4 py-2.5 pl-4 text-left body-14-regular text-text-normal">
+        <div className="w-full h-[3.25rem] relative rounded-[0.625rem] bg-surface-base border-[0.05rem] border-border-assistive box-border flex flex-row items-center justify-center px-4 py-[0.875rem] pl-4 text-left body-16-medium">
           <div
             className="flex-1 h-5 flex flex-row items-center justify-between"
             onClick={() => setIsBottomSheetOpen(!isBottomSheetOpen)}
@@ -40,11 +40,14 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
                   isBottomSheetOpen ? '' : 'rotate-180'
                 }`}
               >
-                <Icon icon={ArrowIcon} strokeColor={
+                <Icon
+                  icon={ArrowIcon}
+                  strokeColor={
                     value.length > 0
                       ? 'stroke-text-strong'
                       : 'stroke-text-assistive'
-                  }/>
+                  }
+                />
               </div>
             </button>
           </div>
@@ -54,14 +57,14 @@ const VisaDropdown = ({ value, placeholder, setValue }: VisaDropDownProps) => {
             <Tag
               key={`${value}_${index}`}
               value={value.replace(/_/g, '-')}
-              padding="py-[0.375rem] pr-[0.5rem] pl-[0.625rem]"
-              isRounded={false}
+              padding="py-2 pr-[0.625rem] pl-[0.875rem] rounded-full"
+              isRounded
               hasCheckIcon={false}
               backgroundColor={'bg-surface-base'}
-              color="text-text-normal"
+              color="text-text-strong"
               fontStyle="body-14-regular"
               onDelete={() => handleDelete(value)}
-              borderColor={'border-border-alternative'}
+              borderColor={'border-border-disabled'}
             />
           ))}
         </div>

@@ -35,8 +35,7 @@ export const renderMap = (address: GiggleAddress) => {
 
 export const convertToAddress = (addressData: Address): GiggleAddress => {
   // 무조건 지번 주소 사용하기
-  const baseAddress = addressData.jibunAddress;
-
+  const baseAddress = addressData.jibunAddress || addressData.autoJibunAddress;
   return {
     address_name: baseAddress,
     region_1depth_name: addressData.sido,

@@ -1,4 +1,7 @@
+import { documentTranslation } from '@/constants/translation';
+import { isEmployer } from '@/utils/signup';
 import { ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 
 type InputLayOutProps = {
   title: string;
@@ -13,13 +16,14 @@ const InputLayout = ({
   isOptional,
   width,
 }: InputLayOutProps) => {
+  const { pathname } = useLocation();
   return (
     <div>
       <p className={`${width} body-14-medium text-text-alternative p-1`}>
         {title}
         {isOptional && (
           <span className="text-text-alternative body-14-medium pl-1">
-            (optional)
+            {documentTranslation.optional[isEmployer(pathname)]}
           </span>
         )}
       </p>

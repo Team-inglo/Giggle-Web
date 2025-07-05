@@ -9,7 +9,7 @@ import {
   isValidPhoneNumber,
 } from '@/utils/information';
 import Dropdown from '@/components/Common/Dropdown';
-import { gender, phone, visa } from '@/constants/information';
+import { gender, visa } from '@/constants/information';
 import RadioButton from '@/components/Information/RadioButton';
 import { InputType } from '@/types/common/input';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
@@ -25,6 +25,8 @@ import {
   getNationalityEnFromEnum,
   getNationalityEnumFromEn,
 } from '@/utils/resume';
+import PhoneNumberInput from '@/components/Common/PhoneNumberInput';
+
 const InformationStep = ({
   userInfo,
   onNext,
@@ -40,8 +42,7 @@ const InformationStep = ({
   // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   });
 
   /* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */
@@ -144,34 +145,7 @@ const InformationStep = ({
           </InputLayout>
           {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
           <InputLayout title="Cell phone No.">
-            <div className="w-full flex flex-row gap-2 justify-between">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={phoneNum.start}
-                  placeholder="010"
-                  options={phone}
-                  setValue={(value) =>
-                    setPhoneNum({ ...phoneNum, start: value })
-                  }
-                />
-              </div>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.middle}
-                onChange={(value) =>
-                  setPhoneNum({ ...phoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.end}
-                onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
-                canDelete={false}
-              />
-            </div>
+            <PhoneNumberInput value={phoneNum} onChange={setPhoneNum} />
           </InputLayout>
           {/* 성별 선택 */}
           <InputLayout title="Gender">
@@ -208,6 +182,7 @@ const InformationStep = ({
           {/* 국적 선택 */}
           <InputLayout title="Nationality" isOptional>
             <Dropdown
+              title=""
               value={
                 getNationalityEnFromEnum(newUserInfo.nationality || '') || ''
               }
@@ -224,6 +199,7 @@ const InformationStep = ({
           {/* 비자 선택 */}
           <InputLayout title="Visa Status">
             <Dropdown
+              title=""
               value={newUserInfo.visa}
               placeholder="Select Visa Status"
               options={visa} // TODO: 비자 데이터 받으면 교체해야

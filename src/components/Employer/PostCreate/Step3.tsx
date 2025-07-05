@@ -6,7 +6,7 @@ import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
@@ -21,13 +21,13 @@ const Step3 = ({
 }) => {
   const validatePostInfo = (data: JobPostingForm) => {
     const {
-      body: { education_level, age_restriction, recruitment_number, visa },
+      body: { recruitment_number, education_level, age_restriction, visa },
     } = data;
     const isFormValid =
       recruitment_number >= 0 &&
+      education_level !== '' &&
       (age_restriction === null ||
         (typeof age_restriction === 'number' && age_restriction !== 0)) &&
-      education_level !== '' &&
       Array.isArray(visa) &&
       visa.length > 0;
 
@@ -43,8 +43,8 @@ const Step3 = ({
   };
 
   return (
-    <div className="w-full py-6 flex flex-col">
-      <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+    <div className="w-full pb-6 flex flex-col">
+      <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
         {PostFormFields.step3.map((field) => (
           <InputLayout key={field.name} title={field.title}>
             {renderFormField(field)}
@@ -65,7 +65,7 @@ const Step3 = ({
             validationFn={validatePostInfo}
             onClick={() => onNext()}
           >
-            <Button type="large" title="다음" />
+            <Button title="다음" type={Button.Type.LARGE} />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>

@@ -1,9 +1,12 @@
 import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { useState } from 'react';
 import TimePicker from '@/components/Common/TimePicker';
 import { DayOfWeek, WorkDayTime } from '@/types/api/document';
+import Chip from './Chip';
+import { ChipState } from '@/types/common/chip';
+import Icon from '@/components/Common/Icon';
+import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 
 // TODO: 나중에 constant로 분리해주세요!
 const DAYS = {
@@ -90,52 +93,63 @@ const WorkDayTimeBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full">
-        <div className="w-full py-[0.75rem] px-[3.125rem] flex flex-col items-center gap-[0.75rem]">
-          <h3 className="heading-20-semibold text-[#1E1926]">
+        <div className="w-full py-[0.75rem] flex flex-col items-start gap-[0.75rem]">
+          <h3 className="heading-20-semibold text-text-strong">
             근로일 및 근로일별 근로시간
           </h3>
-          <p className="caption-12-regular text-[#656565]">
-            원하는 근무 시간을 추가해주세요.
-          </p>
         </div>
-        <div className="w-full mb-[1rem] px-[1.5rem] flex flex-col gap-[0.5rem]">
+        <div className="w-full mb-[1rem] flex flex-col gap-[0.5rem]">
           <div>
             <div className="w-full flex justify-between items-center">
-              <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
-                근무일자 <span className="text-[#EE4700]">*</span>
+              <h5 className="px-[0.25rem] py-[0.375rem] text-text-strong body-14-medium">
+                근무일자
               </h5>
-              <div className="flex gap-[0.5rem] items-center py-[0.25rem]">
+              <div
+                className="flex gap-[0.5rem] items-center py-[0.25rem]"
+                onClick={onClickCheckAllWeek}
+              >
                 <button
-                  className={`w-[1rem] h-[1rem] border  border-[#F4F4F9] ${isCheckAllWeek && 'bg-[#FEF387]'}`}
-                  onClick={onClickCheckAllWeek}
-                ></button>
-                <p className="caption-12-regular text-[#656565]">요일무관</p>
+                  className={`flex items-center justify-center w-5 h-5 rounded-full ${isCheckAllWeek ? 'bg-surface-invert' : 'bg-surface-disabled'}`}
+                >
+                  <div className="w-3.5 h-3.5 flex items-center justify-center">
+                    <Icon icon={CheckIcon} fillColor="text-surface-base" />
+                  </div>
+                </button>
+                <p className="body-14-regular text-text-assistive">요일무관</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-[0.5rem] w-full">
               {Object.keys(DAYS).map((value, index) => (
-                <button
-                  className={`py-[0.375rem] px-[0.875rem] caption-12-regular border border-border-alternative rounded-[1.125rem] ${isCheckAllWeek ? 'bg-[#F4F4F9] text-[#BDBDBD]' : dayOfWeek.includes(value as DayType) ? 'bg-[#FEF387] text-[#1E1926]' : 'bg-white text-[#656565]'}`}
+                <Chip
+                  text={value}
                   key={`${value}_${index}`}
                   onClick={() => onClickDayOfWeek(value as DayType)}
-                  disabled={isCheckAllWeek}
-                >
-                  {value}
-                </button>
+                  state={
+                    dayOfWeek.includes(value as DayType)
+                      ? ChipState.ACTIVE
+                      : ChipState.DEFAULT
+                  }
+                />
               ))}
             </div>
           </div>
           <div>
             <div className="w-full flex justify-between items-center">
-              <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
-                근무시간 <span className="text-[#EE4700]">*</span>
+              <h5 className="px-[0.25rem] py-[0.375rem] text-text-strong body-14-medium">
+                근무시간
               </h5>
-              <div className="flex gap-[0.5rem] items-center py-[0.25rem]">
+              <div
+                className="flex gap-[0.5rem] items-center py-[0.25rem] cursor-pointer"
+                onClick={() => setIsCheckAllTime(!isCheckAllTime)}
+              >
                 <button
-                  className={`w-[1rem] h-[1rem] border  border-[#F4F4F9] ${isCheckAllTime && 'bg-[#FEF387]'}`}
-                  onClick={() => setIsCheckAllTime(!isCheckAllTime)}
-                ></button>
-                <p className="caption-12-regular text-[#656565]">시간무관</p>
+                  className={`flex items-center justify-center w-5 h-5 rounded-full ${isCheckAllTime ? 'bg-surface-invert' : 'bg-surface-disabled'}`}
+                >
+                  <div className="w-3.5 h-3.5 flex items-center justify-center">
+                    <Icon icon={CheckIcon} fillColor="text-surface-base" />
+                  </div>
+                </button>
+                <p className="body-14-regular text-text-assistive">시간무관</p>
               </div>
             </div>
             <div className="flex gap-[0.25rem] w-full ">
@@ -151,9 +165,11 @@ const WorkDayTimeBottomSheet = ({
           </div>
         </div>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={isAvailableSubmit() ? `bg-[#FEF387]` : `bg-[#F4F4F9]`}
-          fontColor={isAvailableSubmit() ? `text-[#1E1926]` : `text-[#BDBDBD]`}
+          type={
+            isAvailableSubmit() ? Button.Type.PRIMARY : Button.Type.DISABLED
+          }
+          size={Button.Size.LG}
+          isFullWidth
           title={'추가하기'}
           onClick={() => returnResult()}
         />

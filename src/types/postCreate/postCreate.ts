@@ -113,7 +113,7 @@ export type JobPostingForm = {
     job_category: JobCategory | string;
     work_day_times: WorkDayTime[];
     work_period: WorkPeriod | string;
-    hourly_rate: number;
+    hourly_rate: number | null;
     employment_type: EmploymentType;
     address: GiggleAddress;
     recruitment_dead_line: string | null;
@@ -146,7 +146,7 @@ export const initialJobPostingState: JobPostingForm = {
       },
     ],
     work_period: '',
-    hourly_rate: 0,
+    hourly_rate: null,
     employment_type: EmploymentType.PARTTIME,
     address: {
       address_name: '',
@@ -161,7 +161,7 @@ export const initialJobPostingState: JobPostingForm = {
     recruitment_dead_line: null,
     recruitment_number: 0,
     gender: Gender.MALE,
-    age_restriction: 0,
+    age_restriction: null,
     education_level: '',
     visa: [],
     recruiter_name: '',
@@ -169,8 +169,7 @@ export const initialJobPostingState: JobPostingForm = {
     recruiter_phone_number: '',
     recruiter_phone: {
       start: '010',
-      middle: '',
-      end: '',
+      rest: '',
     },
     description: '',
     preferred_conditions: '',

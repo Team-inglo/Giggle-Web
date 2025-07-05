@@ -5,7 +5,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
-import { CheckboxOption } from '@/constants/documents';
+import { CheckboxOption } from '@/constants/formFields';
 import { ValueTransformer } from '@/types/api/document';
 
 // CheckboxGroup 컴포넌트 타입 정의

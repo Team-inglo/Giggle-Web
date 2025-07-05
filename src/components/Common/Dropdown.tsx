@@ -1,37 +1,45 @@
 import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 import Icon from '@/components/Common/Icon';
+import BottomSheetLayout from './BottomSheetLayout';
+import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {
-  title?: string; // 드롭다운의 제목 (선택적)
+  title: string; // 드롭다운의 제목 (선택적)
   value: string | null; // 현재 선택된 값
   placeholder: string; // 플레이스홀더 텍스트
   options: Array<string>; // 드롭다운 옵션 목록
   setValue: (value: string) => void; // 선택된 값을 설정하는 함수
 };
 
-// DropdownModal 컴포넌트: 드롭다운 옵션을 표시하는 모달
+//  DropdownModal 컴포넌트: 드롭다운 옵션을 표시하는 모달(바텀시트 사용으로 변경됨)
 export const DropdownModal = ({
   options,
+  modalTitle,
   value,
   onSelect,
 }: {
   options: string[];
+  modalTitle: string;
   value: string | null;
   onSelect: (option: string) => void;
 }) => {
   return (
-    <div className="max-h-[13.3rem] overflow-y-scroll w-full relative rounded-[0.625rem] bg-white border-[0.05rem] border-border-assistive flex flex-row items-start justify-start p-2 text-left body-14-regular z-10">
-      <div className="flex-1 flex flex-col items-start justify-start gap-[5px]">
+    <div className="flex-col max-h-[33.3rem] overflow-y-scroll no-scrollbar w-full relative rounded-[0.625rem] bg-white flex items-start justify-start px-1 text-left z-10">
+      <h2 className="py-3 heading-18-semibold text-text-strong">
+        {modalTitle}
+      </h2>
+      <div className="flex-1 flex flex-col w-full items-start gap-[5px]">
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
           <div
-            className={`self-stretch overflow-hidden ${value == option && 'bg-surface-secondary'} rounded-[0.625rem] flex flex-row items-center justify-start p-2.5`}
+            className={`w-full self-stretch overflow-hidden rounded-[0.625rem] flex flex-row items-center justify-between ${value === option ? 'body-16-medium' : 'body-16-regular'} py-3`}
             onClick={() => onSelect(option)}
             key={option}
           >
             {option}
+            {value === option && <Icon icon={CheckIcon} />}
           </div>
         ))}
       </div>
@@ -57,16 +65,6 @@ const Dropdown = ({
   };
   return (
     <div className="w-full flex flex-col">
-      {/* 드롭다운 제목 (있는 경우에만 표시) */}
-      {title && (
-        <div className="w-full relative flex flex-row items-center justify-start px-1 py-1.5 box-border text-left caption-12-regular text-text-assistive">
-          <div className="flex-1 overflow-hidden flex flex-col items-start justify-start">
-            <div className="self-stretch flex flex-row items-center justify-start">
-              <div className="relative leading-4">{title}</div>
-            </div>
-          </div>
-        </div>
-      )}
       {/* 드롭다운 입력 영역 */}
       <div className="w-full flex flex-col gap-2">
         <div className="w-full h-[3.25rem] relative rounded-[0.625rem] bg-white border-[0.05rem] border-border-assistive box-border flex flex-row items-center justify-center px-4 py-[0.875rem] pl-4 text-left body-16-medium">
@@ -87,22 +85,32 @@ const Dropdown = ({
                   isOpen ? '' : 'rotate-180'
                 }`}
               >
-                <Icon icon={ArrowIcon} strokeColor={
+                <Icon
+                  icon={ArrowIcon}
+                  strokeColor={
                     value !== ''
                       ? 'stroke-text-strong'
                       : 'stroke-text-assistive'
-                  }/>
+                  }
+                />
               </div>
             </button>
           </div>
         </div>
         {/* 드롭다운 선택지 모달 (열려있을 때만 표시) */}
         {isOpen ? (
-          <DropdownModal
-            value={value ?? ''}
-            options={options}
-            onSelect={handleSelect}
-          />
+          <BottomSheetLayout
+            isAvailableHidden={true}
+            isShowBottomsheet={isOpen}
+            setIsShowBottomSheet={() => setIsOpen(false)}
+          >
+            <DropdownModal
+              modalTitle={title ?? ''}
+              value={value ?? ''}
+              options={options}
+              onSelect={handleSelect}
+            />
+          </BottomSheetLayout>
         ) : null}
       </div>
     </div>

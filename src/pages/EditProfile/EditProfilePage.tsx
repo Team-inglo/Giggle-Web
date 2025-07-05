@@ -17,11 +17,10 @@ import {
   validateFieldValues,
 } from '@/utils/editProfileData';
 import { useEffect, useState } from 'react';
-import { phone, visa } from '@/constants/information';
+import { visa } from '@/constants/information';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { useGetUserProfile, usePatchUserProfile } from '@/hooks/api/useProfile';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { processAddressData } from '@/utils/map';
@@ -32,6 +31,7 @@ import {
   getNationalityEnFromEnum,
   getNationalityEnumFromEn,
 } from '@/utils/resume';
+import PhoneNumberInput from '@/components/Common/PhoneNumberInput';
 
 const EditProfilePage = () => {
   const { data: userProfile } = useGetUserProfile();
@@ -46,8 +46,7 @@ const EditProfilePage = () => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [phoneNum, setPhoneNum] = useState({
     start: '',
-    middle: '',
-    end: '',
+    rest: '',
   });
 
   const handleBackButtonClick = useNavigateBack();
@@ -89,13 +88,15 @@ const EditProfilePage = () => {
     mutate(formData);
   };
 
-  // 전화번호를 3개의 파트로 구분
+  // 전화번호를 2개의 파트로 구분
   useEffect(() => {
     if (userData?.phone_number) {
-      const [start, middle, end] = userData.phone_number.split('-');
-      setPhoneNum({ start, middle, end });
+      const parts = userData.phone_number.split('-');
+      if (parts.length === 3) {
+        setPhoneNum({ start: parts[0], rest: `${parts[1]}-${parts[2]}` });
+      }
     }
-  }, [userData]);
+  }, [userData.phone_number]);
 
   // 수정을 위한 초기 데이터 세팅
   useEffect(() => {
@@ -222,6 +223,7 @@ const EditProfilePage = () => {
               {/* 국적 선택 */}
               <InputLayout title="Nationality" isOptional>
                 <Dropdown
+                  title=""
                   value={
                     getNationalityEnFromEnum(userData.nationality || '') || ''
                   }
@@ -248,58 +250,36 @@ const EditProfilePage = () => {
                     />
                   </div>
                 </InputLayout>
-                {/* 검색한 위치를 보여주는 지도 */}
                 {userData.address.address_name !== '' && (
-                  <>
-                    <div className="w-full rounded-xl z-0">
-                      <Map
-                        center={{
-                          lat: userData.address?.latitude ?? 0,
-                          lng: userData.address?.longitude ?? 0,
-                        }}
-                        style={{ width: '100%', height: '200px' }}
-                        className="rounded-xl"
-                      >
-                        <MapMarker
-                          position={{
-                            lat: userData.address?.latitude ?? 0,
-                            lng: userData.address?.longitude ?? 0,
-                          }}
-                        ></MapMarker>
-                      </Map>
-                    </div>
-                    <InputLayout
-                      title="Detailed Address"
-                      isOptional
-                    >
-                      <Input
-                        inputType={InputType.TEXT}
-                        placeholder="ex) 101dong"
-                        value={userData.address.address_detail}
-                        onChange={(value) =>
-                          setUserData({
-                            ...userData,
-                            address: {
-                              ...userData.address,
-                              address_detail: value,
-                            },
-                          })
-                        }
-                        canDelete={false}
-                      />
-                      {userData.address.address_detail &&
-                        userData.address.address_detail.length > 50 && (
-                          <p className="text-text-error text-xs p-2">
-                            {documentTranslation.detailAddressTooLong.en}
-                          </p>
-                        )}
-                    </InputLayout>
-                  </>
+                  <InputLayout title="Detailed Address" isOptional>
+                    <Input
+                      inputType={InputType.TEXT}
+                      placeholder="ex) 101dong"
+                      value={userData.address.address_detail}
+                      onChange={(value) =>
+                        setUserData({
+                          ...userData,
+                          address: {
+                            ...userData.address,
+                            address_detail: value,
+                          },
+                        })
+                      }
+                      canDelete={false}
+                    />
+                    {userData.address.address_detail &&
+                      userData.address.address_detail.length > 50 && (
+                        <p className="text-text-error text-xs p-2">
+                          {documentTranslation.detailAddressTooLong.en}
+                        </p>
+                      )}
+                  </InputLayout>
                 )}
               </div>
               {/* 비자 선택 */}
               <InputLayout title="Visa Status">
                 <Dropdown
+                  title=""
                   value={userData.visa}
                   placeholder="Select Visa Status"
                   options={visa}
@@ -310,36 +290,7 @@ const EditProfilePage = () => {
               </InputLayout>
               {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
               <InputLayout title="Telephone No.">
-                <div className="w-full flex gap-2 justify-between items-start">
-                  <div className="w-full">
-                    <Dropdown
-                      value={phoneNum.start}
-                      placeholder="010"
-                      options={phone}
-                      setValue={(value) =>
-                        setPhoneNum({ ...phoneNum, start: value })
-                      }
-                    />
-                  </div>
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder="0000"
-                    value={phoneNum.middle}
-                    onChange={(value) =>
-                      setPhoneNum({ ...phoneNum, middle: value })
-                    }
-                    canDelete={false}
-                  />
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder="0000"
-                    value={phoneNum.end}
-                    onChange={(value) =>
-                      setPhoneNum({ ...phoneNum, end: value })
-                    }
-                    canDelete={false}
-                  />
-                </div>
+                <PhoneNumberInput value={phoneNum} onChange={setPhoneNum} />
               </InputLayout>
             </div>
           )}

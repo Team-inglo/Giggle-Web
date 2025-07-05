@@ -6,12 +6,14 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import DocumentFormInput from '@/components/Document/write/input/DocumentFormInput';
-import PhoneNumberInput from '@/components/Document/write/input/PhoneNumberInput';
+import PhoneNumberInputController from '@/components/Document/write/input/PhoneNumberInputController';
 import AddressInput from '@/components/Document/write/input/AddressInput';
 import DropdownInput, {
   KeyValueDropdownInput,
 } from '@/components/Document/write/input/DropdownInput';
-import RadioGroup from '@/components/Document/write/input/RadioGroup';
+import RadioGroup, {
+  RadioGroupVariant,
+} from '@/components/Document/write/input/RadioGroup';
 import CheckboxGroup from '@/components/Document/write/input/CheckboxGroup';
 import WorkDayTimeWithRestInput from '@/components/Document/write/input/WorkDayTimeWithRestInput';
 import SignaturePad from '@/components/Document/write/SignaturePad';
@@ -22,13 +24,13 @@ import {
   IntegratedApplicationFormField,
   LaborContractEmployerFormField,
   PartTimePermitEmployerFormField,
-} from '@/constants/documents';
-import { PostFormField } from '@/constants/post';
+  PostFormField,
+} from '@/constants/formFields';
 import WorkDayTimeInput from './input/WorkDayTimeInput';
 import VisaDropdown from '@/components/Common/VisaDropdown';
 import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
-import ImageUploadInput from './input/ImageUploadInput';
-import { convertToDropdownOption } from '../../../utils/document';
+import ImageUploadInput from '@/components/Document/write/input/ImageUploadInput';
+import { convertToDropdownOption } from '@/utils/document';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 
@@ -74,6 +76,8 @@ export const RenderField = <
           unit={field.unit}
           isPrefix={field.isPrefix}
           prefix={field.prefix}
+          isValid={(value) => field.isValid?.(value) ?? true}
+          errorMessage={field.errorMessage}
         />
       );
     case 'textarea':
@@ -84,13 +88,17 @@ export const RenderField = <
           render={({ field: { value, onChange } }) => (
             <div className="w-full self-stretch flex flex-col items-center justify-start caption-12-regular">
               <div className="w-full flex flex-col items-start justify-start">
-                <div className="w-full flex flex-col items-center justify-start">
+                <div className="w-full flex flex-col items-center justify-start  border-[0.05rem] border-border-assistive rounded-[0.625rem]">
                   <textarea
-                    className={`w-full ${field.textareaHeight} px-4 py-[0.875rem] border-[0.05rem] border-border-assistive rounded-[0.625rem] body-16-medium outline-none resize-none`}
+                    className={`w-full ${field.textareaHeight} px-4 py-[0.875rem] body-16-medium outline-none resize-none rounded-[0.625rem]`}
                     placeholder={field.placeholder}
                     value={value as string}
                     onChange={onChange}
+                    maxLength={field.maxLength}
                   />
+                  <span className="w-full caption-12-regular text-text-assistive text-end p-4">
+                    {value?.length}/{field.maxLength}
+                  </span>
                 </div>
               </div>
             </div>
@@ -98,7 +106,7 @@ export const RenderField = <
         />
       );
     case 'phone':
-      return <PhoneNumberInput name={name} />;
+      return <PhoneNumberInputController name={name} />;
     case 'address':
       return (
         <AddressInput
@@ -117,6 +125,7 @@ export const RenderField = <
         return (
           <KeyValueDropdownInput
             name={name}
+            title={field.placeholder}
             placeholder={field.placeholder}
             options={convertToDropdownOption(
               field.options as Record<
@@ -131,6 +140,7 @@ export const RenderField = <
       return (
         <DropdownInput
           name={name}
+          title={field.placeholder}
           placeholder={field.placeholder}
           options={Array.isArray(field.options) ? field.options : []}
         />
@@ -158,7 +168,9 @@ export const RenderField = <
       return (
         <RadioGroup
           name={name}
+          type={field.selectType as RadioGroupVariant}
           options={Array.isArray(field.options) ? field.options : []}
+          optionsWithIcon={field.optionsWithIcon}
           description={field.description}
           transformer={field.transformer}
         />
@@ -211,6 +223,7 @@ export const RenderField = <
               <div className="flex flex-col gap-2">
                 <RadioGroup
                   name={name}
+                  type={field.selectType as RadioGroupVariant}
                   options={Array.isArray(field.options) ? field.options : []}
                   description={field.description}
                   transformer={field.transformer}
@@ -256,14 +269,13 @@ export const RenderField = <
           isDate={field.isDate}
           format={field.format}
           inputType={field.inputType}
+          isValid={(value) => field.isValid?.(value) ?? true}
+          errorMessage={field.errorMessage}
         />
       );
     case 'image_upload':
       return (
         <div className="w-full">
-          <div className="w-full relative caption-12-regular px-1 pb-1.5 text-text-strong text-left">
-            {field.placeholder}
-          </div>
           <ImageUploadInput name={name} isEdit={field.isEdit as boolean} />
         </div>
       );

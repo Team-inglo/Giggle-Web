@@ -6,7 +6,6 @@ const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
 // 이름의 최대 길이
 const MAX_NAME_LENGTH = 50;
 
-
 /**
  * 이름 유효성 검사 함수
  * 1. 공백이 허용됨 (연속된 공백은 하나로 간주)
@@ -27,14 +26,9 @@ export const isValidName = (name: string): boolean => {
 };
 
 // 전화번호 유효성 검사 함수
-export const isValidPhoneNumber = (phone: {
-  start: string;
-  middle: string;
-  end: string;
-}) =>
-  phone.start !== '' &&
-  /^[0-9]{4}$/.test(phone.middle) &&
-  /^[0-9]{4}$/.test(phone.end);
+export const isValidPhoneNumber = (phone: { start: string; rest: string }) => {
+  return phone.start !== '' && /^[0-9]{4}-[0-9]{4}$/.test(phone.rest);
+};
 
 // input에서 maxLength만큼 값을 제한하는 함수
 export const limitInputValueLength = (value: string, maxLength: number) => {
@@ -43,19 +37,24 @@ export const limitInputValueLength = (value: string, maxLength: number) => {
   return value.slice(0, maxLength);
 };
 
-// 3개의 dropdown, input으로 나눠 받고 있는 state 통합하는 함수
-export const formatPhoneNumber = (phone: {
-  start: string;
-  middle: string;
-  end: string;
-}) => `${phone.start}-${phone.middle}-${phone.end}`;
+// 2개의 dropdown, input으로 나눠 받고 있는 state 통합하는 함수
+export const formatPhoneNumber = (phone: { start: string; rest: string }) => {
+  return `${phone.start}-${phone.rest}`;
+};
 
 export const parsePhoneNumber = (phoneNumber: string) => {
-  const [start, middle, end] = phoneNumber.split('-');
+  const parts = phoneNumber.split('-');
+  if (parts.length === 3) {
+    const [start, middle, end] = parts;
+    return {
+      start,
+      rest: `${middle}-${end}`,
+    };
+  }
+  // 기본값 또는 다른 형식 처리
   return {
-    start,
-    middle,
-    end,
+    start: '010',
+    rest: '',
   };
 };
 

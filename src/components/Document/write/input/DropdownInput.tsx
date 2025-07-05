@@ -18,6 +18,7 @@ type BaseDropdownProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
+  title: string;
   placeholder: string;
 };
 
@@ -43,6 +44,7 @@ const DropdownInput = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   name,
+  title,
   placeholder,
   options,
 }: DropdownProps<TFieldValues, TName>) => {
@@ -54,6 +56,7 @@ const DropdownInput = <
 
   return (
     <Dropdown
+      title={title}
       value={field.value || ''}
       placeholder={placeholder}
       options={options}
@@ -68,6 +71,7 @@ const KeyValueDropdownInput = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   name,
+  title,
   placeholder,
   options,
 }: KeyValueDropdownProps<TFieldValues, TName>) => {
@@ -83,6 +87,7 @@ const KeyValueDropdownInput = <
 
   return (
     <Dropdown
+      title={title}
       value={displayValue}
       placeholder={placeholder}
       options={options.map((opt) => opt.name)}

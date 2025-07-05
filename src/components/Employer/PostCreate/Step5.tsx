@@ -6,7 +6,7 @@ import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
@@ -21,10 +21,14 @@ const Step5 = ({
 }) => {
   // 유효성 검사 함수
   const validatePostInfo = (data: JobPostingForm) => {
-    const { body } = data;
+    const { body, images } = data;
     const { description } = body;
 
-    return description.trim() !== '';
+    return (
+      description.trim() !== '' &&
+      description.length <= 1000 &&
+      images.length > 0
+    );
   };
 
   // 폼 필드 렌더링 함수
@@ -42,12 +46,13 @@ const Step5 = ({
   };
 
   return (
-    <div className="w-full py-6 flex flex-col">
-      <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+    <div className="w-full pb-6 flex flex-col">
+      <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
         {PostFormFields.step5.map((field) => (
           <InputLayout
             key={field.name}
             title={field.title}
+            isOptional={field.isOptional}
           >
             {renderFormField(field)}
           </InputLayout>
@@ -67,7 +72,7 @@ const Step5 = ({
             validationFn={validatePostInfo}
             onClick={handleSubmit}
           >
-            <Button type="large" title="완료" />
+            <Button type={Button.Type.LARGE} title="완료" />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>

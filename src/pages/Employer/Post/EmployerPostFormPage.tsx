@@ -28,6 +28,12 @@ import ProgressStepper from '@/components/Common/ProgressStepper';
  * 고용주 공고 등록/수정 통합 페이지 컴포넌트
  * isEdit 값에 따라 등록/수정 모드를 구분
  */
+
+enum StepDirection {
+  NEXT = 1,
+  PREV = -1,
+}
+
 const EmployerPostFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -91,8 +97,9 @@ const EmployerPostFormPage = () => {
   }, [isEdit, parsedId, fetchDetail, form]);
 
   // 다음 step으로 이동
-  const handleNext = () => {
-    setCurrentStep((prev) => prev + 1);
+  const handleNext = (direction: StepDirection) => {
+    setCurrentStep((prev) => prev + direction);
+    window.scrollTo(0, 0);
   };
 
   // 폼 제출 처리
@@ -111,9 +118,14 @@ const EmployerPostFormPage = () => {
   };
 
   // 페이지 타이틀 및 완료 모달 텍스트 설정
-  const pageTitle = isEdit
-    ? '공고를 수정해주세요 ✍'
-    : '공고를 등록해주세요 ✍';
+  const pageTitle = {
+    1: '어떤 공고를 등록하시나요?',
+    2: '근무 조건을 알려주세요',
+    3: '어떤 분을 모집하고 싶으신가요?',
+    4: '연락 가능한 담당자 정보를\n입력해주세요',
+    5: '이미지와 함께\n공고를 마무리해주세요',
+  };
+
   const headerTitle = isEdit ? '공고수정' : '공고등록';
   const completeTitle = isEdit
     ? '공고 수정을 완료했어요!'
@@ -148,36 +160,36 @@ const EmployerPostFormPage = () => {
         />
       ) : (
         <FormProvider {...form}>
-          <PageTitle
-            title={pageTitle}
-            content="필요한 정보만 빠르게 입력하고, 바로 시작하세요!"
-          />
+          <PageTitle title={pageTitle[currentStep as keyof typeof pageTitle]} />
           <form
             className="w-full flex justify-center px-4"
             onSubmit={(e) => e.preventDefault()}
           >
             {currentStep === 1 && (
-              <Step1 key={`${parsedId || 'new'}-step1`} onNext={handleNext} />
+              <Step1
+                key={`${parsedId || 'new'}-step1`}
+                onNext={() => handleNext(StepDirection.NEXT)}
+              />
             )}
             {currentStep === 2 && (
               <Step2
                 key={`${parsedId || 'new'}-step2`}
-                onNext={handleNext}
-                onPrev={() => setCurrentStep((prev) => prev - 1)}
+                onNext={() => handleNext(StepDirection.NEXT)}
+                onPrev={() => handleNext(StepDirection.PREV)}
               />
             )}
             {currentStep === 3 && (
               <Step3
                 key={`${parsedId || 'new'}-step3`}
-                onNext={handleNext}
-                onPrev={() => setCurrentStep((prev) => prev - 1)}
+                onNext={() => handleNext(StepDirection.NEXT)}
+                onPrev={() => handleNext(StepDirection.PREV)}
               />
             )}
             {currentStep === 4 && (
               <Step4
                 key={`${parsedId || 'new'}-step4`}
-                onNext={handleNext}
-                onPrev={() => setCurrentStep((prev) => prev - 1)}
+                onNext={() => handleNext(StepDirection.NEXT)}
+                onPrev={() => handleNext(StepDirection.PREV)}
                 isEdit={isEdit}
               />
             )}
