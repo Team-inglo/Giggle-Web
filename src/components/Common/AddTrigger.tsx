@@ -1,6 +1,6 @@
 import { ComponentType, SVGProps } from 'react';
 import Icon from './Icon';
-import PressOverlay from './PressedOverlay';
+import PressOverlay from '@/components/Common/PressedOverlay';
 import { usePress } from '@/hooks/usePress';
 
 enum AddTriggerType {

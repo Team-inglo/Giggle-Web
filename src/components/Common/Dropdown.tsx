@@ -34,12 +34,12 @@ export const DropdownModal = ({
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
           <div
-            className={`w-full self-stretch overflow-hidden rounded-[0.625rem] flex flex-row items-center justify-between ${value == option ? 'body-16-medium' : 'body-16-regular'} py-3`}
+            className={`w-full self-stretch overflow-hidden rounded-[0.625rem] flex flex-row items-center justify-between ${value === option ? 'body-16-medium' : 'body-16-regular'} py-3`}
             onClick={() => onSelect(option)}
             key={option}
           >
             {option}
-            {value == option && <Icon icon={CheckIcon} />}
+            {value === option && <Icon icon={CheckIcon} />}
           </div>
         ))}
       </div>

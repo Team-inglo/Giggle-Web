@@ -28,6 +28,12 @@ import ProgressStepper from '@/components/Common/ProgressStepper';
  * 고용주 공고 등록/수정 통합 페이지 컴포넌트
  * isEdit 값에 따라 등록/수정 모드를 구분
  */
+
+enum StepDirection {
+  NEXT = 1,
+  PREV = -1,
+}
+
 const EmployerPostFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -91,8 +97,8 @@ const EmployerPostFormPage = () => {
   }, [isEdit, parsedId, fetchDetail, form]);
 
   // 다음 step으로 이동
-  const handleNext = (direction: 'next' | 'prev') => {
-    setCurrentStep((prev) => (direction === 'next' ? prev + 1 : prev - 1));
+  const handleNext = (direction: StepDirection) => {
+    setCurrentStep((prev) => prev + direction);
     window.scrollTo(0, 0);
   };
 
@@ -162,28 +168,28 @@ const EmployerPostFormPage = () => {
             {currentStep === 1 && (
               <Step1
                 key={`${parsedId || 'new'}-step1`}
-                onNext={() => handleNext('next')}
+                onNext={() => handleNext(StepDirection.NEXT)}
               />
             )}
             {currentStep === 2 && (
               <Step2
                 key={`${parsedId || 'new'}-step2`}
-                onNext={() => handleNext('next')}
-                onPrev={() => handleNext('prev')}
+                onNext={() => handleNext(StepDirection.NEXT)}
+                onPrev={() => handleNext(StepDirection.PREV)}
               />
             )}
             {currentStep === 3 && (
               <Step3
                 key={`${parsedId || 'new'}-step3`}
-                onNext={() => handleNext('next')}
-                onPrev={() => handleNext('prev')}
+                onNext={() => handleNext(StepDirection.NEXT)}
+                onPrev={() => handleNext(StepDirection.PREV)}
               />
             )}
             {currentStep === 4 && (
               <Step4
                 key={`${parsedId || 'new'}-step4`}
-                onNext={() => handleNext('next')}
-                onPrev={() => handleNext('prev')}
+                onNext={() => handleNext(StepDirection.NEXT)}
+                onPrev={() => handleNext(StepDirection.PREV)}
                 isEdit={isEdit}
               />
             )}

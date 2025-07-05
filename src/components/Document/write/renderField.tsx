@@ -29,8 +29,8 @@ import {
 import WorkDayTimeInput from './input/WorkDayTimeInput';
 import VisaDropdown from '@/components/Common/VisaDropdown';
 import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
-import ImageUploadInput from './input/ImageUploadInput';
-import { convertToDropdownOption } from '../../../utils/document';
+import ImageUploadInput from '@/components/Document/write/input/ImageUploadInput';
+import { convertToDropdownOption } from '@/utils/document';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 
