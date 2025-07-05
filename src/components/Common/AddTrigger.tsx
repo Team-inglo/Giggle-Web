@@ -78,7 +78,7 @@ const AddTrigger = ({
       {...pressHandlers}
     >
       <div className="flex items-center justify-center w-6 h-6">
-        <Icon icon={icon} color={styles.fill} />
+        <Icon icon={icon} color={styles.fill} size={Icon.Size.SM} hasPadding/>
       </div>
       {title}
       <PressOverlay

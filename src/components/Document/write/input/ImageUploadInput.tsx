@@ -10,7 +10,7 @@ import { Image } from '@/types/postCreate/postCreate';
 import { ChangeEvent, useState, useEffect } from 'react';
 import CircleDeleteIcon from '@/assets/icons/CircleDeleteIcon.svg?react';
 import AddTrigger from '@/components/Common/AddTrigger';
-import PlusIcon from '@/assets/icons/PlusIcon.svg?react';
+import ImageIcon from '@/assets/icons/ImageIcon.svg?react';
 import Icon from '@/components/Common/Icon';
 
 interface ImageUploadInputProps<
@@ -135,7 +135,7 @@ const ImageUploadInput = <
           {images.length === 0 ? (
             <AddTrigger
               title="이미지 추가하기"
-              icon={PlusIcon}
+              icon={ImageIcon}
               type={AddTrigger.Type.OUTLINED}
               color={AddTrigger.ColorType.GRAY}
               handleClick={() => {
@@ -149,7 +149,7 @@ const ImageUploadInput = <
                 document.getElementById('logo-upload')?.click();
               }}
             >
-              <Icon icon={PlusIcon} fillColor="text-gray-400" />
+              <Icon icon={ImageIcon} fillColor="text-gray-400" />
             </div>
           )}
           <input
