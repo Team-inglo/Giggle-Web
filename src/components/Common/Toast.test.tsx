@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, it, vi, expect, afterEach } from 'vitest';
 import Toast from '@/components/Common/Toast';
-import { useToastStore } from '@/store/toast';
+import { ToastStatus, useToastStore } from '@/store/toast';
 import { act, ReactNode } from 'react';
 
 // framer-motion을 모킹
@@ -79,7 +79,7 @@ describe('Toast', () => {
     act(() => {
       useToastStore.getState().show({
         toastMessage: message,
-        toastStatus: Toast.Status.SUCCESS,
+        toastStatus: ToastStatus.SUCCESS,
       });
     });
 
@@ -96,7 +96,7 @@ describe('Toast', () => {
     act(() => {
       useToastStore.getState().show({
         toastMessage: message,
-        toastStatus: Toast.Status.ERROR,
+        toastStatus: ToastStatus.ERROR,
       });
     });
 
@@ -113,7 +113,7 @@ describe('Toast', () => {
     act(() => {
       useToastStore.getState().show({
         toastMessage: message,
-        toastStatus: Toast.Status.INFO,
+        toastStatus: ToastStatus.INFO,
       });
     });
 
@@ -130,7 +130,7 @@ describe('Toast', () => {
     act(() => {
       useToastStore.getState().show({
         toastMessage: message,
-        toastStatus: Toast.Status.ONLYTEXT,
+        toastStatus: ToastStatus.ONLYTEXT,
       });
     });
 

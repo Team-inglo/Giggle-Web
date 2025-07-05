@@ -9,11 +9,11 @@ import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessageListener';
-import ApiErrorBottomSheet from './components/Common/ApiErrorBottomSheet';
+import ApiErrorBottomSheet from '@/components/Common/ApiErrorBottomSheet';
 import { BrowserRouter } from 'react-router-dom';
 import { useErrorStore } from '@/store/error';
 import { useKakaoLoader } from 'react-kakao-maps-sdk';
-import Toast from './components/Common/Toast';
+import Toast from '@/components/Common/Toast';
 
 function App() {
   useKakaoLoader({
