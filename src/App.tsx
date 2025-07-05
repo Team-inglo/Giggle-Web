@@ -5,7 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessageListener';
@@ -57,25 +57,20 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ReactNativeMessageListener />
         <Router />
-      </BrowserRouter>
-
-      {isOpenServerErrorBottomSheet && (
+        <ReactNativeMessageListener />
+        <Toast />
+        {isLoading && <LoadingOverLay />}
         <ServerErrorBottomSheet
           isShowBottomsheet={isOpenServerErrorBottomSheet}
           setIsShowBottomSheet={setIsOpenServerErrorBottomSheet}
         />
-      )}
-      {isOpenErrorBottomSheet && (
         <ApiErrorBottomSheet
           errorMessage={errorMessage}
           isShowBottomsheet={isOpenErrorBottomSheet}
           setIsShowBottomSheet={setIsOpenErrorBottomSheet}
         />
-      )}
-      {isLoading && <LoadingOverLay />}
-      <Toast />
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
