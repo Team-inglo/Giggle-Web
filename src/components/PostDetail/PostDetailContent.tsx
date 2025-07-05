@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import PostDetailContentMenuBar from '@/components/PostDetail/PostDetailContentMenuBar';
 import { PostDetailContentMenu } from '@/constants/postDetail';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { PostDetailItemType } from '@/types/postDetail/postDetailItem';
 import { formatMoney } from '@/utils/formatMoney';
 import { infoTranslation, postTranslation } from '@/constants/translation';
@@ -9,7 +8,6 @@ import { isEmployerByAccountType } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
 import {
   EducationLevelInfo,
-  genderInfo,
   JobCategoryExtendedInfo,
   WorkTypeInfo,
 } from '@/constants/post';
@@ -24,6 +22,7 @@ import { Gender } from '@/types/api/users';
 import { UserType } from '@/constants/user';
 import { dayOfWeekToKorean } from '@/utils/post';
 import { calculateDays } from '@/utils/calculateDDay';
+import { genderInfo } from '@/constants/post';
 
 const InfoItem = ({
   label,
@@ -376,21 +375,6 @@ const PostDetailContent = ({ postDetailData }: PostDetailContentProps) => {
               {postDetailData.workplace_information.main_address ?? ''}{' '}
               {postDetailData.workplace_information.detailed_address ?? ''}
             </p>
-            <Map
-              center={{
-                lat: postDetailData.workplace_information.latitude,
-                lng: postDetailData.workplace_information.longitude,
-              }}
-              style={{ width: '100%', height: '151px' }}
-              className="rounded-xl"
-            >
-              <MapMarker
-                position={{
-                  lat: postDetailData.workplace_information.latitude,
-                  lng: postDetailData.workplace_information.longitude,
-                }}
-              ></MapMarker>
-            </Map>
           </article>
         </div>
         <WorkplaceSection

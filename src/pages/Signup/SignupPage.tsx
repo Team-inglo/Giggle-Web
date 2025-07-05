@@ -121,7 +121,7 @@ const SignupPage = () => {
         </>
       )}
       {/* 회원가입 STEP 별 랜딩 컴포넌트 */}
-      <div className="grow px-4 flex flex-col items-center">
+      <div className="grow flex flex-col items-center">
         {currentStep === 1 && (
           <FindJourney
             onSignUpClick={handleSignUpClick}

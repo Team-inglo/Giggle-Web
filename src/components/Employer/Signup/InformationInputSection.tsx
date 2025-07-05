@@ -1,11 +1,8 @@
-import Dropdown from '@/components/Common/Dropdown';
 import Input from '@/components/Common/Input';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { phone } from '@/constants/information';
 import { EmployerRegistrationRequestBody } from '@/types/api/employ';
 import { InputType } from '@/types/common/input';
 import { useEffect, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import FileAddIcon from '@/assets/icons/FileAddIcon.svg?react';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import GiggleLogo from '@/assets/icons/GiggleLogo.svg?react';
@@ -23,6 +20,7 @@ import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { processAddressData } from '@/utils/map';
+import PhoneNumberInput from '@/components/Common/PhoneNumberInput';
 
 type InformationInputSectionProps = {
   newEmployData: EmployerRegistrationRequestBody;
@@ -49,11 +47,10 @@ const InformationInputSection = ({
 }: InformationInputSectionProps) => {
   const { pathname } = useLocation();
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
-  // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
+  // 두 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   });
   const [logoStatus, setLogoStatus] = useState<LogoType>(LogoType.NONE);
   const [selectedImage, setSelectedImage] = useState<string>();
@@ -208,36 +205,7 @@ const InformationInputSection = ({
               </InputLayout>
               {/* 개인 휴대폰 번호 입력 */}
               <InputLayout title="대표자 전화번호">
-                <div className="w-full flex flex-row gap-2 justify-between">
-                  <div className="w-full h-[2.75rem]">
-                    <Dropdown
-                      value={phoneNum.start}
-                      placeholder="010"
-                      options={phone}
-                      setValue={(value) =>
-                        setPhoneNum({ ...phoneNum, start: value })
-                      }
-                    />
-                  </div>
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder="0000"
-                    value={phoneNum.middle}
-                    onChange={(value) =>
-                      setPhoneNum({ ...phoneNum, middle: value })
-                    }
-                    canDelete={false}
-                  />
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder="0000"
-                    value={phoneNum.end}
-                    onChange={(value) =>
-                      setPhoneNum({ ...phoneNum, end: value })
-                    }
-                    canDelete={false}
-                  />
-                </div>
+                <PhoneNumberInput value={phoneNum} onChange={setPhoneNum} />
               </InputLayout>
               {/* 주소 입력 */}
               <div className="w-full h-full flex flex-col gap-[1.125rem]">
@@ -253,24 +221,6 @@ const InformationInputSection = ({
                     />
                   </div>
                 </InputLayout>
-                {/* 검색한 위치를 보여주는 지도 */}
-                <div className="w-full rounded-xl">
-                  <Map
-                    center={{
-                      lat: newEmployData.address?.latitude ?? 0,
-                      lng: newEmployData.address?.longitude ?? 0,
-                    }}
-                    style={{ width: '100%', height: '200px', zIndex: -100 }}
-                    className="rounded-xl"
-                  >
-                    <MapMarker
-                      position={{
-                        lat: newEmployData.address?.latitude ?? 0,
-                        lng: newEmployData.address?.longitude ?? 0,
-                      }}
-                    ></MapMarker>
-                  </Map>
-                </div>
                 <InputLayout title="상세 주소">
                   <Input
                     inputType={InputType.TEXT}

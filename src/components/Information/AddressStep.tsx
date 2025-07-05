@@ -1,6 +1,5 @@
 import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import {
   GiggleAddress,
   initialAddress,
@@ -76,47 +75,28 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
                 />
               </div>
             </InputLayout>
-            {/* 검색한 위치를 보여주는 지도 */}
+
             {newAddress.address_name !== '' && (
-              <>
-                <div className="w-full rounded-xl">
-                  <Map
-                    center={{
-                      lat: newAddress?.latitude ?? 0,
-                      lng: newAddress?.longitude ?? 0,
-                    }}
-                    style={{ width: '100%', height: '200px' }}
-                    className="rounded-xl"
-                  >
-                    <MapMarker
-                      position={{
-                        lat: newAddress?.latitude ?? 0,
-                        lng: newAddress?.longitude ?? 0,
-                      }}
-                    ></MapMarker>
-                  </Map>
-                </div>
-                <InputLayout title="Detailed Address" isOptional>
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder="ex) 101-dong"
-                    value={newAddress.address_detail}
-                    onChange={(value) => {
-                      if (value.trim().length <= 100) {
-                        // 100자 이하일 때만 업데이트
-                        setNewAddress({ ...newAddress, address_detail: value });
-                      }
-                    }}
-                    canDelete={false}
-                  />
-                  {newAddress.address_detail &&
-                    newAddress.address_detail.length > 50 && (
-                      <p className="text-text-error text-xs p-2">
-                        {documentTranslation.detailAddressTooLong.en}
-                      </p>
-                    )}
-                </InputLayout>
-              </>
+              <InputLayout title="Detailed Address" isOptional>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="ex) 101-dong"
+                  value={newAddress.address_detail}
+                  onChange={(value) => {
+                    if (value.trim().length <= 100) {
+                      // 100자 이하일 때만 업데이트
+                      setNewAddress({ ...newAddress, address_detail: value });
+                    }
+                  }}
+                  canDelete={false}
+                />
+                {newAddress.address_detail &&
+                  newAddress.address_detail.length > 50 && (
+                    <p className="text-text-error text-xs p-2">
+                      {documentTranslation.detailAddressTooLong.en}
+                    </p>
+                  )}
+              </InputLayout>
             )}
           </div>
         )}

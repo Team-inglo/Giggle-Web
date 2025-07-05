@@ -199,7 +199,7 @@ const SignupInput = ({
         title={signInputTranclation.signup[isEmployer(pathname)]}
         content={signInputTranclation.signupContent[isEmployer(pathname)]}
       />
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 px-4">
         <div className="flex flex-col mb-[7.125rem]">
           <InputLayout title={signInputTranclation.email[isEmployer(pathname)]}>
             <div className="flex gap-2">

@@ -6,7 +6,6 @@ import {
 } from '@/hooks/api/useApplication';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import RecruiterIcon from '@/assets/icons/ApplicationDetail/RecruiterIcon.svg?react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useParams } from 'react-router-dom';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
@@ -83,24 +82,6 @@ const ApplicationDetailSchoolPage = () => {
                   <p className="pb-3 caption-12-regular text-text-strong">
                     {data?.data?.address?.address_detail}
                   </p>
-                  {data?.data?.address?.latitude &&
-                    data?.data?.address?.longitude && (
-                      <Map
-                        center={{
-                          lat: data?.data.address.latitude,
-                          lng: data?.data.address.longitude,
-                        }}
-                        style={{ width: '100%', height: '99px' }}
-                        className="rounded-lg"
-                      >
-                        <MapMarker
-                          position={{
-                            lat: data?.data.address.latitude,
-                            lng: data?.data.address.longitude,
-                          }}
-                        ></MapMarker>
-                      </Map>
-                    )}
                 </section>
                 <section>
                   <h5 className="pb-2 body-14-regular text-text-alternative">

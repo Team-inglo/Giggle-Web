@@ -194,7 +194,7 @@ export const mapPostDetailDataToFormData = (
       recruitment_number: recruitment_conditions?.number_of_recruits || 0,
       gender:
         recruitment_conditions?.gender || initialJobPostingState.body.gender,
-      age_restriction: recruitment_conditions?.age_restriction || 0,
+      age_restriction: recruitment_conditions?.age_restriction || null,
       education_level: recruitment_conditions?.education || '',
       visa: recruitment_conditions?.visa || [],
       recruiter_name: company_information?.recruiter || '',
@@ -250,4 +250,10 @@ export const preparePostDataForSubmission = (
     formData,
     id,
   };
+};
+
+// 오늘 날짜 이후의 날짜인지 확인하는 함수
+export const isTodayOrFuture = (dateString: string): boolean => {
+  const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd 형식으로 변환
+  return dateString >= today; // 문자열 비교로도 가능 (yyyy-mm-dd 형식이므로)
 };

@@ -1,20 +1,8 @@
 # GIGGLE
+
 ### 🏆 2024 공개SW개발자대회 우수작
 
-🚧 **현재 테스트 환경 구축 중** - 테스트 도입 브랜치에서 작업 중입니다.
-
-<!--
-TODO: 메인 브랜치 merge 후 활성화 예정
 [![Tests](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml/badge.svg)](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml)
-[![Coverage Status](https://codecov.io/gh/Team-inglo/Giggle-Web/branch/main/graph/badge.svg)](https://codecov.io/gh/Team-inglo/Giggle-Web)
--->
-
-## 🧪 테스트 환경
-
-✅ **Vitest + React Testing Library** 도입 완료  
-✅ **GitHub Actions CI/CD** 설정 완료  
-✅ **테스트 커버리지 80% 임계값** 설정  
-🔄 **Codecov 연동** 준비 중
 
 <div align="center">
 
@@ -48,6 +36,7 @@ TODO: 메인 브랜치 merge 후 활성화 예정
   <img src="https://img.shields.io/badge/React%20Query-FF4154.svg?style=flat-square&logo=React-Query&logoColor=white">
   <img src="https://img.shields.io/badge/Vitest-6E9F18.svg?style=flat-square&logo=Vitest&logoColor=white">
   <img src="https://img.shields.io/badge/Testing%20Library-E33332?style=flat-square&logo=Testing%20Library&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=Playwright&logoColor=white"/>
 </p>
 
 ## 프로젝트 소개
@@ -137,6 +126,11 @@ pnpm run dev
 
 ```
 src/
+├── __tests__/    # 테스트 파일 및 설정
+│   ├── e2e/      # E2E 테스트 (Playwright)
+│   ├── fixtures/ # 테스트 데이터
+│   ├── mocks/    # 공통 모킹
+│   └── utils/    # 테스트 유틸리티
 ├── api/          # API 호출 함수
 ├── assets/       # 이미지, 폰트 등 정적 리소스
 ├── components/   # 재사용 가능한 UI 컴포넌트
@@ -177,6 +171,13 @@ src/
 
 이 프로젝트는 Apache 2.0 라이센스를 사용합니다.
 
+## 🧪 테스트 환경
+
+✅ **Vitest + React Testing Library** 도입 완료  
+✅ **Playwright E2E 테스트** 도입 완료  
+✅ **GitHub Actions CI/CD** 설정 완료  
+✅ **테스트 커버리지 80% 임계값** 설정
+
 ## 테스트 실행
 
 이 프로젝트는 Vitest와 React Testing Library를 사용한 포괄적인 테스트 환경을 제공합니다.
@@ -184,7 +185,7 @@ src/
 ### 테스트 명령어
 
 ```bash
-# 모든 테스트 실행
+# 모든 유닛/통합 테스트 실행
 pnpm test
 
 # 감시 모드로 테스트 실행 (개발 중 권장)
@@ -195,14 +196,24 @@ pnpm test:coverage
 
 # 브라우저에서 테스트 UI 실행
 pnpm test:ui
+
+# E2E 테스트 실행
+pnpm test:e2e
+
+# E2E 테스트 UI 모드로 실행
+pnpm test:e2e:ui
+
+# 모든 테스트 (유닛 + E2E) 실행
+pnpm test:all
 ```
 
 ### 테스트 가이드라인
 
-- 📋 **테스트 가이드라인**: [유닛 테스트 가이드라인](https://github.com/Team-inglo/Giggle-Web/wiki/Unit-Test-Guideline) 참조
+- 📋 **테스트 가이드라인**: [유닛 테스트 가이드라인](https://github.com/Team-inglo/Giggle-Web/wiki/Unit-Test-Guideline) 및 [E2E 테스트 가이드](./E2ETEST_GUIDE.md) 참조
 - 🎯 **커버리지 목표**: 전체 80% 이상, 신규 기능 90% 이상
-- 🧪 **테스트 유형**: 컴포넌트, 훅, 유틸리티, 통합 테스트
+- 🧪 **테스트 유형**: 컴포넌트, 훅, 유틸리티, 통합, E2E 테스트
 - 📏 **테스트 원칙**: 사용자 관점에서 작성, AAA 패턴 준수
+- 🎭 **E2E 테스트**: Playwright를 활용한 브라우저 기반 테스트
 
 ### 테스트 파일 구조
 
@@ -216,7 +227,19 @@ src/
 │   ├── useTalentSearch.ts
 │   └── useTalentSearch.test.ts   # 커스텀 훅 테스트
 └── __tests__/
-    ├── setup.ts                  # 테스트 환경 설정
+    ├── e2e/                      # E2E 테스트
+    │   ├── domains/              # 도메인별 E2E 테스트
+    │   │   └── post/
+    │   │       ├── creation.spec.ts
+    │   │       └── validation.spec.ts
+    │   ├── shared/               # 공통 E2E 유틸리티
+    │   │   ├── fixtures/
+    │   │   ├── helpers/
+    │   │   └── mocks/
+    │   └── README.md
+    ├── integration/              # 통합 테스트
+    ├── fixtures/                 # 테스트 데이터
+    ├── mocks/                    # 공통 모킹
     ├── utils/                    # 테스트 유틸리티
-    └── mocks/                    # 공통 모킹
+    └── setup.ts                  # 테스트 환경 설정
 ```

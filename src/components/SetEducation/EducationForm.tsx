@@ -85,6 +85,7 @@ const EducationForm = ({
         {/* 교육 기관 타입 선택 */}
         <InputLayout title="Education level">
           <Dropdown
+            title="Education Levels"
             value={educationData.education_level}
             placeholder="Select your level of education"
             options={EducationLevels}
@@ -106,6 +107,7 @@ const EducationForm = ({
         {/* 전공 입력 */}
         <InputLayout title="Major">
           <Dropdown
+            title="Department (major)"
             value={educationData.major}
             placeholder="Select your major"
             options={MajorsEn}

@@ -8,8 +8,10 @@ import {
 } from 'react-hook-form';
 import { Image } from '@/types/postCreate/postCreate';
 import { ChangeEvent, useState, useEffect } from 'react';
-import AddFileIcon from '@/assets/icons/FileAddIcon.svg?react';
 import CircleDeleteIcon from '@/assets/icons/CircleDeleteIcon.svg?react';
+import AddTrigger from '@/components/Common/AddTrigger';
+import ImageIcon from '@/assets/icons/ImageIcon.svg?react';
+import Icon from '@/components/Common/Icon';
 
 interface ImageUploadInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -129,10 +131,27 @@ const ImageUploadInput = <
   return (
     <div className="w-full overflow-x-scroll no-scrollbar flex gap-2 item-center justify-start">
       {canAddMoreImages && (
-        <label className="cursor-pointer" htmlFor="logo-upload">
-          <div className="w-[7.5rem] h-[7.5rem] rounded-lg flex items-center justify-center shadow-sm bg-white border border-border-alternative px-4 py-2.5">
-            <AddFileIcon />
-          </div>
+        <>
+          {images.length === 0 ? (
+            <AddTrigger
+              title="이미지 추가하기"
+              icon={ImageIcon}
+              type={AddTrigger.Type.OUTLINED}
+              color={AddTrigger.ColorType.GRAY}
+              handleClick={() => {
+                document.getElementById('logo-upload')?.click();
+              }}
+            />
+          ) : (
+            <div
+              className="w-20 h-20 rounded-lg flex flex-shrink-0 items-center justify-center bg-surface-base border border-border-alternative border-dashed"
+              onClick={() => {
+                document.getElementById('logo-upload')?.click();
+              }}
+            >
+              <Icon icon={ImageIcon} fillColor="text-gray-400" />
+            </div>
+          )}
           <input
             id="logo-upload"
             type="file"
@@ -141,23 +160,23 @@ const ImageUploadInput = <
             className="hidden"
             multiple
           />
-        </label>
+        </>
       )}
 
       {/* 기존 이미지들 - 수정 모드에서만 표시 */}
       {storedImageUrls.map((image, idx) => (
         <div
           key={`stored-${idx}`}
-          className="w-[7.5rem] h-[7.5rem] relative rounded-lg flex flex-row items-center justify-center bg-no-repeat bg-top text-left text-gray-400"
+          className="w-20 h-20 relative rounded-lg flex flex-row items-center justify-center bg-no-repeat bg-top text-left text-gray-400"
         >
-          <div className="w-[7.5rem] h-[7.5rem] flex items-center justify-center rounded-lg">
+          <div className="w-20 h-20 flex items-center justify-center rounded-lg">
             <img
               src={String(image.img_url)}
-              className="w-[7.5rem] h-[7.5rem] rounded-lg object-cover"
+              className="w-20 h-20 rounded-lg object-cover"
               alt={`저장된 이미지 ${idx + 1}`}
             />
             <div
-              className="absolute top-[0.625rem] right-[0.625rem] cursor-pointer"
+              className="absolute top-[0.25rem] right-[0.25rem] cursor-pointer"
               onClick={() => handleDeleteStoredImage(idx, Number(image.id))}
             >
               <CircleDeleteIcon />
@@ -170,16 +189,16 @@ const ImageUploadInput = <
       {previewUrls.map((url, idx) => (
         <div
           key={`new-${idx}`}
-          className="w-[7.5rem] h-[7.5rem] relative rounded-lg flex flex-row items-center justify-center bg-no-repeat bg-top text-left text-gray-400"
+          className="w-20 h-20 relative rounded-lg flex flex-row items-center justify-center bg-no-repeat bg-top text-left text-gray-400"
         >
-          <div className="w-[7.5rem] h-[7.5rem] flex items-center justify-center rounded-lg">
+          <div className="w-20 h-20 flex items-center justify-center rounded-lg">
             <img
               src={url}
-              className="w-[7.5rem] h-[7.5rem] rounded-lg object-cover"
+              className="w-20 h-20 rounded-lg object-cover"
               alt={`새 이미지 ${idx + 1}`}
             />
             <div
-              className="absolute top-[0.625rem] right-[0.625rem] cursor-pointer"
+              className="absolute top-[0.25rem] right-[0.25rem] cursor-pointer"
               onClick={() => handleDeleteImage(idx)}
             >
               <CircleDeleteIcon />

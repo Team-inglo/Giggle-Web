@@ -120,7 +120,7 @@ const WorkExperienceForm = ({
           className={`w-4 h-4 rounded-sm border ${isOngoing ? 'bg-primary-normal border-0' : 'border-border-alternative'}`}
         />
         <p className="caption-12-regular text-text-assistive">
-          It's in progress right now
+          I'm currently working here
         </p>
       </div>
       <InputLayout title="Job Description" isOptional>

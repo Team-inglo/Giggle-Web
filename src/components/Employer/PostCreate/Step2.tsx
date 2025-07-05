@@ -3,7 +3,6 @@ import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { buttonTypeKeys } from '@/constants/components';
-import { validateDateInput } from '@/utils/information';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { Path } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
@@ -11,7 +10,8 @@ import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
+import { MINIMUM_WAGE } from '@/constants/wage';
 
 const Step2 = ({
   onNext,
@@ -22,21 +22,17 @@ const Step2 = ({
 }) => {
   const validatePostInfo = (data: JobPostingForm) => {
     const {
-      body: { address, recruitment_dead_line },
+      body: { hourly_rate, work_period, work_day_times, address },
     } = data;
 
-    // 빈 문자열, null, 유효한 날짜 모두 처리
-    const isDeadLineValid =
-      recruitment_dead_line === null || // 상시모집
-      (typeof recruitment_dead_line === 'string' &&
-        recruitment_dead_line !== '' &&
-        validateDateInput(recruitment_dead_line));
-
     const isFormValid =
+      !Number.isNaN(Number(hourly_rate)) &&
+      Number(hourly_rate) >= MINIMUM_WAGE[2025] &&
+      work_period !== '' &&
+      work_day_times?.length > 0 &&
       !!address.address_name &&
       !!address.address_detail &&
-      address.address_detail.length <= 50 &&
-      isDeadLineValid;
+      address.address_detail.length <= 50;
 
     return !!isFormValid;
   };
@@ -50,9 +46,9 @@ const Step2 = ({
   };
 
   return (
-    <div className="w-full h-full py-6 flex flex-col">
+    <div className="w-full h-full pb-6 flex flex-col">
       <>
-        <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+        <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
           {PostFormFields.step2.map((field) => (
             <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
@@ -76,7 +72,7 @@ const Step2 = ({
               validationFn={validatePostInfo}
               onClick={() => onNext()}
             >
-              <Button type="large" title="다음" />
+              <Button title="다음" type={Button.Type.DISABLED} />
             </ValidatedSubmitButton>
           </div>
         </BottomButtonPanel>

@@ -1,3 +1,4 @@
+import { genderInfo, WorkTypeInfo } from '@/constants/post';
 import { PaymentMethod } from '@/types/api/document';
 import { Gender } from '@/types/api/users';
 import { EmploymentType } from '@/types/postCreate/postCreate';
@@ -8,14 +9,14 @@ export const transformers = {
   gender: {
     transformValue: (option: string) => {
       switch (option) {
-        case '남':
-        case 'Male':
+        case genderInfo[Gender.MALE].name:
+        case genderInfo[Gender.MALE].key:
           return Gender.MALE;
-        case '여':
-        case 'Female':
+        case genderInfo[Gender.FEMALE].name:
+        case genderInfo[Gender.FEMALE].key:
           return Gender.FEMALE;
-        case '무관':
-        case 'None':
+        case genderInfo[Gender.NONE].name:
+        case genderInfo[Gender.NONE].key:
           return Gender.NONE;
         default:
           return Gender.NONE;
@@ -23,14 +24,14 @@ export const transformers = {
     },
     compareValue: (value: Gender, option: string) => {
       switch (option) {
-        case '남':
-        case 'Male':
+        case genderInfo[Gender.MALE].name:
+        case genderInfo[Gender.MALE].key:
           return value === Gender.MALE;
-        case '여':
-        case 'Female':
+        case genderInfo[Gender.FEMALE].name:
+        case genderInfo[Gender.FEMALE].key:
           return value === Gender.FEMALE;
-        case '무관':
-        case 'None':
+        case genderInfo[Gender.NONE].name:
+        case genderInfo[Gender.NONE].key:
           return value === Gender.NONE;
         default:
           return false;
@@ -81,9 +82,11 @@ export const transformers = {
   employmentType: {
     transformValue: (option: string) => {
       switch (option) {
-        case '아르바이트':
+        case WorkTypeInfo[EmploymentType.PARTTIME].name:
+        case WorkTypeInfo[EmploymentType.PARTTIME].key:
           return EmploymentType.PARTTIME;
-        case '인턴십':
+        case WorkTypeInfo[EmploymentType.INTERNSHIP].name:
+        case WorkTypeInfo[EmploymentType.INTERNSHIP].key:
           return EmploymentType.INTERNSHIP;
         default:
           return EmploymentType.PARTTIME;
@@ -91,9 +94,11 @@ export const transformers = {
     },
     compareValue: (value: EmploymentType, option: string) => {
       switch (option) {
-        case '아르바이트':
+        case WorkTypeInfo[EmploymentType.PARTTIME].name:
+        case WorkTypeInfo[EmploymentType.PARTTIME].key:
           return value === EmploymentType.PARTTIME;
-        case '인턴십':
+        case WorkTypeInfo[EmploymentType.INTERNSHIP].name:
+        case WorkTypeInfo[EmploymentType.INTERNSHIP].key:
           return value === EmploymentType.INTERNSHIP;
         default:
           return false;
