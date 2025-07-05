@@ -4,12 +4,11 @@ import {
 } from '@/hooks/api/useProfile';
 import { ApplicationCountType, BookmarkCountType } from '@/types/api/profile';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import ResumeHelperBanner from '../ManageResume/ResumeHelperBanner';
 
 const ApplicationStatus = () => {
   const { data: applicationData } = useGetApplicationCounts();
   const { data: bookmarkData } = userGetBookmarksCounts();
-  const navigate = useNavigate();
 
   const [applicationCounts, setApplicationCounts] =
     useState<ApplicationCountType>({
@@ -58,12 +57,7 @@ const ApplicationStatus = () => {
         ))}
       </div>
       <div className="px-4">
-        <button
-          className="grow w-full bg-[#FEF387] rounded-lg px-5 py-3 text-center button-14-semibold text-text-strong"
-          onClick={() => navigate('/profile/manage-resume')}
-        >
-          Manage your Resume
-        </button>
+        <ResumeHelperBanner />
       </div>
     </>
   );

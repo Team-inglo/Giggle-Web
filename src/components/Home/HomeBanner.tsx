@@ -12,6 +12,7 @@ import { BannerListType } from '@/types/api/banner';
 import { isEmployerByAccountType } from '@/utils/signup';
 import { bannerTranslation } from '@/constants/translation';
 import { useNavigate } from 'react-router-dom';
+import ResumeHelperBanner from '@/components/ManageResume/ResumeHelperBanner';
 
 const RenderBannerList = ({
   data,
@@ -117,7 +118,7 @@ const HomeBanner = () => {
 
   return (
     <div className="w-full px-4">
-      <div className="pt-8">
+      <div className="pt-6 pb-4">
         <p className="pb-1 body-14-regular text-[#9397A1]">
           {getGreetingMessage(account_type)}
         </p>
@@ -127,6 +128,7 @@ const HomeBanner = () => {
             : 'Find your perfect job'}
         </h2>
       </div>
+      <ResumeHelperBanner />
       <section className="w-full mt-4 overflow-hidden relative" ref={emblaRef}>
         <RenderBannerList
           data={bannerData?.data?.banner_list}

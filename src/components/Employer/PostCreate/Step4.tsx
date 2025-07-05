@@ -6,7 +6,7 @@ import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
@@ -24,7 +24,7 @@ const Step4 = ({
 }) => {
   // 유효성 검사 함수
   const validatePostInfo = (data: JobPostingForm) => {
-    const { body, images } = data;
+    const { body } = data;
     const { recruiter_name, recruiter_email, recruiter_phone } = body;
 
     // 이메일 유효성 검사 정규식
@@ -35,9 +35,7 @@ const Step4 = ({
     const isFormValid =
       recruiter_name !== '' &&
       basicEmailRegex.test(recruiter_email) &&
-      isPhoneValid &&
-      Array.isArray(images) &&
-      images.length > 0;
+      isPhoneValid;
 
     return !!isFormValid;
   };
@@ -54,8 +52,8 @@ const Step4 = ({
   };
 
   return (
-    <div className="w-full py-6 flex flex-col">
-      <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+    <div className="w-full pb-6 flex flex-col">
+      <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
         {PostFormFields.step4.map((field) => (
           <InputLayout key={field.name} title={field.title}>
             {renderFormField(field)}
@@ -76,7 +74,7 @@ const Step4 = ({
             validationFn={validatePostInfo}
             onClick={() => onNext()}
           >
-            <Button type="large" title="다음" />
+            <Button type={Button.Type.LARGE} title="다음" />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>

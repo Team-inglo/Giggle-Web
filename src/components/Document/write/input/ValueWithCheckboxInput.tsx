@@ -10,6 +10,7 @@ import { InputType } from '@/types/common/input';
 import { formatDateInput } from '@/utils/information';
 import { parseStringToSafeNumber } from '@/utils/document';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
+import Icon from '@/components/Common/Icon';
 
 interface ValueWithCheckboxInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -24,6 +25,8 @@ interface ValueWithCheckboxInputProps<
   isDate?: boolean;
   format?: string;
   inputType?: InputType;
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 }
 
 const ValueWithCheckboxInput = <
@@ -38,6 +41,8 @@ const ValueWithCheckboxInput = <
   unit = '',
   isDate = false,
   inputType = InputType.TEXT,
+  isValid,
+  errorMessage,
 }: ValueWithCheckboxInputProps<TFieldValues, TName>) => {
   const { control } = useFormContext<TFieldValues>();
 
@@ -74,15 +79,17 @@ const ValueWithCheckboxInput = <
               isUnit={isUnit}
               unit={unit}
             />
-
-            <div className="w-full relative flex items-center justify-start py-2 gap-3 text-left caption-12-regular text-text-alternative">
-              <div className="w-6 h-6 relative">
-                <div
-                  className={`w-full h-full border border-border-alternative rounded-sm flex items-center justify-center ${value === null ? 'bg-primary-dark' : 'bg-white'}`}
-                  onClick={() => onChange(value === null ? '' : null)}
-                >
-                  <CheckIcon />
-                </div>
+            {!!value && !isValid?.(value) && errorMessage && (
+              <p className="caption-12-regular text-text-error px-1 py-1.5">
+                {errorMessage}
+              </p>
+            )}
+            <div className="w-full relative flex items-center justify-start py-3 gap-2 text-left body-16-medium text-text-alternative">
+              <div
+                className={`w-6 h-6 relative rounded-full flex items-center justify-center ${value === null ? 'bg-primary-dark' : 'bg-surface-tertiary'}`}
+                onClick={() => onChange(value === null ? '' : null)}
+              >
+                <Icon icon={CheckIcon} />
               </div>
               <span>{checkboxLabel}</span>
             </div>

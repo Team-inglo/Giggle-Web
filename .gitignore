@@ -27,6 +27,7 @@ coverage
 *.sw?
 
 /src/pages/Test
+/playwright-report
 
 tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfocoverage

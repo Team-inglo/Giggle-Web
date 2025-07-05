@@ -1,4 +1,4 @@
-import { Majors, KoEnEnumType, Nationalities } from '@/constants/manageResume';
+import { Majors, KoEnEnumType, Nationalities, languageProficiencyLevels } from '@/constants/manageResume';
 
 type KoreanLevelInput = {
   topik?: number; // 0~6
@@ -87,3 +87,10 @@ export const getNationalityEnumFromEn = createLookupFunction(
   'en',
   'enum',
 );
+
+  // 언어 능력 변환 함수
+  export const getLanguageProficiencyLevelKoFromEnum = createLookupFunction(languageProficiencyLevels, 'enum', 'ko');
+  export const getLanguageProficiencyLevelEnFromEnum = createLookupFunction(languageProficiencyLevels, 'enum', 'en');
+  export const getLanguageProficiencyLevelKoFromEn = createLookupFunction(languageProficiencyLevels, 'en', 'ko');
+  export const getLanguageProficiencyLevelEnumFromKo = createLookupFunction(languageProficiencyLevels, 'ko', 'enum');
+  export const getLanguageProficiencyLevelEnumFromEn = createLookupFunction(languageProficiencyLevels, 'en', 'enum');

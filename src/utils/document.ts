@@ -9,8 +9,7 @@ import {
 } from '@/types/api/document';
 import { extractNumbersAsNumber } from './post';
 import { DropdownOption } from '@/components/Document/write/input/DropdownInput';
-
-export const MINIMUM_HOURLY_RATE = 10030;
+import { MINIMUM_WAGE } from '@/constants/wage';
 
 // string data의 공백 여부를 확인하는 함수
 const hasStringValue = (value: string): boolean => {
@@ -18,18 +17,14 @@ const hasStringValue = (value: string): boolean => {
 };
 
 // 이메일 유효성 검사 함수
-const isEmailValid = (email: string): boolean => {
+export const isEmailValid = (email: string): boolean => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   return emailRegex.test(email);
 };
 
 // 전화번호 유효성 검사 함수
 const isValidPhoneNumber = (phone: Phone) => {
-  return (
-    phone.start !== '' &&
-    /^[0-9]{4}$/.test(phone.middle) &&
-    /^[0-9]{4}$/.test(phone.end)
-  );
+  return phone.start !== '' && /^[0-9]{4}-[0-9]{4}$/.test(phone.rest);
 };
 
 // 이수학기 유효성 검사 함수
@@ -131,7 +126,7 @@ export const validateEmployerInformation = (
   // 시급 유효성 검사(0이 아닌지)
   if (
     !info.hourly_rate ||
-    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_HOURLY_RATE
+    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_WAGE[2025]
   ) {
     return false;
   }
@@ -180,7 +175,7 @@ export const validateLaborContractEmployerInformation = (
   // 시급 유효성 검사(0이 아닌지)
   if (
     !info.hourly_rate ||
-    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_HOURLY_RATE
+    extractNumbersAsNumber(String(info.hourly_rate)) < MINIMUM_WAGE[2025]
   ) {
     return false;
   }
@@ -288,6 +283,11 @@ type InputFormatter = (value: string) => string;
 const formatters: Record<string, InputFormatter> = {
   // 숫자만 허용
   'numbers-only': (value) => value.replace(/[^0-9]/g, ''),
+  'phone-rest': (value) => {
+    const digitsOnly = value.replace(/[^0-9]/g, '');
+    if (digitsOnly.length <= 4) return digitsOnly;
+    return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4, 8)}`;
+  },
   // 사업자등록번호 포맷 (000/00/00000)
   'business-id': (value) => {
     const digitsOnly = value.replace(/[^0-9]/g, '');

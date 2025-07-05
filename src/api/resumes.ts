@@ -5,8 +5,9 @@ import {
   IntroductionRequest,
   LanguagesLevelType,
   UserResumeDetailResponse,
-  WorkExperienctRequest,
+  WorkExperienceRequest,
   WorkExperienceResponse,
+  ResumeProgressResponse,
 } from '@/types/api/resumes';
 import { api, apiV2 } from '.';
 import { RESTYPE } from '@/types/api/common';
@@ -40,9 +41,15 @@ export const getEducation = async (
   return response.data;
 };
 
+// 7.4 (유학생) 언어 요약 조회하기
+export const getLanguageSummary = async () => {
+  const response = await api.get('/users/resumes/languages/summaries');
+  return response.data;
+};
+
 // 7.5 경력 생성하기
 export const postWorkExperience = async (
-  workExperience: WorkExperienctRequest,
+  workExperience: WorkExperienceRequest,
 ) => {
   const response = await api.post(
     `/users/resumes/work-experiences`,
@@ -83,7 +90,7 @@ export const patchWorkExperience = async ({
   workExperience,
 }: {
   id: string;
-  workExperience: WorkExperienctRequest;
+  workExperience: WorkExperienceRequest;
 }) => {
   const response = await api.patch(
     `/users/resumes/work-experiences/${id}`,
@@ -199,6 +206,14 @@ export const getEmployeeResumeList = async (
 // 7.25 (고용주) 이력서 상세 조회하기
 export const getResumeDetail = async (id: string) => {
   const response = await api.get(`/owners/resumes/${id}/details`);
+  return response.data;
+};
+
+// 7.26 (유학생) 이력서 완성도 조회하기
+export const getResumeProgress = async (): Promise<
+  RESTYPE<ResumeProgressResponse>
+> => {
+  const response = await api.get(`/users/resumes/completion-rate`);
   return response.data;
 };
 

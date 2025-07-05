@@ -9,6 +9,7 @@ import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import { VisaGroup } from '@/types/postCreate/postCreate';
 import { buttonTranslation } from '@/constants/translation';
 import { useState } from 'react';
+import Icon from '@/components/Common/Icon';
 
 type VisaSelectBottomSheetPropsType = {
   selectVisas: VisaGroup[];
@@ -26,7 +27,6 @@ const VisaSelectBottomSheet = ({
   const { account_type } = useUserStore();
   const [currentSelectVisas, setCurrentSelectVisa] =
     useState<VisaGroup[]>(selectVisas);
-
   const handleSelectVisa = (visa: VisaGroup) => {
     if (currentSelectVisas.includes(visa)) {
       const filteredVisas = currentSelectVisas.filter(
@@ -54,8 +54,8 @@ const VisaSelectBottomSheet = ({
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
       <div className="w-full flex-col">
-        <div className="w-full h-[60vh] overflow-y-scroll">
-          <h3 className="pb-4 heading-18-semibold text-text-normal">
+        <div className="w-full h-[60vh] overflow-y-scroll no-scrollbar">
+          <h3 className="py-3 heading-18-semibold text-text-strong">
             {account_type === UserType.OWNER
               ? '비자를 선택해주세요.'
               : 'Please select visas'}
@@ -63,17 +63,17 @@ const VisaSelectBottomSheet = ({
           <div className="w-full flex flex-col">
             {Object.entries(VisaInfo).map(([key, visa]) => (
               <div
+                className={`w-full self-stretch overflow-hidden rounded-[0.625rem] flex flex-row gap-2 items-center justify-between ${currentSelectVisas.includes(key as VisaGroup) ? 'body-16-medium' : 'body-16-regular'} py-3`}
+                onClick={() => handleSelectVisa(key as VisaGroup)}
                 key={key}
-                className="w-full flex justify-between items-center gap-2 border-b border-border-disabled py-3"
               >
-                <p className="body-14-regular text-text-normal">
+                <p className="body-16-medium text-text-normal break-keep">
                   {visa[isEmployerByAccountType(account_type)]}
                 </p>
                 <div
-                  className={`min-w-6 w-6 h-6 relative flex items-center justify-center border ${currentSelectVisas.includes(key as VisaGroup) ? 'bg-[#1e1926]' : 'bg-white'} border-primary-neutral`}
-                  onClick={() => handleSelectVisa(key as VisaGroup)}
+                  className={`w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-full ${currentSelectVisas.includes(key as VisaGroup) ? 'bg-surface-invert' : 'bg-surface-tertiary'}`}
                 >
-                  <CheckIcon />
+                  <Icon icon={CheckIcon} fillColor="text-surface-base" />
                 </div>
               </div>
             ))}

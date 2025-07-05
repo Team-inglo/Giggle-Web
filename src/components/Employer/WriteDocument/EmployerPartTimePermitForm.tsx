@@ -1,10 +1,9 @@
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import {
   EMPLOYER_PART_TIME_PERMIT_REQUIRED_FIELDS,
-  initialPartTimePermitEmployerForm,
   PartTimePermitEmployerFormField,
   PartTimePermitEmployerFormFields,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import {
   EmployerInformation,
   PartTimePermitData,
@@ -20,6 +19,7 @@ import { useForm } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '@/components/Common/Button';
 import { FormProvider } from 'react-hook-form';
+import { initialPartTimePermitEmployerForm } from '@/constants/documents';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;

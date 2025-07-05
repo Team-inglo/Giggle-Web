@@ -1,10 +1,7 @@
-import Dropdown from '@/components/Common/Dropdown';
 import Input from '@/components/Common/Input';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { phone } from '@/constants/information';
 import { InputType } from '@/types/common/input';
 import { useEffect, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import FileAddIcon from '@/assets/icons/FileAddIcon.svg?react';
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import GiggleLogo from '@/assets/icons/GiggleLogo.svg?react';
@@ -17,6 +14,7 @@ import { EmployerProfileRequestBody } from '@/types/api/profile';
 import { processAddressData } from '@/utils/map';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { documentTranslation } from '@/constants/translation';
+import PhoneNumberInput from '@/components/Common/PhoneNumberInput';
 
 type EmployerEditInputSectionProps = {
   newEmployData: EmployerProfileRequestBody;
@@ -41,11 +39,10 @@ const EmployerEditInputSection = ({
   initialPhonNum,
 }: EmployerEditInputSectionProps) => {
   const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
-  // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
+  // 두 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '',
-    middle: '',
-    end: '',
+    rest: '',
   });
   const [logoStatus, setLogoStatus] = useState<LogoType>(LogoType.EXISTING);
   const [selectedImage, setSelectedImage] = useState<string>();
@@ -53,11 +50,12 @@ const EmployerEditInputSection = ({
   useEffect(() => {
     if (initialPhonNum) {
       const splitPhoneNum = initialPhonNum.split('-');
-      setPhoneNum({
-        start: splitPhoneNum[0] || '',
-        middle: splitPhoneNum[1] || '',
-        end: splitPhoneNum[2] || '',
-      });
+      if (splitPhoneNum.length === 3) {
+        setPhoneNum({
+          start: splitPhoneNum[0] || '',
+          rest: `${splitPhoneNum[1] || ''}-${splitPhoneNum[2] || ''}`,
+        });
+      }
     }
   }, [initialPhonNum]);
 
@@ -190,24 +188,6 @@ const EmployerEditInputSection = ({
                   />
                 </div>
               </InputLayout>
-              {/* 검색한 위치를 보여주는 지도 */}
-              <div className="w-full rounded-xl">
-                <Map
-                  center={{
-                    lat: newEmployData.address?.latitude ?? 0,
-                    lng: newEmployData.address?.longitude ?? 0,
-                  }}
-                  style={{ width: '100%', height: '200px' }}
-                  className="rounded-xl"
-                >
-                  <MapMarker
-                    position={{
-                      lat: newEmployData.address?.latitude ?? 0,
-                      lng: newEmployData.address?.longitude ?? 0,
-                    }}
-                  ></MapMarker>
-                </Map>
-              </div>
               <InputLayout title="상세 주소">
                 <Input
                   inputType={InputType.TEXT}
@@ -253,37 +233,10 @@ const EmployerEditInputSection = ({
             </InputLayout>
             {/* 개인 휴대폰 번호 입력 */}
             <InputLayout title="대표자 전화번호">
-              <div className="w-full flex flex-row gap-2 justify-between">
-                <div className="w-full h-[2.75rem]">
-                  <Dropdown
-                    value={phoneNum.start}
-                    placeholder="010"
-                    options={phone}
-                    setValue={(value) =>
-                      setPhoneNum({ ...phoneNum, start: value })
-                    }
-                  />
-                </div>
-                <Input
-                  inputType={InputType.TEXT}
-                  placeholder="0000"
-                  value={phoneNum.middle}
-                  onChange={(value) =>
-                    setPhoneNum({ ...phoneNum, middle: value })
-                  }
-                  canDelete={false}
-                />
-                <Input
-                  inputType={InputType.TEXT}
-                  placeholder="0000"
-                  value={phoneNum.end}
-                  onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
-                  canDelete={false}
-                />
-              </div>
+              <PhoneNumberInput value={phoneNum} onChange={setPhoneNum} />
             </InputLayout>
             {/* 회사 로고 입력 */}
-              <InputLayout title="회사 로고">
+            <InputLayout title="회사 로고">
               <div className="w-full flex flex-col items-center justify-start">
                 <div className="w-full flex items-center justify-start">
                   <label
