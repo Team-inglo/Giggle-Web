@@ -65,11 +65,13 @@ function App() {
           isShowBottomsheet={isOpenServerErrorBottomSheet}
           setIsShowBottomSheet={setIsOpenServerErrorBottomSheet}
         />
-        <ApiErrorBottomSheet
-          errorMessage={errorMessage}
-          isShowBottomsheet={isOpenErrorBottomSheet}
-          setIsShowBottomSheet={setIsOpenErrorBottomSheet}
-        />
+        {isOpenErrorBottomSheet && (
+          <ApiErrorBottomSheet
+            errorMessage={errorMessage}
+            isShowBottomsheet={isOpenErrorBottomSheet}
+            setIsShowBottomSheet={setIsOpenErrorBottomSheet}
+          />
+        )}
       </BrowserRouter>
     </QueryClientProvider>
   );
