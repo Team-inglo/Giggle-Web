@@ -146,7 +146,9 @@ export const preloadCriticalPages = async (
   );
 
   // 우선순위 순서대로 처리
-  for (const priority of Object.keys(priorityGroups).sort()) {
+  for (const priority of Object.keys(priorityGroups).sort(
+    (a, b) => parseInt(a) - parseInt(b),
+  )) {
     const pageKeys = priorityGroups[parseInt(priority)];
 
     // 같은 우선순위는 병렬 처리
