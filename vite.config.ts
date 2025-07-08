@@ -50,25 +50,85 @@ export default defineConfig({
             'react-signature-canvas',
           ],
           'vendor-http': ['axios'],
-          'employer-pages': [
+          // 공통 컴포넌트 청크 (가장 자주 사용되는 컴포넌트들)
+          'common-ui': [
+            '@/components/Common/Button',
+            '@/components/Common/BottomSheetLayout',
+            '@/components/Common/Header/BaseHeader',
+            '@/components/Common/LoadingItem',
+            '@/components/Common/Toast',
+            '@/components/Common/Navbar',
+            '@/components/Common/Input',
+          ],
+
+          // 고용주 핵심 페이지들 (자주 함께 사용)
+          'employer-core': [
             '@/pages/Employer/Post/EmployerPostPage',
             '@/pages/Employer/Profile/EmployerProfilePage',
+            '@/pages/Employer/Scrapped/EmployerScrappedPage',
+          ],
+          // 고용주 공고 관리
+          'employer-post': [
+            '@/pages/Employer/Post/EmployerPostFormPage',
+            '@/pages/Employer/PostDetail/EmployerPostDetailPage',
+          ],
+          // 고용주 지원자 관리
+          'employer-applicant': [
             '@/pages/Employer/ApplicantList/EmployerApplicantListPage',
+            '@/pages/Employer/ApplicantDetail/EmployerApplicantDetailPage',
+            '@/pages/Employer/ApplicantResume/EmployerApplicantResumePage',
+            '@/pages/Employer/ApplicantResumeAccept/EmployerApplicantResumeAcceptPage',
+          ],
+          // 고용주 계정 관리
+          'employer-account': [
             '@/pages/Employer/Signup/EmployerSignupPage',
             '@/pages/Employer/Signup/EmployerSignupInfoPage',
+            '@/pages/Employer/EditProfile/EmployerEditProfilePage',
           ],
+          // 고용주 기타 기능
+          'employer-misc': [
+            '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage',
+            '@/pages/Employer/WriteDocuments/EmployerWriteDocumentsPage',
+            '@/pages/Employer/WriteDocuments/ApplicantDocumentsDetailPage',
+          ],
+          // 인증 관련 페이지들 (자주 함께 사용)
+          'auth-pages': [
+            '@/pages/Signin/SigninPage',
+            '@/pages/Signup/SignupPage',
+            '@/pages/Information/InformationPage',
+            '@/pages/Signin/ResetPasswordPage',
+          ],
+          // 문서 관련 페이지들
           'document-pages': [
             '@/pages/WriteDocuments/WriteDocumentsPage',
             '@/pages/WriteDocuments/DocumentPreviewPage',
             '@/pages/WriteDocuments/DocumentViewerPage',
             '@/pages/WriteDocuments/RequestModifyPage',
           ],
+          // 이력서 관련 페이지들
           'resume-pages': [
             '@/pages/Resume/ManageResumePage',
             '@/pages/Resume/IntroductionPage',
             '@/pages/Resume/PostLanguagePage',
             '@/pages/Resume/EditLanguagesPage',
             '@/pages/Resume/ScrappedJobPostsPage',
+          ],
+          // 프로필 관련 페이지들
+          'profile-pages': [
+            '@/pages/Profile/ProfilePage',
+            '@/pages/EditProfile/EditProfilePage',
+            '@/pages/Profile/AccountPage',
+            '@/pages/Profile/AboutPage',
+            '@/pages/Profile/ChangePasswordPage',
+          ],
+          // 지원/지원서 관련 페이지들
+          'application-pages': [
+            '@/pages/Application/ApplicationPage',
+            '@/pages/ApplicationDetail/ApplicationDetailPage',
+            '@/pages/ApplicationDetail/ApplicationDetailSchoolPage',
+            '@/pages/ApplicationResult/ApplicationResultPage',
+            '@/pages/ApplicationDocuments/ApplicationDocumentsPage',
+            '@/pages/PostApply/PostApplyPage',
           ],
         },
         chunkFileNames: () => {
