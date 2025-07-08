@@ -10,18 +10,35 @@ import Navbar from '@/components/Common/Navbar';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import Splash from '@/components/Splash/Splash';
 
-// 페이지 컴포넌트들을 동적 임포트로 변경
+// 모든 페이지 컴포넌트들을 동적 임포트로 변경
 const HomePage = lazy(() => import('@/pages/Home/HomePage'));
+const PostSearchPage = lazy(() => import('@/pages/PostSearch/PostSearchPage'));
+const EmployerProfilePage = lazy(
+  () => import('@/pages/Employer/Profile/EmployerProfilePage'),
+);
+const ScrappedJobPostsPage = lazy(
+  () => import('@/pages/Resume/ScrappedJobPostsPage'),
+);
+const EmployerScrappedPage = lazy(
+  () => import('@/pages/Employer/Scrapped/EmployerScrappedPage'),
+);
+const ApplicationDocumentsPage = lazy(
+  () => import('@/pages/ApplicationDocuments/ApplicationDocumentsPage'),
+);
+const ProfilePage = lazy(() => import('@/pages/Profile/ProfilePage'));
+const ApplicationPage = lazy(
+  () => import('@/pages/Application/ApplicationPage'),
+);
+const EmployerPostPage = lazy(
+  () => import('@/pages/Employer/Post/EmployerPostPage'),
+);
+
+// 페이지 컴포넌트들을 동적 임포트로 변경
 const SigninPage = lazy(() => import('@/pages/Signin/SigninPage'));
 const SignupPage = lazy(() => import('@/pages/Signup/SignupPage'));
 const InformationPage = lazy(
   () => import('@/pages/Information/InformationPage'),
 );
-const ApplicationDocumentsPage = lazy(
-  () => import('@/pages/ApplicationDocuments/ApplicationDocumentsPage'),
-);
-const PostSearchPage = lazy(() => import('@/pages/PostSearch/PostSearchPage'));
-const ProfilePage = lazy(() => import('@/pages/Profile/ProfilePage'));
 const LanguageSettingPage = lazy(
   () => import('@/pages/LanguageSetting/LanguageSettingPage'),
 );
@@ -30,15 +47,9 @@ const EditProfilePage = lazy(
 );
 const PostDetailPage = lazy(() => import('@/pages/PostDetail/PostDetailPage'));
 const PostApplyPage = lazy(() => import('@/pages/PostApply/PostApplyPage'));
-const ApplicationPage = lazy(
-  () => import('@/pages/Application/ApplicationPage'),
-);
 const ManageResumePage = lazy(() => import('@/pages/Resume/ManageResumePage'));
 const WriteDocumentsPage = lazy(
   () => import('@/pages/WriteDocuments/WriteDocumentsPage'),
-);
-const ScrappedJobPostsPage = lazy(
-  () => import('@/pages/Resume/ScrappedJobPostsPage'),
 );
 const IntroductionPage = lazy(() => import('@/pages/Resume/IntroductionPage'));
 const ApplicationDetailPage = lazy(
@@ -97,14 +108,8 @@ const WorkExperiencePage = lazy(
 const EmployerPostDetailPage = lazy(
   () => import('@/pages/Employer/PostDetail/EmployerPostDetailPage'),
 );
-const EmployerPostPage = lazy(
-  () => import('@/pages/Employer/Post/EmployerPostPage'),
-);
 const EmployerApplicantListPage = lazy(
   () => import('@/pages/Employer/ApplicantList/EmployerApplicantListPage'),
-);
-const EmployerProfilePage = lazy(
-  () => import('@/pages/Employer/Profile/EmployerProfilePage'),
 );
 const EmployerSignupInfoPage = lazy(
   () => import('@/pages/Employer/Signup/EmployerSignupInfoPage'),
@@ -138,9 +143,6 @@ const EmployerPostFormPage = lazy(
 );
 const EmployerEmployeeSearchPage = lazy(
   () => import('@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage'),
-);
-const EmployerScrappedPage = lazy(
-  () => import('@/pages/Employer/Scrapped/EmployerScrappedPage'),
 );
 
 const Layout = () => {
