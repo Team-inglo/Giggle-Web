@@ -57,25 +57,22 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ReactNativeMessageListener />
         <Router />
-      </BrowserRouter>
-
-      {isOpenServerErrorBottomSheet && (
+        <ReactNativeMessageListener />
+        <Toast />
+        {isLoading && <LoadingOverLay />}
         <ServerErrorBottomSheet
           isShowBottomsheet={isOpenServerErrorBottomSheet}
           setIsShowBottomSheet={setIsOpenServerErrorBottomSheet}
         />
-      )}
-      {isOpenErrorBottomSheet && (
-        <ApiErrorBottomSheet
-          errorMessage={errorMessage}
-          isShowBottomsheet={isOpenErrorBottomSheet}
-          setIsShowBottomSheet={setIsOpenErrorBottomSheet}
-        />
-      )}
-      {isLoading && <LoadingOverLay />}
-      <Toast />
+        {isOpenErrorBottomSheet && (
+          <ApiErrorBottomSheet
+            errorMessage={errorMessage}
+            isShowBottomsheet={isOpenErrorBottomSheet}
+            setIsShowBottomSheet={setIsOpenErrorBottomSheet}
+          />
+        )}
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }

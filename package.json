@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:analyze": "tsc -b && vite build && echo '번들 분석 결과: dist/stats.html'",
+    "build:prod": "NODE_ENV=production tsc -b && vite build",
+    "analyze": "npx vite-bundle-analyzer dist/stats.json",
+    "size-check": "npm run build && du -sh dist && echo '빌드 완료 크기 확인'",
     "lint": "eslint .",
     "preview": "vite preview",
     "find-unused-exports": "ts-prune",
@@ -72,6 +76,7 @@
     "prettier": "^3.3.3",
     "rollup-plugin-visualizer": "^5.14.0",
     "tailwindcss": "^3.4.14",
+    "terser": "^5.43.1",
     "ts-prune": "^0.10.3",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.9.0",

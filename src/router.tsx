@@ -2,64 +2,148 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
+import { Suspense, lazy, useEffect } from 'react';
+import { setRedirectToLogin } from '@/api';
 
 import ScrollToTop from '@/components/Common/ScrollToTop';
 import Navbar from '@/components/Common/Navbar';
-import HomePage from '@/pages/Home/HomePage';
-import SigninPage from '@/pages/Signin/SigninPage';
-import SignupPage from '@/pages/Signup/SignupPage';
-import InformationPage from '@/pages/Information/InformationPage';
-import ApplicationDocumentsPage from '@/pages/ApplicationDocuments/ApplicationDocumentsPage';
-import PostSearchPage from '@/pages/PostSearch/PostSearchPage';
-import ProfilePage from '@/pages/Profile/ProfilePage';
-import LanguageSettingPage from '@/pages/LanguageSetting/LanguageSettingPage';
-import EditProfilePage from '@/pages/EditProfile/EditProfilePage';
-import PostDetailPage from '@/pages/PostDetail/PostDetailPage';
-import PostApplyPage from '@/pages/PostApply/PostApplyPage';
-import ApplicationPage from '@/pages/Application/ApplicationPage';
-import ManageResumePage from '@/pages/Resume/ManageResumePage';
-import WriteDocumentsPage from '@/pages/WriteDocuments/WriteDocumentsPage';
-import ScrappedJobPostsPage from '@/pages/Resume/ScrappedJobPostsPage';
-import IntroductionPage from '@/pages/Resume/IntroductionPage';
-import ApplicationDetailPage from '@/pages/ApplicationDetail/ApplicationDetailPage';
-import ApplicationResultPage from '@/pages/ApplicationResult/ApplicationResultPage';
-import EmployerPostDetailPage from '@/pages/Employer/PostDetail/EmployerPostDetailPage';
-import RequestModifyPage from '@/pages/WriteDocuments/RequestModifyPage';
-import DocumentPreview from '@/pages/WriteDocuments/DocumentPreviewPage';
-import EmployerPostPage from '@/pages/Employer/Post/EmployerPostPage';
-import EmployerApplicantListPage from '@/pages/Employer/ApplicantList/EmployerApplicantListPage';
-import EmployerProfilePage from '@/pages/Employer/Profile/EmployerProfilePage';
-import EmployerSignupInfoPage from '@/pages/Employer/Signup/EmployerSignupInfoPage';
-import PostLanguagePage from '@/pages/Resume/PostLanguagePage';
-import EmployerApplicantDetailPage from '@/pages/Employer/ApplicantDetail/EmployerApplicantDetailPage';
-import EmployerApplicantResumePage from '@/pages/Employer/ApplicantResume/EmployerApplicantResumePage';
-import EmployerApplicantResumeAcceptPage from '@/pages/Employer/ApplicantResumeAccept/EmployerApplicantResumeAcceptPage';
-import EmployerEditProfilePage from '@/pages/Employer/EditProfile/EmployerEditProfilePage';
-import EmployerSignupPage from '@/pages/Employer/Signup/EmployerSignupPage';
-import AlarmPage from '@/pages/Alarm/AlarmPage';
-import ChatBotPage from '@/pages/ChatBot/ChatBotPage';
+import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import Splash from '@/components/Splash/Splash';
-import ApplicantDocumentsDetailPage from '@/pages/Employer/WriteDocuments/ApplicantDocumentsDetailPage';
-import EmployerWriteDocumentsPage from '@/pages/Employer/WriteDocuments/EmployerWriteDocumentsPage';
-import DocumentViewerPage from '@/pages/WriteDocuments/DocumentViewerPage';
-import PostSearchFilterPage from '@/pages/PostSearch/PostSearchFilterPage';
-import { useEffect } from 'react';
-import { setRedirectToLogin } from '@/api';
-import AccountPage from '@/pages/Profile/AccountPage';
-import AboutPage from '@/pages/Profile/AboutPage';
-import ChangePasswordPage from '@/pages/Profile/ChangePasswordPage';
-import ResetPasswordPage from '@/pages/Signin/ResetPasswordPage';
-import ApplicationDetailSchoolPage from '@/pages/ApplicationDetail/ApplicationDetailSchoolPage';
-import HomeBannerPage from '@/pages/Home/HomeBannerPage';
-import EmployerPostFormPage from '@/pages/Employer/Post/EmployerPostFormPage';
-import CareerDetailPage from '@/pages/PostDetail/CareerDetailPage';
-import EducationPage from '@/pages/Resume/SetEducation/EducationPage';
-import WorkPreferencePage from '@/pages/Resume/WorkPreferencePage';
-import EmploySearchDetailPage from '@/pages/Resume/EmploySearchDetailPage';
-import EmployerEmployeeSearchPage from '@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage';
-import EmployerScrappedPage from '@/pages/Employer/Scrapped/EmployerScrappedPage';
-import EditLanguagesPage from '@/pages/Resume/EditLanguagesPage';
-import WorkExperiencePage from '@/pages/Resume/SetWorkExperience/WorkExperiencePage';
+
+// 모든 페이지 컴포넌트들을 동적 임포트로 변경
+const HomePage = lazy(() => import('@/pages/Home/HomePage'));
+const PostSearchPage = lazy(() => import('@/pages/PostSearch/PostSearchPage'));
+const EmployerProfilePage = lazy(
+  () => import('@/pages/Employer/Profile/EmployerProfilePage'),
+);
+const ScrappedJobPostsPage = lazy(
+  () => import('@/pages/Resume/ScrappedJobPostsPage'),
+);
+const EmployerScrappedPage = lazy(
+  () => import('@/pages/Employer/Scrapped/EmployerScrappedPage'),
+);
+const ApplicationDocumentsPage = lazy(
+  () => import('@/pages/ApplicationDocuments/ApplicationDocumentsPage'),
+);
+const ProfilePage = lazy(() => import('@/pages/Profile/ProfilePage'));
+const ApplicationPage = lazy(
+  () => import('@/pages/Application/ApplicationPage'),
+);
+const EmployerPostPage = lazy(
+  () => import('@/pages/Employer/Post/EmployerPostPage'),
+);
+
+// 페이지 컴포넌트들을 동적 임포트로 변경
+const SigninPage = lazy(() => import('@/pages/Signin/SigninPage'));
+const SignupPage = lazy(() => import('@/pages/Signup/SignupPage'));
+const InformationPage = lazy(
+  () => import('@/pages/Information/InformationPage'),
+);
+const LanguageSettingPage = lazy(
+  () => import('@/pages/LanguageSetting/LanguageSettingPage'),
+);
+const EditProfilePage = lazy(
+  () => import('@/pages/EditProfile/EditProfilePage'),
+);
+const PostDetailPage = lazy(() => import('@/pages/PostDetail/PostDetailPage'));
+const PostApplyPage = lazy(() => import('@/pages/PostApply/PostApplyPage'));
+const ManageResumePage = lazy(() => import('@/pages/Resume/ManageResumePage'));
+const WriteDocumentsPage = lazy(
+  () => import('@/pages/WriteDocuments/WriteDocumentsPage'),
+);
+const IntroductionPage = lazy(() => import('@/pages/Resume/IntroductionPage'));
+const ApplicationDetailPage = lazy(
+  () => import('@/pages/ApplicationDetail/ApplicationDetailPage'),
+);
+const ApplicationResultPage = lazy(
+  () => import('@/pages/ApplicationResult/ApplicationResultPage'),
+);
+const RequestModifyPage = lazy(
+  () => import('@/pages/WriteDocuments/RequestModifyPage'),
+);
+const DocumentPreview = lazy(
+  () => import('@/pages/WriteDocuments/DocumentPreviewPage'),
+);
+const PostLanguagePage = lazy(() => import('@/pages/Resume/PostLanguagePage'));
+const AlarmPage = lazy(() => import('@/pages/Alarm/AlarmPage'));
+const ChatBotPage = lazy(() => import('@/pages/ChatBot/ChatBotPage'));
+const DocumentViewerPage = lazy(
+  () => import('@/pages/WriteDocuments/DocumentViewerPage'),
+);
+const PostSearchFilterPage = lazy(
+  () => import('@/pages/PostSearch/PostSearchFilterPage'),
+);
+const AccountPage = lazy(() => import('@/pages/Profile/AccountPage'));
+const AboutPage = lazy(() => import('@/pages/Profile/AboutPage'));
+const ChangePasswordPage = lazy(
+  () => import('@/pages/Profile/ChangePasswordPage'),
+);
+const ResetPasswordPage = lazy(
+  () => import('@/pages/Signin/ResetPasswordPage'),
+);
+const ApplicationDetailSchoolPage = lazy(
+  () => import('@/pages/ApplicationDetail/ApplicationDetailSchoolPage'),
+);
+const HomeBannerPage = lazy(() => import('@/pages/Home/HomeBannerPage'));
+const CareerDetailPage = lazy(
+  () => import('@/pages/PostDetail/CareerDetailPage'),
+);
+const EducationPage = lazy(
+  () => import('@/pages/Resume/SetEducation/EducationPage'),
+);
+const WorkPreferencePage = lazy(
+  () => import('@/pages/Resume/WorkPreferencePage'),
+);
+const EmploySearchDetailPage = lazy(
+  () => import('@/pages/Resume/EmploySearchDetailPage'),
+);
+const EditLanguagesPage = lazy(
+  () => import('@/pages/Resume/EditLanguagesPage'),
+);
+const WorkExperiencePage = lazy(
+  () => import('@/pages/Resume/SetWorkExperience/WorkExperiencePage'),
+);
+
+// Employer 관련 페이지들을 별도 청크로 분리
+const EmployerPostDetailPage = lazy(
+  () => import('@/pages/Employer/PostDetail/EmployerPostDetailPage'),
+);
+const EmployerApplicantListPage = lazy(
+  () => import('@/pages/Employer/ApplicantList/EmployerApplicantListPage'),
+);
+const EmployerSignupInfoPage = lazy(
+  () => import('@/pages/Employer/Signup/EmployerSignupInfoPage'),
+);
+const EmployerApplicantDetailPage = lazy(
+  () => import('@/pages/Employer/ApplicantDetail/EmployerApplicantDetailPage'),
+);
+const EmployerApplicantResumePage = lazy(
+  () => import('@/pages/Employer/ApplicantResume/EmployerApplicantResumePage'),
+);
+const EmployerApplicantResumeAcceptPage = lazy(
+  () =>
+    import(
+      '@/pages/Employer/ApplicantResumeAccept/EmployerApplicantResumeAcceptPage'
+    ),
+);
+const EmployerEditProfilePage = lazy(
+  () => import('@/pages/Employer/EditProfile/EmployerEditProfilePage'),
+);
+const EmployerSignupPage = lazy(
+  () => import('@/pages/Employer/Signup/EmployerSignupPage'),
+);
+const ApplicantDocumentsDetailPage = lazy(
+  () => import('@/pages/Employer/WriteDocuments/ApplicantDocumentsDetailPage'),
+);
+const EmployerWriteDocumentsPage = lazy(
+  () => import('@/pages/Employer/WriteDocuments/EmployerWriteDocumentsPage'),
+);
+const EmployerPostFormPage = lazy(
+  () => import('@/pages/Employer/Post/EmployerPostFormPage'),
+);
+const EmployerEmployeeSearchPage = lazy(
+  () => import('@/pages/Employer/EmployeeSearch/EmployerEmployeeSearchPage'),
+);
 
 const Layout = () => {
   // -- 1. 토큰의 만료, 혹은 토큰이 없을 경우의 트리거 --
@@ -110,133 +194,482 @@ const Router = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/banner/:id" element={<HomeBannerPage />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <HomePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/banner/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <HomeBannerPage />
+            </Suspense>
+          }
+        />
         <Route path="/splash" element={<Splash />} />
-        <Route path="/chatbot" element={<ChatBotPage />} />
-        <Route path="/alarm" element={<AlarmPage />} />
-        <Route path="/signin" element={<SigninPage />} />
-        <Route path="/find-password" element={<ResetPasswordPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/information" element={<InformationPage />} />
+        <Route
+          path="/chatbot"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ChatBotPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/alarm"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <AlarmPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <SigninPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/find-password"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ResetPasswordPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <SignupPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/information"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <InformationPage />
+            </Suspense>
+          }
+        />
 
         <Route
           path="/application-documents/:id"
-          element={<ApplicationDocumentsPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ApplicationDocumentsPage />
+            </Suspense>
+          }
         />
 
-        <Route path="/search/filter" element={<PostSearchFilterPage />} />
-        <Route path="/search" element={<PostSearchPage />} />
+        <Route
+          path="/search/filter"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <PostSearchFilterPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <PostSearchPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/employer/search"
-          element={<EmployerEmployeeSearchPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerEmployeeSearchPage />
+            </Suspense>
+          }
         />
 
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/profile/about" element={<AboutPage />} />
-        <Route path="/profile/account" element={<AccountPage />} />
-        <Route path="/profile/edit" element={<EditProfilePage />} />
-        <Route path="/profile/manage-resume" element={<ManageResumePage />} />
-        <Route path="/profile/language" element={<LanguageSettingPage />} />
+        <Route
+          path="/profile"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ProfilePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/profile/about"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <AboutPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/profile/account"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <AccountPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EditProfilePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/profile/manage-resume"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ManageResumePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/profile/language"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <LanguageSettingPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/profile/change-password"
-          element={<ChangePasswordPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ChangePasswordPage />
+            </Suspense>
+          }
         />
 
-        <Route path="/resume/introduction" element={<IntroductionPage />} />
-        <Route path="/resume/language/add" element={<PostLanguagePage />} />
-        <Route path="/resume/language/edit" element={<EditLanguagesPage />} />
-        <Route path="/resume/scrapped" element={<ScrappedJobPostsPage />} />
-        <Route path="/resume/education" element={<EducationPage />} />
-        <Route path="/resume/education/:id" element={<EducationPage />} />
+        <Route
+          path="/resume/introduction"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <IntroductionPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/resume/language/add"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <PostLanguagePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/resume/language/edit"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EditLanguagesPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/resume/scrapped"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ScrappedJobPostsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/resume/education"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EducationPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/resume/education/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EducationPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/resume/work-experience"
-          element={<WorkExperiencePage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <WorkExperiencePage />
+            </Suspense>
+          }
         />
         <Route
           path="/resume/work-experience/edit/:id"
-          element={<WorkExperiencePage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <WorkExperiencePage />
+            </Suspense>
+          }
         />
-        <Route path="/career/:id" element={<CareerDetailPage />} />
+        <Route
+          path="/career/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <CareerDetailPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/resume/work-preference"
-          element={<WorkPreferencePage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <WorkPreferencePage />
+            </Suspense>
+          }
         />
 
-        <Route path="/post/:id" element={<PostDetailPage />} />
-        <Route path="/post/apply/:id" element={<PostApplyPage />} />
-        <Route path="/write-documents/:id" element={<WriteDocumentsPage />} />
+        <Route
+          path="/post/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <PostDetailPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/post/apply/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <PostApplyPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/write-documents/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <WriteDocumentsPage />
+            </Suspense>
+          }
+        />
 
-        <Route path="/document-preview/:id" element={<DocumentPreview />} />
-        <Route path="/document-view/:id" element={<DocumentViewerPage />} />
+        <Route
+          path="/document-preview/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <DocumentPreview />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/document-view/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <DocumentViewerPage />
+            </Suspense>
+          }
+        />
 
-        <Route path="/request-modify/:id" element={<RequestModifyPage />} />
+        <Route
+          path="/request-modify/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <RequestModifyPage />
+            </Suspense>
+          }
+        />
 
-        <Route path="/application" element={<ApplicationPage />} />
-        <Route path="/application/:id" element={<ApplicationDetailPage />} />
+        <Route
+          path="/application"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ApplicationPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/application/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ApplicationDetailPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/application/:id/school"
-          element={<ApplicationDetailSchoolPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ApplicationDetailSchoolPage />
+            </Suspense>
+          }
         />
         <Route
           path="/application/result/:id"
-          element={<ApplicationResultPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ApplicationResultPage />
+            </Suspense>
+          }
         />
 
-        <Route path="/employer/signup" element={<EmployerSignupPage />} />
+        <Route
+          path="/employer/signup"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerSignupPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/employer/signup/information"
-          element={<EmployerSignupInfoPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerSignupInfoPage />
+            </Suspense>
+          }
         />
-        <Route path="/employer/post" element={<EmployerPostPage />} />
+        <Route
+          path="/employer/post"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerPostPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/employer/post/create/"
-          element={<EmployerPostFormPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerPostFormPage />
+            </Suspense>
+          }
         />
         <Route
           path="/employer/post/edit/:id"
-          element={<EmployerPostFormPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerPostFormPage />
+            </Suspense>
+          }
         />
-        <Route path="/employer/post/:id" element={<EmployerPostDetailPage />} />
+        <Route
+          path="/employer/post/:id"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerPostDetailPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/employer/post/:id/applicant"
-          element={<EmployerApplicantListPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerApplicantListPage />
+            </Suspense>
+          }
         />
         <Route
           path="/employer/applicant/:id"
-          element={<EmployerApplicantDetailPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerApplicantDetailPage />
+            </Suspense>
+          }
         />
         <Route
           path="/employer/applicant/:id/resume"
-          element={<EmployerApplicantResumePage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerApplicantResumePage />
+            </Suspense>
+          }
         />
 
         <Route
           path="/employer/applicant/:id/resume/accept"
-          element={<EmployerApplicantResumeAcceptPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerApplicantResumeAcceptPage />
+            </Suspense>
+          }
         />
         <Route
           path="/employer/applicant/document-detail/:id"
-          element={<ApplicantDocumentsDetailPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <ApplicantDocumentsDetailPage />
+            </Suspense>
+          }
         />
         <Route
           path="/employer/write-documents/:id"
-          element={<EmployerWriteDocumentsPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerWriteDocumentsPage />
+            </Suspense>
+          }
         />
         <Route
           path="/employer/search/:id"
-          element={<EmploySearchDetailPage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmploySearchDetailPage />
+            </Suspense>
+          }
         />
-        <Route path="/write-documents" element={<WriteDocumentsPage />} />
-        <Route path="/document-preview" element={<DocumentPreview />} />
-        <Route path="/request-modify" element={<RequestModifyPage />} />
+        <Route
+          path="/write-documents"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <WriteDocumentsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/document-preview"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <DocumentPreview />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/request-modify"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <RequestModifyPage />
+            </Suspense>
+          }
+        />
 
-        <Route path="/employer/profile" element={<EmployerProfilePage />} />
+        <Route
+          path="/employer/profile"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerProfilePage />
+            </Suspense>
+          }
+        />
         <Route
           path="/employer/profile/edit"
-          element={<EmployerEditProfilePage />}
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerEditProfilePage />
+            </Suspense>
+          }
         />
-        <Route path="/employer/scrapped" element={<EmployerScrappedPage />} />
+        <Route
+          path="/employer/scrapped"
+          element={
+            <Suspense fallback={<LoadingOverLay />}>
+              <EmployerScrappedPage />
+            </Suspense>
+          }
+        />
       </Route>
     </Routes>
   );
