@@ -109,7 +109,7 @@ export const signInputTranslation = {
   },
   spamEmailInfo: {
     ko: '메일이 안 왔다면 스팸함을 확인해주세요!',
-    en: '(be sure to check your spam folder)',
+    en: 'Be sure to check your spam folder',
   },
   resetPasswordVerifySuccess: {
     ko: '인증',

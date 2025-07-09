@@ -26,7 +26,7 @@ const PhoneNumberInput = ({ value, onChange }: PhoneNumberInputProps) => {
 
   return (
     <div className="w-full flex flex-row gap-2 justify-between">
-      <div className="flex-shrink-0 max-w-[30%] h-[2.75rem]">
+      <div className="flex-shrink-0 max-w-[30%]">
         <Dropdown
           title=""
           value={value.start}
