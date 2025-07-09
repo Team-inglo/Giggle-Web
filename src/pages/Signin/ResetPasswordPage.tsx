@@ -1,6 +1,7 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import InfoBanner from '@/components/Common/InfoBanner';
 import Input from '@/components/Common/Input';
 import PageTitle from '@/components/Common/PageTitle';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
@@ -13,6 +14,7 @@ import {
   useReIssueAuthentication,
 } from '@/hooks/api/useAuth';
 import { useEmailTryCountStore } from '@/store/signup';
+import { InfoBannerState } from '@/types/common/infoBanner';
 import { InputType } from '@/types/common/input';
 import { validateEmail } from '@/utils/signin';
 import { useEffect, useState } from 'react';
@@ -78,6 +80,9 @@ const ResetPasswordPage = () => {
 
   // API - 2.7 이메일 인증코드 검증
   const handleVerifyClick = () => {
+    if (emailVerifyStatus === 'verified') {
+      return;
+    }
     verifyAuthCode(
       //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
       { email: email, authentication_code: authenticationCode },
@@ -121,6 +126,43 @@ const ResetPasswordPage = () => {
     reIssuePassword();
   };
 
+  // Helper label 상태와 스타일을 정의하는 map
+  const getHelperLabel = (status: string) => {
+    switch (status) {
+      case 'sent':
+        return signInputTranslation.enterCode['ko'];
+      case 'resent':
+        return signInputTranslation.resentMessage['ko'];
+      case 'verified':
+        return signInputTranslation.successVerify['ko'];
+      default:
+        return '';
+    }
+  };
+
+  // Helper label 렌더링 함수
+  const renderHelperLabels = () => {
+    // emailError가 있는 경우 우선 표시
+    if (emailError) {
+      return (
+        <div className="w-full px-1 py-2">
+          <p className="text-text-error caption-12-semibold">{emailError}</p>
+        </div>
+      );
+    }
+
+    // emailVerifyStatus에 해당하는 helper label 렌더링
+    if (emailVerifyStatus) {
+      return (
+        <p className={`px-1 py-2 caption-12-semibold text-status-blue-300`}>
+          {getHelperLabel(emailVerifyStatus)}
+        </p>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div className="w-full">
       <BaseHeader
@@ -129,14 +171,14 @@ const ResetPasswordPage = () => {
         title="비밀번호 찾기"
         onClickBackButton={() => navigate('/signin')}
       />
-      <div className="w-full h-full flex-grow flex flex-col px-4">
+      <div className="w-full h-full flex-grow flex flex-col">
         {currentStep === 1 && (
           <>
             <PageTitle title={'찾으려는 계정의\n이메일을 입력해주세요'} />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 px-4">
               <div className="flex flex-col mb-[7.125rem]">
                 <InputLayout title={signInputTranslation.email['ko']}>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-center">
                     <Input
                       inputType={InputType.TEXT}
                       placeholder={signInputTranslation.enterEmail['ko']}
@@ -144,22 +186,24 @@ const ResetPasswordPage = () => {
                       onChange={handleEmailInput}
                       canDelete={false}
                     />
-                    <button
-                      className={`flex items-center justify-center button-14-semibold min-w-[4.25rem] px-5 py-3 rounded-lg ${
+                    <Button
+                      type={
                         emailVerifyStatus === null
-                          ? 'bg-surface-primary text-text-normal'
-                          : 'bg-surface-secondary text-text-disabled'
-                      }`}
+                          ? Button.Type.PRIMARY
+                          : Button.Type.DISABLED
+                      }
+                      size={Button.Size.LG}
+                      title={
+                        emailVerifyStatus === null
+                          ? signInputTranslation.sendEmail['ko']
+                          : signInputTranslation.emailSentBtnText['ko']
+                      }
                       onClick={handleResendClick}
-                    >
-                      {emailVerifyStatus === null
-                        ? signInputTranslation.sendEmail['ko']
-                        : signInputTranslation.emailSentBtnText['ko']}
-                    </button>
+                    />
                   </div>
                   {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
                   {emailVerifyStatus !== null && (
-                    <div className="flex gap-2 h-full pt-2">
+                    <div className="flex gap-2 h-full pt-3">
                       <div className="relative w-full">
                         <Input
                           inputType={InputType.TEXT}
@@ -170,65 +214,50 @@ const ResetPasswordPage = () => {
                         />
                         {emailVerifyStatus !== 'verified' && (
                           <button
-                            className="caption-12-regular text-blue-500 underline absolute right-[1rem] top-[1rem]"
+                            className="caption-12-regular text-status-blue-300 underline absolute right-[1rem] top-[1rem]"
                             onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
                           >
                             {signInputTranslation.resend['ko']}
                           </button>
                         )}
                       </div>
-                      <button
-                        className={`flex items-center justify-center min-w-[5.5rem] button-14-semibold px-5 py-3 rounded-lg ${
+                      <Button
+                        type={
                           emailVerifyStatus === 'verified'
-                            ? 'bg-surface-secondary text-text-disabled'
-                            : 'bg-surface-primary text-text-normal'
-                        }`}
-                        onClick={
-                          emailVerifyStatus === 'verified'
-                            ? undefined
-                            : handleVerifyClick
+                            ? Button.Type.DISABLED
+                            : Button.Type.PRIMARY
                         }
-                      >
-                        {signInputTranslation.resetPasswordVerifySuccess['ko']}
-                      </button>
+                        size={Button.Size.LG}
+                        title={
+                          emailVerifyStatus === 'verified'
+                            ? signInputTranslation.resetPasswordVerifySuccess[
+                                'ko'
+                              ]
+                            : signInputTranslation.resetPasswordVerifySuccess[
+                                'ko'
+                              ]
+                        }
+                        onClick={handleVerifyClick}
+                      />
                     </div>
                   )}
-                  {emailVerifyStatus === 'sent' && (
-                    <>
-                      <p className="text-blue-600 text-xs p-2">
-                        {signInputTranslation.enterCode['ko']}
-                      </p>
-                      <p className="text-[#FF6F61] text-xs px-2 pb-2">
-                        {signInputTranslation.spamEmailInfo['ko']}
-                      </p>
-                    </>
+                  {renderHelperLabels()}
+                  {emailVerifyStatus !== null && (
+                    <div className="w-full mt-4">
+                      <InfoBanner
+                        text={`${signInputTranslation.spamEmailInfo['ko']} \n ${signInputTranslation.spamEmailInfo['en']}`}
+                        state={InfoBannerState.INFO}
+                      />
+                    </div>
                   )}
-                  {emailVerifyStatus === 'resent' && (
-                    <p className="text-blue-600 text-xs p-2">
-                      {signInputTranslation.resentMessage['ko']}
-                    </p>
-                  )}
-                  {emailVerifyStatus === 'verified' && (
-                    <p className="text-blue-600 text-xs p-2">
-                      {signInputTranslation.successVerify['ko']}
-                    </p>
-                  )}
-                  {emailError && (
-                    <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
-                  )}
-                  {/* 비밀번호 입력 input */}
                 </InputLayout>
               </div>
               <BottomButtonPanel>
                 <div className="w-full">
                   <Button
-                    type="large"
-                    bgColor={
-                      isValid ? 'bg-surface-primary' : 'bg-surface-secondary'
-                    }
-                    fontColor={
-                      isValid ? 'text-text-normal' : 'text-text-disabled'
-                    }
+                    type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+                    size={Button.Size.LG}
+                    isFullWidth
                     title={'다음'}
                     onClick={isValid ? handleReissuePassword : undefined}
                   />
