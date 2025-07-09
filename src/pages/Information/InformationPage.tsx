@@ -111,7 +111,6 @@ const InformationPage = () => {
               getPolicy(policy);
             }}
             onNext={setIsAgreeModal}
-            accountType="USER"
           />
         </BottomSheetLayout>
       )}
