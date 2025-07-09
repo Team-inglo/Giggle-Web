@@ -11,6 +11,7 @@ import BaseHeader from '@/components/Common/Header/BaseHeader';
 import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { checkEmployerPage } from '@/utils/checkUserPage';
+import ProgressStepper from '@/components/Common/ProgressStepper';
 
 const SignupPage = () => {
   const { pathname } = useLocation();
@@ -106,18 +107,10 @@ const SignupPage = () => {
             hasMenuButton={false}
             title="Sign Up"
           />
-          <div className="w-screen flex justify-center items-center">
-            <hr
-              className={`w-[50%] h-1 border-0 ${
-                currentStep >= 1 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-            <hr
-              className={`w-[50%] h-1 border-0 ${
-                currentStep >= 2 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-          </div>
+          <ProgressStepper
+            totalCount={2}
+            currentStep={currentStep}
+          />
         </>
       )}
       {/* 회원가입 STEP 별 랜딩 컴포넌트 */}
