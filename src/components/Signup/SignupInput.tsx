@@ -20,6 +20,9 @@ import { useEmailTryCountStore } from '@/store/signup';
 import PageTitle from '../Common/PageTitle';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
+import { InfoBannerState } from '@/types/common/infoBanner';
+import InfoBanner from '../Common/InfoBanner';
+import HelperLabel from '@/components/Common/HelperLabel';
 
 type signupInputProps = {
   email: string;
@@ -199,8 +202,8 @@ const SignupInput = ({
         title={signInputTranslation.signup[isEmployer(pathname)]}
         content={signInputTranslation.signupContent[isEmployer(pathname)]}
       />
-      <div className="flex flex-col gap-2 px-4">
-        <div className="flex flex-col mb-[7.125rem]">
+      <div className="flex flex-col px-4">
+        <div className="flex flex-col gap-6 mb-[7.125rem]">
           <InputLayout title={signInputTranslation.email[isEmployer(pathname)]}>
             <div className="flex gap-2">
               <Input
@@ -280,29 +283,16 @@ const SignupInput = ({
                 </button>
               </div>
             )}
-            {emailVerifyStatus === 'sent' && (
-              <>
-                <p className="text-blue-600 text-xs p-2">
-                  {signInputTranslation.enterCode[isEmployer(pathname)]}
-                </p>
-                <p className="text-[#FF6F61] text-xs px-2 pb-2">
-                  {' '}
-                  {signInputTranslation.spamEmailInfo[isEmployer(pathname)]}
-                </p>
-              </>
-            )}
-            {emailVerifyStatus === 'resent' && (
-              <p className="text-blue-600 text-xs p-2">
-                {signInputTranslation.resentMessage[isEmployer(pathname)]}
-              </p>
-            )}
-            {emailVerifyStatus === 'verified' && (
-              <p className="text-blue-600 text-xs p-2">
-                {signInputTranslation.successVerify[isEmployer(pathname)]}
-              </p>
-            )}
-            {emailError && (
-              <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
+            <HelperLabel
+              language={isEmployer(pathname)}
+              emailError={emailError}
+              emailVerifyStatus={emailVerifyStatus}
+            />
+            {emailVerifyStatus !== null && (
+              <InfoBanner
+                text={signInputTranslation.spamEmailInfo[isEmployer(pathname)]}
+                state={InfoBannerState.INFO}
+              />
             )}
             {/* 비밀번호 입력 input */}
           </InputLayout>
@@ -319,7 +309,9 @@ const SignupInput = ({
               canDelete={false}
             />
             {passwordError && (
-              <p className="text-[#FF6F61] text-xs p-2">{passwordError}</p>
+              <p className="text-text-error caption-12-semibold px-1 py-2">
+                {passwordError}
+              </p>
             )}
           </InputLayout>
           <InputLayout
@@ -335,22 +327,20 @@ const SignupInput = ({
               canDelete={false}
             />
             {confirmPasswordError && (
-              <p className="text-[#FF6F61] text-xs p-2">
+              <p className="text-text-error caption-12-semibold px-1 py-2">
                 {confirmPasswordError}
               </p>
             )}
           </InputLayout>
         </div>
         <BottomButtonPanel>
-          <div className="w-full">
-            <Button
-              type="large"
-              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              title={signInputTranslation.continue[isEmployer(pathname)]}
-              onClick={isValid ? onSignUpClick : undefined}
-            />
-          </div>
+          <Button
+            type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+            size={Button.Size.LG}
+            isFullWidth
+            title={signInputTranslation.continue[isEmployer(pathname)]}
+            onClick={isValid ? onSignUpClick : undefined}
+          />
         </BottomButtonPanel>
       </div>
     </div>

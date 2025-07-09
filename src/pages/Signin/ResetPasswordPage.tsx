@@ -1,6 +1,7 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
+import HelperLabel, { Language } from '@/components/Common/HelperLabel';
 import InfoBanner from '@/components/Common/InfoBanner';
 import Input from '@/components/Common/Input';
 import PageTitle from '@/components/Common/PageTitle';
@@ -126,43 +127,6 @@ const ResetPasswordPage = () => {
     reIssuePassword();
   };
 
-  // Helper label 상태와 스타일을 정의하는 map
-  const getHelperLabel = (status: string) => {
-    switch (status) {
-      case 'sent':
-        return signInputTranslation.enterCode['ko'];
-      case 'resent':
-        return signInputTranslation.resentMessage['ko'];
-      case 'verified':
-        return signInputTranslation.successVerify['ko'];
-      default:
-        return '';
-    }
-  };
-
-  // Helper label 렌더링 함수
-  const renderHelperLabels = () => {
-    // emailError가 있는 경우 우선 표시
-    if (emailError) {
-      return (
-        <div className="w-full px-1 py-2">
-          <p className="text-text-error caption-12-semibold">{emailError}</p>
-        </div>
-      );
-    }
-
-    // emailVerifyStatus에 해당하는 helper label 렌더링
-    if (emailVerifyStatus) {
-      return (
-        <p className={`px-1 py-2 caption-12-semibold text-status-blue-300`}>
-          {getHelperLabel(emailVerifyStatus)}
-        </p>
-      );
-    }
-
-    return null;
-  };
-
   return (
     <div className="w-full">
       <BaseHeader
@@ -241,7 +205,11 @@ const ResetPasswordPage = () => {
                       />
                     </div>
                   )}
-                  {renderHelperLabels()}
+                  <HelperLabel
+                    language={Language.KO}
+                    emailError={emailError}
+                    emailVerifyStatus={emailVerifyStatus}
+                  />
                   {emailVerifyStatus !== null && (
                     <div className="w-full mt-4">
                       <InfoBanner
