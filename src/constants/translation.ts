@@ -1,4 +1,4 @@
-export const signInputTranclation = {
+export const signInputTranslation = {
   signin: {
     ko: '로그인',
     en: 'Sign In',
@@ -725,5 +725,9 @@ export const documentTranslation = {
   optional: {
     ko: '(옵션)',
     en: '(optional)',
+  },
+  inputWithoutDash: {
+    ko: '- 없이 숫자만 입력',
+    en: 'Enter numbers only',
   },
 };
