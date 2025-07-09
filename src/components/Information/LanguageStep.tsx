@@ -31,7 +31,7 @@ const LanguageStep = ({ onNext }: LanguageStepProps) => {
         {/* 언어 선택 작성 */}
         <InputLayout title="Language">
           <Dropdown
-            title="Language"
+            title="Select Language"
             value={language}
             placeholder="Select Language"
             options={languageList}
