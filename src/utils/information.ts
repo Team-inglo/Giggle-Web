@@ -1,5 +1,8 @@
 // 이름 유효성 검사 및 포맷팅 관련 유틸리티 함수들
 // 이름은 영문 대소문자, 한글만 허용하며, 공백도 허용
+
+import { KoEnEnumType } from '@/constants/manageResume';
+
 // 연속된 공백은 하나의 공백으로 간주
 const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
 
@@ -128,4 +131,11 @@ export const formatDateInput = (value: string) => {
       .join('-') || '';
 
   return formatValue;
+};
+
+// 국적 정렬 함수
+export const getSortedNationalities = (
+  nationalities: KoEnEnumType[],
+): KoEnEnumType[] => {
+  return [...nationalities].sort((a, b) => a.en.localeCompare(b.en));
 };
