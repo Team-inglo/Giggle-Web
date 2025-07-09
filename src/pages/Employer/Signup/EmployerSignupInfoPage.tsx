@@ -173,7 +173,6 @@ const EmployerSignupInfoPage = () => {
               getPolicy(policy);
             }}
             onNext={setIsAgreeModal}
-            accountType="EMPLOYER"
           />
         </BottomSheetLayout>
       )}
