@@ -166,7 +166,7 @@ const WorkPreferencePage = () => {
           <div className="w-full flex flex-col gap-2">
             <div onClick={() => handleAreaSelectOpen()}>
               <Dropdown
-                title=""
+                title="Select Areas"
                 value={''}
                 placeholder="Select Areas"
                 options={[]}

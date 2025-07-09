@@ -223,7 +223,7 @@ const EditProfilePage = () => {
               {/* 국적 선택 */}
               <InputLayout title="Nationality" isOptional>
                 <Dropdown
-                  title=""
+                  title="Select Nationality"
                   value={
                     getNationalityEnFromEnum(userData.nationality || '') || ''
                   }
@@ -281,7 +281,7 @@ const EditProfilePage = () => {
               {/* 비자 선택 */}
               <InputLayout title="Visa Status">
                 <Dropdown
-                  title=""
+                  title="Select Visa Status"
                   value={userData.visa}
                   placeholder="Select Visa Status"
                   options={visa}

@@ -1,5 +1,6 @@
 // PressOverlay의 시각적 피드백 강도를 나타내는 타입
 const pressStrengthKeys = {
+  EXTRA_STRONG: 'extra-strong',
   STRONG: 'strong',
   NORMAL: 'normal',
   LIGHT: 'light',
@@ -26,6 +27,8 @@ const PressOverlay = ({
   // 버튼 타입에 따라 다른 강도의 시각적 피드백을 주기 위해 투명도를 조절
   const getOpacity = () => {
     switch (strength) {
+      case pressStrengthKeys.EXTRA_STRONG:
+        return 0.8;
       case pressStrengthKeys.STRONG:
         return 0.2;
       case pressStrengthKeys.NORMAL:

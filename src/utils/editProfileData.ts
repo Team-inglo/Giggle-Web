@@ -103,9 +103,13 @@ export const validateFieldValues = (
         // 주소는 필수 입력이 아니므로 체크하지 않으나, 만약 입력되어 있다면 detail이 50자 이하인지 확인
         if (value) {
           const address = value as {
-            address_detail: string;
+            address_detail: string | null;
           };
-          return address.address_detail.length <= 50;
+          return (
+            address.address_detail === null ||
+            address.address_detail === '' ||
+            address.address_detail.length <= 50
+          );
         }
         return true;
     }
