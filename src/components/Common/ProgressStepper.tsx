@@ -20,7 +20,11 @@ const ProgressStepper = ({ totalCount, currentStep }: ProgressStepperProps) => {
     ));
   };
 
-  return <div className="px-4 py-2 flex gap-1">{renderStepper()}</div>;
+  return (
+    <div className="w-full px-4 py-1 flex flex-row gap-1">
+      {renderStepper()}
+    </div>
+  );
 };
 
 export default ProgressStepper;
