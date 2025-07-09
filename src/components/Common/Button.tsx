@@ -67,9 +67,9 @@ const Button = ({
       case buttonTypeKeys.SMALLAPPLY: // 스크랩 버튼과 함께 쓰이는 Apply 버튼
         return `w-[71vw] py-4 rounded-lg bg-neutral-100 bg-cover bg-center button-16-semibold text-neutral-100`;
       case buttonTypeKeys.BACK: // CONTINUE 버튼과 같은 열에 사용
-        return 'w-[31vw] py-4 rounded-xl button-16-semibold';
+        return 'w-[31vw] py-4 rounded-xl button-16-semibold flex-shrink-0';
       case buttonTypeKeys.CONTINUE: // BACK 버튼과 같은 열에 사용
-        return 'w-[53vw] py-4 rounded-xl button-16-semibold';
+        return 'w-full py-4 rounded-xl button-16-semibold';
       case buttonTypeKeys.SCRAP:
         return 'p-4 rounded-lg bg-[rgba(244,244,249,0.5)]';
       case buttonTypeKeys.PRIMARY:
