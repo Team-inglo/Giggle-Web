@@ -4,7 +4,7 @@
 import { KoEnEnumType } from '@/constants/manageResume';
 
 // 연속된 공백은 하나의 공백으로 간주
-const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
+const nameRegexWithSpaces = /^[\p{L}]+(?: [\p{L}]+)*$/u;
 
 // 이름의 최대 길이
 const MAX_NAME_LENGTH = 50;
