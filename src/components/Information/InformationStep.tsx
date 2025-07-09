@@ -18,7 +18,7 @@ import Button from '@/components/Common/Button';
 import { formatDateToDash } from '@/utils/editResume';
 import InputLayout from '../WorkExperience/InputLayout';
 import PageTitle from '../Common/PageTitle';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import { Nationalities } from '@/constants/manageResume';
@@ -114,8 +114,8 @@ const InformationStep = ({
     <div className="w-full flex flex-col gap-4">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
-          title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}
-          content={signInputTranclation.infoStepContent[isEmployer(pathname)]}
+          title={signInputTranslation.infoStepTitle[isEmployer(pathname)]}
+          content={signInputTranslation.infoStepContent[isEmployer(pathname)]}
         />
       </div>
       <div className="w-full mx-auto mb-[7rem] px-4">

@@ -2,7 +2,7 @@ import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import {
   profileTranslation,
-  signInputTranclation,
+  signInputTranslation,
 } from '@/constants/translation';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
@@ -27,7 +27,7 @@ const SuccessStep = () => {
               type="large"
               bgColor={'bg-surface-primary'}
               fontColor={'text-text-normal'}
-              title={signInputTranclation.continue[userLanguage]}
+              title={signInputTranslation.continue[userLanguage]}
               onClick={signout}
             />
           </div>

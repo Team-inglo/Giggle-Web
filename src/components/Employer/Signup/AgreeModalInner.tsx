@@ -1,7 +1,7 @@
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import ArrowIcon from '@/assets/icons/RightArrowIcon.svg?react';
 import Button from '@/components/Common/Button';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { TermType } from '@/types/api/users';
 import { isEmployer } from '@/utils/signup';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -35,7 +35,7 @@ const AgreeModalInner = ({ onPolicyPreview, onNext }: AgreeModalInnerProps) => {
       <div className="relative w-full flex flex-col items-start justify-start gap-y-6 pt-3 text-left text-[#33384b] heading-20-semibold">
         <div className="w-full flex flex-col items-start justify-start px-1.5">
           <div className="w-full flex items-center ">
-            {signInputTranclation.essentialAgree[isEmployer(pathname)]}
+            {signInputTranslation.essentialAgree[isEmployer(pathname)]}
           </div>
         </div>
         <div className="w-full border-b border-[#F4F4F6]"></div>
@@ -59,10 +59,18 @@ const AgreeModalInner = ({ onPolicyPreview, onNext }: AgreeModalInnerProps) => {
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
               <div className="w-full flex items-center">
-                {signInputTranclation.essentialAgreeContent[isEmployer(pathname)]}
+                {
+                  signInputTranslation.essentialAgreeContent[
+                    isEmployer(pathname)
+                  ]
+                }
               </div>
               <div className="w-full caption-12-regular text-[#bdbdbd] flex items-center">
-                {signInputTranclation.essentialAgreeAssistive[isEmployer(pathname)]}
+                {
+                  signInputTranslation.essentialAgreeAssistive[
+                    isEmployer(pathname)
+                  ]
+                }
               </div>
             </div>
           </div>
@@ -79,7 +87,7 @@ const AgreeModalInner = ({ onPolicyPreview, onNext }: AgreeModalInnerProps) => {
             </div>
             <div className="w-full flex items-center justify-between gap-1">
               <div className="w-full flex items-center">
-                {signInputTranclation.serviceTerms[isEmployer(pathname)]}
+                {signInputTranslation.serviceTerms[isEmployer(pathname)]}
               </div>
               <div
                 onClick={() =>
@@ -105,7 +113,7 @@ const AgreeModalInner = ({ onPolicyPreview, onNext }: AgreeModalInnerProps) => {
             </div>
             <div className="w-full flex items-center justify-between gap-1">
               <div className="w-full flex items-center">
-                {signInputTranclation.privacyPolicy[isEmployer(pathname)]}
+                {signInputTranslation.privacyPolicy[isEmployer(pathname)]}
               </div>
               <div onClick={() => onPolicyPreview(TermType.PRIVACY_POLICY)}>
                 <ArrowIcon />
@@ -123,7 +131,7 @@ const AgreeModalInner = ({ onPolicyPreview, onNext }: AgreeModalInnerProps) => {
             </div>
             <div className="w-full flex items-center justify-between gap-1">
               <div className="w-full flex items-center">
-                {signInputTranclation.locationBasedTerms[isEmployer(pathname)]}
+                {signInputTranslation.locationBasedTerms[isEmployer(pathname)]}
               </div>
               <div
                 onClick={() => onPolicyPreview(TermType.LOCATION_BASED_TERMS)}
