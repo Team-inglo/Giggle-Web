@@ -108,8 +108,8 @@ export const signInputTranslation = {
     en: 'Enter the code from the email we sent you',
   },
   spamEmailInfo: {
-    ko: '*이메일이 오지 않았나요? 스팸함 또는 프로모션함을 확인해주세요!',
-    en: "*Didn't receive the email? Please check your spam or promotions folder!",
+    ko: '메일이 안 왔다면 스팸함을 확인해주세요!',
+    en: '(be sure to check your spam folder)',
   },
   resetPasswordVerifySuccess: {
     ko: '인증',
