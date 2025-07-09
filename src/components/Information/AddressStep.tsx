@@ -12,7 +12,7 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import PageTitle from '../Common/PageTitle';
 import {
   documentTranslation,
-  signInputTranclation,
+  signInputTranslation,
 } from '@/constants/translation';
 import { useLocation } from 'react-router-dom';
 import { isEmployer } from '@/utils/signup';
@@ -39,9 +39,9 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
     <div className="w-full mx-auto">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
-          title={signInputTranclation.addressStepTitle[isEmployer(pathname)]}
+          title={signInputTranslation.addressStepTitle[isEmployer(pathname)]}
           content={
-            signInputTranclation.addressStepContent[isEmployer(pathname)]
+            signInputTranslation.addressStepContent[isEmployer(pathname)]
           }
         />
       </div>

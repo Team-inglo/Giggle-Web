@@ -1,9 +1,12 @@
 import Dropdown from '@/components/Common/Dropdown';
 import Input from '@/components/Common/Input';
 import { phone } from '@/constants/information';
+import { documentTranslation } from '@/constants/translation';
 import { Phone } from '@/types/api/document';
 import { InputType } from '@/types/common/input';
 import { applyFormat } from '@/utils/document';
+import { isEmployer } from '@/utils/signup';
+import { useLocation } from 'react-router-dom';
 
 type PhoneNumberInputProps = {
   value: Phone;
@@ -11,6 +14,7 @@ type PhoneNumberInputProps = {
 };
 
 const PhoneNumberInput = ({ value, onChange }: PhoneNumberInputProps) => {
+  const { pathname } = useLocation();
   const handleStartChange = (newStart: string) => {
     onChange({ ...value, start: newStart });
   };
@@ -34,7 +38,9 @@ const PhoneNumberInput = ({ value, onChange }: PhoneNumberInputProps) => {
       <div className="w-full h-[2.75rem]">
         <Input
           inputType={InputType.TEXT}
-          placeholder="'-' 없이 숫자만 입력"
+          placeholder={
+            documentTranslation.inputWithoutDash[isEmployer(pathname)]
+          }
           value={value.rest}
           onChange={handleRestChange}
           canDelete={false}

@@ -1,15 +1,17 @@
 // 이름 유효성 검사 및 포맷팅 관련 유틸리티 함수들
-// 이름은 영문 대소문자, 한글만 허용하며, 공백도 허용
-// 연속된 공백은 하나의 공백으로 간주
-const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
+
+import { KoEnEnumType } from '@/constants/manageResume';
+
+// 이름은 공백을 허용하며, 모든 언어 사용가능, 특수문자, 숫자 불가
+const nameRegexWithSpaces = /^[\p{L}]+(?: [\p{L}]+)*$/u;
 
 // 이름의 최대 길이
 const MAX_NAME_LENGTH = 50;
 
 /**
  * 이름 유효성 검사 함수
- * 1. 공백이 허용됨 (연속된 공백은 하나로 간주)
- * 2. 이름은 글자(영문, 한글)와 공백만 포함 가능
+ * 1. 공백이 허용됨
+ * 2. 이름은 모든 언어 사용가능, 특수문자, 숫자 불가
  * 3. 정규화된 총 길이는 MAX_NAME_LENGTH(50자) 이하
  * @param name 사용자가 입력한 이름
  * @returns 유효성 검사 결과
@@ -128,4 +130,11 @@ export const formatDateInput = (value: string) => {
       .join('-') || '';
 
   return formatValue;
+};
+
+// 국적 정렬 함수
+export const getSortedNationalities = (
+  nationalities: KoEnEnumType[],
+): KoEnEnumType[] => {
+  return [...nationalities].sort((a, b) => a.en.localeCompare(b.en));
 };

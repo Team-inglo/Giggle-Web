@@ -8,7 +8,7 @@ import { useTempSignUp } from '@/hooks/api/useAuth';
 import { deleteAccessToken, deleteRefreshToken } from '@/utils/auth';
 import { useUserStore } from '@/store/user';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { checkEmployerPage } from '@/utils/checkUserPage';
 
@@ -83,21 +83,21 @@ const SignupPage = () => {
     <div className="flex flex-col w-screen h-screen bg-white">
       {currentStep === 3 ? (
         <VerificationSuccessful
-        title={signInputTranclation.successVerify[isEmployer(pathname)]}
-        content={
-          signInputTranclation.successVerifyContent[isEmployer(pathname)]
-        }
-        buttonText={
-          signInputTranclation.successVerifyBtn[isEmployer(pathname)]
-        }
-        onNext={() => {
-          navigate(
-            checkEmployerPage(pathname)
-              ? '/employer/signup/information'
-              : '/information',
-          );
-        }}
-      />
+          title={signInputTranslation.successVerify[isEmployer(pathname)]}
+          content={
+            signInputTranslation.successVerifyContent[isEmployer(pathname)]
+          }
+          buttonText={
+            signInputTranslation.successVerifyBtn[isEmployer(pathname)]
+          }
+          onNext={() => {
+            navigate(
+              checkEmployerPage(pathname)
+                ? '/employer/signup/information'
+                : '/information',
+            );
+          }}
+        />
       ) : (
         <>
           <BaseHeader

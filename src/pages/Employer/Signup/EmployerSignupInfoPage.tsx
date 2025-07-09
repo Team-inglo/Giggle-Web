@@ -6,7 +6,7 @@ import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
 import InformationInputSection from '@/components/Employer/Signup/InformationInputSection';
 import PolicyViewer from '@/components/Information/PolicyViewer';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import {
   useGetPolicy,
   usePostRegistrationNumberValidation,
@@ -108,12 +108,12 @@ const EmployerSignupInfoPage = () => {
     <div className="w-full h-screen flex items-center justify-center">
       {devIsModal ? (
         <VerificationSuccessful
-          title={signInputTranclation.signupComplete[isEmployer(pathname)]}
+          title={signInputTranslation.signupComplete[isEmployer(pathname)]}
           content={
-            signInputTranclation.signupCompleteContent[isEmployer(pathname)]
+            signInputTranslation.signupCompleteContent[isEmployer(pathname)]
           }
           buttonText={
-            signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
+            signInputTranslation.signupCompleteBtn[isEmployer(pathname)]
           }
           onNext={() => navigate('/splash')}
         />
@@ -173,7 +173,6 @@ const EmployerSignupInfoPage = () => {
               getPolicy(policy);
             }}
             onNext={setIsAgreeModal}
-            accountType="EMPLOYER"
           />
         </BottomSheetLayout>
       )}

@@ -5,7 +5,7 @@ import Input from '@/components/Common/Input';
 import PageTitle from '@/components/Common/PageTitle';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import {
   useGetEmailValidation,
   usePatchAuthentication,
@@ -86,7 +86,7 @@ const ResetPasswordPage = () => {
         onError: () => {
           setEmailVerifyStatus('error');
           setEmailError(
-            `${signInputTranclation.verifyFailed['ko']} (${try_cnt}/5)`,
+            `${signInputTranslation.verifyFailed['ko']} (${try_cnt}/5)`,
           );
         },
       },
@@ -135,11 +135,11 @@ const ResetPasswordPage = () => {
             <PageTitle title={'찾으려는 계정의\n이메일을 입력해주세요'} />
             <div className="flex flex-col gap-2">
               <div className="flex flex-col mb-[7.125rem]">
-                <InputLayout title={signInputTranclation.email['ko']}>
+                <InputLayout title={signInputTranslation.email['ko']}>
                   <div className="flex gap-2">
                     <Input
                       inputType={InputType.TEXT}
-                      placeholder={signInputTranclation.enterEmail['ko']}
+                      placeholder={signInputTranslation.enterEmail['ko']}
                       value={email}
                       onChange={handleEmailInput}
                       canDelete={false}
@@ -153,8 +153,8 @@ const ResetPasswordPage = () => {
                       onClick={handleResendClick}
                     >
                       {emailVerifyStatus === null
-                        ? signInputTranclation.sendEmail['ko']
-                        : signInputTranclation.emailSentBtnText['ko']}
+                        ? signInputTranslation.sendEmail['ko']
+                        : signInputTranslation.emailSentBtnText['ko']}
                     </button>
                   </div>
                   {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
@@ -163,7 +163,7 @@ const ResetPasswordPage = () => {
                       <div className="relative w-full">
                         <Input
                           inputType={InputType.TEXT}
-                          placeholder={signInputTranclation.verification['ko']}
+                          placeholder={signInputTranslation.verification['ko']}
                           value={authenticationCode}
                           onChange={setAuthenticationCode}
                           canDelete={false}
@@ -173,7 +173,7 @@ const ResetPasswordPage = () => {
                             className="caption-12-regular text-blue-500 underline absolute right-[1rem] top-[1rem]"
                             onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
                           >
-                            {signInputTranclation.resend['ko']}
+                            {signInputTranslation.resend['ko']}
                           </button>
                         )}
                       </div>
@@ -189,28 +189,28 @@ const ResetPasswordPage = () => {
                             : handleVerifyClick
                         }
                       >
-                        {signInputTranclation.resetPasswordVerifySuccess['ko']}
+                        {signInputTranslation.resetPasswordVerifySuccess['ko']}
                       </button>
                     </div>
                   )}
                   {emailVerifyStatus === 'sent' && (
                     <>
                       <p className="text-blue-600 text-xs p-2">
-                        {signInputTranclation.enterCode['ko']}
+                        {signInputTranslation.enterCode['ko']}
                       </p>
                       <p className="text-[#FF6F61] text-xs px-2 pb-2">
-                        {signInputTranclation.spamEmailInfo['ko']}
+                        {signInputTranslation.spamEmailInfo['ko']}
                       </p>
                     </>
                   )}
                   {emailVerifyStatus === 'resent' && (
                     <p className="text-blue-600 text-xs p-2">
-                      {signInputTranclation.resentMessage['ko']}
+                      {signInputTranslation.resentMessage['ko']}
                     </p>
                   )}
                   {emailVerifyStatus === 'verified' && (
                     <p className="text-blue-600 text-xs p-2">
-                      {signInputTranclation.successVerify['ko']}
+                      {signInputTranslation.successVerify['ko']}
                     </p>
                   )}
                   {emailError && (
