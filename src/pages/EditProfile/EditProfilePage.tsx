@@ -25,7 +25,7 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { processAddressData } from '@/utils/map';
 import { documentTranslation } from '@/constants/translation';
-import { formatDateInput } from '@/utils/information';
+import { formatDateInput, getSortedNationalities } from '@/utils/information';
 import { Nationalities } from '@/constants/manageResume';
 import {
   getNationalityEnFromEnum,
@@ -228,7 +228,9 @@ const EditProfilePage = () => {
                     getNationalityEnFromEnum(userData.nationality || '') || ''
                   }
                   placeholder="Select Nationality"
-                  options={Nationalities.map((nationality) => nationality.en)}
+                  options={getSortedNationalities(Nationalities).map(
+                    (nationality) => nationality.en,
+                  )}
                   setValue={(value: string) =>
                     setUserData({
                       ...userData,
