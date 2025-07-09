@@ -1,4 +1,4 @@
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 
 // 비밀번호 유효성 검사 함수
@@ -10,7 +10,7 @@ export const validatePassword = (
   const passwordRegex =
     /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,20}$/;
   if (!passwordRegex.test(password)) {
-    setPasswordError(signInputTranclation.invalidPassword[language]);
+    setPasswordError(signInputTranslation.invalidPassword[language]);
     return false;
   }
   setPasswordError(null);
@@ -26,7 +26,7 @@ export const validatedConfirmPassword = (
 ): boolean => {
   if (confirmPassword !== password) {
     setConfirmPasswordError(
-      signInputTranclation.invalidConfirmPassword[language],
+      signInputTranslation.invalidConfirmPassword[language],
     );
     return false;
   }
@@ -42,7 +42,7 @@ export const validateEmail = (
 ): boolean => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   if (!emailRegex.test(email)) {
-    setEmailError(signInputTranclation.invalidEmail[isEmployer(pathname)]);
+    setEmailError(signInputTranslation.invalidEmail[isEmployer(pathname)]);
     return false;
   }
   setEmailError(null);

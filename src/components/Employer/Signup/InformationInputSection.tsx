@@ -14,7 +14,7 @@ import {
 import PageTitle from '@/components/Common/PageTitle';
 import {
   documentTranslation,
-  signInputTranclation,
+  signInputTranslation,
 } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
@@ -160,9 +160,9 @@ const InformationInputSection = ({
         ) : (
           <>
             <PageTitle
-              title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}
+              title={signInputTranslation.infoStepTitle[isEmployer(pathname)]}
               content={
-                signInputTranclation.infoStepContent[isEmployer(pathname)]
+                signInputTranslation.infoStepContent[isEmployer(pathname)]
               }
             />
 

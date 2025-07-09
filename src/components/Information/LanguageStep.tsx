@@ -5,7 +5,7 @@ import Dropdown from '@/components/Common/Dropdown';
 import { languageList } from '@/constants/information';
 import Button from '@/components/Common/Button';
 import PageTitle from '../Common/PageTitle';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import InputLayout from '../WorkExperience/InputLayout';
@@ -21,9 +21,9 @@ const LanguageStep = ({ onNext }: LanguageStepProps) => {
     <div className="w-full mx-auto">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
-          title={signInputTranclation.languageStepTitle[isEmployer(pathname)]}
+          title={signInputTranslation.languageStepTitle[isEmployer(pathname)]}
           content={
-            signInputTranclation.languageStepContent[isEmployer(pathname)]
+            signInputTranslation.languageStepContent[isEmployer(pathname)]
           }
         />
       </div>
@@ -31,7 +31,7 @@ const LanguageStep = ({ onNext }: LanguageStepProps) => {
         {/* 언어 선택 작성 */}
         <InputLayout title="Language">
           <Dropdown
-            title="Language"
+            title="Select Language"
             value={language}
             placeholder="Select Language"
             options={languageList}

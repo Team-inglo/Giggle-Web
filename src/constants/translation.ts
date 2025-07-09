@@ -1,4 +1,4 @@
-export const signInputTranclation = {
+export const signInputTranslation = {
   signin: {
     ko: '로그인',
     en: 'Sign In',
@@ -189,6 +189,30 @@ export const signInputTranclation = {
   signupCompleteBtn: {
     ko: '시작하기',
     en: 'Browse Jobs',
+  },
+  essentialAgree: {
+    ko: '약관동의',
+    en: 'Agree to Terms',
+  },
+  essentialAgreeContent: {
+    ko: '전체동의',
+    en: 'All Agree',
+  },
+  essentialAgreeAssistive: {
+    ko: '선택항목 포함 모든 약관에 동의합니다.',
+    en: 'Agree to all terms, including selected items.',
+  },
+  serviceTerms: {
+    ko: '(필수) 서비스 이용약관동의',
+    en: '(Essential) Service Terms Agreement',
+  },
+  privacyPolicy: {
+    ko: '(필수) 개인정보 수집 및 이용 동의',
+    en: '(Essential) Personal Information Collection and Use Agreement',
+  },
+  locationBasedTerms: {
+    ko: '(필수) 위치정보 이용동의',
+    en: '(Essential) Location Information Use Agreement',
   },
 };
 
@@ -701,5 +725,9 @@ export const documentTranslation = {
   optional: {
     ko: '(옵션)',
     en: '(optional)',
+  },
+  inputWithoutDash: {
+    ko: '- 없이 숫자만 입력',
+    en: 'Enter numbers only',
   },
 };

@@ -6,7 +6,7 @@ import { validateEmail } from '@/utils/signin';
 import { useGetEmailValidation, useSignIn } from '@/hooks/api/useAuth';
 import { useUserInfoforSigninStore } from '@/store/signup';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
 
@@ -71,7 +71,7 @@ const SigninInputSection = () => {
       // 2. 이메일 존재 여부 검사 결과 처리
       if (ValidationResponse) {
         if (ValidationResponse.data.is_valid === true) {
-          setEmailError(signInputTranclation.emailWrong['ko']);
+          setEmailError(signInputTranslation.emailWrong['ko']);
           setIsValid(false);
         } else {
           setEmailError(null);

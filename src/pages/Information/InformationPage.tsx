@@ -7,7 +7,7 @@ import InformationStep from '@/components/Information/InformationStep';
 import LanguageStep from '@/components/Information/LanguageStep';
 import PolicyViewer from '@/components/Information/PolicyViewer';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { useGetPolicy, useSignUp } from '@/hooks/api/useAuth';
 import {
   initialUserInfoRequestBody,
@@ -68,12 +68,12 @@ const InformationPage = () => {
     <div className="m-auto max-w-[500px] relative h-screen flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide">
       {devIsModal ? (
         <VerificationSuccessful
-          title={signInputTranclation.signupComplete[isEmployer(pathname)]}
+          title={signInputTranslation.signupComplete[isEmployer(pathname)]}
           content={
-            signInputTranclation.signupCompleteContent[isEmployer(pathname)]
+            signInputTranslation.signupCompleteContent[isEmployer(pathname)]
           }
           buttonText={
-            signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
+            signInputTranslation.signupCompleteBtn[isEmployer(pathname)]
           }
           onNext={() => navigate('/splash')}
         />
@@ -111,7 +111,6 @@ const InformationPage = () => {
               getPolicy(policy);
             }}
             onNext={setIsAgreeModal}
-            accountType="USER"
           />
         </BottomSheetLayout>
       )}

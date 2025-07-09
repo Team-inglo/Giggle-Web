@@ -1,20 +1,19 @@
 import CheckIcon from '@/assets/icons/CheckOfBoxIcon.svg?react';
 import ArrowIcon from '@/assets/icons/RightArrowIcon.svg?react';
 import Button from '@/components/Common/Button';
+import { signInputTranslation } from '@/constants/translation';
 import { TermType } from '@/types/api/users';
+import { isEmployer } from '@/utils/signup';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 type AgreeModalInnerProps = {
   onPolicyPreview: (termType: TermType) => void;
   onNext: Dispatch<SetStateAction<boolean>>;
-  accountType: 'USER' | 'EMPLOYER';
 };
 
-const AgreeModalInner = ({
-  onPolicyPreview,
-  onNext,
-  accountType,
-}: AgreeModalInnerProps) => {
+const AgreeModalInner = ({ onPolicyPreview, onNext }: AgreeModalInnerProps) => {
+  const { pathname } = useLocation();
   const [essentialAgreeList, setEssentialAgreeList] = useState<boolean[]>([
     false,
     false,
@@ -33,9 +32,11 @@ const AgreeModalInner = ({
   };
   return (
     <div className="w-full flex flex-col items-center justify-start gap-[2.5rem] text-left body-16-regular">
-      <div className="relative w-full flex flex-col items-start justify-start gap-y-6 text-left text-[#33384b] heading-20-semibold">
+      <div className="relative w-full flex flex-col items-start justify-start gap-y-6 pt-3 text-left text-[#33384b] heading-20-semibold">
         <div className="w-full flex flex-col items-start justify-start px-1.5">
-          <div className="w-full flex items-center ">약관동의*</div>
+          <div className="w-full flex items-center ">
+            {signInputTranslation.essentialAgree[isEmployer(pathname)]}
+          </div>
         </div>
         <div className="w-full border-b border-[#F4F4F6]"></div>
       </div>
@@ -57,9 +58,19 @@ const AgreeModalInner = ({
               </div>
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
-              <div className="w-full flex items-center">전체동의</div>
+              <div className="w-full flex items-center">
+                {
+                  signInputTranslation.essentialAgreeContent[
+                    isEmployer(pathname)
+                  ]
+                }
+              </div>
               <div className="w-full caption-12-regular text-[#bdbdbd] flex items-center">
-                선택항목 포함 모든 약관에 동의합니다.
+                {
+                  signInputTranslation.essentialAgreeAssistive[
+                    isEmployer(pathname)
+                  ]
+                }
               </div>
             </div>
           </div>
@@ -76,12 +87,12 @@ const AgreeModalInner = ({
             </div>
             <div className="w-full flex items-center justify-between gap-1">
               <div className="w-full flex items-center">
-                (필수) 서비스 이용약관동의
+                {signInputTranslation.serviceTerms[isEmployer(pathname)]}
               </div>
               <div
                 onClick={() =>
                   onPolicyPreview(
-                    accountType === 'USER'
+                    pathname === '/signup'
                       ? TermType.PERSONAL_SERVICE_TERMS
                       : TermType.ENTERPRISE_SERVICE_TERMS,
                   )
@@ -102,7 +113,7 @@ const AgreeModalInner = ({
             </div>
             <div className="w-full flex items-center justify-between gap-1">
               <div className="w-full flex items-center">
-                (필수) 개인정보 수집 및 이용 동의
+                {signInputTranslation.privacyPolicy[isEmployer(pathname)]}
               </div>
               <div onClick={() => onPolicyPreview(TermType.PRIVACY_POLICY)}>
                 <ArrowIcon />
@@ -120,7 +131,7 @@ const AgreeModalInner = ({
             </div>
             <div className="w-full flex items-center justify-between gap-1">
               <div className="w-full flex items-center">
-                (필수) 위치정보 이용동의
+                {signInputTranslation.locationBasedTerms[isEmployer(pathname)]}
               </div>
               <div
                 onClick={() => onPolicyPreview(TermType.LOCATION_BASED_TERMS)}
