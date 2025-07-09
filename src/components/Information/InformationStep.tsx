@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import {
   formatDateInput,
   formatPhoneNumber,
+  getSortedNationalities,
   isValidName,
   isValidPhoneNumber,
 } from '@/utils/information';
@@ -17,7 +18,7 @@ import Button from '@/components/Common/Button';
 import { formatDateToDash } from '@/utils/editResume';
 import InputLayout from '../WorkExperience/InputLayout';
 import PageTitle from '../Common/PageTitle';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import { Nationalities } from '@/constants/manageResume';
@@ -113,8 +114,8 @@ const InformationStep = ({
     <div className="w-full flex flex-col gap-4">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
-          title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}
-          content={signInputTranclation.infoStepContent[isEmployer(pathname)]}
+          title={signInputTranslation.infoStepTitle[isEmployer(pathname)]}
+          content={signInputTranslation.infoStepContent[isEmployer(pathname)]}
         />
       </div>
       <div className="w-full mx-auto mb-[7rem] px-4">
@@ -182,12 +183,14 @@ const InformationStep = ({
           {/* 국적 선택 */}
           <InputLayout title="Nationality" isOptional>
             <Dropdown
-              title=""
+              title="Select Nationality"
               value={
                 getNationalityEnFromEnum(newUserInfo.nationality || '') || ''
               }
               placeholder="Select Nationality"
-              options={Nationalities.map((nationality) => nationality.en)} // TODO: 국가명 데이터 받으면 교체해야 함.
+              options={getSortedNationalities(Nationalities).map(
+                (nationality) => nationality.en,
+              )} // TODO: 국가명 데이터 받으면 교체해야 함.
               setValue={(value: string) =>
                 setNewUserInfo({
                   ...newUserInfo,
@@ -199,7 +202,7 @@ const InformationStep = ({
           {/* 비자 선택 */}
           <InputLayout title="Visa Status">
             <Dropdown
-              title=""
+              title="Select Visa Status"
               value={newUserInfo.visa}
               placeholder="Select Visa Status"
               options={visa} // TODO: 비자 데이터 받으면 교체해야

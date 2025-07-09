@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
+import { cleanup } from '@testing-library/react';
+import { afterEach } from 'vitest';
+
+// 모든 테스트가 끝난 후 자동으로 DOM을 정리합니다.
+afterEach(() => {
+  cleanup();
+});
 
 // 전역 테스트 설정
 global.ResizeObserver = class ResizeObserver {
@@ -58,8 +65,3 @@ Object.defineProperty(window, 'scrollTo', {
   writable: true,
   value: vi.fn(),
 });
-
-// 환경 변수 모킹 (필요시)
-// vi.mock('환경변수 관련 모듈', () => ({
-//   API_BASE_URL: 'http://localhost:3000',
-// }));

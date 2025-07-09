@@ -487,7 +487,6 @@ export const Nationalities: KoEnEnumType[] = [
   },
   { ko: '헝가리', en: 'Hungary', enum: 'HUNGARY' },
   { ko: '홍콩', en: 'Hong Kong', enum: 'HONG_KONG' },
-  { ko: '없음', en: '', enum: 'BLANK' },
 ];
 
 export const MajorsKo: string[] = Majors.map((major) => major.ko);

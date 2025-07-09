@@ -6,7 +6,7 @@ import { UserType } from '@/constants/user';
 import { deleteAccessToken, deleteRefreshToken } from '@/utils/auth';
 import { useUserStore } from '@/store/user';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { checkEmployerPage } from '@/utils/checkUserPage';
@@ -78,12 +78,12 @@ const EmployerSignupPage = () => {
     <div className="flex flex-col w-[100vw] h-[100vh] bg-white">
       {currentStep === 2 ? (
         <VerificationSuccessful
-          title={signInputTranclation.successVerify[isEmployer(pathname)]}
+          title={signInputTranslation.successVerify[isEmployer(pathname)]}
           content={
-            signInputTranclation.successVerifyContent[isEmployer(pathname)]
+            signInputTranslation.successVerifyContent[isEmployer(pathname)]
           }
           buttonText={
-            signInputTranclation.successVerifyBtn[isEmployer(pathname)]
+            signInputTranslation.successVerifyBtn[isEmployer(pathname)]
           }
           onNext={() => {
             navigate(
@@ -98,7 +98,7 @@ const EmployerSignupPage = () => {
           <BaseHeader
             hasBackButton
             hasMenuButton={false}
-            title={signInputTranclation.signupTitle[isEmployer(pathname)]}
+            title={signInputTranslation.signupTitle[isEmployer(pathname)]}
             onClickBackButton={() => handleBackButtonClick()}
           />
           <div className="flex justify-center items-center sticky top-[3.75rem]">

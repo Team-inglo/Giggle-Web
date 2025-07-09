@@ -9,10 +9,11 @@ import { useState } from 'react';
 import ServerErrorBottomSheet from '@/components/Common/ServerErrorBottomSheet';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import { ReactNativeMessageListener } from '@/components/Common/ReactNativeMessageListener';
-import ApiErrorBottomSheet from './components/Common/ApiErrorBottomSheet';
+import ApiErrorBottomSheet from '@/components/Common/ApiErrorBottomSheet';
 import { BrowserRouter } from 'react-router-dom';
 import { useErrorStore } from '@/store/error';
 import { useKakaoLoader } from 'react-kakao-maps-sdk';
+import Toast from '@/components/Common/Toast';
 
 function App() {
   useKakaoLoader({
@@ -56,24 +57,22 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ReactNativeMessageListener />
         <Router />
-      </BrowserRouter>
-
-      {isOpenServerErrorBottomSheet && (
+        <ReactNativeMessageListener />
+        <Toast />
+        {isLoading && <LoadingOverLay />}
         <ServerErrorBottomSheet
           isShowBottomsheet={isOpenServerErrorBottomSheet}
           setIsShowBottomSheet={setIsOpenServerErrorBottomSheet}
         />
-      )}
-      {isOpenErrorBottomSheet && (
-        <ApiErrorBottomSheet
-          errorMessage={errorMessage}
-          isShowBottomsheet={isOpenErrorBottomSheet}
-          setIsShowBottomSheet={setIsOpenErrorBottomSheet}
-        />
-      )}
-      {isLoading && <LoadingOverLay />}
+        {isOpenErrorBottomSheet && (
+          <ApiErrorBottomSheet
+            errorMessage={errorMessage}
+            isShowBottomsheet={isOpenErrorBottomSheet}
+            setIsShowBottomSheet={setIsOpenErrorBottomSheet}
+          />
+        )}
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }

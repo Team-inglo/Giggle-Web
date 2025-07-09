@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 import Icon from '@/components/Common/Icon';
 import BottomSheetLayout from './BottomSheetLayout';
-import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
+import SelectListItem from './Select/SelectListItem';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {
@@ -33,14 +33,13 @@ export const DropdownModal = ({
       <div className="flex-1 flex flex-col w-full items-start gap-[5px]">
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
-          <div
-            className={`w-full self-stretch overflow-hidden rounded-[0.625rem] flex flex-row items-center justify-between ${value === option ? 'body-16-medium' : 'body-16-regular'} py-3`}
+          <SelectListItem
+            selectionType={SelectListItem.SelectionType.SINGLE}
+            title={option}
+            isSelected={value === option}
+            iconPosition={SelectListItem.IconPosition.RIGHT}
             onClick={() => onSelect(option)}
-            key={option}
-          >
-            {option}
-            {value === option && <Icon icon={CheckIcon} />}
-          </div>
+          />
         ))}
       </div>
     </div>

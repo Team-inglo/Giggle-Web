@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserType } from '@/constants/user';
 import {
   profileTranslation,
-  signInputTranclation,
+  signInputTranslation,
 } from '@/constants/translation';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import Input from '@/components/Common/Input';
@@ -118,7 +118,7 @@ const NewPasswordStep = ({
               bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
               fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
               title={
-                signInputTranclation.continue[
+                signInputTranslation.continue[
                   isEmployerByAccountType(account_type)
                 ]
               }

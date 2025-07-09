@@ -25,7 +25,7 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import { processAddressData } from '@/utils/map';
 import { documentTranslation } from '@/constants/translation';
-import { formatDateInput } from '@/utils/information';
+import { formatDateInput, getSortedNationalities } from '@/utils/information';
 import { Nationalities } from '@/constants/manageResume';
 import {
   getNationalityEnFromEnum,
@@ -223,12 +223,14 @@ const EditProfilePage = () => {
               {/* 국적 선택 */}
               <InputLayout title="Nationality" isOptional>
                 <Dropdown
-                  title=""
+                  title="Select Nationality"
                   value={
                     getNationalityEnFromEnum(userData.nationality || '') || ''
                   }
                   placeholder="Select Nationality"
-                  options={Nationalities.map((nationality) => nationality.en)}
+                  options={getSortedNationalities(Nationalities).map(
+                    (nationality) => nationality.en,
+                  )}
                   setValue={(value: string) =>
                     setUserData({
                       ...userData,
@@ -279,7 +281,7 @@ const EditProfilePage = () => {
               {/* 비자 선택 */}
               <InputLayout title="Visa Status">
                 <Dropdown
-                  title=""
+                  title="Select Visa Status"
                   value={userData.visa}
                   placeholder="Select Visa Status"
                   options={visa}

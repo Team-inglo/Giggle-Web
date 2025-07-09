@@ -14,10 +14,4 @@ export const phone = ['010'];
 
 export const gender = ['Male', 'Female', 'None'];
 
-export const languageList = [
-  'English',
-  'Korean',
-  'Vietnamese',
-  'Uzbek',
-  'Turkish',
-];
+export const languageList = ['English', 'Korean'];

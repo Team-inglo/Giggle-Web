@@ -8,7 +8,7 @@ import {
   validatePassword,
 } from '@/utils/signin';
 import { isEmployer } from '@/utils/signup';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import {
   useGetEmailValidation,
   usePatchAuthentication,
@@ -93,7 +93,7 @@ const SignupInput = ({
       if (ValidationResponse) {
         if (!ValidationResponse.data.is_valid) {
           setEmailError(
-            signInputTranclation.emailAvailability[isEmployer(pathname)],
+            signInputTranslation.emailAvailability[isEmployer(pathname)],
           );
           setIsValid(false);
         }
@@ -162,7 +162,7 @@ const SignupInput = ({
         onError: () => {
           setEmailVerifyStatus('error');
           setEmailError(
-            `${signInputTranclation.verifyFailed[isEmployer(pathname)]} (${try_cnt}/5)`,
+            `${signInputTranslation.verifyFailed[isEmployer(pathname)]} (${try_cnt}/5)`,
           );
         },
       },
@@ -196,17 +196,17 @@ const SignupInput = ({
   return (
     <div className="w-full">
       <PageTitle
-        title={signInputTranclation.signup[isEmployer(pathname)]}
-        content={signInputTranclation.signupContent[isEmployer(pathname)]}
+        title={signInputTranslation.signup[isEmployer(pathname)]}
+        content={signInputTranslation.signupContent[isEmployer(pathname)]}
       />
       <div className="flex flex-col gap-2 px-4">
         <div className="flex flex-col mb-[7.125rem]">
-          <InputLayout title={signInputTranclation.email[isEmployer(pathname)]}>
+          <InputLayout title={signInputTranslation.email[isEmployer(pathname)]}>
             <div className="flex gap-2">
               <Input
                 inputType={InputType.TEXT}
                 placeholder={
-                  signInputTranclation.enterEmail[isEmployer(pathname)]
+                  signInputTranslation.enterEmail[isEmployer(pathname)]
                 }
                 value={email}
                 onChange={handleEmailInput}
@@ -237,8 +237,8 @@ const SignupInput = ({
                 }
               >
                 {emailVerifyStatus === null && !emailError
-                  ? signInputTranclation.sendEmail[isEmployer(pathname)]
-                  : signInputTranclation.emailSentBtnText[isEmployer(pathname)]}
+                  ? signInputTranslation.sendEmail[isEmployer(pathname)]
+                  : signInputTranslation.emailSentBtnText[isEmployer(pathname)]}
               </button>
             </div>
             {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
@@ -248,7 +248,7 @@ const SignupInput = ({
                   <Input
                     inputType={InputType.TEXT}
                     placeholder={
-                      signInputTranclation.verification[isEmployer(pathname)]
+                      signInputTranslation.verification[isEmployer(pathname)]
                     }
                     value={authenticationCode}
                     onChange={onAuthCodeChange}
@@ -259,7 +259,7 @@ const SignupInput = ({
                       className="caption-12-regular text-blue-500 underline absolute right-[1rem] top-[1rem]"
                       onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
                     >
-                      {signInputTranclation.resend[isEmployer(pathname)]}
+                      {signInputTranslation.resend[isEmployer(pathname)]}
                     </button>
                   )}
                 </div>
@@ -276,29 +276,29 @@ const SignupInput = ({
                       : handleVerifyClick
                   }
                 >
-                  {signInputTranclation.verify[isEmployer(pathname)]}
+                  {signInputTranslation.verify[isEmployer(pathname)]}
                 </button>
               </div>
             )}
             {emailVerifyStatus === 'sent' && (
               <>
                 <p className="text-blue-600 text-xs p-2">
-                  {signInputTranclation.enterCode[isEmployer(pathname)]}
+                  {signInputTranslation.enterCode[isEmployer(pathname)]}
                 </p>
                 <p className="text-[#FF6F61] text-xs px-2 pb-2">
                   {' '}
-                  {signInputTranclation.spamEmailInfo[isEmployer(pathname)]}
+                  {signInputTranslation.spamEmailInfo[isEmployer(pathname)]}
                 </p>
               </>
             )}
             {emailVerifyStatus === 'resent' && (
               <p className="text-blue-600 text-xs p-2">
-                {signInputTranclation.resentMessage[isEmployer(pathname)]}
+                {signInputTranslation.resentMessage[isEmployer(pathname)]}
               </p>
             )}
             {emailVerifyStatus === 'verified' && (
               <p className="text-blue-600 text-xs p-2">
-                {signInputTranclation.successVerify[isEmployer(pathname)]}
+                {signInputTranslation.successVerify[isEmployer(pathname)]}
               </p>
             )}
             {emailError && (
@@ -307,12 +307,12 @@ const SignupInput = ({
             {/* 비밀번호 입력 input */}
           </InputLayout>
           <InputLayout
-            title={signInputTranclation.password[isEmployer(pathname)]}
+            title={signInputTranslation.password[isEmployer(pathname)]}
           >
             <Input
               inputType={InputType.PASSWORD}
               placeholder={
-                signInputTranclation.enterPassword[isEmployer(pathname)]
+                signInputTranslation.enterPassword[isEmployer(pathname)]
               }
               value={password}
               onChange={onPasswordChange}
@@ -323,12 +323,12 @@ const SignupInput = ({
             )}
           </InputLayout>
           <InputLayout
-            title={signInputTranclation.confirmPassword[isEmployer(pathname)]}
+            title={signInputTranslation.confirmPassword[isEmployer(pathname)]}
           >
             <Input
               inputType={InputType.PASSWORD}
               placeholder={
-                signInputTranclation.enterConfirmPassword[isEmployer(pathname)]
+                signInputTranslation.enterConfirmPassword[isEmployer(pathname)]
               }
               value={confirmPasswordValue}
               onChange={handleConfirmPasswordChange}
@@ -347,7 +347,7 @@ const SignupInput = ({
               type="large"
               bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
               fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              title={signInputTranclation.continue[isEmployer(pathname)]}
+              title={signInputTranslation.continue[isEmployer(pathname)]}
               onClick={isValid ? onSignUpClick : undefined}
             />
           </div>
