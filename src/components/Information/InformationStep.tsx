@@ -182,7 +182,7 @@ const InformationStep = ({
           {/* 국적 선택 */}
           <InputLayout title="Nationality" isOptional>
             <Dropdown
-              title=""
+              title="Select Nationality"
               value={
                 getNationalityEnFromEnum(newUserInfo.nationality || '') || ''
               }
@@ -199,7 +199,7 @@ const InformationStep = ({
           {/* 비자 선택 */}
           <InputLayout title="Visa Status">
             <Dropdown
-              title=""
+              title="Select Visa Status"
               value={newUserInfo.visa}
               placeholder="Select Visa Status"
               options={visa} // TODO: 비자 데이터 받으면 교체해야
