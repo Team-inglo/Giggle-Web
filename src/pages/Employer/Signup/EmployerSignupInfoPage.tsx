@@ -125,9 +125,6 @@ const EmployerSignupInfoPage = () => {
             hasMenuButton={false}
             onClickBackButton={() => navigate('/signup')}
           />
-          <div className="flex justify-center items-center sticky top-[3.75rem]">
-            <div className={`h-1 w-full bg-[#fef387]`} />
-          </div>
           <InformationInputSection
             newEmployData={newEmployData}
             setNewEmployData={setNewEmployData}

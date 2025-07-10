@@ -142,7 +142,7 @@ const InformationInputSection = ({
   };
   return (
     <>
-      <div className="w-full flex flex-col px-4 items-center justify-between ">
+      <div className="w-full flex flex-col items-center justify-between ">
         {isAddressSearch ? (
           <DaumPostcodeEmbed
             style={{
@@ -166,7 +166,7 @@ const InformationInputSection = ({
               }
             />
 
-            <div className="flex flex-col gap-4 [&>*:last-child]:mb-40">
+            <div className="flex flex-col px-4 gap-4 [&>*:last-child]:mb-40">
               {/* 이름 입력 */}
               <InputLayout title="회사/점포명">
                 <Input
