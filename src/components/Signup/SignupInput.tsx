@@ -11,39 +11,44 @@ import PageTitle from '@/components/Common/PageTitle';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
 import EmailVerifier from '../Auth/EmailVerifier';
+import { EmailVerificationResult } from '@/hooks/useEmailVerification';
 
 type signupInputProps = {
-  email: string;
-  onEmailChange: (value: string) => void;
   password: string;
   onPasswordChange: (value: string) => void;
-  authenticationCode: string;
-  onAuthCodeChange: (value: string) => void;
   onSignUpClick: () => void;
+  // 상위 컴포넌트에서 이메일 검증 결과를 받기 위한 callback
+  onEmailVerificationChange: (result: EmailVerificationResult) => void;
 };
 
 const SignupInput = ({
   onSignUpClick,
-  email,
   password,
-  authenticationCode,
-  onEmailChange,
   onPasswordChange,
-  onAuthCodeChange,
+  onEmailVerificationChange,
 }: signupInputProps) => {
   const { pathname } = useLocation();
-  const [emailVerifyStatus, setEmailVerifyStatus] = useState<string | null>(
-    null,
-  );
   const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
-  const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>();
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
   >(null);
   const [isValid, setIsValid] = useState(false);
-  const debouncedEmail = useDebounce(email);
+  const [emailVerificationResult, setEmailVerificationResult] =
+    useState<EmailVerificationResult>({
+      isValid: false,
+      email: '',
+      authenticationCode: '',
+      isVerified: false,
+    });
+
   const debouncedPassword = useDebounce(password);
+
+  // 이메일 검증 결과 처리
+  const handleEmailVerificationChange = (result: EmailVerificationResult) => {
+    setEmailVerificationResult(result);
+    onEmailVerificationChange(result);
+  };
 
   // 비밀번호 유효성 검사를 위한 단일 useEffect
   useEffect(() => {
@@ -66,30 +71,15 @@ const SignupInput = ({
     }
 
     // 전체 폼 유효성 상태 업데이트
-    const isEmailValid = !!debouncedEmail && !emailError;
     setIsValid(
-      isEmailValid &&
-        isPasswordValid &&
-        isConfirmValid &&
-        emailVerifyStatus === 'verified',
+      emailVerificationResult.isValid && isPasswordValid && isConfirmValid,
     );
   }, [
-    debouncedEmail,
-    emailError,
     debouncedPassword,
     confirmPasswordValue,
     pathname,
-    emailVerifyStatus,
+    emailVerificationResult.isValid,
   ]);
-
-  // 부모 컴포넌트로 값 전달
-  useEffect(() => {
-    if (email) onEmailChange(email);
-  }, [email, onEmailChange]);
-
-  useEffect(() => {
-    if (password) onPasswordChange(password);
-  }, [password, onPasswordChange]);
 
   const handleConfirmPasswordChange = (value: string) => {
     setConfirmPasswordValue(value);
@@ -104,16 +94,9 @@ const SignupInput = ({
       <div className="flex flex-col px-4">
         <div className="flex flex-col gap-6 mb-[7.125rem]">
           <EmailVerifier
-            email={email}
-            setEmail={onEmailChange}
-            emailError={emailError}
-            setEmailError={setEmailError}
-            emailVerifyStatus={emailVerifyStatus}
-            setEmailVerifyStatus={setEmailVerifyStatus}
-            setIsValid={setIsValid}
             language={isEmployer(pathname)}
-            authenticationCode={authenticationCode}
-            setAuthenticationCode={onAuthCodeChange}
+            context="signup"
+            onValidationChange={handleEmailVerificationChange}
           />
           <InputLayout
             title={signInputTranslation.password[isEmployer(pathname)]}

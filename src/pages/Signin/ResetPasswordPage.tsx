@@ -6,37 +6,30 @@ import { Language } from '@/components/Common/HelperLabel';
 import PageTitle from '@/components/Common/PageTitle';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
 import { usePostReissuePassword } from '@/hooks/api/useAuth';
-import { validateEmail } from '@/utils/signin';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EmailVerificationResult } from '@/hooks/useEmailVerification';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [isValid, setIsValid] = useState(false);
-  const [email, setEmail] = useState<string>('');
-  const [authenticationCode, setAuthenticationCode] = useState<string>('');
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const [emailVerifyStatus, setEmailVerifyStatus] = useState<string | null>(
-    null,
-  );
+  const [emailVerificationResult, setEmailVerificationResult] =
+    useState<EmailVerificationResult>({
+      isValid: false,
+      email: '',
+      authenticationCode: '',
+      isVerified: false,
+    });
 
   // 임시 비밀번호 발급 및 메일전송 훅
   const { mutate: reIssuePassword } = usePostReissuePassword({
     onSuccess: () => setCurrentStep(2),
   });
 
-  // 모든 필드의 유효성 검사 후, Continue 버튼 활성화
-  useEffect(() => {
-    const isEmailValid = validateEmail(
-      email,
-      setEmailError,
-      '/employer/signup',
-    );
-    const isVerified = emailVerifyStatus === 'verified';
-
-    setIsValid(isEmailValid && isVerified);
-  }, [email, emailVerifyStatus]);
+  // 이메일 검증 결과 처리
+  const handleEmailVerificationChange = (result: EmailVerificationResult) => {
+    setEmailVerificationResult(result);
+  };
 
   // API - 2.10 임시 비밀번호 발급 및 메일 전송
   const handleReissuePassword = () => {
@@ -58,26 +51,27 @@ const ResetPasswordPage = () => {
             <div className="flex flex-col gap-2 px-4">
               <div className="flex flex-col mb-[7.125rem]">
                 <EmailVerifier
-                  email={email}
-                  setEmail={setEmail}
-                  emailError={emailError}
-                  setEmailError={setEmailError}
-                  emailVerifyStatus={emailVerifyStatus}
-                  setEmailVerifyStatus={setEmailVerifyStatus}
-                  setIsValid={setIsValid}
                   language={Language.KO}
-                  authenticationCode={authenticationCode}
-                  setAuthenticationCode={setAuthenticationCode}
+                  context="reset-password"
+                  onValidationChange={handleEmailVerificationChange}
                 />
               </div>
               <BottomButtonPanel>
                 <div className="w-full">
                   <Button
-                    type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+                    type={
+                      emailVerificationResult.isValid
+                        ? Button.Type.PRIMARY
+                        : Button.Type.DISABLED
+                    }
                     size={Button.Size.LG}
                     isFullWidth
                     title={'다음'}
-                    onClick={isValid ? handleReissuePassword : undefined}
+                    onClick={
+                      emailVerificationResult.isValid
+                        ? handleReissuePassword
+                        : undefined
+                    }
                   />
                 </div>
               </BottomButtonPanel>

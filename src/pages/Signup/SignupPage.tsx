@@ -12,6 +12,7 @@ import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { checkEmployerPage } from '@/utils/checkUserPage';
 import ProgressStepper from '@/components/Common/ProgressStepper';
+import { EmailVerificationResult } from '@/hooks/useEmailVerification';
 
 const SignupPage = () => {
   const { pathname } = useLocation();
@@ -23,11 +24,16 @@ const SignupPage = () => {
 
   // sign-up Field 상태 관리
   const [password, setPassword] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
   const [accountType, setCurrentType] = useState<UserType | null>(null);
 
-  // authentication-code Field 상태 관리
-  const [authenticationCode, setAuthenticationCode] = useState<string>('');
+  // 이메일 검증 결과 상태
+  const [emailVerificationResult, setEmailVerificationResult] =
+    useState<EmailVerificationResult>({
+      isValid: false,
+      email: '',
+      authenticationCode: '',
+      isVerified: false,
+    });
 
   // mutate 관리
   const { mutate: tempSignUp } = useTempSignUp();
@@ -45,17 +51,17 @@ const SignupPage = () => {
     // 유학생 타입을 선택할 경우, 유저 step 이어 진행
     setCurrentStep(currentStep + 1);
   };
+
   const handleTypeSelect = (type: UserType) => {
     setCurrentType(type);
   };
+
   const handlePasswordChange = (value: string) => {
     setPassword(value);
   };
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
-  };
-  const handleAuthCodeChange = (value: string) => {
-    setAuthenticationCode(value);
+
+  const handleEmailVerificationChange = (result: EmailVerificationResult) => {
+    setEmailVerificationResult(result);
   };
 
   // API 정의
@@ -64,7 +70,7 @@ const SignupPage = () => {
     tempSignUp(
       {
         password: password,
-        email: email,
+        email: emailVerificationResult.email,
         account_type: UserType.USER,
       },
       { onSuccess: handleSignUpClick },
@@ -107,10 +113,7 @@ const SignupPage = () => {
             hasMenuButton={false}
             title="Sign Up"
           />
-          <ProgressStepper
-            totalCount={2}
-            currentStep={currentStep}
-          />
+          <ProgressStepper totalCount={2} currentStep={currentStep} />
         </>
       )}
       {/* 회원가입 STEP 별 랜딩 컴포넌트 */}
@@ -124,13 +127,10 @@ const SignupPage = () => {
         )}
         {currentStep === 2 && (
           <SignupInput
-            email={email}
-            onEmailChange={handleEmailChange}
-            authenticationCode={authenticationCode}
-            onAuthCodeChange={handleAuthCodeChange}
             onSignUpClick={handleSignUp}
             password={password}
             onPasswordChange={handlePasswordChange}
+            onEmailVerificationChange={handleEmailVerificationChange}
           />
         )}
       </div>
