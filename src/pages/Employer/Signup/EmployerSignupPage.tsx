@@ -11,6 +11,7 @@ import { isEmployer } from '@/utils/signup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { checkEmployerPage } from '@/utils/checkUserPage';
 import { EmailVerificationResult } from '@/hooks/useEmailVerification';
+import ProgressStepper from '@/components/Common/ProgressStepper';
 
 const EmployerSignupPage = () => {
   const { updateAccountType, updateName } = useUserStore();
@@ -106,12 +107,10 @@ const EmployerSignupPage = () => {
             title={signInputTranslation.signupTitle[isEmployer(pathname)]}
             onClickBackButton={() => handleBackButtonClick()}
           />
-          <div className="flex justify-center items-center sticky top-[3.75rem]">
-            <div className={`h-1 w-full bg-[#fef387]`} />
-          </div>
+          <ProgressStepper currentStep={2} totalCount={2} />
         </>
       )}
-      <div className="grow px-4 flex flex-col items-center">
+      <div className="grow flex flex-col items-center">
         {currentStep === 1 && (
           <SignupInput
             onSignUpClick={handleSignUp}
