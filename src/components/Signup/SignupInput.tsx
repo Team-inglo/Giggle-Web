@@ -2,31 +2,15 @@ import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import { useLocation } from 'react-router-dom';
-import {
-  validatedConfirmPassword,
-  validateEmail,
-  validatePassword,
-} from '@/utils/signin';
+import { validatedConfirmPassword, validatePassword } from '@/utils/signin';
 import { isEmployer } from '@/utils/signup';
-import {
-  signInputTranslation,
-  toastTranslation,
-} from '@/constants/translation';
-import {
-  useGetEmailValidation,
-  usePatchAuthentication,
-  useReIssueAuthentication,
-} from '@/hooks/api/useAuth';
+import { signInputTranslation } from '@/constants/translation';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { useEmailTryCountStore } from '@/store/signup';
 import PageTitle from '@/components/Common/PageTitle';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
-import { InfoBannerState } from '@/types/common/infoBanner';
-import InfoBanner from '@/components/Common/InfoBanner';
-import HelperLabel from '@/components/Common/HelperLabel';
-import { useToast } from '@/hooks/useToast';
+import EmailVerifier from '../Auth/EmailVerifier';
 
 type signupInputProps = {
   email: string;
@@ -53,7 +37,6 @@ const SignupInput = ({
   );
   const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
   const [emailError, setEmailError] = useState<string | null>(null);
-  const { try_cnt } = useEmailTryCountStore();
   const [passwordError, setPasswordError] = useState<string | null>();
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
@@ -61,55 +44,6 @@ const SignupInput = ({
   const [isValid, setIsValid] = useState(false);
   const debouncedEmail = useDebounce(email);
   const debouncedPassword = useDebounce(password);
-
-  const { data: ValidationResponse } = useGetEmailValidation(email);
-  const { success } = useToast();
-
-  // 이메일 재발송 훅
-  const { mutate: reIssueAuthentication } = useReIssueAuthentication();
-  // 인증코드 검증 훅
-  const { mutate: verifyAuthCode } = usePatchAuthentication();
-
-  // 이메일 입력 시, 인증번호 발송 초기화
-  const handleEmailInput = (value: string) => {
-    if (emailVerifyStatus === 'verified') return;
-    onEmailChange(value);
-    setEmailVerifyStatus(null);
-  };
-
-  // 이메일 유효성 검사를 위한 단일 useEffect
-  useEffect(() => {
-    const validateEmailAsync = async () => {
-      if (debouncedEmail === '') {
-        setEmailError(null);
-        setIsValid(false);
-        return;
-      }
-
-      // 1. 기본 이메일 형식 검사
-      const isEmailFormatValid = validateEmail(
-        debouncedEmail,
-        setEmailError,
-        pathname,
-      );
-      if (!isEmailFormatValid) {
-        setIsValid(false);
-        return;
-      }
-
-      // 2. 이메일 중복 검사 결과 처리
-      if (ValidationResponse) {
-        if (!ValidationResponse.data.is_valid) {
-          setEmailError(
-            signInputTranslation.emailAvailability[isEmployer(pathname)],
-          );
-          setIsValid(false);
-        }
-      }
-    };
-
-    validateEmailAsync();
-  }, [debouncedEmail, ValidationResponse, pathname]);
 
   // 비밀번호 유효성 검사를 위한 단일 useEffect
   useEffect(() => {
@@ -157,56 +91,8 @@ const SignupInput = ({
     if (password) onPasswordChange(password);
   }, [password, onPasswordChange]);
 
-  // API - 2.7 이메일 인증코드 검증
-  const handleVerifyClick = () => {
-    if (emailVerifyStatus === 'verified') {
-      return;
-    }
-    verifyAuthCode(
-      //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
-      { email: email, authentication_code: authenticationCode },
-      {
-        onSuccess: () => {
-          setEmailVerifyStatus('verified');
-          setEmailError(null);
-        },
-        onError: () => {
-          setEmailVerifyStatus('error');
-          setEmailError(
-            `${signInputTranslation.verifyFailed[isEmployer(pathname)]} (${try_cnt}/5)`,
-          );
-        },
-      },
-    );
-  };
-
   const handleConfirmPasswordChange = (value: string) => {
     setConfirmPasswordValue(value);
-  };
-
-  // 이메일 인증코드 재전송 API 호출
-  const handleResendClick = async () => {
-    try {
-      // 5회 이내 재발송 가능
-      reIssueAuthentication(
-        { email: email },
-        {
-          onSuccess: () => {
-            onAuthCodeChange('');
-            const status = try_cnt > 1 ? 'resent' : 'sent';
-            setEmailVerifyStatus(status);
-            setEmailError(null);
-            success(
-              status === 'resent'
-                ? toastTranslation.newVerifyCodeSent[isEmployer(pathname)]
-                : toastTranslation.verifyCodeSent[isEmployer(pathname)],
-            );
-          },
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
@@ -217,84 +103,18 @@ const SignupInput = ({
       />
       <div className="flex flex-col px-4">
         <div className="flex flex-col gap-6 mb-[7.125rem]">
-          <InputLayout title={signInputTranslation.email[isEmployer(pathname)]}>
-            <div className="flex gap-2">
-              <Input
-                inputType={InputType.TEXT}
-                placeholder={
-                  signInputTranslation.enterEmail[isEmployer(pathname)]
-                }
-                value={email}
-                onChange={handleEmailInput}
-                canDelete={false}
-              />
-              <Button
-                type={
-                  emailVerifyStatus === null &&
-                  !emailError &&
-                  debouncedEmail !== ''
-                    ? Button.Type.PRIMARY
-                    : Button.Type.DISABLED
-                }
-                size={Button.Size.LG}
-                title={
-                  emailVerifyStatus === null && !emailError
-                    ? signInputTranslation.sendEmail[isEmployer(pathname)]
-                    : signInputTranslation.emailSentBtnText[
-                        isEmployer(pathname)
-                      ]
-                }
-                onClick={handleResendClick}
-              />
-            </div>
-            {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
-            {emailVerifyStatus !== null && (
-              <div className="flex gap-2 h-full pt-2">
-                <div className="relative w-full">
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder={
-                      signInputTranslation.verification[isEmployer(pathname)]
-                    }
-                    value={authenticationCode}
-                    onChange={onAuthCodeChange}
-                    canDelete={false}
-                  />
-                  {emailVerifyStatus !== 'verified' && (
-                    <button
-                      className="caption-12-regular text-status-blue-300 underline absolute right-[1rem] top-[1rem]"
-                      onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
-                    >
-                      {signInputTranslation.resend[isEmployer(pathname)]}
-                    </button>
-                  )}
-                </div>
-                <Button
-                  type={
-                    emailVerifyStatus === 'verified' &&
-                    authenticationCode !== ''
-                      ? Button.Type.DISABLED
-                      : Button.Type.PRIMARY
-                  }
-                  size={Button.Size.LG}
-                  title={signInputTranslation.resetPasswordVerifySuccess['ko']}
-                  onClick={handleVerifyClick}
-                />
-              </div>
-            )}
-            <HelperLabel
-              language={isEmployer(pathname)}
-              emailError={emailError}
-              emailVerifyStatus={emailVerifyStatus}
-            />
-            {emailVerifyStatus !== null && (
-              <InfoBanner
-                text={signInputTranslation.spamEmailInfo[isEmployer(pathname)]}
-                state={InfoBannerState.INFO}
-              />
-            )}
-            {/* 비밀번호 입력 input */}
-          </InputLayout>
+          <EmailVerifier
+            email={email}
+            setEmail={onEmailChange}
+            emailError={emailError}
+            setEmailError={setEmailError}
+            emailVerifyStatus={emailVerifyStatus}
+            setEmailVerifyStatus={setEmailVerifyStatus}
+            setIsValid={setIsValid}
+            language={isEmployer(pathname)}
+            authenticationCode={authenticationCode}
+            setAuthenticationCode={onAuthCodeChange}
+          />
           <InputLayout
             title={signInputTranslation.password[isEmployer(pathname)]}
           >
