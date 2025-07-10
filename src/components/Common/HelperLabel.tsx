@@ -12,14 +12,14 @@ type HelperLabelProps = {
 };
 
 // Helper label 상태와 스타일을 정의하는 map
-const getHelperLabel = (status: string, language: string) => {
+const getHelperLabel = (status: string, language: Language) => {
   switch (status) {
     case 'sent':
-      return signInputTranslation.enterCode[language as 'ko' | 'en'];
+      return signInputTranslation.enterCode[language];
     case 'resent':
-      return signInputTranslation.resentMessage[language as 'ko' | 'en'];
+      return signInputTranslation.resentMessage[language];
     case 'verified':
-      return signInputTranslation.successVerify[language as 'ko' | 'en'];
+      return signInputTranslation.successVerify[language];
     default:
       return '';
   }

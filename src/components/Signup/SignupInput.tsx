@@ -95,7 +95,7 @@ const SignupInput = ({
         <div className="flex flex-col gap-6 mb-[7.125rem]">
           <EmailVerifier
             language={isEmployer(pathname)}
-            context="signup"
+            context={EmailVerifier.Context.SIGNUP}
             onValidationChange={handleEmailVerificationChange}
           />
           <InputLayout

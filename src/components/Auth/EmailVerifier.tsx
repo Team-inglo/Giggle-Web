@@ -13,16 +13,21 @@ import {
   EMAIL_VERIFY_STATUS,
 } from '@/hooks/useEmailVerification';
 
+enum EmailVerifyContext {
+  SIGNUP = 'signup',
+  RESET_PASSWORD = 'reset-password',
+}
+
 type EmailVerifierProps = {
   language: Language;
-  context?: 'signup' | 'reset-password';
+  context?: EmailVerifyContext;
   initialEmail?: string;
   onValidationChange: (result: EmailVerificationResult) => void;
 };
 
 const EmailVerifier = ({
   language,
-  context = 'signup',
+  context = EmailVerifyContext.SIGNUP,
   initialEmail = '',
   onValidationChange,
 }: EmailVerifierProps) => {
@@ -92,8 +97,7 @@ const EmailVerifier = ({
           <Button
             type={
               emailVerification.emailVerifyStatus ===
-                EMAIL_VERIFY_STATUS.VERIFIED &&
-              emailVerification.authenticationCode !== ''
+              EMAIL_VERIFY_STATUS.VERIFIED
                 ? Button.Type.DISABLED
                 : Button.Type.PRIMARY
             }
@@ -119,5 +123,7 @@ const EmailVerifier = ({
     </InputLayout>
   );
 };
+
+EmailVerifier.Context = EmailVerifyContext;
 
 export default EmailVerifier;

@@ -52,7 +52,7 @@ const ResetPasswordPage = () => {
               <div className="flex flex-col mb-[7.125rem]">
                 <EmailVerifier
                   language={Language.KO}
-                  context="reset-password"
+                  context={EmailVerifier.Context.RESET_PASSWORD}
                   onValidationChange={handleEmailVerificationChange}
                 />
               </div>
