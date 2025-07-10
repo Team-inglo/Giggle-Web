@@ -731,3 +731,14 @@ export const documentTranslation = {
     en: 'Enter numbers only',
   },
 };
+
+export const toastTranslation = {
+  verifyCodeSent: {
+    ko: '인증번호가 전송되었어요!',
+    en: 'Verification code sent',
+  },
+  newVerifyCodeSent: {
+    ko: '새로운 인증번호가 전송되었어요! 이메일을 확인해주세요.',
+    en: 'New code sent! Check your inbox',
+  },
+};

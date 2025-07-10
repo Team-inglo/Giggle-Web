@@ -7,13 +7,17 @@ import Input from '@/components/Common/Input';
 import PageTitle from '@/components/Common/PageTitle';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { signInputTranslation } from '@/constants/translation';
+import {
+  signInputTranslation,
+  toastTranslation,
+} from '@/constants/translation';
 import {
   useGetEmailValidation,
   usePatchAuthentication,
   usePostReissuePassword,
   useReIssueAuthentication,
 } from '@/hooks/api/useAuth';
+import { useToast } from '@/hooks/useToast';
 import { useEmailTryCountStore } from '@/store/signup';
 import { InfoBannerState } from '@/types/common/infoBanner';
 import { InputType } from '@/types/common/input';
@@ -34,6 +38,7 @@ const ResetPasswordPage = () => {
   const [isValid, setIsValid] = useState(false);
 
   const { data: ValidationResponse } = useGetEmailValidation(email);
+  const { success } = useToast();
 
   // 이메일 재발송 훅
   const { mutate: reIssueAuthentication } = useReIssueAuthentication();
@@ -61,6 +66,16 @@ const ResetPasswordPage = () => {
       // 이메일 형식 유효성 검사
       if (!validateEmail(email, setEmailError, '/employer/signup')) {
         return;
+      }
+      // 2. 이메일 존재 여부 검사 결과 처리
+      if (ValidationResponse) {
+        if (ValidationResponse.data.is_valid === true) {
+          setEmailError(signInputTranslation.emailWrong['ko']);
+          setIsValid(false);
+        } else {
+          setEmailError(null);
+          setIsValid(true);
+        }
       }
     };
 
@@ -114,6 +129,11 @@ const ResetPasswordPage = () => {
             setAuthenticationCode('');
             const status = try_cnt > 1 ? 'resent' : 'sent';
             setEmailVerifyStatus(status);
+            success(
+              status === 'resent'
+                ? toastTranslation.newVerifyCodeSent['ko']
+                : toastTranslation.verifyCodeSent['ko'],
+            );
           },
         },
       );
@@ -187,19 +207,14 @@ const ResetPasswordPage = () => {
                       </div>
                       <Button
                         type={
-                          emailVerifyStatus === 'verified'
+                          emailVerifyStatus === 'verified' &&
+                          authenticationCode !== ''
                             ? Button.Type.DISABLED
                             : Button.Type.PRIMARY
                         }
                         size={Button.Size.LG}
                         title={
-                          emailVerifyStatus === 'verified'
-                            ? signInputTranslation.resetPasswordVerifySuccess[
-                                'ko'
-                              ]
-                            : signInputTranslation.resetPasswordVerifySuccess[
-                                'ko'
-                              ]
+                          signInputTranslation.resetPasswordVerifySuccess['ko']
                         }
                         onClick={handleVerifyClick}
                       />

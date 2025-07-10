@@ -8,21 +8,25 @@ import {
   validatePassword,
 } from '@/utils/signin';
 import { isEmployer } from '@/utils/signup';
-import { signInputTranslation } from '@/constants/translation';
+import {
+  signInputTranslation,
+  toastTranslation,
+} from '@/constants/translation';
 import {
   useGetEmailValidation,
   usePatchAuthentication,
   useReIssueAuthentication,
 } from '@/hooks/api/useAuth';
-import BottomButtonPanel from '../Common/BottomButtonPanel';
-import InputLayout from '../WorkExperience/InputLayout';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useEmailTryCountStore } from '@/store/signup';
-import PageTitle from '../Common/PageTitle';
+import PageTitle from '@/components/Common/PageTitle';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
 import { InfoBannerState } from '@/types/common/infoBanner';
-import InfoBanner from '../Common/InfoBanner';
+import InfoBanner from '@/components/Common/InfoBanner';
 import HelperLabel from '@/components/Common/HelperLabel';
+import { useToast } from '@/hooks/useToast';
 
 type signupInputProps = {
   email: string;
@@ -59,6 +63,7 @@ const SignupInput = ({
   const debouncedPassword = useDebounce(password);
 
   const { data: ValidationResponse } = useGetEmailValidation(email);
+  const { success } = useToast();
 
   // 이메일 재발송 훅
   const { mutate: reIssueAuthentication } = useReIssueAuthentication();
@@ -154,6 +159,9 @@ const SignupInput = ({
 
   // API - 2.7 이메일 인증코드 검증
   const handleVerifyClick = () => {
+    if (emailVerifyStatus === 'verified') {
+      return;
+    }
     verifyAuthCode(
       //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
       { email: email, authentication_code: authenticationCode },
@@ -188,6 +196,11 @@ const SignupInput = ({
             const status = try_cnt > 1 ? 'resent' : 'sent';
             setEmailVerifyStatus(status);
             setEmailError(null);
+            success(
+              status === 'resent'
+                ? toastTranslation.newVerifyCodeSent[isEmployer(pathname)]
+                : toastTranslation.verifyCodeSent[isEmployer(pathname)],
+            );
           },
         },
       );
@@ -215,34 +228,24 @@ const SignupInput = ({
                 onChange={handleEmailInput}
                 canDelete={false}
               />
-              <button
-                className={`flex items-center justify-center button-14-semibold min-w-[4.25rem] px-5 py-3 rounded-lg ${
+              <Button
+                type={
                   emailVerifyStatus === null &&
                   !emailError &&
                   debouncedEmail !== ''
-                    ? 'bg-surface-primary text-text-normal'
-                    : 'bg-surface-secondary text-text-disabled'
-                }`}
+                    ? Button.Type.PRIMARY
+                    : Button.Type.DISABLED
+                }
+                size={Button.Size.LG}
+                title={
+                  emailVerifyStatus === null && !emailError
+                    ? signInputTranslation.sendEmail[isEmployer(pathname)]
+                    : signInputTranslation.emailSentBtnText[
+                        isEmployer(pathname)
+                      ]
+                }
                 onClick={handleResendClick}
-                disabled={
-                  !(
-                    emailVerifyStatus === null &&
-                    !emailError &&
-                    debouncedEmail !== ''
-                  )
-                }
-                aria-disabled={
-                  !(
-                    emailVerifyStatus === null &&
-                    !emailError &&
-                    debouncedEmail !== ''
-                  )
-                }
-              >
-                {emailVerifyStatus === null && !emailError
-                  ? signInputTranslation.sendEmail[isEmployer(pathname)]
-                  : signInputTranslation.emailSentBtnText[isEmployer(pathname)]}
-              </button>
+              />
             </div>
             {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
             {emailVerifyStatus !== null && (
@@ -259,28 +262,24 @@ const SignupInput = ({
                   />
                   {emailVerifyStatus !== 'verified' && (
                     <button
-                      className="caption-12-regular text-blue-500 underline absolute right-[1rem] top-[1rem]"
+                      className="caption-12-regular text-status-blue-300 underline absolute right-[1rem] top-[1rem]"
                       onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
                     >
                       {signInputTranslation.resend[isEmployer(pathname)]}
                     </button>
                   )}
                 </div>
-                <button
-                  className={`flex items-center justify-center min-w-[5.5rem] button-14-semibold px-5 py-3 rounded-lg ${
+                <Button
+                  type={
                     emailVerifyStatus === 'verified' &&
                     authenticationCode !== ''
-                      ? 'bg-surface-secondary text-text-disabled'
-                      : 'bg-surface-primary text-text-normal'
-                  }`}
-                  onClick={
-                    emailVerifyStatus === 'verified'
-                      ? undefined
-                      : handleVerifyClick
+                      ? Button.Type.DISABLED
+                      : Button.Type.PRIMARY
                   }
-                >
-                  {signInputTranslation.verify[isEmployer(pathname)]}
-                </button>
+                  size={Button.Size.LG}
+                  title={signInputTranslation.resetPasswordVerifySuccess['ko']}
+                  onClick={handleVerifyClick}
+                />
               </div>
             )}
             <HelperLabel
