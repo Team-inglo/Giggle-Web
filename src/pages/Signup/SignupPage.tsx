@@ -84,12 +84,12 @@ const SignupPage = () => {
     <div className="flex flex-col w-screen h-screen bg-white">
       {currentStep === 3 ? (
         <VerificationSuccessful
-          title={signInputTranslation.successVerify[isEmployer(pathname)]}
+          title={signInputTranslation.completeSignup[isEmployer(pathname)]}
           content={
-            signInputTranslation.successVerifyContent[isEmployer(pathname)]
+            signInputTranslation.completeSignupContent[isEmployer(pathname)]
           }
           buttonText={
-            signInputTranslation.successVerifyBtn[isEmployer(pathname)]
+            signInputTranslation.completeSignupBtn[isEmployer(pathname)]
           }
           onNext={() => {
             navigate(
