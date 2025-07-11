@@ -7,8 +7,9 @@ import giggleLogoPng from '@/assets/images/GiggleLogo.png';
 import AddTrigger from '@/components/Common/AddTrigger';
 import Icon from '@/components/Common/Icon';
 import InputLayout from '@/components/WorkExperience/InputLayout';
+import { useToast } from '@/hooks/useToast';
 
-const enum LogoType {
+enum LogoType {
   DEFAULT = 'default',
   NONE = 'none',
   SELECTED = 'selected',
@@ -194,6 +195,7 @@ const CompanyLogoUploader = ({
 }: CompanyLogoUploaderProps) => {
   const [logoStatus, setLogoStatus] = useState<LogoType>(LogoType.NONE);
   const [selectedImage, setSelectedImage] = useState<string>();
+  const { error } = useToast();
 
   // 로고 파일 선택 핸들러
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,6 +206,9 @@ const CompanyLogoUploader = ({
         setSelectedImage(reader.result as string);
         onLogoFileChange(file);
         setLogoStatus(LogoType.SELECTED);
+      };
+      reader.onerror = () => {
+        error('파일 읽기 중 오류가 발생했습니다.');
       };
       reader.readAsDataURL(file);
     }
@@ -226,8 +231,9 @@ const CompanyLogoUploader = ({
         // Blob을 File 객체로 변환
         const file = new File([blob], 'giggle-logo.png', { type: 'image/png' });
         onLogoFileChange(file);
-      } catch (error) {
-        console.error('Error converting image to File:', error);
+      } catch (e) {
+        console.error('Error converting image to File:', e);
+        error('로고 변환 중 오류가 발생했습니다.');
       }
     }
   };
