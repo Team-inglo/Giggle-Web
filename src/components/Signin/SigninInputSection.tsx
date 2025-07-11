@@ -9,6 +9,8 @@ import InputLayout from '@/components/WorkExperience/InputLayout';
 import { signInputTranslation } from '@/constants/translation';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
+import ButtonText from '@/components/Common/ButtonText';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 
 const SigninInputSection = () => {
   const navigate = useNavigate();
@@ -96,7 +98,9 @@ const SigninInputSection = () => {
             canDelete={false}
           />
           {emailError && (
-            <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
+            <p className="text-text-error caption-12-semibold px-1 py-2">
+              {emailError}
+            </p>
           )}
         </InputLayout>
         <InputLayout title="비밀번호">
@@ -108,40 +112,31 @@ const SigninInputSection = () => {
             canDelete={false}
           />
         </InputLayout>
-        <div className="flex w-full justify-center">
-          <button
-            className="flex items-center justify-center px-2 py-1 text-text-alternative caption-12-regular bg-surface-secondary rounded"
-            onClick={() => navigate('/find-password')} //TODO: 비밀번호 찾기 화면 이동
-          >
-            비밀번호를 모르겠어요 😓
-          </button>
-        </div>
-        <div className="flex items-center justify-center gap-2 mt-6">
-          <p className="text-[#7D8A95] text-sm font-normal">
-            계정이 아직 없으신가요?
-          </p>
+        <div className="flex items-center justify-center mt-6 h-3">
+          <ButtonText
+            text="계정을 잊었어요"
+            variant={ButtonText.Variant.ALTERNATIVE}
+            onClick={() => navigate('/find-password')}
+          />
+          <span className="mx-6 bg-border-alternative h-3 w-[0.0625rem] align-middle inline-block" />
           {/* 회원가입 화면 이동 */}
-          <button
-            className="flex items-center justify-center px-2 py-1.5 border-border-alternative border text-text-normal caption-12-regular rounded"
+
+          <ButtonText
+            text="회원가입 하러가기"
+            variant={ButtonText.Variant.PRIMARY}
             onClick={() => navigate('/signup')}
-          >
-            회원가입 하러가기
-          </button>
+          />
         </div>
       </div>
-      <div className="w-full bg-gradient-to-b from-white/80 to-white flex flex-row items-start justify-start pb-[3.125rem] pt-3 box-border text-center button-16-semibold text-[#1e1926] z-10">
-        <div className="w-full flex items-center justify-center">
-          <div className="w-full flex flex-col items-center gap-6">
-            <Button
-              type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
-              size={Button.Size.LG}
-              isFullWidth={true}
-              title="로그인"
-              onClick={isValid ? handleSubmit : undefined}
-            />
-          </div>
-        </div>
-      </div>
+      <BottomButtonPanel>
+        <Button
+          type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth={true}
+          title="로그인"
+          onClick={isValid ? handleSubmit : undefined}
+        />
+      </BottomButtonPanel>
     </div>
   );
 };

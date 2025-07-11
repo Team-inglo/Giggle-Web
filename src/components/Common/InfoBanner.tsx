@@ -69,7 +69,9 @@ const InfoBanner = ({
         {hasIcon && stateProperties.icon}
       </div>
       <div className="flex items-center w-full px-1 py-0.5 flex-1">
-        <p className="line-clamp-2 text-start w-full">{text}</p>
+        <p className="line-clamp-2 text-start w-full break-keep whitespace-pre-line">
+          {text}
+        </p>
       </div>
       {hasButton && (
         <button

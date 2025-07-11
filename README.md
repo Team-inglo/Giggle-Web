@@ -2,7 +2,7 @@
 
 ### 🏆 2024 공개SW개발자대회 우수작
 
-[![Tests](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml/badge.svg)](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml)
+[![Tests](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test-report.yml/badge.svg)](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test-report.yml)
 
 <div align="center">
 

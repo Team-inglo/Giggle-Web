@@ -111,7 +111,7 @@ const InformationStep = ({
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
           title={signInputTranslation.infoStepTitle[isEmployer(pathname)]}
@@ -119,7 +119,7 @@ const InformationStep = ({
         />
       </div>
       <div className="w-full mx-auto mb-[7rem] px-4">
-        <div className="w-full flex flex-col gap-[1rem]">
+        <div className="w-full flex flex-col gap-6">
           {/* 이름 작성 */}
           <InputLayout title="First Name">
             <Input

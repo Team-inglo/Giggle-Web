@@ -41,7 +41,7 @@ export const validateEmail = (
   pathname: string,
 ): boolean => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  if (!emailRegex.test(email)) {
+  if (email !== '' && !emailRegex.test(email)) {
     setEmailError(signInputTranslation.invalidEmail[isEmployer(pathname)]);
     return false;
   }

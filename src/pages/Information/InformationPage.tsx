@@ -90,7 +90,7 @@ const InformationPage = () => {
             }
           />
           <ProgressStepper totalCount={3} currentStep={currentStep} />
-          <div className="w-full flex justify-center pt-4">
+          <div className="w-full flex justify-center">
             {currentStep === 1 && (
               <InformationStep userInfo={userInfo} onNext={handleNext} />
             )}
