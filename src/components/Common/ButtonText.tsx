@@ -1,4 +1,4 @@
-import { ComponentType, SVGProps, useState } from 'react';
+import { useState } from 'react';
 import PressOverlay, {
   PressStrength,
 } from '@/components/Common/PressedOverlay';
@@ -25,7 +25,7 @@ interface ButtonTextProps {
   size?: ButtonTextSize; // 버튼 텍스트 크기
   variant?: ButtonTextVariant; // 버튼 텍스트 변형
   iconDisplay?: ButtonTextIconDisplay; // 아이콘 위치
-  icon?: ComponentType<SVGProps<SVGSVGElement>>; // 아이콘 컴포넌트
+  iconElement?: React.ReactElement<typeof Icon>; // 아이콘 컴포넌트
   onClick?: () => void; // 클릭 이벤트 핸들러
   text: string; // 버튼 텍스트
 }
@@ -34,7 +34,7 @@ const ButtonText = ({
   size = ButtonTextSize.SM,
   variant = ButtonTextVariant.ALTERNATIVE,
   iconDisplay = ButtonTextIconDisplay.NONE,
-  icon,
+  iconElement,
   text,
   onClick,
 }: ButtonTextProps) => {
@@ -61,11 +61,22 @@ const ButtonText = ({
     }
   };
 
+  // 버튼 타입에 따라 pressed 시에 다른 배경 색상을 적용
+  const getBgColorStyle = () => {
+    switch (variant) {
+      case ButtonTextVariant.PRIMARY:
+        return 'bg-status-blue-300';
+      case ButtonTextVariant.ALTERNATIVE:
+      default:
+        return 'bg-neutral-600';
+    }
+  };
+
   // 버튼 타입에 따라 다른 강도의 시각적 피드백을 주기 위해 투명도를 매핑
   const getPressStrength = (): PressStrength => {
     switch (variant) {
       case ButtonTextVariant.PRIMARY:
-        return PressOverlay.pressStrengthKeys.NORMAL;
+        return PressOverlay.pressStrengthKeys.LIGHT;
       case ButtonTextVariant.ALTERNATIVE:
       default:
         return PressOverlay.pressStrengthKeys.LIGHT;
@@ -76,15 +87,11 @@ const ButtonText = ({
   const renderContent = () => {
     return (
       <span
-        className={`inline-flex items-center gap-1 ${getSizeStyle()} ${getColorStyle()}`}
+        className={`inline-flex items-center ${getSizeStyle()} ${getColorStyle()}`}
       >
-        {icon && iconDisplay === ButtonTextIconDisplay.LEFT && (
-          <Icon icon={icon} />
-        )}
+        {iconDisplay === ButtonTextIconDisplay.LEFT && iconElement}
         {text}
-        {icon && iconDisplay === ButtonTextIconDisplay.RIGHT && (
-          <Icon icon={icon} />
-        )}
+        {iconDisplay === ButtonTextIconDisplay.RIGHT && iconElement}
       </span>
     );
   };
@@ -117,7 +124,11 @@ const ButtonText = ({
       onMouseUp={() => handlePress(false)}
       onMouseLeave={() => handlePress(false)}
     >
-      <PressOverlay isPressed={isPressed} strength={getPressStrength()} />
+      <PressOverlay
+        isPressed={isPressed}
+        strength={getPressStrength()}
+        color={getBgColorStyle()}
+      />
       {renderContent()}
     </motion.button>
   );
