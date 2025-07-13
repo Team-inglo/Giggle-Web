@@ -16,7 +16,9 @@ const PostSearchPage = () => {
   const { searchOption, updateSearchOption } = usePostSearch(state);
 
   const [selectedMenu, setSelectedMenu] = useState<POST_SEARCH_PAGE_MENU>(
-    POST_SEARCH_PAGE_MENU.POST,
+    account_type === UserType.OWNER
+      ? POST_SEARCH_PAGE_MENU.POST
+      : POST_SEARCH_PAGE_MENU.CAREER,
   );
 
   const onClickSearch = (text: string) => {
@@ -61,27 +63,27 @@ const PostSearchPage = () => {
       {account_type !== UserType.OWNER && (
         <nav className="flex w-full bg-surface-base">
           <button
-            onClick={() => setSelectedMenu(POST_SEARCH_PAGE_MENU.POST)}
-            className={`flex-1 py-[0.625rem] button-16-semibold ${selectedMenu === POST_SEARCH_PAGE_MENU.POST ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
-          >
-            Job
-          </button>
-          <button
             onClick={() => setSelectedMenu(POST_SEARCH_PAGE_MENU.CAREER)}
             className={`flex-1 py-[0.625rem] button-16-semibold ${selectedMenu === POST_SEARCH_PAGE_MENU.CAREER ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
           >
             Career
           </button>
+          <button
+            onClick={() => setSelectedMenu(POST_SEARCH_PAGE_MENU.POST)}
+            className={`flex-1 py-[0.625rem] button-16-semibold ${selectedMenu === POST_SEARCH_PAGE_MENU.POST ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
+          >
+            Job
+          </button>
         </nav>
       )}
-      {selectedMenu === POST_SEARCH_PAGE_MENU.POST && (
-        <PostSearchSection
+      {selectedMenu === POST_SEARCH_PAGE_MENU.CAREER && (
+        <CareerSearchSection
           searchOption={searchOption}
           updateSearchOption={updateSearchOption}
         />
       )}
-      {selectedMenu === POST_SEARCH_PAGE_MENU.CAREER && (
-        <CareerSearchSection
+      {selectedMenu === POST_SEARCH_PAGE_MENU.POST && (
+        <PostSearchSection
           searchOption={searchOption}
           updateSearchOption={updateSearchOption}
         />
