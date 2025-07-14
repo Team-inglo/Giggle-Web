@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useEmailTryCountStore } from '@/store/signup';
 import {
   useGetEmailValidation,
@@ -36,7 +36,7 @@ export type EmailVerificationResult = {
 
 type UseEmailVerificationProps = {
   language: Language;
-  context?: 'signup' | 'reset-password';
+  context?: 'signup' | 'reset-password' | 'signin';
   initialEmail?: string;
 };
 
@@ -45,6 +45,20 @@ export const useEmailVerification = ({
   context = 'signup',
   initialEmail = '',
 }: UseEmailVerificationProps) => {
+  // 컨텍스트 기반 설정값들 미리 계산
+  const needsVerification = context !== 'signin';
+  const { pathname } = useLocation();
+  const contextPath = useMemo(() => {
+    switch (context) {
+      case 'reset-password':
+        return '/employer/reset-password';
+      case 'signin':
+        return '/employer/signin';
+      default:
+        return pathname;
+    }
+  }, [context, pathname]);
+
   // 내부 상태 관리
   const [email, setEmail] = useState<string>(initialEmail);
   const [authenticationCode, setAuthenticationCode] = useState<string>('');
@@ -54,15 +68,29 @@ export const useEmailVerification = ({
   );
   const debouncedEmail = useDebounce(email);
 
-  const { try_cnt } = useEmailTryCountStore(); // 이메일 인증 시도 횟수
+  // API 훅들 (로그인에서는 실제로 사용되지 않지만 조건부 훅 호출은 회피)
+  const { try_cnt } = useEmailTryCountStore();
   const { data: ValidationResponse } = useGetEmailValidation(debouncedEmail);
-  const { success } = useToast(); // 토스트 메시지 표시 훅
-  const { pathname } = useLocation();
-
-  // 이메일 재발송 훅
+  const { success } = useToast();
   const { mutate: reIssueAuthentication } = useReIssueAuthentication();
-  // 인증코드 검증 훅
   const { mutate: verifyAuthCode } = usePatchAuthentication();
+
+  // 이메일 존재 여부에 따른 에러 처리 로직
+  const handleEmailValidationResponse = (isValid: boolean) => {
+    const isSignupContext = ['/signup', '/employer/signup'].includes(
+      contextPath,
+    );
+
+    if (isSignupContext) {
+      // 회원가입: 이메일이 이미 존재하면 에러
+      setEmailError(
+        isValid ? null : signInputTranslation.emailAlreadyExists[language],
+      );
+    } else {
+      // 로그인/비밀번호 재설정: 이메일이 존재하지 않으면 에러
+      setEmailError(isValid ? signInputTranslation.emailWrong[language] : null);
+    }
+  };
 
   // 이메일 유효성 검사
   useEffect(() => {
@@ -72,41 +100,26 @@ export const useEmailVerification = ({
     }
 
     // 이메일 형식 유효성 검사
-    const contextPath =
-      context === 'reset-password' ? '/employer/reset-password' : pathname;
     const isValidFormat = validateEmail(email, setEmailError, contextPath);
-
     if (!isValidFormat) return;
 
     // 이메일 존재 여부 검사 결과 처리
     if (ValidationResponse) {
-      switch (contextPath) {
-        case '/signup':
-        case '/employer/signup':
-          if (ValidationResponse.data.is_valid !== true) {
-            setEmailError(signInputTranslation.emailAlreadyExists[language]);
-          } else {
-            setEmailError(null);
-          }
-          break;
-        default:
-          if (ValidationResponse.data.is_valid === true) {
-            setEmailError(signInputTranslation.emailWrong[language]);
-          } else {
-            setEmailError(null);
-          }
-          break;
-      }
+      handleEmailValidationResponse(ValidationResponse.data.is_valid);
     }
-  }, [debouncedEmail, ValidationResponse, context, language]);
+  }, [debouncedEmail, ValidationResponse, contextPath, language]);
 
-  // API - 2.7 이메일 인증코드 검증
+  // 이메일 인증코드 검증
   const handleVerifyClick = () => {
-    if (emailVerifyStatus === EMAIL_VERIFY_STATUS.VERIFIED) {
+    if (
+      !needsVerification ||
+      emailVerifyStatus === EMAIL_VERIFY_STATUS.VERIFIED
+    ) {
       return;
     }
+
     verifyAuthCode(
-      { email: email, authentication_code: authenticationCode },
+      { email, authentication_code: authenticationCode },
       {
         onSuccess: () => setEmailVerifyStatus(EMAIL_VERIFY_STATUS.VERIFIED),
         onError: () => {
@@ -119,14 +132,13 @@ export const useEmailVerification = ({
     );
   };
 
-  // 이메일 인증코드 재전송 API 호출
+  // 이메일 인증코드 재전송
   const handleResendClick = async () => {
-    if (debouncedEmail === '' || emailError) {
+    if (!needsVerification || !debouncedEmail || emailError) {
       return;
     }
 
     try {
-      // 5회 이내 재발송 가능
       reIssueAuthentication(
         { email: debouncedEmail },
         {
@@ -137,11 +149,12 @@ export const useEmailVerification = ({
                 ? EMAIL_VERIFY_STATUS.RESENT
                 : EMAIL_VERIFY_STATUS.SENT;
             setEmailVerifyStatus(status);
-            success(
+
+            const message =
               status === EMAIL_VERIFY_STATUS.RESENT
                 ? toastTranslation.newVerifyCodeSent[language]
-                : toastTranslation.verifyCodeSent[language],
-            );
+                : toastTranslation.verifyCodeSent[language];
+            success(message);
           },
         },
       );
@@ -150,16 +163,29 @@ export const useEmailVerification = ({
     }
   };
 
-  // 이메일 입력 시, 인증번호 발송 초기화
+  // 이메일 입력 핸들러
   const handleEmailInput = (value: string) => {
-    if (emailVerifyStatus === EMAIL_VERIFY_STATUS.VERIFIED) return;
+    // 인증 완료 상태에서는 이메일 변경 불가 (로그인 제외)
+    if (
+      needsVerification &&
+      emailVerifyStatus === EMAIL_VERIFY_STATUS.VERIFIED
+    ) {
+      return;
+    }
+
     setEmail(value);
-    setEmailVerifyStatus(EMAIL_VERIFY_STATUS.IDLE);
+
+    // 인증이 필요한 컨텍스트에서만 상태 초기화
+    if (needsVerification) {
+      setEmailVerifyStatus(EMAIL_VERIFY_STATUS.IDLE);
+    }
   };
 
   // 검증 결과 계산
   const isEmailValid = !!email && !emailError;
-  const isVerified = emailVerifyStatus === EMAIL_VERIFY_STATUS.VERIFIED;
+  const isVerified = needsVerification
+    ? emailVerifyStatus === EMAIL_VERIFY_STATUS.VERIFIED
+    : true;
   const isValid = isEmailValid && isVerified;
 
   return {
@@ -170,6 +196,7 @@ export const useEmailVerification = ({
     emailVerifyStatus,
     isValid,
     isVerified,
+    isEmailValid,
 
     // 핸들러
     handleEmailInput,
