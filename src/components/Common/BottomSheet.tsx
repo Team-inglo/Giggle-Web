@@ -29,7 +29,13 @@ type BottomSheetProps = {
   isExitable?: boolean;
 };
 
+// 레이아웃 관련 상수
 const LAYOUT_MARGIN = 36;
+
+// 드래그 관련 상수
+const DRAG_ELASTIC = 0.2;
+const SPRING_DAMPING = 40;
+const SPRING_STIFFNESS = 400;
 
 export const BottomSheet = ({
   children,
@@ -80,8 +86,8 @@ export const BottomSheet = ({
         animate={controls}
         transition={{
           type: 'spring',
-          damping: 40,
-          stiffness: 400,
+          damping: SPRING_DAMPING,
+          stiffness: SPRING_STIFFNESS,
         }}
         variants={{
           visible: { y: 0 },
@@ -91,7 +97,7 @@ export const BottomSheet = ({
           top: 0,
           bottom: contentHeight,
         }}
-        dragElastic={0.2}
+        dragElastic={DRAG_ELASTIC}
         className={`fixed left-0 bottom-0 w-full h-[100vh] pt-3 rounded-t-2xl bg-surface-base shadow-bottomSheetShadow z-40`}
         style={{
           top: `${viewHeight - contentHeight - LAYOUT_MARGIN}px`,
@@ -163,7 +169,9 @@ export const BottomSheetContent = ({
   children: ReactNode;
 }) => {
   return (
-    <div className={`overflow-y-scroll overflow-x-hidden px-5 ${isMaxHeight ? 'max-h-[49vh]' : 'h-full'}`}>
+    <div
+      className={`overflow-y-scroll overflow-x-hidden px-5 ${isMaxHeight ? 'max-h-[49vh]' : 'h-full'}`}
+    >
       {children}
     </div>
   );
@@ -207,4 +215,3 @@ BottomSheet.Header = BottomSheetHeader;
 BottomSheet.Content = BottomSheetContent;
 BottomSheet.ButtonGroup = BottomSheetButtonGroup;
 BottomSheet.ButtonGroupVariant = BottomSheetButtonGroupVariant;
-
