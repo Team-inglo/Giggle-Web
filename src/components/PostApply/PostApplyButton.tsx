@@ -1,4 +1,3 @@
-import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import CompleteButtonModal from '@/components/Common/CompleteButtonModal';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -48,16 +47,16 @@ const PostApplyButton = () => {
       <BottomButtonPanel>
         <section className="w-full flex gap-2">
           <Button
-            type={buttonTypeKeys.BACK}
+            type={Button.Type.BACK}
             bgColor="bg-surface-secondary"
             fontColor="text-text-normal"
             title="Edit"
             onClick={() => navigate('/profile/manage-resume')}
           />
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-[#FEF387]'}
-            fontColor="text-text-strong"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="Apply Now"
             onClick={onClickApply}
           />
