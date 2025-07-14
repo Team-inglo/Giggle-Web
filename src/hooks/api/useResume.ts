@@ -6,6 +6,7 @@ import {
   getEducation,
   getEmployeeResumeList,
   getLanguageSummary,
+  getOwnerResume,
   getResume,
   getResumeDetail,
   getResumeProgress,
@@ -273,6 +274,15 @@ export const useDeleteEtcLanguageLevel = () => {
   });
 };
 
+// 7.19 (고용주) 이력서 조회하기
+export const useGetOwnerResume = (id: string, isEnabled: boolean = true) => {
+  return useQuery({
+    queryKey: ['ownerResume', id],
+    queryFn: () => getOwnerResume(id),
+    enabled: isEnabled && !!id,
+  });
+};
+
 // 7.21 (유학생) 희망 근로 조건 상세 조회하기
 export const useGetWorkPreference = (isEnabled: boolean = true) => {
   return useQuery({
@@ -346,7 +356,7 @@ export const useGetResumeProgress = (isUser: boolean) => {
   return useQuery({
     queryKey: ['resume', 'progress'],
     queryFn: getResumeProgress,
-    enabled: isUser
+    enabled: isUser,
   });
 };
 
