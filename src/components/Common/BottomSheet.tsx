@@ -55,8 +55,10 @@ export const BottomSheet = ({
   useBodyScrollLock(isOpen && isFixedBackground);
 
   useEffect(() => {
-    setIsOpen(isShowBottomsheet);
-  }, [isShowBottomsheet, setIsOpen]);
+    if (isOpen !== isShowBottomsheet) {
+      setIsOpen(isShowBottomsheet);
+    }
+  }, [isShowBottomsheet, setIsOpen, isOpen]);
 
   // children의 height를 계산
   useEffect(() => {
@@ -138,13 +140,15 @@ export const BottomSheetHeader = ({
 }) => {
   return (
     <header className="flex items-center justify-between px-4 py-3 flex-shrink-0 w-full h-full">
-      <div className={`w-full flex items-center text-${align}`}>
+      <div
+        className={`w-full flex items-center ${align === BottomSheetHeaderAlign.LEFT ? 'text-left' : align === BottomSheetHeaderAlign.CENTER ? 'text-center' : 'text-right'}`}
+      >
         {leftIcon && (
           <button onClick={onLeftIconClick} className="mr-2">
             <Icon icon={leftIcon} />
           </button>
         )}
-        {title && <h2 className={`w-full text-lg font-semibold }`}>{title}</h2>}
+        {title && <h2 className={`w-full text-lg font-semibold`}>{title}</h2>}
       </div>
       <div className="flex items-center">
         {tools}

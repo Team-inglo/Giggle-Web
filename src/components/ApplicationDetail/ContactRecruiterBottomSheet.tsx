@@ -60,8 +60,6 @@ const ContactRecruiterBottomSheet = ({
           type={Button.Type.PRIMARY}
           size={Button.Size.LG}
           isFullWidth
-          bgColor={'bg-primary-normal'}
-          fontColor="text-surface-invert"
           title={'Contact'}
           onClick={() =>
             sendPhoneNumberToApp(data?.data?.recruiter_phone_number)
@@ -71,8 +69,6 @@ const ContactRecruiterBottomSheet = ({
           type={Button.Type.NEUTRAL}
           size={Button.Size.LG}
           isFullWidth
-          bgColor={'bg-primary-neutral'}
-          fontColor="text-surface-invert"
           title={'Maybe later'}
           onClick={() => setIsShowBottomSheet(false)}
         />

@@ -1,4 +1,3 @@
-import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type ResumeDeleteModalProps = {
@@ -12,8 +11,6 @@ const ResumeDeleteModal = ({
   onDeleteButton,
   setIsShowBottomSheet = () => {},
 }: ResumeDeleteModalProps) => {
-  useBodyScrollLock(true);
-
   return (
     <BottomSheet
       isAvailableHidden={true}
