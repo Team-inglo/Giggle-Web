@@ -190,6 +190,10 @@ export const signInputTranslation = {
     ko: '시작하기',
     en: 'Browse Jobs',
   },
+  agree: {
+    ko: '동의하기',
+    en: 'Agree',
+  },
   essentialAgree: {
     ko: '약관동의',
     en: 'Agree to Terms',

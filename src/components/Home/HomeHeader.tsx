@@ -7,7 +7,7 @@ import { AlarmItemType } from '@/types/api/alarm';
 import { useNavigate } from 'react-router-dom';
 import LoginBottomSheet from '@/components/Home/LoginBottomSheet';
 import { useState } from 'react';
-import LanguageBottomSheet from './LanguageBottomSheet';
+import LanguageBottomSheet from '@/components/Home/LanguageBottomSheet';
 
 const HomeHeader = () => {
   const navigate = useNavigate();

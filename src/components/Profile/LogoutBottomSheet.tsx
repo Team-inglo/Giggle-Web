@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type LogoutBottomSheetProps = {
   handleLogout: () => void;
@@ -20,35 +20,36 @@ const LogoutBottomSheet = ({
   const { pathname } = useLocation();
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full flex flex-col py-10">
-        <div className="heading-20-semibold text-text-normal py-3 px-12 text-center">
-          {profileTranslation.wantLogout[isEmployer(pathname)]}
-        </div>
-        <div className="flex flex-col gap-2">
-          {/* 로그아웃 버튼 */}
-          <Button
-            type="large"
-            title={profileTranslation.yes[isEmployer(pathname)]}
-            bgColor="bg-surface-primary"
-            fontColor="text-text-normal"
-            onClick={handleLogout}
-          />
-          {/* 로그아웃 취소 버튼 */}
-          <Button
-            type="large"
-            title={profileTranslation.no[isEmployer(pathname)]}
-            bgColor="bg-surface-secondary"
-            fontColor="text-text-normal"
-            onClick={handleLogoutCancel}
-          />
-        </div>
-      </div>
-    </BottomSheetLayout>
+      <BottomSheet.Header
+        title={profileTranslation.wantLogout[isEmployer(pathname)]}
+        align={BottomSheet.Header.Align.CENTER}
+      />
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}
+      >
+        {/* 로그아웃 버튼 */}
+        <Button
+          type={Button.Type.PRIMARY}
+          title={profileTranslation.yes[isEmployer(pathname)]}
+          size={Button.Size.LG}
+          isFullWidth
+          onClick={handleLogout}
+        />
+        {/* 로그아웃 취소 버튼 */}
+        <Button
+          type={Button.Type.NEUTRAL}
+          title={profileTranslation.no[isEmployer(pathname)]}
+          size={Button.Size.LG}
+          isFullWidth
+          onClick={handleLogoutCancel}
+        />
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

@@ -9,7 +9,7 @@ import { useState } from 'react';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import PageTitle from '../Common/PageTitle';
+import PageTitle from '@/components/Common/PageTitle';
 import {
   documentTranslation,
   signInputTranslation,

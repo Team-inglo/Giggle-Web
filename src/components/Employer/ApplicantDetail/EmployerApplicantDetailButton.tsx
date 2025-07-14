@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { useState } from 'react';
-import EmployerApplicantContactBottomSheet from './EmployerApplicantContactBottomSheet';
+import EmployerApplicantContactBottomSheet from '@/components/Employer/ApplicantDetail/EmployerApplicantContactBottomSheet';
 import { findCurrentStep } from '@/utils/application';
 import { ApplicationStepType } from '@/types/application/applicationItem';
 import { APPLICATION_STEP } from '@/constants/application';

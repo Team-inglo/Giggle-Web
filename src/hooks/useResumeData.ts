@@ -1,15 +1,23 @@
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
-import { useParams } from 'react-router-dom';
-import { useGetResume, useGetResumeDetail } from '@/hooks/api/useResume';
+import { useLocation, useParams } from 'react-router-dom';
+import {
+  useGetOwnerResume,
+  useGetResume,
+  useGetResumeDetail,
+} from '@/hooks/api/useResume';
 
 const useResumeData = () => {
+  const { pathname } = useLocation();
   const { id } = useParams();
 
   const { account_type } = useUserStore();
 
-  const getDataSourceType = (): 'employerSearch' | 'owner' | 'user' => {
+  const getDataSourceType = (): 'applicantAccept' | 'owner' | 'user' => {
     if (account_type === UserType.OWNER) {
+      if (pathname.includes('employer/applicant')) {
+        return 'applicantAccept';
+      }
       return 'owner';
     }
     return 'user';
@@ -19,15 +27,22 @@ const useResumeData = () => {
 
   const shouldFetchUserData = dataSourceType === 'user';
   const shouldFetchOwnerData = dataSourceType === 'owner' && id !== undefined;
+  const shouldFetchEmployerData =
+    dataSourceType === 'applicantAccept' && id !== undefined;
 
   // 데이터 페칭 훅들
   const { data: userData, isPending: userDataPending } =
     useGetResume(shouldFetchUserData);
 
+  // 7.25 (고용주) 이력서 조회하기(인재 검색, 그 외)
   const { data: ownerData, isPending: ownerDataPending } = useGetResumeDetail(
     id as string,
     shouldFetchOwnerData,
   );
+
+  // 7.19 (고용주) 이력서 조회하기(지원자 확인)
+  const { data: employerData, isPending: employerDataPending } =
+    useGetOwnerResume(id as string, shouldFetchEmployerData);
 
   const getActiveData = () => {
     switch (dataSourceType) {
@@ -41,6 +56,11 @@ const useResumeData = () => {
         return {
           data: userData,
           isPending: userDataPending,
+        };
+      case 'applicantAccept':
+        return {
+          data: employerData,
+          isPending: employerDataPending,
         };
     }
   };

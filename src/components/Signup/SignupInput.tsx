@@ -14,10 +14,10 @@ import {
   usePatchAuthentication,
   useReIssueAuthentication,
 } from '@/hooks/api/useAuth';
-import BottomButtonPanel from '../Common/BottomButtonPanel';
-import InputLayout from '../WorkExperience/InputLayout';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import InputLayout from '@/components/WorkExperience/InputLayout';
 import { useEmailTryCountStore } from '@/store/signup';
-import PageTitle from '../Common/PageTitle';
+import PageTitle from '@/components/Common/PageTitle';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
 

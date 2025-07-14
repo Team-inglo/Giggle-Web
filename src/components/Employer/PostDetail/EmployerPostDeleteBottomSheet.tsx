@@ -1,6 +1,5 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { useDeletePost } from '@/hooks/api/usePost';
 import { useParams } from 'react-router-dom';
 
@@ -23,36 +22,37 @@ const EmployerPostDeleteBottomSheet = ({
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full flex flex-col items-center text-center">
-        <h3 className="px-[1.625rem] pb-[0.75rem] heading-20-semibold text-text-normal">
-          공고를 삭제하시겠습니까?
-        </h3>
-        <p className="px-[1.625rem] pb-[0.25rem] caption-12-regular text-[#656565]">
+      <BottomSheet.Header title="공고를 삭제하시겠습니까?" />
+
+      <BottomSheet.Content>
+        <p className="pb-[0.25rem] caption-12-regular text-text-normal">
           공고를 삭제할 시 다시 복구할 수 없어요. 그래도 진행하시겠어요?
         </p>
-      </div>
-      <div className="w-full py-[3rem] flex flex-col gap-[0.5rem]">
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}
+      >
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-surface-primary"
-          fontColor="text-text-normal"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title="삭제"
           onClick={onClickDelete}
         />
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-surface-secondary"
-          fontColor="text-text-normal"
+          type={Button.Type.NEUTRAL}
+          size={Button.Size.LG}
+          isFullWidth
           title="아니요"
           onClick={() => setIsShowBottomSheet(false)}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

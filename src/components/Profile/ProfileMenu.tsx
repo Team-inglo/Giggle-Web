@@ -4,7 +4,7 @@ import { useGetUserSummaries } from '@/hooks/api/useProfile';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import ArrowIcon from '@/assets/icons/Chevron.svg?react';
-import ToggleButton from '../Common/ToggleButton';
+import ToggleButton from '@/components/Common/ToggleButton';
 
 type ProfileMenuProps = {
   title: string;

@@ -1,11 +1,10 @@
 import MenuIcon from '@/assets/icons/ThreeDots.svg?react';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import { useState } from 'react';
 import Button from '@/components/Common/Button';
 import { usePatchLanguagesLevel } from '@/hooks/api/useResume';
 import { LanguagesLevelType } from '@/types/api/resumes';
-import Icon from '@/components/Common/Icon';
-import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
+import { BottomSheet } from '@/components/Common/BottomSheet';
+import SelectListItem from '@/components/Common/Select/SelectListItem';
 
 type LanguageSkillCardProps = {
   title: string;
@@ -46,39 +45,37 @@ const LanguageSkillCard = ({
     <>
       {/* 언어 레벨 선택 바텀 시트 */}
       {levelBottomSheetOpen && (
-        <BottomSheetLayout
+        <BottomSheet
           isAvailableHidden={true}
           isShowBottomsheet={true}
           setIsShowBottomSheet={setLevelBottomSheetOpen}
         >
-          <div className="heading-20-semibold text-text-strong pt-2 pb-3 px-1">
-            Choose your {title} Grade
-          </div>
-          {/* 언어 등급 선택 (1 ~ maxLevel) */}
-          <div className="w-full h-[48vh] px-1 no-scrollbar">
+          <BottomSheet.Header title={`Choose your ${title} Grade`} />
+          <BottomSheet.Content>
+            {/* 언어 등급 선택 (1 ~ maxLevel) */}
             {[...Array(maxLevel).keys()].map((grade) => (
-              <div
+              <SelectListItem
                 key={grade}
-                className="w-full flex items-center justify-between py-3"
+                selectionType={SelectListItem.SelectionType.SINGLE}
+                title={`Grade ${grade + 1}`}
+                isSelected={selectedLevel === grade + 1}
+                iconPosition={SelectListItem.IconPosition.RIGHT}
                 onClick={() => setSelectedLevel(grade + 1)}
-              >
-                <div className="body-16-regular text-text-normal">
-                  Grade {grade + 1}
-                </div>
-                {selectedLevel === grade + 1 && <Icon icon={CheckIcon} />}
-              </div>
+              />
             ))}
-          </div>
-          <div className="">
+          </BottomSheet.Content>
+          <BottomSheet.ButtonGroup
+            variant={BottomSheet.ButtonGroupVariant.SINGLE}
+          >
             <Button
-              type="large"
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title="Select"
-              bgColor="bg-surface-primary"
-              fontColor="text-text-strong"
               onClick={handleLevelChange}
             />
-          </div>
-        </BottomSheetLayout>
+          </BottomSheet.ButtonGroup>
+        </BottomSheet>
       )}
       {/* 컴포넌트 시작 */}
       <div className="flex justify-between items-center w-full py-2">

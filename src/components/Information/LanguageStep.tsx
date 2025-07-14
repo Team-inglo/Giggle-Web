@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Dropdown from '@/components/Common/Dropdown';
 import { languageList } from '@/constants/information';
 import Button from '@/components/Common/Button';
-import PageTitle from '../Common/PageTitle';
+import PageTitle from '@/components/Common/PageTitle';
 import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
-import InputLayout from '../WorkExperience/InputLayout';
+import InputLayout from '@/components/WorkExperience/InputLayout';
 
 type LanguageStepProps = {
   onNext: (language: Language) => void;

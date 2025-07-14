@@ -1,12 +1,12 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import { useState } from 'react';
 import TimePicker from '@/components/Common/TimePicker';
 import { DayOfWeek, WorkDayTime } from '@/types/api/document';
-import Chip from './Chip';
+import Chip from '@/components/Common/Chip';
 import { ChipState } from '@/types/common/chip';
 import Icon from '@/components/Common/Icon';
 import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 // TODO: 나중에 constant로 분리해주세요!
 const DAYS = {
@@ -87,17 +87,13 @@ const WorkDayTimeBottomSheet = ({
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full">
-        <div className="w-full py-[0.75rem] flex flex-col items-start gap-[0.75rem]">
-          <h3 className="heading-20-semibold text-text-strong">
-            근로일 및 근로일별 근로시간
-          </h3>
-        </div>
+      <BottomSheet.Header title="근로일 및 근로일별 근로시간" />
+      <BottomSheet.Content>
         <div className="w-full mb-[1rem] flex flex-col gap-[0.5rem]">
           <div>
             <div className="w-full flex justify-between items-center">
@@ -164,6 +160,8 @@ const WorkDayTimeBottomSheet = ({
             </div>
           </div>
         </div>
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup>
         <Button
           type={
             isAvailableSubmit() ? Button.Type.PRIMARY : Button.Type.DISABLED
@@ -173,8 +171,8 @@ const WorkDayTimeBottomSheet = ({
           title={'추가하기'}
           onClick={() => returnResult()}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 
