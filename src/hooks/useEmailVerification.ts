@@ -80,10 +80,22 @@ export const useEmailVerification = ({
 
     // 이메일 존재 여부 검사 결과 처리
     if (ValidationResponse) {
-      if (ValidationResponse.data.is_valid === true) {
-        setEmailError(signInputTranslation.emailWrong[language]);
-      } else {
-        setEmailError(null);
+      switch (contextPath) {
+        case '/signup':
+        case '/employer/signup':
+          if (ValidationResponse.data.is_valid !== true) {
+            setEmailError(signInputTranslation.emailAlreadyExists[language]);
+          } else {
+            setEmailError(null);
+          }
+          break;
+        default:
+          if (ValidationResponse.data.is_valid === true) {
+            setEmailError(signInputTranslation.emailWrong[language]);
+          } else {
+            setEmailError(null);
+          }
+          break;
       }
     }
   }, [debouncedEmail, ValidationResponse, context, language]);
@@ -98,7 +110,6 @@ export const useEmailVerification = ({
       {
         onSuccess: () => setEmailVerifyStatus(EMAIL_VERIFY_STATUS.VERIFIED),
         onError: () => {
-          console.log('error');
           setEmailVerifyStatus(EMAIL_VERIFY_STATUS.ERROR);
           setEmailError(
             `${signInputTranslation.verifyFailed[language]} (${try_cnt}/5)`,
@@ -110,7 +121,7 @@ export const useEmailVerification = ({
 
   // 이메일 인증코드 재전송 API 호출
   const handleResendClick = async () => {
-    if (debouncedEmail === '') {
+    if (debouncedEmail === '' || emailError) {
       return;
     }
 
