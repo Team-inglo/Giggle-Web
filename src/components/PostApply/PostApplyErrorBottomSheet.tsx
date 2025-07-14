@@ -1,5 +1,5 @@
 import Button from '@/components/Common/Button';
-import { BottomSheet } from '../Common/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type PostApplyErrorBottomSheetType = {
   isShowBottomsheet: boolean;

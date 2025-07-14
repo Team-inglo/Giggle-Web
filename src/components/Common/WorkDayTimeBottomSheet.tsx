@@ -6,7 +6,7 @@ import Chip from '@/components/Common/Chip';
 import { ChipState } from '@/types/common/chip';
 import Icon from '@/components/Common/Icon';
 import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
-import { BottomSheet } from '@/components/Common/BottomSheet/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 // TODO: 나중에 constant로 분리해주세요!
 const DAYS = {

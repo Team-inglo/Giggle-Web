@@ -1,5 +1,5 @@
 import useBodyScrollLock from '@/hooks/useBodyScrollLock';
-import { BottomSheet } from '../Common/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type ResumeDeleteModalProps = {
   onEditButton: () => void;

@@ -1,7 +1,7 @@
 import SmallCheckIcon from '@/assets/icons/SmallCheckIcon.svg?react';
 import Button from '@/components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { BottomSheet } from '@/components/Common/BottomSheet/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type LoginBottomSheetPropsType = {
   isShowBottomsheet: boolean;

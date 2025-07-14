@@ -7,8 +7,8 @@ import { isEmployerByAccountType } from '@/utils/signup';
 import { VisaGroup } from '@/types/postCreate/postCreate';
 import { buttonTranslation } from '@/constants/translation';
 import { useState } from 'react';
-import { BottomSheet } from '@/components/Common/BottomSheet/BottomSheet';
-import SelectListItem from './Select/SelectListItem';
+import { BottomSheet } from '@/components/Common/BottomSheet';
+import SelectListItem from '@/components/Common/Select/SelectListItem';
 
 type VisaSelectBottomSheetPropsType = {
   selectVisas: VisaGroup[];
@@ -72,27 +72,27 @@ const VisaSelectBottomSheet = ({
           ))}
         </div>
       </BottomSheet.Content>
-      <BottomSheet.ButtonGroup variant={BottomSheet.ButtonGroupVariant.TWO_HORIZONTAL}>
-          <Button
-            type={buttonTypeKeys.BACK}
-            bgColor="bg-surface-secondary"
-            fontColor="text-text-strong"
-            title={
-              buttonTranslation.reset[isEmployerByAccountType(account_type)]
-            }
-            onClick={handleReset}
-          />
-          <Button
-            type={buttonTypeKeys.CONTINUE}
-            bgColor="bg-surface-primary"
-            fontColor="text-text-strong"
-            title={
-              buttonTranslation.selectComplete[
-                isEmployerByAccountType(account_type)
-              ]
-            }
-            onClick={handleSubmit}
-          />
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_HORIZONTAL}
+      >
+        <Button
+          type={buttonTypeKeys.BACK}
+          bgColor="bg-surface-secondary"
+          fontColor="text-text-strong"
+          title={buttonTranslation.reset[isEmployerByAccountType(account_type)]}
+          onClick={handleReset}
+        />
+        <Button
+          type={buttonTypeKeys.CONTINUE}
+          bgColor="bg-surface-primary"
+          fontColor="text-text-strong"
+          title={
+            buttonTranslation.selectComplete[
+              isEmployerByAccountType(account_type)
+            ]
+          }
+          onClick={handleSubmit}
+        />
       </BottomSheet.ButtonGroup>
     </BottomSheet>
   );

@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import Button from '@/components/Common/Button';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
-import { BottomSheet } from '../Common/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type LogoutBottomSheetProps = {
   handleLogout: () => void;

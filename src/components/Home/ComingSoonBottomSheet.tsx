@@ -1,7 +1,7 @@
 import Button from '@/components/Common/Button';
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
-import { BottomSheet } from '../Common/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type CommingSoonBottomSheetPropsType = {
   isShowBottomsheet: boolean;

@@ -7,8 +7,8 @@ import { buttonTypeKeys } from '@/constants/components';
 import { School } from '@/types/api/document';
 import { useGetSearchSchools } from '@/hooks/api/useResume';
 import useBodyScrollLock from '@/hooks/useBodyScrollLock';
-import BottomButtonPanel from '../Common/BottomButtonPanel';
-import PageTitle from '../Common/PageTitle';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import PageTitle from '@/components/Common/PageTitle';
 import Icon from '@/components/Common/Icon';
 import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 

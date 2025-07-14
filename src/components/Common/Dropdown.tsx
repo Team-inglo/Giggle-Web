@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 import Icon from '@/components/Common/Icon';
 import SelectListItem from '@/components/Common/Select/SelectListItem';
-import { BottomSheet } from '@/components/Common/BottomSheet/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {

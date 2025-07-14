@@ -1,5 +1,5 @@
 import Button from '@/components/Common/Button';
-import { BottomSheet } from '@/components/Common/BottomSheet/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type ApiErrorBottomSheetPropsType = {
   errorMessage: string;

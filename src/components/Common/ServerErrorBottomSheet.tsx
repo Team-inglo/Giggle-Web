@@ -3,7 +3,7 @@ import { errorTranslation } from '@/constants/translation';
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
 import { isEmployerByAccountType } from '@/utils/signup';
-import { BottomSheet } from '@/components/Common/BottomSheet/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type ServerErrorBottomSheetPropsType = {
   isShowBottomsheet: boolean;
@@ -50,7 +50,9 @@ const ServerErrorBottomSheet = ({
           }
         </p>
       </BottomSheet.Content>
-      <BottomSheet.ButtonGroup variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}>
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}
+      >
         <Button
           type={Button.Type.PRIMARY}
           size={Button.Size.LG}

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import TimePicker from '@/components/Common/TimePicker';
 import { DayOfWeek, WorkDayTimeWithRest } from '@/types/api/document';
 import { DAYS } from '@/constants/documents';
-import { BottomSheet } from '@/components/Common/BottomSheet/BottomSheet';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 // TODO: 나중에 constant로 분리해주세요!
 
