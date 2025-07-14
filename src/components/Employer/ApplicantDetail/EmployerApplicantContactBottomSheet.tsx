@@ -1,6 +1,4 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import RecruiterIcon from '@/assets/icons/ApplicationDetail/RecruiterIcon.svg?react';
 import {
   useGetEmployerApplicationSummary,
@@ -8,6 +6,7 @@ import {
 } from '@/hooks/api/useApplication';
 import { useParams } from 'react-router-dom';
 import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type EmployerApplicantContactBottomSheetType = {
   isShowBottomsheet: boolean;
@@ -37,12 +36,12 @@ const EmployerApplicantContactBottomSheet = ({
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <main className="p-3 w-full flex flex-col items-center text-center">
+      <BottomSheet.Content>
         <h3 className="pb-6 heading-18-semibold text-text-normal">
           지원자에 먼저 연락할 수 있어요 💬📞
         </h3>
@@ -67,24 +66,26 @@ const EmployerApplicantContactBottomSheet = ({
             </p>
           </div>
         </button>
-      </main>
-      <footer className="w-full pt-6 flex flex-col gap-2">
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}
+      >
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={'bg-primary-normal'}
-          fontColor="text-surface-invert"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title={'이미 면접을 완료했어요'}
           onClick={onClickComplete}
         />
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={'bg-primary-neutral'}
-          fontColor="text-surface-invert"
+          type={Button.Type.NEUTRAL}
+          size={Button.Size.LG}
+          isFullWidth
           title={'나중에 할게요'}
           onClick={() => setIsShowBottomSheet(false)}
         />
-      </footer>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

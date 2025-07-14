@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
-import BottomSheetLayout from '../Common/BottomSheetLayout';
 import {
   changeLanguage,
   getCurrentLanguage,
@@ -8,6 +7,7 @@ import {
 } from '@/utils/translate';
 import Icon from '@/components/Common/Icon';
 import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 interface LanguageBottomSheetProps {
   isShowBottomsheet: boolean;
@@ -150,7 +150,7 @@ const LanguageBottomSheet = ({
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
       isAvailableHidden={true}
@@ -158,10 +158,8 @@ const LanguageBottomSheet = ({
       {/* Google Translate 위젯을 위한 숨겨진 div */}
       <div id="google_translate_element" style={{ display: 'none' }}></div>
 
-      <div className="flex flex-col px-1">
-        <h2 className="py-3 head-3 text-text-strong heading-18-semibold">
-          언어 선택
-        </h2>
+      <BottomSheet.Header title="언어 선택" />
+      <BottomSheet.Content>
         <ul className="flex flex-col">
           {LANGUAGES.map((lang) => (
             <li key={lang.code} className="relative">
@@ -187,8 +185,8 @@ const LanguageBottomSheet = ({
             </li>
           ))}
         </ul>
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.Content>
+    </BottomSheet>
   );
 };
 

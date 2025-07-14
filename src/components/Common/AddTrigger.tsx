@@ -1,5 +1,5 @@
 import { ComponentType, SVGProps } from 'react';
-import Icon from './Icon';
+import Icon from '@/components/Common/Icon';
 import PressOverlay from '@/components/Common/PressedOverlay';
 import { usePress } from '@/hooks/usePress';
 

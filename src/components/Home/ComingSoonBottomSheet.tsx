@@ -1,8 +1,7 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type CommingSoonBottomSheetPropsType = {
   isShowBottomsheet: boolean;
@@ -16,7 +15,7 @@ const CommingSoonBottomSheet = ({
   const { account_type } = useUserStore();
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
@@ -45,16 +44,16 @@ const CommingSoonBottomSheet = ({
           </>
         )}
       </div>
-      <div className="w-full pt-3">
+      <BottomSheet.ButtonGroup variant={BottomSheet.ButtonGroupVariant.SINGLE}>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title="Okay"
           onClick={() => setIsShowBottomSheet(false)}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

@@ -26,7 +26,7 @@ import {
   PartTimePermitEmployerFormField,
   PostFormField,
 } from '@/constants/formFields';
-import WorkDayTimeInput from './input/WorkDayTimeInput';
+import WorkDayTimeInput from '@/components/Document/write/input/WorkDayTimeInput';
 import VisaDropdown from '@/components/Common/VisaDropdown';
 import ValueWithCheckboxInput from '@/components/Document/write/input/ValueWithCheckboxInput';
 import ImageUploadInput from '@/components/Document/write/input/ImageUploadInput';

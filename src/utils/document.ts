@@ -7,7 +7,7 @@ import {
   Phone,
   WorkDayTime,
 } from '@/types/api/document';
-import { extractNumbersAsNumber } from './post';
+import { extractNumbersAsNumber } from '@/utils/post';
 import { DropdownOption } from '@/components/Document/write/input/DropdownInput';
 import { MINIMUM_WAGE } from '@/constants/wage';
 

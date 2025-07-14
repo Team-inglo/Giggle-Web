@@ -21,7 +21,7 @@ import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitBu
 import { renderField } from '@/components/Document/write/renderField';
 import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
-import Button from '../Common/Button';
+import Button from '@/components/Common/Button';
 import { initialPartTimePermitForm } from '@/constants/documents';
 
 // 필수 검증 필드 목록

@@ -16,7 +16,6 @@ import {
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import { useEffect, useState } from 'react';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { handleGoExternalWebByDynamicUrl } from '@/utils/application';
 import CareerDetailContent from '@/components/PostDetail/CareerDetailContent';
 import PostDetailImageList from '@/components/PostDetail/PostDetailImageList';
@@ -127,9 +126,9 @@ const CareerDetailPage = () => {
             </button>
           )}
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-primary-normal'}
-            fontColor={'text-text-strong'}
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="Apply Now"
             onClick={() =>
               handleGoExternalWebByDynamicUrl(

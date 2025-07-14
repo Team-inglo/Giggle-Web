@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
-import VisaSelectBottomSheet from './VisaSelectBottomSheet';
+import VisaSelectBottomSheet from '@/components/Common/VisaSelectBottomSheet';
 import { VisaGroup } from '@/types/postCreate/postCreate';
 import Tag from '@/components/Common/Tag';
-import Icon from './Icon';
+import Icon from '@/components/Common/Icon';
 
 type VisaDropDownProps = {
   value: VisaGroup[]; // 현재 선택된 값

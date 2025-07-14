@@ -1,10 +1,9 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import Tag from '@/components/Common/Tag';
-import { buttonTypeKeys } from '@/constants/components';
 import { postSearchTranslation } from '@/constants/translation';
 import { useUserStore } from '@/store/user';
 import { isEmployerByAccountType } from '@/utils/signup';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type PostSearchFilterBottomSheetType = {
   selectedRegions: {
@@ -29,12 +28,19 @@ const PostSearchFilterBottomSheet = ({
   const { account_type } = useUserStore();
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={false}
       isShowBottomsheet={true}
       isFixedBackground={false}
     >
-      <div className="w-full flex flex-col gap-6">
+      <BottomSheet.Header
+        title={
+          postSearchTranslation.selectedAreas[
+            isEmployerByAccountType(account_type)
+          ]
+        }
+      />
+      <BottomSheet.Content>
         <h3 className="w-full heading-18-semibold text-text-normal">
           {
             postSearchTranslation.selectedAreas[
@@ -61,28 +67,30 @@ const PostSearchFilterBottomSheet = ({
             />
           ))}
         </div>
-        <div className="w-full flex justify-center items-center gap-2">
-          <Button
-            type={buttonTypeKeys.BACK}
-            bgColor="bg-surface-secondary"
-            fontColor="text-text-normal button-16-semibold"
-            title={
-              postSearchTranslation.reset[isEmployerByAccountType(account_type)]
-            }
-            onClick={onClickReset}
-          />
-          <Button
-            type={buttonTypeKeys.CONTINUE}
-            bgColor="bg-surface-primary"
-            fontColor="text-text-normal button-16-semibold"
-            title={
-              postSearchTranslation.apply[isEmployerByAccountType(account_type)]
-            }
-            onClick={onClickSubmit}
-          />
-        </div>
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}
+      >
+        <Button
+          type={Button.Type.BACK}
+          bgColor="bg-surface-secondary"
+          fontColor="text-text-normal button-16-semibold"
+          title={
+            postSearchTranslation.reset[isEmployerByAccountType(account_type)]
+          }
+          onClick={onClickReset}
+        />
+        <Button
+          type={Button.Type.CONTINUE}
+          bgColor="bg-surface-primary"
+          fontColor="text-text-normal button-16-semibold"
+          title={
+            postSearchTranslation.apply[isEmployerByAccountType(account_type)]
+          }
+          onClick={onClickSubmit}
+        />
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

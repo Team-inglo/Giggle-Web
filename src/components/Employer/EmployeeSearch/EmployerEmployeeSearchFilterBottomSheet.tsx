@@ -1,4 +1,3 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import { buttonTypeKeys } from '@/constants/components';
 import { useEffect, useState } from 'react';
@@ -12,6 +11,7 @@ import {
 } from '@/types/api/resumes';
 import BottomSheetCheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 import Icon from '@/components/Common/Icon';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type EmployerEmployeeSearchFilterBottomSheetPropsType = {
   filterType: EmployeeSearchCategoryEnType;
@@ -56,61 +56,58 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
   }, [filterType, filterList]);
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full">
-        <h3 className="px-1 py-3 head-3 text-text-strong heading-18-semibold">
-          {EMPLOYEE_SEARCH_CATEGORY_KO[filterType]}을 선택해주세요
-        </h3>
-        <main className="max-h-[50vh] overflow-y-scroll">
-          {EMPLOYEE_SEARCH_OPTIONS[filterType].map((option, index) => (
-            <button
-              key={`${index}_${option.ko}`}
-              className="w-full px-1 py-3 flex justify-between items-center"
-              onClick={() => handleClickFilter(option.enum)}
+      <BottomSheet.Header title={EMPLOYEE_SEARCH_CATEGORY_KO[filterType]} />
+      <BottomSheet.Content>
+        {EMPLOYEE_SEARCH_OPTIONS[filterType].map((option, index) => (
+          <button
+            key={`${index}_${option.ko}`}
+            className="w-full px-1 py-3 flex justify-between items-center"
+            onClick={() => handleClickFilter(option.enum)}
+          >
+            <p
+              className={`body-2 text-text-strong ${checkedFilter.includes(option.enum) ? 'body-16-medium' : 'body-16-regular'}`}
             >
-              <p
-                className={`body-2 text-text-strong ${checkedFilter.includes(option.enum) ? 'body-16-medium' : 'body-16-regular'}`}
-              >
-                {option.ko}
-              </p>
-              <div
-                className={`p-1 rounded-full                 ${
-                  checkedFilter.includes(option.enum)
-                    ? 'bg-surface-invert'
-                    : 'bg-surface-tertiary'
-                }`}
-              >
-                <Icon
-                  icon={BottomSheetCheckIcon}
-                  strokeColor="stroke-surface-base"
-                />
-              </div>
-            </button>
-          ))}
-        </main>
-
-        <div className="w-full flex justify-center items-center gap-2 pt-3 text-center">
-          <Button
-            type={buttonTypeKeys.BACK}
-            bgColor="bg-surface-secondary"
-            fontColor="text-text-strong"
-            title={'초기화'}
-            onClick={handleReset}
-          />
-          <Button
-            type={buttonTypeKeys.CONTINUE}
-            bgColor="bg-surface-primary"
-            fontColor="text-text-strong"
-            title={'적용하기'}
-            onClick={handleSubmit}
-          />
-        </div>
-      </div>
-    </BottomSheetLayout>
+              {option.ko}
+            </p>
+            <div
+              className={`p-1 rounded-full                 ${
+                checkedFilter.includes(option.enum)
+                  ? 'bg-surface-invert'
+                  : 'bg-surface-tertiary'
+              }`}
+            >
+              <Icon
+                icon={BottomSheetCheckIcon}
+                strokeColor="stroke-surface-base"
+              />
+            </div>
+          </button>
+        ))}
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_HORIZONTAL}
+      >
+        <Button
+          type={buttonTypeKeys.BACK}
+          bgColor="bg-surface-secondary"
+          fontColor="text-text-strong"
+          title={'초기화'}
+          onClick={handleReset}
+        />
+        <Button
+          type={buttonTypeKeys.CONTINUE}
+          bgColor="bg-surface-primary"
+          fontColor="text-text-strong"
+          title={'적용하기'}
+          onClick={handleSubmit}
+        />
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

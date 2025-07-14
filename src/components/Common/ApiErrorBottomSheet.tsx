@@ -1,6 +1,5 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type ApiErrorBottomSheetPropsType = {
   errorMessage: string;
@@ -21,26 +20,27 @@ const ApiErrorBottomSheet = ({
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={false}
       isShowBottomsheet={isShowBottomsheet}
     >
-      <div className="w-full pt-2 px-2 pb-6 flex flex-col gap-6 items-center text-center">
-        <h3 className="heading-18-semibold text-text-normal">
-          문제가 발생했어요 ! 😢
-        </h3>
+      <BottomSheet.Header
+        title="문제가 발생했어요! 😢"
+        align={BottomSheet.Header.Align.CENTER}
+      />
+      <BottomSheet.Content>
         <p className="body-14-regular text-text-normal">{errorMessage}</p>
-      </div>
-      <div className="w-full pt-3">
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-surface-primary"
-          fontColor="text-text-normal"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title={'뒤로가기'}
           onClick={handleClickBackButton}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

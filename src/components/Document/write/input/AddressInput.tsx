@@ -14,7 +14,7 @@ import { convertToAddress } from '@/utils/map';
 import { useState } from 'react';
 import { GiggleAddress } from '@/types/api/users';
 import { useLocation } from 'react-router-dom';
-import { isEmployer } from '../../../../utils/signup';
+import { isEmployer } from '@/utils/signup';
 
 interface AddressInputProps<
   TFieldValues extends FieldValues = FieldValues,

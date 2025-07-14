@@ -168,6 +168,14 @@ export const deleteEtcLanguageLevel = async (id: number) => {
   return response.data;
 };
 
+// 7.19 (고용주) 이력서 조회하기
+export const getApplicantResumeByContract = async (id: string) => {
+  const response = await apiV2.get(
+    `/owners/user-owner-job-postings/${id}/users/resumes/details`,
+  );
+  return response.data;
+};
+
 // 7.21 (유학생) 희망 근로 조건 상세 조회하기
 export const getWorkPreference = async () => {
   const response = await api.get('/users/resumes/work-preferences/details');

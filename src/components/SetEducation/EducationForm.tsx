@@ -10,7 +10,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import SearchSchools from '@/components/SetEducation/SearchSchools';
 import { School } from '@/types/api/document';
 import { formatDateInput } from '@/utils/information';
-import InputLayout from '../WorkExperience/InputLayout';
+import InputLayout from '@/components/WorkExperience/InputLayout';
 
 type EducationFormProps = {
   educationData: PostEducationType;

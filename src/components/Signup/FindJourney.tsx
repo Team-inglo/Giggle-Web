@@ -1,8 +1,8 @@
 import Button from '@/components/Common/Button';
 import { cardData, UserType } from '@/constants/user';
-import BottomButtonPanel from '../Common/BottomButtonPanel';
-import PageTitle from '../Common/PageTitle';
-import CardSelect from '../Common/CardSelect';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import PageTitle from '@/components/Common/PageTitle';
+import CardSelect from '@/components/Common/CardSelect';
 
 type findJourneyProps = {
   onSignUpClick: () => void;

@@ -1,10 +1,9 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { useState } from 'react';
 import TimePicker from '@/components/Common/TimePicker';
 import { DayOfWeek, WorkDayTimeWithRest } from '@/types/api/document';
 import { DAYS } from '@/constants/documents';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 // TODO: 나중에 constant로 분리해주세요!
 
@@ -60,24 +59,17 @@ const WorkDayTimeWithRestBottomSheet = ({
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full">
-        <div className="w-full py-[0.75rem] px-[3.125rem] flex flex-col items-center gap-[0.75rem]">
-          <h3 className="heading-20-semibold text-[#1E1926]">
-            근로일 및 근로일별 근로시간
-          </h3>
-          <p className="caption-12-regular text-[#656565]">
-            원하는 근무 시간을 추가해주세요.
-          </p>
-        </div>
-        <div className="w-full mb-[1rem] px-[1.5rem] flex flex-col gap-[0.5rem]">
+      <BottomSheet.Header title="근로일 및 근로일별 근로시간" />
+      <BottomSheet.Content>
+        <div className="w-full mb-[1rem] flex flex-col gap-[0.5rem]">
           <div>
-            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
-              근무일자 <span className="text-[#EE4700]">*</span>
+            <h5 className="py-[0.375rem] text-text-strong caption-12-regular">
+              근무일자
             </h5>
             <div className="flex flex-wrap gap-[0.5rem] w-full">
               {Object.keys(DAYS).map((value, index) => (
@@ -92,8 +84,8 @@ const WorkDayTimeWithRestBottomSheet = ({
             </div>
           </div>
           <div>
-            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
-              근무시간 <span className="text-[#EE4700]">*</span>
+            <h5 className="py-[0.375rem] text-text-strong caption-12-regular">
+              근무시간
             </h5>
             <div className="flex gap-[0.25rem] w-full ">
               <TimePicker
@@ -107,8 +99,8 @@ const WorkDayTimeWithRestBottomSheet = ({
             </div>
           </div>
           <div>
-            <h5 className="px-[0.25rem] py-[0.375rem] text-[#1E1926] caption-12-regular">
-              휴게시간 <span className="text-[#EE4700]">*</span>
+            <h5 className="py-[0.375rem] text-text-strong caption-12-regular">
+              휴게시간
             </h5>
             <div className="flex gap-[0.25rem] w-full ">
               <TimePicker
@@ -122,15 +114,19 @@ const WorkDayTimeWithRestBottomSheet = ({
             </div>
           </div>
         </div>
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={isAvailableSubmit() ? `bg-[#FEF387]` : `bg-[#F4F4F9]`}
-          fontColor={isAvailableSubmit() ? `text-[#1E1926]` : `text-[#BDBDBD]`}
+          type={
+            isAvailableSubmit() ? Button.Type.PRIMARY : Button.Type.DISABLED
+          }
+          size={Button.Size.LG}
+          isFullWidth
           title={'추가하기'}
           onClick={returnResult}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

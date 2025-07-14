@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 import Icon from '@/components/Common/Icon';
 import { languageProficiencyLevelsEn } from '@/constants/manageResume';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type LevelBottomSheetProps = {
   level: string;
@@ -17,16 +17,14 @@ const LevelBottomSheet = ({
   setBottomSheetOpen,
 }: LevelBottomSheetProps) => {
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={true}
       setIsShowBottomSheet={setBottomSheetOpen}
     >
-      <div className="heading-18-semibold text-text-strong px-1 py-3 text-left">
-        Select your Language Proficiency
-      </div>
-      {/* ETC 언어 등급 선택 0~10 */}
-      <div className="w-full h-[48vh] px-1">
+      <BottomSheet.Header title="Select your Language Proficiency" />
+      <BottomSheet.Content>
+        {/* ETC 언어 등급 선택 0~10 */}
         {languageProficiencyLevelsEn.map((languageLevel) => (
           <div
             key={languageLevel}
@@ -39,15 +37,17 @@ const LevelBottomSheet = ({
             {level === languageLevel && <Icon icon={CheckIcon} />}
           </div>
         ))}
-      </div>
-      <Button
-        type={Button.Type.PRIMARY}
-        size={Button.Size.LG}
-        title="Select"
-        onClick={() => setBottomSheetOpen(false)}
-        isFullWidth
-      />
-    </BottomSheetLayout>
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup variant={BottomSheet.ButtonGroupVariant.SINGLE}>
+        <Button
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          title="Select"
+          onClick={() => setBottomSheetOpen(false)}
+          isFullWidth
+        />
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

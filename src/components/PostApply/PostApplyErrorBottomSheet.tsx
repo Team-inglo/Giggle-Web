@@ -1,6 +1,5 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type PostApplyErrorBottomSheetType = {
   isShowBottomsheet: boolean;
@@ -12,30 +11,28 @@ const PostApplyErrorBottomSheet = ({
   setIsShowBottomSheet,
 }: PostApplyErrorBottomSheetType) => {
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full flex flex-col items-center text-center">
-        <h3 className="px-[1.625rem] pb-[2rem] heading-20-semibold text-[#1E1926]">
-          This is the announcement you've already applied for.
-        </h3>
+      <BottomSheet.Header title="This is the announcement you've already applied for." />
+      <BottomSheet.Content>
         <p className="px-[1.625rem] pb-[0.25rem] button-14-semibold text-[#7872ED]">
           The announcement you applied for can be found on the application
           document management menu.
         </p>
-      </div>
-      <div className="w-full py-[3rem] flex flex-col gap-[0.5rem]">
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title="OK"
           onClick={() => setIsShowBottomSheet(false)}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 
