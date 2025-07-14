@@ -13,10 +13,10 @@ const useResumeData = () => {
 
   const { account_type } = useUserStore();
 
-  const getDataSourceType = (): 'employerAccept' | 'owner' | 'user' => {
+  const getDataSourceType = (): 'applicantAccept' | 'owner' | 'user' => {
     if (account_type === UserType.OWNER) {
       if (pathname.includes('employer/applicant')) {
-        return 'employerAccept';
+        return 'applicantAccept';
       }
       return 'owner';
     }
@@ -28,7 +28,7 @@ const useResumeData = () => {
   const shouldFetchUserData = dataSourceType === 'user';
   const shouldFetchOwnerData = dataSourceType === 'owner' && id !== undefined;
   const shouldFetchEmployerData =
-    dataSourceType === 'employerAccept' && id !== undefined;
+    dataSourceType === 'applicantAccept' && id !== undefined;
 
   // 데이터 페칭 훅들
   const { data: userData, isPending: userDataPending } =
@@ -57,7 +57,7 @@ const useResumeData = () => {
           data: userData,
           isPending: userDataPending,
         };
-      case 'employerAccept':
+      case 'applicantAccept':
         return {
           data: employerData,
           isPending: employerDataPending,

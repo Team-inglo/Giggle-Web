@@ -3,10 +3,10 @@ import {
   deleteEtcLanguageLevel,
   deleteIntroduction,
   deleteWorkExperience,
+  getApplicantResumeByContract,
   getEducation,
   getEmployeeResumeList,
   getLanguageSummary,
-  getOwnerResume,
   getResume,
   getResumeDetail,
   getResumeProgress,
@@ -278,7 +278,7 @@ export const useDeleteEtcLanguageLevel = () => {
 export const useGetOwnerResume = (id: string, isEnabled: boolean = true) => {
   return useQuery({
     queryKey: ['ownerResume', id],
-    queryFn: () => getOwnerResume(id),
+    queryFn: () => getApplicantResumeByContract(id),
     enabled: isEnabled && !!id,
   });
 };

@@ -5,23 +5,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { createMockResumeData } from '@/__tests__/mocks/resume.mock';
 
-// Mock all hooks directly
-const mockUseGetResume = vi.fn();
-const mockUseGetApplicantResume = vi.fn();
-const mockUseUserStore = vi.fn();
-const mockUseCurrentApplicantIdStore = vi.fn();
+// Mock useResumeData hook
+const mockUseResumeData = vi.fn();
 
-vi.mock('@/hooks/api/useResume', () => ({
-  useGetResume: () => mockUseGetResume(),
-  useGetResumeDetail: () => mockUseGetApplicantResume(),
+vi.mock('@/hooks/useResumeData', () => ({
+  default: () => mockUseResumeData(),
 }));
+
+// Mock user store
+const mockUseUserStore = vi.fn();
 
 vi.mock('@/store/user', () => ({
   useUserStore: () => mockUseUserStore(),
-}));
-
-vi.mock('@/store/url', () => ({
-  useCurrentApplicantIdStore: () => mockUseCurrentApplicantIdStore(),
 }));
 
 // Mock React Router
@@ -146,18 +141,17 @@ describe('PostApplyResume', () => {
 
     // Set default returns
     mockUseUserStore.mockReturnValue({ account_type: 'OWNER' });
-    mockUseCurrentApplicantIdStore.mockReturnValue({ currentApplicantId: '1' });
+    mockUseResumeData.mockReturnValue({
+      data: mockResumeData,
+      isPending: false,
+    });
   });
 
   describe('렌더링', () => {
     it('로딩 중일 때 LoadingItem이 표시되어야 한다', () => {
-      mockUseGetApplicantResume.mockReturnValue({
+      mockUseResumeData.mockReturnValue({
         data: null,
         isPending: true,
-      });
-      mockUseGetResume.mockReturnValue({
-        data: null,
-        isPending: false,
       });
 
       render(<PostApplyResume />, { wrapper: createWrapper() });
@@ -166,12 +160,8 @@ describe('PostApplyResume', () => {
     });
 
     it('지원자 기본 정보가 올바르게 표시되어야 한다', () => {
-      mockUseGetApplicantResume.mockReturnValue({
+      mockUseResumeData.mockReturnValue({
         data: mockResumeData,
-        isPending: false,
-      });
-      mockUseGetResume.mockReturnValue({
-        data: null,
         isPending: false,
       });
 
@@ -184,12 +174,8 @@ describe('PostApplyResume', () => {
     });
 
     it('자기소개 정보가 올바르게 표시되어야 한다', () => {
-      mockUseGetApplicantResume.mockReturnValue({
+      mockUseResumeData.mockReturnValue({
         data: mockResumeData,
-        isPending: false,
-      });
-      mockUseGetResume.mockReturnValue({
-        data: null,
         isPending: false,
       });
 
