@@ -88,7 +88,7 @@
 
 ## 데모 (24.11.26 기준)
 
-> https://www.youtube.com/watch?v=DZHhIN-6C1U
+> https://youtu.be/1SjgSh4zOZI
 
 1. `main` 브랜치에서 코드 복사
 
