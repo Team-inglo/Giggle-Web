@@ -1,6 +1,5 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type LoginBottomSheetPropsType = {
   isShowBottomsheet: boolean;
@@ -12,29 +11,31 @@ const LoginBottomSheet = ({
   setIsShowBottomSheet,
 }: LoginBottomSheetPropsType) => {
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full pt-2 px-2 pb-6 flex flex-col gap-6 items-center text-center">
-        <h3 className="heading-18-semibold text-[#252525]">
-          Hold up! Let’s get you signed in 😊
-        </h3>
-        <p className="body-14-regular text-[#252525]">
-          Log in is required to use that menu!
-        </p>
-      </div>
-      <div className="w-full pt-3">
+      <BottomSheet.Content>
+        <div className="w-full pt-2 pb-6 flex flex-col gap-6 items-center text-center">
+          <h3 className="heading-18-semibold text-text-strong">
+            Hold up! Let’s get you signed in 😊
+          </h3>
+          <p className="body-14-regular text-text-strong">
+            Log in is required to use that menu!
+          </p>
+        </div>
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup variant={BottomSheet.ButtonGroupVariant.SINGLE}>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title="Okay"
           onClick={() => setIsShowBottomSheet(false)}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

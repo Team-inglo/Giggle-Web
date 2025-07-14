@@ -1,8 +1,7 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
+import AgreeBottomSheet from '@/components/Employer/Signup/AgreeBottomSheet';
 import InformationInputSection from '@/components/Employer/Signup/InformationInputSection';
 import PolicyViewer from '@/components/Information/PolicyViewer';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
@@ -164,17 +163,13 @@ const EmployerSignupInfoPage = () => {
       )}
 
       {isAgreeModal && (
-        <BottomSheetLayout
-          isAvailableHidden={false}
+        <AgreeBottomSheet
           isShowBottomsheet={isAgreeModal}
-        >
-          <AgreeModalInner
-            onPolicyPreview={(policy: TermType) => {
-              getPolicy(policy);
-            }}
-            onNext={setIsAgreeModal}
-          />
-        </BottomSheetLayout>
+          onPolicyPreview={(policy: TermType) => {
+            getPolicy(policy);
+          }}
+          onNext={setIsAgreeModal}
+        />
       )}
       {isPolicyPreview === true && (
         <PolicyViewer
