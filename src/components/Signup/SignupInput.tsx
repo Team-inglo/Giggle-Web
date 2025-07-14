@@ -45,7 +45,9 @@ const SignupInput = ({
   const debouncedPassword = useDebounce(password);
 
   // 이메일 검증 결과 처리
-  const handleEmailVerificationChange = (result: EmailVerificationResult) => {
+  const handleEmailVerificationChange = async (
+    result: EmailVerificationResult,
+  ) => {
     setEmailVerificationResult(result);
     onEmailVerificationChange(result);
   };

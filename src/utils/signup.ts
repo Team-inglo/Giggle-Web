@@ -61,11 +61,11 @@ export const isValidEmployerRegistration = (
 };
 
 // 고용주일 때 한국어, 유학생일 때 영어를 보여주기 위함
-export const isEmployer = (pathname: string):Language => {
+export const isEmployer = (pathname: string): Language => {
   if (pathname.includes('/employer')) {
-    return 'ko' as Language;
+    return Language.KO;
   }
-  return 'en' as Language;
+  return Language.EN;
 };
 
 // account_type을 통해 고용주라면 한국어, 아니라면 영어를 보여주기 위함
