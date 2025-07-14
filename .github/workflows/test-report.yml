@@ -61,9 +61,12 @@ jobs:
           echo "  pnpm version: $(pnpm --version)"
           echo "  Working directory: $(pwd)"
 
-          # JSON 리포터로 테스트 실행
-          echo "🏃 Running tests with JSON reporter..."
-          npx vitest run --reporter=json --outputFile=test-results.json || echo "Test execution completed"
+          # 커버리지 디렉토리 생성
+          mkdir -p coverage
+
+          # JSON 리포터와 커버리지를 함께 실행
+          echo "🏃 Running tests with JSON reporter and coverage..."
+          npx vitest run --reporter=json --reporter=verbose --outputFile=test-results.json --coverage --coverage.reporter=json-summary --coverage.reporter=json --coverage.reporter=text > coverage-output.txt 2>&1 || echo "Test execution completed"
 
           # JSON 파일 확인
           if [ -f "test-results.json" ]; then
@@ -76,9 +79,18 @@ jobs:
             echo "❌ JSON results file not found"
           fi
 
-          # 커버리지 실행
-          echo "📊 Running coverage..."
-          npx vitest run --coverage > coverage-output.txt 2>&1 || echo "Coverage completed"
+          # 커버리지 파일들 확인
+          echo "📊 Checking coverage files..."
+          ls -la coverage/ || echo "No coverage directory found"
+          if [ -f "coverage/coverage-final.json" ]; then
+            echo "✅ Coverage JSON file found"
+            echo "📄 Coverage file size: $(wc -c < coverage/coverage-final.json) bytes"
+          else
+            echo "❌ Coverage JSON file not found"
+          fi
+
+          # 다른 가능한 커버리지 파일 위치 확인
+          find . -name "*coverage*" -type f | head -10 || echo "No coverage files found"
         continue-on-error: true
         
       - name: Parse JSON test results and generate report
@@ -173,22 +185,168 @@ jobs:
                 throw new Error('JSON file does not exist');
               }
 
-              // 커버리지 데이터 파싱
-              if (fs.existsSync('./coverage/coverage-final.json')) {
-                try {
-                  const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-final.json', 'utf8'));
-                  if (coverageData.total) {
-                    summary.coverage = {
-                      lines: coverageData.total.lines?.pct || 0,
-                      functions: coverageData.total.functions?.pct || 0,
-                      branches: coverageData.total.branches?.pct || 0,
-                      statements: coverageData.total.statements?.pct || 0
-                    };
-                    console.log('✅ Coverage data parsed successfully');
+              // 커버리지 데이터 파싱 (다양한 파일 형식 지원)
+              const coverageFiles = [
+                './coverage/coverage-summary.json',
+                './coverage/coverage-final.json',
+                './coverage.json',
+                './coverage/clover.xml'
+              ];
+
+              let coverageFound = false;
+              
+              for (const coverageFile of coverageFiles) {
+                if (fs.existsSync(coverageFile)) {
+                  console.log(\`📊 Found coverage file: \${coverageFile}\`);
+                  try {
+                    if (coverageFile.endsWith('.json')) {
+                      const coverageData = JSON.parse(fs.readFileSync(coverageFile, 'utf8'));
+                      
+                      // coverage-final.json 형식 (c8/v8 커버리지)
+                      if (coverageData.total) {
+                        summary.coverage = {
+                          lines: coverageData.total.lines?.pct || 0,
+                          functions: coverageData.total.functions?.pct || 0,
+                          branches: coverageData.total.branches?.pct || 0,
+                          statements: coverageData.total.statements?.pct || 0
+                        };
+                        console.log('✅ Coverage data parsed (coverage-final format)');
+                        coverageFound = true;
+                        break;
+                      }
+                      
+                      // coverage-summary.json 형식 (vitest json-summary)
+                      else if (coverageData.total || Object.keys(coverageData).length > 0) {
+                        let totalData = coverageData.total;
+                        
+                        // vitest의 coverage-summary.json은 'total' 키가 있음
+                        if (totalData) {
+                          summary.coverage = {
+                            lines: totalData.lines?.pct || 0,
+                            functions: totalData.functions?.pct || 0, 
+                            branches: totalData.branches?.pct || 0,
+                            statements: totalData.statements?.pct || 0
+                          };
+                          console.log('✅ Coverage data parsed (vitest coverage-summary format)');
+                          coverageFound = true;
+                          break;
+                        }
+                        
+                        // 다른 형식의 summary
+                        else if (coverageData.lines || coverageData.functions) {
+                          summary.coverage = {
+                            lines: coverageData.lines?.pct || 0,
+                            functions: coverageData.functions?.pct || 0,
+                            branches: coverageData.branches?.pct || 0, 
+                            statements: coverageData.statements?.pct || 0
+                          };
+                          console.log('✅ Coverage data parsed (direct summary format)');
+                          coverageFound = true;
+                          break;
+                        }
+                      }
+
+                      // vitest 직접 출력 형식 확인
+                      else if (Array.isArray(coverageData) || typeof coverageData === 'object') {
+                        console.log('🔍 Checking for vitest coverage format...');
+                        console.log('📄 Coverage data structure:', Object.keys(coverageData));
+                        
+                        // 모든 파일의 커버리지를 집계
+                        let totalCoverage = { lines: 0, functions: 0, branches: 0, statements: 0 };
+                        let fileCount = 0;
+                        
+                        Object.entries(coverageData).forEach(([file, data]) => {
+                          if (data && typeof data === 'object' && data.lines) {
+                            totalCoverage.lines += data.lines.pct || 0;
+                            totalCoverage.functions += data.functions?.pct || 0;
+                            totalCoverage.branches += data.branches?.pct || 0;
+                            totalCoverage.statements += data.statements?.pct || 0;
+                            fileCount++;
+                          }
+                        });
+                        
+                        if (fileCount > 0) {
+                          summary.coverage = {
+                            lines: totalCoverage.lines / fileCount,
+                            functions: totalCoverage.functions / fileCount,
+                            branches: totalCoverage.branches / fileCount, 
+                            statements: totalCoverage.statements / fileCount
+                          };
+                          console.log('✅ Coverage data parsed (aggregated from files)');
+                          coverageFound = true;
+                          break;
+                        }
+                      }
+                    }
+                  } catch (e) {
+                    console.log(\`❌ Coverage parsing failed for \${coverageFile}:\`, e.message);
+                    continue;
                   }
-                } catch (e) {
-                  console.log('❌ Coverage data parsing failed:', e.message);
                 }
+              }
+
+                              if (!coverageFound) {
+                 console.log('⚠️ No valid coverage data found in JSON files');
+                 // 커버리지 파일이 없는 경우 텍스트 출력에서 파싱 시도
+                 try {
+                   if (fs.existsSync('./coverage-output.txt')) {
+                     const coverageText = fs.readFileSync('./coverage-output.txt', 'utf8');
+                     console.log('🔍 Attempting to parse coverage from text output...');
+                     console.log('📄 Coverage text preview:', coverageText.substring(0, 500));
+                     
+                     // 다양한 형식의 텍스트에서 커버리지 추출
+                     // 형식 1: Lines: 85.5% (standard format)
+                     let linesMatch = coverageText.match(/Lines\\s*[:|]\\s*([0-9.]+)%/i);
+                     let functionsMatch = coverageText.match(/Functions\\s*[:|]\\s*([0-9.]+)%/i);
+                     let branchesMatch = coverageText.match(/Branches\\s*[:|]\\s*([0-9.]+)%/i);
+                     let statementsMatch = coverageText.match(/Statements\\s*[:|]\\s*([0-9.]+)%/i);
+                     
+                     // 형식 2: | Lines | 85.5% | (table format)  
+                     if (!linesMatch) {
+                       linesMatch = coverageText.match(/\\|\\s*Lines\\s*\\|\\s*([0-9.]+)%/i);
+                       functionsMatch = coverageText.match(/\\|\\s*Functions\\s*\\|\\s*([0-9.]+)%/i);
+                       branchesMatch = coverageText.match(/\\|\\s*Branches\\s*\\|\\s*([0-9.]+)%/i);
+                       statementsMatch = coverageText.match(/\\|\\s*Statements\\s*\\|\\s*([0-9.]+)%/i);
+                     }
+                     
+                     // 형식 3: 숫자만 있는 경우 (85.5)
+                     if (!linesMatch) {
+                       const percentageMatches = coverageText.match(/([0-9.]+)%/g);
+                       if (percentageMatches && percentageMatches.length >= 4) {
+                         console.log('🔍 Found percentage matches:', percentageMatches);
+                         // 일반적으로 Lines, Functions, Branches, Statements 순서
+                         summary.coverage = {
+                           lines: parseFloat(percentageMatches[0]) || 0,
+                           functions: parseFloat(percentageMatches[1]) || 0,
+                           branches: parseFloat(percentageMatches[2]) || 0,
+                           statements: parseFloat(percentageMatches[3]) || 0
+                         };
+                         console.log('✅ Coverage data parsed from percentage sequence');
+                         coverageFound = true;
+                       }
+                     }
+                     
+                     // 정규식으로 찾은 경우
+                     if (!coverageFound && linesMatch) {
+                       summary.coverage = {
+                         lines: parseFloat(linesMatch[1]) || 0,
+                         functions: parseFloat(functionsMatch?.[1]) || 0,
+                         branches: parseFloat(branchesMatch?.[1]) || 0,
+                         statements: parseFloat(statementsMatch?.[1]) || 0
+                       };
+                       console.log('✅ Coverage data parsed from regex patterns');
+                       coverageFound = true;
+                     }
+                   }
+                 } catch (e) {
+                   console.log('❌ Text coverage parsing failed:', e.message);
+                 }
+               }
+
+              if (coverageFound) {
+                console.log('📊 Final coverage data:', JSON.stringify(summary.coverage, null, 2));
+              } else {
+                console.log('⚠️ Using default coverage values (0%)');
               }
 
               console.log('📊 Final summary:', JSON.stringify(summary, null, 2));
