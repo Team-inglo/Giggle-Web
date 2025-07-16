@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import DownArrowIcon from '@/assets/icons/DownArrowIcon.svg?react';
 import { HOUR_LIST, MINUTE_LIST } from '@/constants/time';
-import Icon from './Icon';
+import Icon from '@/components/Common/Icon';
 
 type TimePickerProps = {
   isDisabled: boolean;

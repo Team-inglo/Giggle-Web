@@ -1,3 +1,4 @@
+import { Language } from '@/components/Common/HelperLabel';
 import { UserType } from '@/constants/user';
 import { EmployerRegistrationRequestBody } from '@/types/api/employ';
 
@@ -60,11 +61,11 @@ export const isValidEmployerRegistration = (
 };
 
 // 고용주일 때 한국어, 유학생일 때 영어를 보여주기 위함
-export const isEmployer = (pathname: string) => {
+export const isEmployer = (pathname: string): Language => {
   if (pathname.includes('/employer')) {
-    return 'ko';
+    return Language.KO;
   }
-  return 'en';
+  return Language.EN;
 };
 
 // account_type을 통해 고용주라면 한국어, 아니라면 영어를 보여주기 위함

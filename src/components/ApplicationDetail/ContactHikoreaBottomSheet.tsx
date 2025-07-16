@@ -1,13 +1,22 @@
-import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import { usePatchApplyHiKorea } from '@/hooks/api/useApplication';
 import { useParams } from 'react-router-dom';
 import { handleGoExternalWeb } from '@/utils/application';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type ContactHikoreaBottomSheetProps = {
   isShowBottomsheet: boolean;
   setIsShowBottomSheet: (isShowBottomsheet: boolean) => void;
+};
+
+type DocumentItemProps = {
+  title: string;
+};
+
+const DocumentItem = ({ title }: DocumentItemProps) => {
+  return (
+    <li className="caption-12-regular text-text-alternative">📌 {title}</li>
+  );
 };
 
 const ContactHikoreaBottomSheet = ({
@@ -18,59 +27,55 @@ const ContactHikoreaBottomSheet = ({
 
   const { mutate } = usePatchApplyHiKorea(Number(id));
 
+  const documentItems = [
+    'Work Permit Form',
+    'Employment Contract',
+    'Integrated Application Form',
+    'Residence Card',
+    'Passport',
+    'Business Registration Certificate',
+  ];
+
   const handleCompleteApplyHikorea = () => {
     if (isNaN(Number(id))) return;
     mutate(Number(id));
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <main className="p-3 w-full flex flex-col items-center text-center">
-        <h3 className="pb-6 heading-18-semibold text-text-normal">
-          {`Please prepare the following documents\n before making contact`}
-        </h3>
-        <ul className="w-full p-4 flex flex-col gap-1 bg-primary-neutral rounded-lg text-start">
-          <li className="caption-12-regular text-text-alternative">
-            📌 Work Permit Form
-          </li>
-          <li className="caption-12-regular text-text-alternative">
-            📌 Employment Contract
-          </li>
-          <li className="caption-12-regular text-text-alternative">
-            📌 Integrated Application Form
-          </li>
-          <li className="caption-12-regular text-text-alternative">
-            📌 Residence Card
-          </li>
-          <li className="caption-12-regular text-text-alternative">
-            📌 Passport
-          </li>
-          <li className="caption-12-regular text-text-alternative">
-            📌 Business Registration Certificate
-          </li>
-        </ul>
-      </main>
-      <footer className="w-full pt-6 flex flex-col gap-2">
+      <BottomSheet.Header title="Please prepare the following documents before making contact" />
+      <BottomSheet.Content>
+        <main className="p-3 w-full flex flex-col items-center text-center">
+          <ul className="w-full p-4 flex flex-col gap-1 bg-primary-neutral rounded-lg text-start">
+            {documentItems.map((document, index) => (
+              <DocumentItem key={index} title={document} />
+            ))}
+          </ul>
+        </main>
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_HORIZONTAL}
+      >
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={'bg-primary-normal'}
-          fontColor="text-surface-invert"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title={'Go to Hikorea'}
           onClick={() => handleGoExternalWeb('hikorea')}
         />
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={'bg-primary-neutral'}
-          fontColor="text-surface-invert"
+          type={Button.Type.NEUTRAL}
+          size={Button.Size.LG}
+          isFullWidth
           title={'Completed'}
           onClick={handleCompleteApplyHikorea}
         />
-      </footer>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

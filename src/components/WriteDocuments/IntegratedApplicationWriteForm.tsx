@@ -6,7 +6,6 @@ import {
 import { IntegratedApplicationData, Phone } from '@/types/api/document';
 import { useState } from 'react';
 import { validateIntegratedApplication } from '@/utils/document';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import SearchSchoolBottomSheet from '@/components/Document/write/SearchSchoolBottomSheet';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import {
@@ -19,7 +18,7 @@ import { useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
-import Button from '../Common/Button';
+import Button from '@/components/Common/Button';
 import { initialIntegratedApplication } from '@/constants/documents';
 
 // 상수 정의
@@ -136,21 +135,16 @@ const IntegratedApplicationWriteForm = ({
 
         {/* 학교 선택 모달 */}
         {isModalOpen && (
-          <BottomSheetLayout
-            isAvailableHidden={true}
+          <SearchSchoolBottomSheet
+            newDocumentData={
+              document || (getValues() as IntegratedApplicationData)
+            }
+            setNewDocumentData={(data: IntegratedApplicationData) => {
+              setValue('school_name', data.school_name);
+            }}
             isShowBottomsheet={isModalOpen}
-            setIsShowBottomSheet={setIsModalOpen}
-          >
-            <SearchSchoolBottomSheet
-              newDocumentData={
-                document || (getValues() as IntegratedApplicationData)
-              }
-              setNewDocumentData={(data: IntegratedApplicationData) => {
-                setValue('school_name', data.school_name);
-              }}
-              onClose={() => setIsModalOpen(false)}
-            />
-          </BottomSheetLayout>
+            onClose={() => setIsModalOpen(false)}
+          />
         )}
         {/* 버튼 패널 */}
         <BottomButtonPanel>

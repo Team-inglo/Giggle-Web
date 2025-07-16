@@ -1,10 +1,9 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { errorTranslation } from '@/constants/translation';
 import { UserType } from '@/constants/user';
 import { useUserStore } from '@/store/user';
 import { isEmployerByAccountType } from '@/utils/signup';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type ServerErrorBottomSheetPropsType = {
   isShowBottomsheet: boolean;
@@ -30,31 +29,34 @@ const ServerErrorBottomSheet = ({
   };
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={false}
       isShowBottomsheet={isShowBottomsheet}
     >
-      <div className="w-full pt-2 px-2 pb-6 flex flex-col gap-6 items-center text-center">
-        <h3 className="heading-18-semibold text-[#252525]">
-          {
-            errorTranslation.serverErrorTitle[
-              isEmployerByAccountType(account_type)
-            ]
-          }
-        </h3>
-        <p className="body-14-regular text-[#252525]">
+      <BottomSheet.Header
+        title={
+          errorTranslation.serverErrorTitle[
+            isEmployerByAccountType(account_type)
+          ]
+        }
+        align={BottomSheet.Header.Align.CENTER}
+      />
+      <BottomSheet.Content>
+        <p className="body-14-regular text-text-strong">
           {
             errorTranslation.serverErrorContent[
               isEmployerByAccountType(account_type)
             ]
           }
         </p>
-      </div>
-      <div className="w-full pt-3 flex flex-col gap-2">
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup
+        variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}
+      >
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title={
             account_type === UserType.OWNER
               ? '고객센터에 문의하기'
@@ -63,14 +65,14 @@ const ServerErrorBottomSheet = ({
           onClick={handleContactCustomerSupport}
         />
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#F4F4F9]"
-          fontColor="text-[#191919]"
+          type={Button.Type.NEUTRAL}
+          size={Button.Size.LG}
+          isFullWidth
           title={account_type === UserType.OWNER ? '알겠어요' : 'Okay'}
           onClick={handleClickBackButton}
         />
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

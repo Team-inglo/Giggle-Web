@@ -10,6 +10,8 @@ import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { checkEmployerPage } from '@/utils/checkUserPage';
+import { EmailVerificationResult } from '@/hooks/useEmailVerification';
+import ProgressStepper from '@/components/Common/ProgressStepper';
 
 const EmployerSignupPage = () => {
   const { updateAccountType, updateName } = useUserStore();
@@ -21,10 +23,15 @@ const EmployerSignupPage = () => {
 
   // sign-up Field 상태 관리
   const [password, setPassword] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
 
-  // authentication-code Field 상태 관리
-  const [authenticationCode, setAuthenticationCode] = useState<string>('');
+  // 이메일 검증 결과 상태
+  const [emailVerificationResult, setEmailVerificationResult] =
+    useState<EmailVerificationResult>({
+      isValid: false,
+      email: '',
+      authenticationCode: '',
+      isVerified: false,
+    });
 
   // mutate 관리
   const { mutate: tempSignUp } = useTempSignUp();
@@ -33,14 +40,13 @@ const EmployerSignupPage = () => {
   const handleSignUpClick = () => {
     setCurrentStep(currentStep + 1);
   };
+
   const handlePasswordChange = (value: string) => {
     setPassword(value);
   };
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
-  };
-  const handleAuthCodeChange = (value: string) => {
-    setAuthenticationCode(value);
+
+  const handleEmailVerificationChange = (result: EmailVerificationResult) => {
+    setEmailVerificationResult(result);
   };
 
   // back 버튼 핸들러
@@ -58,7 +64,7 @@ const EmployerSignupPage = () => {
     tempSignUp(
       {
         password: password,
-        email: email,
+        email: emailVerificationResult.email,
         account_type: UserType.OWNER,
       },
       { onSuccess: handleSignUpClick },
@@ -78,12 +84,12 @@ const EmployerSignupPage = () => {
     <div className="flex flex-col w-[100vw] h-[100vh] bg-white">
       {currentStep === 2 ? (
         <VerificationSuccessful
-          title={signInputTranslation.successVerify[isEmployer(pathname)]}
+          title={signInputTranslation.completeSignup[isEmployer(pathname)]}
           content={
-            signInputTranslation.successVerifyContent[isEmployer(pathname)]
+            signInputTranslation.completeSignupContent[isEmployer(pathname)]
           }
           buttonText={
-            signInputTranslation.successVerifyBtn[isEmployer(pathname)]
+            signInputTranslation.completeSignupBtn[isEmployer(pathname)]
           }
           onNext={() => {
             navigate(
@@ -101,21 +107,16 @@ const EmployerSignupPage = () => {
             title={signInputTranslation.signupTitle[isEmployer(pathname)]}
             onClickBackButton={() => handleBackButtonClick()}
           />
-          <div className="flex justify-center items-center sticky top-[3.75rem]">
-            <div className={`h-1 w-full bg-[#fef387]`} />
-          </div>
+          <ProgressStepper currentStep={2} totalCount={2} />
         </>
       )}
-      <div className="grow px-4 flex flex-col items-center">
+      <div className="grow flex flex-col items-center">
         {currentStep === 1 && (
           <SignupInput
             onSignUpClick={handleSignUp}
-            email={email}
-            onEmailChange={handleEmailChange}
             password={password}
             onPasswordChange={handlePasswordChange}
-            authenticationCode={authenticationCode}
-            onAuthCodeChange={handleAuthCodeChange}
+            onEmailVerificationChange={handleEmailVerificationChange}
           />
         )}
       </div>

@@ -1,5 +1,4 @@
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import PostDetailConfirmBottomSheet from '@/components/PostDetail/PostDetailConfirmBottomSheet';
 import LoginBottomSheet from '@/components/Common/LoginBottomSheet';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
@@ -67,11 +66,11 @@ const PostDetailApplyButton = ({
             </button>
           )}
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={
-              isRecruiting ? 'bg-primary-normal' : 'bg-surface-secondary'
+            type={
+              isRecruiting ? Button.Type.PRIMARY : Button.Type.DISABLED
             }
-            fontColor={isRecruiting ? 'text-text-strong' : 'text-text-disabled'}
+            size={Button.Size.LG}
+            isFullWidth
             title="Apply Now"
             {...(isRecruiting && { onClick: onClickApply })}
           />

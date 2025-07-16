@@ -14,7 +14,7 @@ import EducationDetail from '@/components/ManageResume/EducationDetail';
 import LanguageManageDetail from '@/components/ManageResume/LanguageManageDetail';
 import InfoCardLayout from '@/components/Common/InfoCardLayout';
 import { ReactNode } from 'react';
-import WorkPreferenceDetail from './WorkPreferenceDetail';
+import WorkPreferenceDetail from '@/components/ManageResume/WorkPreferenceDetail';
 import { profileTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { getKoreanAbilityLevel } from '@/utils/resume';

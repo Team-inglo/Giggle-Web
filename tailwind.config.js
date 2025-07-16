@@ -51,14 +51,14 @@ export default {
           500: '#FEF387',
           600: '#E1D771',
           700: '#C4BA5E',
-          800: '#B0923A',
+          800: '#89823A',
           900: '#4F4B1D',
         },
         neutral: {
           0: '#FFFFFF',
           100: '#F4F4F9',
-          200: '#EBEDF2',
-          300: '#D0DAE3',
+          200: '#E9EBF2',
+          300: '#D8DAE3',
           400: '#C3C5D0',
           500: '#A9ABB8',
           600: '#8F919D',
@@ -107,8 +107,8 @@ export default {
           primary: '#FEF387', // brand.500
           base: '#FFFFFF', // neutral.0
           secondary: '#F4F4F9', // neutral.100
-          tertiary: '#EBEDF2', // neutral.200
-          disabled: '#D0DAE3', // neutral.300
+          tertiary: '#E9EBF2', // neutral.200
+          disabled: '#D8DAE3', // neutral.300
           invert: '#17181A', // neutral.950
         },
         surfaceDim: {
@@ -118,8 +118,8 @@ export default {
         border: {
           primary: '#FEF387', // brand.500
           normal: '#C3C5D0', // neutral.400
-          alternative: '#D0DAE3', // neutral.300
-          disabled: '#EBEDF2', // neutral.200
+          alternative: '#D8DAE3', // neutral.300
+          disabled: '#E9EBF2', // neutral.200
           error: '#FF4D5F', // status-red.300
           success: '#0066FF', // status-blue.300
         },

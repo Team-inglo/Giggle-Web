@@ -53,7 +53,7 @@ export default defineConfig({
           // 공통 컴포넌트 청크 (가장 자주 사용되는 컴포넌트들)
           'common-ui': [
             '@/components/Common/Button',
-            '@/components/Common/BottomSheetLayout',
+            '@/components/Common/BottomSheet',
             '@/components/Common/Header/BaseHeader',
             '@/components/Common/LoadingItem',
             '@/components/Common/Toast',

@@ -2,7 +2,7 @@
 
 ### 🏆 2024 공개SW개발자대회 우수작
 
-[![Tests](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml/badge.svg)](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test.yml)
+[![Tests](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test-report.yml/badge.svg)](https://github.com/Team-inglo/Giggle-Web/actions/workflows/test-report.yml)
 
 <div align="center">
 
@@ -88,7 +88,7 @@
 
 ## 데모 (24.11.26 기준)
 
-> https://www.youtube.com/watch?v=DZHhIN-6C1U
+> https://youtu.be/1SjgSh4zOZI
 
 1. `main` 브랜치에서 코드 복사
 

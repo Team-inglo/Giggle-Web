@@ -21,7 +21,7 @@ import { useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
-import Button from '../Common/Button';
+import Button from '@/components/Common/Button';
 import { initialLaborContractEmployeeInfo } from '@/constants/documents';
 
 // 필수 검증 필드 목록

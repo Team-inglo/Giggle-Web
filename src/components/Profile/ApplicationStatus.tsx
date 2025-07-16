@@ -4,7 +4,7 @@ import {
 } from '@/hooks/api/useProfile';
 import { ApplicationCountType, BookmarkCountType } from '@/types/api/profile';
 import { useEffect, useState } from 'react';
-import ResumeHelperBanner from '../ManageResume/ResumeHelperBanner';
+import ResumeHelperBanner from '@/components/ManageResume/ResumeHelperBanner';
 
 const ApplicationStatus = () => {
   const { data: applicationData } = useGetApplicationCounts();

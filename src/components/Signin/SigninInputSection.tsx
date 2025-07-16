@@ -2,40 +2,42 @@ import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { validateEmail } from '@/utils/signin';
-import { useGetEmailValidation, useSignIn } from '@/hooks/api/useAuth';
+import { useSignIn } from '@/hooks/api/useAuth';
 import { useUserInfoforSigninStore } from '@/store/signup';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { signInputTranslation } from '@/constants/translation';
-import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
+import ButtonText from '@/components/Common/ButtonText';
+import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
+import { useEmailVerification } from '@/hooks/useEmailVerification';
+import { Language } from '@/components/Common/HelperLabel';
 
 const SigninInputSection = () => {
   const navigate = useNavigate();
 
   // ===== state =====
-  const [emailValue, setEmailValue] = useState<string>('');
   const [passwordValue, setPasswordValue] = useState<string>('');
-  const [emailError, setEmailError] = useState<string | null>(null);
   const [isValid, setIsValid] = useState(false);
-  const debouncedEmail = useDebounce(emailValue);
 
   const { mutate: signIn } = useSignIn();
-  const { data: ValidationResponse } = useGetEmailValidation(debouncedEmail);
   const { updateId, updatePassword } = useUserInfoforSigninStore();
 
-  // ===== handler =====
-  const handleIdChange = (value: string) => {
-    setEmailValue(value);
-  };
+  // useEmailVerification 훅 사용
+  const {
+    email: emailValue,
+    emailError,
+    handleEmailInput,
+  } = useEmailVerification({
+    language: Language.KO,
+    context: 'signin',
+  });
 
+  // ===== handler =====
   const handlePasswordChange = (value: string) => {
     setPasswordValue(value);
   };
 
   // ====== Sign in API =======
   const handleSubmit = async () => {
-    // signIn({ serial_id: idValue, password: passwordValue });
     const formData = new FormData();
     formData.append('serial_id', emailValue);
     formData.append('password', passwordValue);
@@ -48,55 +50,26 @@ const SigninInputSection = () => {
     signIn(formData);
   };
 
+  // 폼 유효성 검사
   useEffect(() => {
-    const validateEmailAsync = async () => {
-      if (debouncedEmail === '') {
-        setEmailError(null);
-        setIsValid(false);
-        return;
-      }
-
-      // 1. 기본 이메일 형식 검사
-      const isEmailFormatValid = validateEmail(
-        debouncedEmail,
-        setEmailError,
-        '/employer/signin',
-      );
-
-      if (!isEmailFormatValid) {
-        setIsValid(false);
-        return;
-      }
-
-      // 2. 이메일 존재 여부 검사 결과 처리
-      if (ValidationResponse) {
-        if (ValidationResponse.data.is_valid === true) {
-          setEmailError(signInputTranslation.emailWrong['ko']);
-          setIsValid(false);
-        } else {
-          setEmailError(null);
-          // 이메일 형식도 맞고, 비밀번호도 있다면 버튼 활성화
-          setIsValid(!!passwordValue);
-        }
-      }
-    };
-
-    validateEmailAsync();
-  }, [debouncedEmail, passwordValue, ValidationResponse]);
+    setIsValid(!emailError && !!passwordValue);
+  }, [emailError, passwordValue]);
 
   return (
     <div className="w-full px-4 flex flex-grow flex-col justify-between">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6 relative">
         <InputLayout title="이메일">
           <Input
             inputType={InputType.TEXT}
             placeholder="이메일을 입력해주세요"
             value={emailValue}
-            onChange={handleIdChange}
+            onChange={handleEmailInput}
             canDelete={false}
           />
           {emailError && (
-            <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
+            <p className="absolute text-text-error caption-12-semibold px-1 py-2">
+              {emailError}
+            </p>
           )}
         </InputLayout>
         <InputLayout title="비밀번호">
@@ -108,40 +81,31 @@ const SigninInputSection = () => {
             canDelete={false}
           />
         </InputLayout>
-        <div className="flex w-full justify-center">
-          <button
-            className="flex items-center justify-center px-2 py-1 text-text-alternative caption-12-regular bg-surface-secondary rounded"
-            onClick={() => navigate('/find-password')} //TODO: 비밀번호 찾기 화면 이동
-          >
-            비밀번호를 모르겠어요 😓
-          </button>
-        </div>
-        <div className="flex items-center justify-center gap-2 mt-6">
-          <p className="text-[#7D8A95] text-sm font-normal">
-            계정이 아직 없으신가요?
-          </p>
+        <div className="flex items-center justify-center mt-6 h-3">
+          <ButtonText
+            text="계정을 잊었어요"
+            variant={ButtonText.Variant.ALTERNATIVE}
+            onClick={() => navigate('/find-password')}
+          />
+          <span className="mx-6 bg-border-alternative h-3 w-[0.0625rem] align-middle inline-block" />
           {/* 회원가입 화면 이동 */}
-          <button
-            className="flex items-center justify-center px-2 py-1.5 border-border-alternative border text-text-normal caption-12-regular rounded"
+
+          <ButtonText
+            text="회원가입 하러가기"
+            variant={ButtonText.Variant.PRIMARY}
             onClick={() => navigate('/signup')}
-          >
-            회원가입 하러가기
-          </button>
+          />
         </div>
       </div>
-      <div className="w-full bg-gradient-to-b from-white/80 to-white flex flex-row items-start justify-start pb-[3.125rem] pt-3 box-border text-center button-16-semibold text-[#1e1926] z-10">
-        <div className="w-full flex items-center justify-center">
-          <div className="w-full flex flex-col items-center gap-6">
-            <Button
-              type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
-              size={Button.Size.LG}
-              isFullWidth={true}
-              title="로그인"
-              onClick={isValid ? handleSubmit : undefined}
-            />
-          </div>
-        </div>
-      </div>
+      <BottomButtonPanel>
+        <Button
+          type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth={true}
+          title="로그인"
+          onClick={isValid ? handleSubmit : undefined}
+        />
+      </BottomButtonPanel>
     </div>
   );
 };

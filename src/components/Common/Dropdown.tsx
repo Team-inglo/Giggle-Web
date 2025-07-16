@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 import Icon from '@/components/Common/Icon';
-import BottomSheetLayout from './BottomSheetLayout';
-import SelectListItem from './Select/SelectListItem';
+import SelectListItem from '@/components/Common/Select/SelectListItem';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 // Dropdown 컴포넌트의 props 타입을 정의합니다.
 type DropDownProps = {
@@ -16,20 +16,15 @@ type DropDownProps = {
 //  DropdownModal 컴포넌트: 드롭다운 옵션을 표시하는 모달(바텀시트 사용으로 변경됨)
 export const DropdownModal = ({
   options,
-  modalTitle,
   value,
   onSelect,
 }: {
   options: string[];
-  modalTitle: string;
   value: string | null;
   onSelect: (option: string) => void;
 }) => {
   return (
     <div className="flex-col max-h-[33.3rem] overflow-y-scroll no-scrollbar w-full relative rounded-[0.625rem] bg-white flex items-start justify-start px-1 text-left z-10">
-      <h2 className="py-3 heading-18-semibold text-text-strong">
-        {modalTitle}
-      </h2>
       <div className="flex-1 flex flex-col w-full items-start gap-[5px]">
         {/* 각 옵션을 매핑하여 표시합니다. */}
         {options.map((option) => (
@@ -98,18 +93,20 @@ const Dropdown = ({
         </div>
         {/* 드롭다운 선택지 모달 (열려있을 때만 표시) */}
         {isOpen ? (
-          <BottomSheetLayout
+          <BottomSheet
             isAvailableHidden={true}
             isShowBottomsheet={isOpen}
             setIsShowBottomSheet={() => setIsOpen(false)}
           >
-            <DropdownModal
-              modalTitle={title ?? ''}
-              value={value ?? ''}
-              options={options}
-              onSelect={handleSelect}
-            />
-          </BottomSheetLayout>
+            <BottomSheet.Header title={title ?? ''} />
+            <BottomSheet.Content>
+              <DropdownModal
+                value={value ?? ''}
+                options={options}
+                onSelect={handleSelect}
+              />
+            </BottomSheet.Content>
+          </BottomSheet>
         ) : null}
       </div>
     </div>

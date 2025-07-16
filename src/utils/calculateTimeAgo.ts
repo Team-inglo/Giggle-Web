@@ -1,6 +1,6 @@
 import { postTranslation } from '@/constants/translation';
 import { UserType } from '@/constants/user';
-import { isEmployerByAccountType } from './signup';
+import { isEmployerByAccountType } from '@/utils/signup';
 
 export const calculateTimeAgo = (
   date: string,

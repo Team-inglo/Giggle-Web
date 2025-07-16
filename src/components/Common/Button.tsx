@@ -4,8 +4,8 @@ import {
   buttonTypeKeys,
   buttonTypeUnion,
 } from '@/constants/components';
-import { ReactNode } from 'react';
-import PressOverlay, { PressStrength } from './PressedOverlay';
+  import { ReactNode } from 'react';
+  import PressOverlay, { PressStrength } from '@/components/Common/PressedOverlay';
 import { motion } from 'framer-motion';
 import { usePress } from '@/hooks/usePress';
 
@@ -54,7 +54,7 @@ const Button = ({
   };
 
   const baseButtonStyle =
-    'flex justify-center items-center relative overflow-hidden';
+    'flex justify-center items-center relative overflow-hidden flex-shrink-0';
 
   const getButtonStyle = () => {
     switch (type) {

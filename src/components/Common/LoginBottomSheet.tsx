@@ -1,8 +1,7 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import SmallCheckIcon from '@/assets/icons/SmallCheckIcon.svg?react';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { useNavigate } from 'react-router-dom';
+import { BottomSheet } from '@/components/Common/BottomSheet';
 
 type LoginBottomSheetPropsType = {
   isShowBottomsheet: boolean;
@@ -16,43 +15,37 @@ const LoginBottomSheet = ({
   const navigate = useNavigate();
 
   return (
-    <BottomSheetLayout
+    <BottomSheet
       isAvailableHidden={true}
       isShowBottomsheet={isShowBottomsheet}
       setIsShowBottomSheet={setIsShowBottomSheet}
     >
-      <div className="w-full flex flex-col items-center text-center">
-        <h3 className="px-[1.625rem] pb-[2rem] heading-20-semibold text-[#1E1926]">
-          You’re not logged in.
-          <br /> Sign in for a better experience!
-        </h3>
-        <p className="px-[1.625rem] pb-[0.25rem] button-14-semibold text-[#7872ED]">
-          Sign in for a better experience!
-        </p>
+      <BottomSheet.Header title="You’re not logged in. Sign in for a better experience!" />
+      <BottomSheet.Content>
         <div className="flex items-center gap-[0.25rem] pb-[0.25rem]">
           <SmallCheckIcon />
-          <p className="caption-12-regular text-[#464646]">
+          <p className="caption-12-regular text-text-normal">
             continue exploring all our services
           </p>
         </div>
         <div className="flex items-center gap-[0.25rem] pb-[0.25rem]">
           <SmallCheckIcon />
-          <p className="caption-12-regular text-[#464646]">
+          <p className="caption-12-regular text-text-normal">
             save your favorite jobs and track your applications!
           </p>
         </div>
         <div className="flex items-center gap-[0.25rem] pb-[0.75rem]">
           <SmallCheckIcon />
-          <p className="caption-12-regular text-[#464646]">
+          <p className="caption-12-regular text-text-normal">
             access personalized recommendations
           </p>
         </div>
-      </div>
-      <div className="w-full py-[3rem] flex flex-col gap-[0.5rem]">
+      </BottomSheet.Content>
+      <BottomSheet.ButtonGroup>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor="bg-[#FEF387]"
-          fontColor="text-[#1E1926]"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title="Continue"
           onClick={() => navigate('/signin')}
         />
@@ -67,8 +60,8 @@ const LoginBottomSheet = ({
             Create Account
           </button>
         </div>
-      </div>
-    </BottomSheetLayout>
+      </BottomSheet.ButtonGroup>
+    </BottomSheet>
   );
 };
 

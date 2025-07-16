@@ -1,7 +1,6 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import ProgressStepper from '@/components/Common/ProgressStepper';
-import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
+import AgreeBottomSheet from '@/components/Employer/Signup/AgreeBottomSheet';
 import AddressStep from '@/components/Information/AddressStep';
 import InformationStep from '@/components/Information/InformationStep';
 import LanguageStep from '@/components/Information/LanguageStep';
@@ -90,7 +89,7 @@ const InformationPage = () => {
             }
           />
           <ProgressStepper totalCount={3} currentStep={currentStep} />
-          <div className="w-full flex justify-center pt-4">
+          <div className="w-full flex justify-center">
             {currentStep === 1 && (
               <InformationStep userInfo={userInfo} onNext={handleNext} />
             )}
@@ -102,17 +101,13 @@ const InformationPage = () => {
         </>
       )}
       {isAgreeModal && (
-        <BottomSheetLayout
-          isAvailableHidden={false}
-          isShowBottomsheet={isAgreeModal}
-        >
-          <AgreeModalInner
+          <AgreeBottomSheet
+            isShowBottomsheet={isAgreeModal}
             onPolicyPreview={(policy: TermType) => {
               getPolicy(policy);
             }}
             onNext={setIsAgreeModal}
           />
-        </BottomSheetLayout>
       )}
       {isPolicyPreview === true && (
         <PolicyViewer

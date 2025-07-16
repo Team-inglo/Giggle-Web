@@ -5,9 +5,9 @@ import {
   UserEditRequestBody,
   UserProfileDetailResponse,
 } from '@/types/api/profile';
-import { formatPhoneNumber, isValidPhoneNumber } from './information';
-import { initialAddress } from '../types/api/users';
-import { getNationalityEnumFromEn } from './resume';
+import { formatPhoneNumber, isValidPhoneNumber } from '@/utils/information';
+import { initialAddress } from '@/types/api/users';
+import { getNationalityEnumFromEn } from '@/utils/resume';
 import { Phone } from '@/types/api/document';
 
 // GET 데이터를 PATCH 요청 데이터로 변환

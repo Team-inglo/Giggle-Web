@@ -1,6 +1,6 @@
 import { APPLICATION_STEP } from '@/constants/application';
 import { ApplicationStepType } from '@/types/application/applicationItem';
-import { sendReactNativeMessage } from './reactNativeMessage';
+import { sendReactNativeMessage } from '@/utils/reactNativeMessage';
 import { NavigateFunction } from 'react-router-dom';
 
 export const findCurrentStep = (step: ApplicationStepType) => {

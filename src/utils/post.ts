@@ -6,7 +6,7 @@ import {
   initialJobPostingState,
   JobPostingForm,
 } from '@/types/postCreate/postCreate';
-import { formatPhoneNumber, parsePhoneNumber } from './information';
+import { formatPhoneNumber, parsePhoneNumber } from '@/utils/information';
 import { UserType } from '@/constants/user';
 
 // 입력 데이터에서 한글을 제거, 숫자만 남겨 반환하는 함수
