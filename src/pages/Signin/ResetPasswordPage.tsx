@@ -1,119 +1,34 @@
+import EmailVerifier from '@/components/Auth/EmailVerifier';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import Input from '@/components/Common/Input';
+import { Language } from '@/components/Common/HelperLabel';
 import PageTitle from '@/components/Common/PageTitle';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
-import InputLayout from '@/components/WorkExperience/InputLayout';
-import { signInputTranslation } from '@/constants/translation';
-import {
-  useGetEmailValidation,
-  usePatchAuthentication,
-  usePostReissuePassword,
-  useReIssueAuthentication,
-} from '@/hooks/api/useAuth';
-import { useEmailTryCountStore } from '@/store/signup';
-import { InputType } from '@/types/common/input';
-import { validateEmail } from '@/utils/signin';
-import { useEffect, useState } from 'react';
+import { usePostReissuePassword } from '@/hooks/api/useAuth';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EmailVerificationResult } from '@/hooks/useEmailVerification';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [email, setEmail] = useState<string>('');
-  const [emailVerifyStatus, setEmailVerifyStatus] = useState<string | null>(
-    null,
-  );
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const [authenticationCode, setAuthenticationCode] = useState<string>('');
-  const { try_cnt } = useEmailTryCountStore();
-  const [isValid, setIsValid] = useState(false);
+  const [emailVerificationResult, setEmailVerificationResult] =
+    useState<EmailVerificationResult>({
+      isValid: false,
+      email: '',
+      authenticationCode: '',
+      isVerified: false,
+    });
 
-  const { data: ValidationResponse } = useGetEmailValidation(email);
-
-  // 이메일 재발송 훅
-  const { mutate: reIssueAuthentication } = useReIssueAuthentication();
-  // 인증코드 검증 훅
-  const { mutate: verifyAuthCode } = usePatchAuthentication();
   // 임시 비밀번호 발급 및 메일전송 훅
   const { mutate: reIssuePassword } = usePostReissuePassword({
     onSuccess: () => setCurrentStep(2),
   });
 
-  // 이메일 입력 시, 인증번호 발송 초기화
-  const handleEmailInput = (value: string) => {
-    if (emailVerifyStatus === 'verified') return;
-    setEmail(value);
-    setEmailVerifyStatus(null);
-  };
-
-  // ID 검사
-  useEffect(() => {
-    const validateEmailAsync = async () => {
-      if (!email) return; // 이메일이 없을 경우 바로 반환
-
-      setEmail(email);
-
-      // 이메일 형식 유효성 검사
-      if (!validateEmail(email, setEmailError, '/employer/signup')) {
-        return;
-      }
-    };
-
-    validateEmailAsync();
-  }, [email, ValidationResponse, setEmail]);
-
-  // 모든 필드의 유효성 검사 후, Continue 버튼 활성화
-  useEffect(() => {
-    const isEmailValid = validateEmail(
-      email,
-      setEmailError,
-      '/employer/signup',
-    );
-    const isVerified = emailVerifyStatus === 'verified';
-
-    setIsValid(isEmailValid && isVerified);
-  }, [email, emailVerifyStatus]);
-
-  // API - 2.7 이메일 인증코드 검증
-  const handleVerifyClick = () => {
-    verifyAuthCode(
-      //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
-      { email: email, authentication_code: authenticationCode },
-      {
-        onSuccess: () => setEmailVerifyStatus('verified'),
-        onError: () => {
-          setEmailVerifyStatus('error');
-          setEmailError(
-            `${signInputTranslation.verifyFailed['ko']} (${try_cnt}/5)`,
-          );
-        },
-      },
-    );
-  };
-
-  // 이메일 인증코드 재전송 API 호출
-  const handleResendClick = async () => {
-    if (email === '') {
-      return;
-    }
-
-    try {
-      // 5회 이내 재발송 가능
-      reIssueAuthentication(
-        { email: email },
-        {
-          onSuccess: () => {
-            setAuthenticationCode('');
-            const status = try_cnt > 1 ? 'resent' : 'sent';
-            setEmailVerifyStatus(status);
-          },
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
+  // 이메일 검증 결과 처리
+  const handleEmailVerificationChange = async (result: EmailVerificationResult) => {
+    setEmailVerificationResult(result);
   };
 
   // API - 2.10 임시 비밀번호 발급 및 메일 전송
@@ -129,108 +44,34 @@ const ResetPasswordPage = () => {
         title="비밀번호 찾기"
         onClickBackButton={() => navigate('/signin')}
       />
-      <div className="w-full h-full flex-grow flex flex-col px-4">
+      <div className="w-full h-full flex-grow flex flex-col">
         {currentStep === 1 && (
           <>
             <PageTitle title={'찾으려는 계정의\n이메일을 입력해주세요'} />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 px-4">
               <div className="flex flex-col mb-[7.125rem]">
-                <InputLayout title={signInputTranslation.email['ko']}>
-                  <div className="flex gap-2">
-                    <Input
-                      inputType={InputType.TEXT}
-                      placeholder={signInputTranslation.enterEmail['ko']}
-                      value={email}
-                      onChange={handleEmailInput}
-                      canDelete={false}
-                    />
-                    <button
-                      className={`flex items-center justify-center button-14-semibold min-w-[4.25rem] px-5 py-3 rounded-lg ${
-                        emailVerifyStatus === null
-                          ? 'bg-surface-primary text-text-normal'
-                          : 'bg-surface-secondary text-text-disabled'
-                      }`}
-                      onClick={handleResendClick}
-                    >
-                      {emailVerifyStatus === null
-                        ? signInputTranslation.sendEmail['ko']
-                        : signInputTranslation.emailSentBtnText['ko']}
-                    </button>
-                  </div>
-                  {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
-                  {emailVerifyStatus !== null && (
-                    <div className="flex gap-2 h-full pt-2">
-                      <div className="relative w-full">
-                        <Input
-                          inputType={InputType.TEXT}
-                          placeholder={signInputTranslation.verification['ko']}
-                          value={authenticationCode}
-                          onChange={setAuthenticationCode}
-                          canDelete={false}
-                        />
-                        {emailVerifyStatus !== 'verified' && (
-                          <button
-                            className="caption-12-regular text-blue-500 underline absolute right-[1rem] top-[1rem]"
-                            onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
-                          >
-                            {signInputTranslation.resend['ko']}
-                          </button>
-                        )}
-                      </div>
-                      <button
-                        className={`flex items-center justify-center min-w-[5.5rem] button-14-semibold px-5 py-3 rounded-lg ${
-                          emailVerifyStatus === 'verified'
-                            ? 'bg-surface-secondary text-text-disabled'
-                            : 'bg-surface-primary text-text-normal'
-                        }`}
-                        onClick={
-                          emailVerifyStatus === 'verified'
-                            ? undefined
-                            : handleVerifyClick
-                        }
-                      >
-                        {signInputTranslation.resetPasswordVerifySuccess['ko']}
-                      </button>
-                    </div>
-                  )}
-                  {emailVerifyStatus === 'sent' && (
-                    <>
-                      <p className="text-blue-600 text-xs p-2">
-                        {signInputTranslation.enterCode['ko']}
-                      </p>
-                      <p className="text-[#FF6F61] text-xs px-2 pb-2">
-                        {signInputTranslation.spamEmailInfo['ko']}
-                      </p>
-                    </>
-                  )}
-                  {emailVerifyStatus === 'resent' && (
-                    <p className="text-blue-600 text-xs p-2">
-                      {signInputTranslation.resentMessage['ko']}
-                    </p>
-                  )}
-                  {emailVerifyStatus === 'verified' && (
-                    <p className="text-blue-600 text-xs p-2">
-                      {signInputTranslation.successVerify['ko']}
-                    </p>
-                  )}
-                  {emailError && (
-                    <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
-                  )}
-                  {/* 비밀번호 입력 input */}
-                </InputLayout>
+                <EmailVerifier
+                  language={Language.KO}
+                  context={EmailVerifier.Context.RESET_PASSWORD}
+                  onValidationChange={handleEmailVerificationChange}
+                />
               </div>
               <BottomButtonPanel>
                 <div className="w-full">
                   <Button
-                    type="large"
-                    bgColor={
-                      isValid ? 'bg-surface-primary' : 'bg-surface-secondary'
+                    type={
+                      emailVerificationResult.isValid
+                        ? Button.Type.PRIMARY
+                        : Button.Type.DISABLED
                     }
-                    fontColor={
-                      isValid ? 'text-text-normal' : 'text-text-disabled'
-                    }
+                    size={Button.Size.LG}
+                    isFullWidth
                     title={'다음'}
-                    onClick={isValid ? handleReissuePassword : undefined}
+                    onClick={
+                      emailVerificationResult.isValid
+                        ? handleReissuePassword
+                        : undefined
+                    }
                   />
                 </div>
               </BottomButtonPanel>

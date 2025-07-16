@@ -2,106 +2,55 @@ import { useEffect, useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import { useLocation } from 'react-router-dom';
-import {
-  validatedConfirmPassword,
-  validateEmail,
-  validatePassword,
-} from '@/utils/signin';
+import { validatedConfirmPassword, validatePassword } from '@/utils/signin';
 import { isEmployer } from '@/utils/signup';
 import { signInputTranslation } from '@/constants/translation';
-import {
-  useGetEmailValidation,
-  usePatchAuthentication,
-  useReIssueAuthentication,
-} from '@/hooks/api/useAuth';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { useEmailTryCountStore } from '@/store/signup';
 import PageTitle from '@/components/Common/PageTitle';
 import useDebounce from '@/hooks/useDebounce';
 import { InputType } from '@/types/common/input';
+import EmailVerifier from '../Auth/EmailVerifier';
+import { EmailVerificationResult } from '@/hooks/useEmailVerification';
 
 type signupInputProps = {
-  email: string;
-  onEmailChange: (value: string) => void;
   password: string;
   onPasswordChange: (value: string) => void;
-  authenticationCode: string;
-  onAuthCodeChange: (value: string) => void;
   onSignUpClick: () => void;
+  // 상위 컴포넌트에서 이메일 검증 결과를 받기 위한 callback
+  onEmailVerificationChange: (result: EmailVerificationResult) => void;
 };
 
 const SignupInput = ({
   onSignUpClick,
-  email,
   password,
-  authenticationCode,
-  onEmailChange,
   onPasswordChange,
-  onAuthCodeChange,
+  onEmailVerificationChange,
 }: signupInputProps) => {
   const { pathname } = useLocation();
-  const [emailVerifyStatus, setEmailVerifyStatus] = useState<string | null>(
-    null,
-  );
   const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const { try_cnt } = useEmailTryCountStore();
   const [passwordError, setPasswordError] = useState<string | null>();
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
   >(null);
   const [isValid, setIsValid] = useState(false);
-  const debouncedEmail = useDebounce(email);
+  const [emailVerificationResult, setEmailVerificationResult] =
+    useState<EmailVerificationResult>({
+      isValid: false,
+      email: '',
+      authenticationCode: '',
+      isVerified: false,
+    });
+
   const debouncedPassword = useDebounce(password);
 
-  const { data: ValidationResponse } = useGetEmailValidation(email);
-
-  // 이메일 재발송 훅
-  const { mutate: reIssueAuthentication } = useReIssueAuthentication();
-  // 인증코드 검증 훅
-  const { mutate: verifyAuthCode } = usePatchAuthentication();
-
-  // 이메일 입력 시, 인증번호 발송 초기화
-  const handleEmailInput = (value: string) => {
-    if (emailVerifyStatus === 'verified') return;
-    onEmailChange(value);
-    setEmailVerifyStatus(null);
+  // 이메일 검증 결과 처리
+  const handleEmailVerificationChange = async (
+    result: EmailVerificationResult,
+  ) => {
+    setEmailVerificationResult(result);
+    onEmailVerificationChange(result);
   };
-
-  // 이메일 유효성 검사를 위한 단일 useEffect
-  useEffect(() => {
-    const validateEmailAsync = async () => {
-      if (debouncedEmail === '') {
-        setEmailError(null);
-        setIsValid(false);
-        return;
-      }
-
-      // 1. 기본 이메일 형식 검사
-      const isEmailFormatValid = validateEmail(
-        debouncedEmail,
-        setEmailError,
-        pathname,
-      );
-      if (!isEmailFormatValid) {
-        setIsValid(false);
-        return;
-      }
-
-      // 2. 이메일 중복 검사 결과 처리
-      if (ValidationResponse) {
-        if (!ValidationResponse.data.is_valid) {
-          setEmailError(
-            signInputTranslation.emailAvailability[isEmployer(pathname)],
-          );
-          setIsValid(false);
-        }
-      }
-    };
-
-    validateEmailAsync();
-  }, [debouncedEmail, ValidationResponse, pathname]);
 
   // 비밀번호 유효성 검사를 위한 단일 useEffect
   useEffect(() => {
@@ -124,73 +73,18 @@ const SignupInput = ({
     }
 
     // 전체 폼 유효성 상태 업데이트
-    const isEmailValid = !!debouncedEmail && !emailError;
     setIsValid(
-      isEmailValid &&
-        isPasswordValid &&
-        isConfirmValid &&
-        emailVerifyStatus === 'verified',
+      emailVerificationResult.isValid && isPasswordValid && isConfirmValid,
     );
   }, [
-    debouncedEmail,
-    emailError,
     debouncedPassword,
     confirmPasswordValue,
     pathname,
-    emailVerifyStatus,
+    emailVerificationResult.isValid,
   ]);
-
-  // 부모 컴포넌트로 값 전달
-  useEffect(() => {
-    if (email) onEmailChange(email);
-  }, [email, onEmailChange]);
-
-  useEffect(() => {
-    if (password) onPasswordChange(password);
-  }, [password, onPasswordChange]);
-
-  // API - 2.7 이메일 인증코드 검증
-  const handleVerifyClick = () => {
-    verifyAuthCode(
-      //TODO: id가 이메일 형태로 받게되면 id를 email로 변경
-      { email: email, authentication_code: authenticationCode },
-      {
-        onSuccess: () => {
-          setEmailVerifyStatus('verified');
-          setEmailError(null);
-        },
-        onError: () => {
-          setEmailVerifyStatus('error');
-          setEmailError(
-            `${signInputTranslation.verifyFailed[isEmployer(pathname)]} (${try_cnt}/5)`,
-          );
-        },
-      },
-    );
-  };
 
   const handleConfirmPasswordChange = (value: string) => {
     setConfirmPasswordValue(value);
-  };
-
-  // 이메일 인증코드 재전송 API 호출
-  const handleResendClick = async () => {
-    try {
-      // 5회 이내 재발송 가능
-      reIssueAuthentication(
-        { email: email },
-        {
-          onSuccess: () => {
-            onAuthCodeChange('');
-            const status = try_cnt > 1 ? 'resent' : 'sent';
-            setEmailVerifyStatus(status);
-            setEmailError(null);
-          },
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
@@ -199,113 +93,13 @@ const SignupInput = ({
         title={signInputTranslation.signup[isEmployer(pathname)]}
         content={signInputTranslation.signupContent[isEmployer(pathname)]}
       />
-      <div className="flex flex-col gap-2 px-4">
-        <div className="flex flex-col mb-[7.125rem]">
-          <InputLayout title={signInputTranslation.email[isEmployer(pathname)]}>
-            <div className="flex gap-2">
-              <Input
-                inputType={InputType.TEXT}
-                placeholder={
-                  signInputTranslation.enterEmail[isEmployer(pathname)]
-                }
-                value={email}
-                onChange={handleEmailInput}
-                canDelete={false}
-              />
-              <button
-                className={`flex items-center justify-center button-14-semibold min-w-[4.25rem] px-5 py-3 rounded-lg ${
-                  emailVerifyStatus === null &&
-                  !emailError &&
-                  debouncedEmail !== ''
-                    ? 'bg-surface-primary text-text-normal'
-                    : 'bg-surface-secondary text-text-disabled'
-                }`}
-                onClick={handleResendClick}
-                disabled={
-                  !(
-                    emailVerifyStatus === null &&
-                    !emailError &&
-                    debouncedEmail !== ''
-                  )
-                }
-                aria-disabled={
-                  !(
-                    emailVerifyStatus === null &&
-                    !emailError &&
-                    debouncedEmail !== ''
-                  )
-                }
-              >
-                {emailVerifyStatus === null && !emailError
-                  ? signInputTranslation.sendEmail[isEmployer(pathname)]
-                  : signInputTranslation.emailSentBtnText[isEmployer(pathname)]}
-              </button>
-            </div>
-            {/* 인증번호 전송 후 인증번호 입력 input 출현 */}
-            {emailVerifyStatus !== null && (
-              <div className="flex gap-2 h-full pt-2">
-                <div className="relative w-full">
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder={
-                      signInputTranslation.verification[isEmployer(pathname)]
-                    }
-                    value={authenticationCode}
-                    onChange={onAuthCodeChange}
-                    canDelete={false}
-                  />
-                  {emailVerifyStatus !== 'verified' && (
-                    <button
-                      className="caption-12-regular text-blue-500 underline absolute right-[1rem] top-[1rem]"
-                      onClick={handleResendClick} // 이메일 인증코드 재전송 API 호출
-                    >
-                      {signInputTranslation.resend[isEmployer(pathname)]}
-                    </button>
-                  )}
-                </div>
-                <button
-                  className={`flex items-center justify-center min-w-[5.5rem] button-14-semibold px-5 py-3 rounded-lg ${
-                    emailVerifyStatus === 'verified' &&
-                    authenticationCode !== ''
-                      ? 'bg-surface-secondary text-text-disabled'
-                      : 'bg-surface-primary text-text-normal'
-                  }`}
-                  onClick={
-                    emailVerifyStatus === 'verified'
-                      ? undefined
-                      : handleVerifyClick
-                  }
-                >
-                  {signInputTranslation.verify[isEmployer(pathname)]}
-                </button>
-              </div>
-            )}
-            {emailVerifyStatus === 'sent' && (
-              <>
-                <p className="text-blue-600 text-xs p-2">
-                  {signInputTranslation.enterCode[isEmployer(pathname)]}
-                </p>
-                <p className="text-[#FF6F61] text-xs px-2 pb-2">
-                  {' '}
-                  {signInputTranslation.spamEmailInfo[isEmployer(pathname)]}
-                </p>
-              </>
-            )}
-            {emailVerifyStatus === 'resent' && (
-              <p className="text-blue-600 text-xs p-2">
-                {signInputTranslation.resentMessage[isEmployer(pathname)]}
-              </p>
-            )}
-            {emailVerifyStatus === 'verified' && (
-              <p className="text-blue-600 text-xs p-2">
-                {signInputTranslation.successVerify[isEmployer(pathname)]}
-              </p>
-            )}
-            {emailError && (
-              <p className="text-[#FF6F61] text-xs p-2">{emailError}</p>
-            )}
-            {/* 비밀번호 입력 input */}
-          </InputLayout>
+      <div className="flex flex-col px-4">
+        <div className="flex flex-col gap-6 mb-[7.125rem]">
+          <EmailVerifier
+            language={isEmployer(pathname)}
+            context={EmailVerifier.Context.SIGNUP}
+            onValidationChange={handleEmailVerificationChange}
+          />
           <InputLayout
             title={signInputTranslation.password[isEmployer(pathname)]}
           >
@@ -319,7 +113,9 @@ const SignupInput = ({
               canDelete={false}
             />
             {passwordError && (
-              <p className="text-[#FF6F61] text-xs p-2">{passwordError}</p>
+              <p className="text-text-error caption-12-semibold px-1 py-2">
+                {passwordError}
+              </p>
             )}
           </InputLayout>
           <InputLayout
@@ -335,22 +131,20 @@ const SignupInput = ({
               canDelete={false}
             />
             {confirmPasswordError && (
-              <p className="text-[#FF6F61] text-xs p-2">
+              <p className="text-text-error caption-12-semibold px-1 py-2">
                 {confirmPasswordError}
               </p>
             )}
           </InputLayout>
         </div>
         <BottomButtonPanel>
-          <div className="w-full">
-            <Button
-              type="large"
-              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              title={signInputTranslation.continue[isEmployer(pathname)]}
-              onClick={isValid ? onSignUpClick : undefined}
-            />
-          </div>
+          <Button
+            type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+            size={Button.Size.LG}
+            isFullWidth
+            title={signInputTranslation.continue[isEmployer(pathname)]}
+            onClick={isValid ? onSignUpClick : undefined}
+          />
         </BottomButtonPanel>
       </div>
     </div>

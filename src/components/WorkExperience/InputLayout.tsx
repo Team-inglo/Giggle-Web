@@ -19,7 +19,9 @@ const InputLayout = ({
   const { pathname } = useLocation();
   return (
     <div>
-      <p className={`${width} body-14-medium text-text-alternative p-1`}>
+      <p
+        className={`${width} body-14-medium text-text-alternative px-1 py-1.5`}
+      >
         {title}
         {isOptional && (
           <span className="text-text-alternative body-14-medium pl-1">

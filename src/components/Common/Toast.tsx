@@ -62,7 +62,7 @@ const Toast = () => {
       {isToastOpen && (
         <div
           // fixed 포지션으로 화면 하단 중앙에 표시
-          className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50"
+          className="fixed w-full flex justify-center bottom-0 left-1/2 -translate-x-1/2 z-50"
         >
           <motion.div
             // motion.div 로 진입/퇴장 애니메이션 부여
@@ -73,11 +73,11 @@ const Toast = () => {
             exit={{ opacity: 0, y: 50 }}
             className="flex h-12 rounded-xl bg-neutral-950/50 backdrop-blur-xl w-fit"
           >
-            <div className="w-full h-full flex items-center gap-1 px-4 py-2 bg-[rgba(0,112,243,0.06)] rounded-lg">
+            <div className="max-w-[calc(100vw-2rem)] w-full h-full flex items-center gap-1 px-4 py-2 bg-[rgba(0,112,243,0.06)] rounded-lg">
               {/* 아이콘 & 메시지 */}
               {getIcon}
               <p
-                className="button-14-semibold text-text-invert/90 p-1"
+                className="max-w-[calc(100%-1.5rem)] button-14-semibold text-text-invert/90 px-1 my-1 shrink-0 text-ellipsis line-clamp-1 overflow-hidden"
                 role="status" // 스크린리더에 알림용으로 노출
                 aria-live="polite"
               >

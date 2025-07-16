@@ -231,14 +231,13 @@ export const useSignupEmployer = (setSuccess: () => void) => {
 export const usePatchAuthentication = () => {
   return useMutation({
     mutationFn: patchAuthentication,
+    meta: {
+      skipGlobalError: true,
+    },
     onSuccess: (data: RESTYPE<AuthenticationResponse>) => {
       if (data.success) {
         setTemporaryToken(data.data.temporary_token);
       }
-    },
-    onError: (error) => {
-      alert('인증코드를 다시 확인해주세요.');
-      console.log(error);
     },
   });
 };

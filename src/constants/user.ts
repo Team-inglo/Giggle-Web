@@ -9,13 +9,13 @@ export const cardData = [
   {
     icon: PeopleIcon,
     title: 'International Student',
-    description: 'I want to find a job 💼',
+    description: 'I want to find a job',
     accountType: UserType.USER,
   },
   {
     icon: BuildingIcon,
     title: '고용주',
-    description: '외국인 유학생을 채용하고 싶어요 🤝',
+    description: '외국인 유학생을 채용하고 싶어요',
     accountType: UserType.OWNER,
   },
 ];
