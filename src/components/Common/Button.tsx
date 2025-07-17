@@ -4,8 +4,10 @@ import {
   buttonTypeKeys,
   buttonTypeUnion,
 } from '@/constants/components';
-  import { ReactNode } from 'react';
-  import PressOverlay, { PressStrength } from '@/components/Common/PressedOverlay';
+import { ReactNode } from 'react';
+import PressOverlay, {
+  PressStrength,
+} from '@/components/Common/PressedOverlay';
 import { motion } from 'framer-motion';
 import { usePress } from '@/hooks/usePress';
 
@@ -54,24 +56,20 @@ const Button = ({
   };
 
   const baseButtonStyle =
-    'flex justify-center items-center relative overflow-hidden flex-shrink-0';
+    'flex justify-center items-center relative overflow-hidden';
 
   const getButtonStyle = () => {
     switch (type) {
       case buttonTypeKeys.LARGE:
         return 'w-full py-4 rounded-xl button-16-semibold';
-      case buttonTypeKeys.SMALL:
-        return 'w-[24vw] py-3 rounded-lg button-14-semibold';
       case buttonTypeKeys.APPLY:
         return `w-full py-4 rounded-xl bg-neutral-100 bg-cover bg-center button-16-semibold text-neutral-100`;
       case buttonTypeKeys.SMALLAPPLY: // 스크랩 버튼과 함께 쓰이는 Apply 버튼
-        return `w-[71vw] py-4 rounded-lg bg-neutral-100 bg-cover bg-center button-16-semibold text-neutral-100`;
+        return `w-full py-4 rounded-lg bg-neutral-100 bg-cover bg-center button-16-semibold text-neutral-100`;
       case buttonTypeKeys.BACK: // CONTINUE 버튼과 같은 열에 사용
         return 'w-[31vw] py-4 rounded-xl button-16-semibold flex-shrink-0';
       case buttonTypeKeys.CONTINUE: // BACK 버튼과 같은 열에 사용
         return 'w-full py-4 rounded-xl button-16-semibold';
-      case buttonTypeKeys.SCRAP:
-        return 'p-4 rounded-lg bg-[rgba(244,244,249,0.5)]';
       case buttonTypeKeys.PRIMARY:
         return 'bg-brand-500 text-text-strong';
       case buttonTypeKeys.NEUTRAL:
@@ -90,9 +88,9 @@ const Button = ({
   const getButtonStyleBySize = () => {
     switch (size) {
       case 'md':
-        return 'px-4 py-3 rounded-xl button-14-semibold';
+        return 'px-4 py-3 rounded-xl button-14-semibold flex-shrink-0';
       case 'lg':
-        return 'px-5 py-4 rounded-xl button-16-semibold';
+        return 'px-5 py-4 rounded-xl button-16-semibold flex-shrink-0';
     }
   };
 
