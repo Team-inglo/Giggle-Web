@@ -1,6 +1,5 @@
 import CheckIconLarge from '@/assets/icons/checkIconLarge.svg?react';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 type CompleteButtonModalProps = {
@@ -24,9 +23,9 @@ const CompleteButtonModal = ({
       <div className="heading-20-semibold">{title}</div>
       <div className="body-14-regular">{content}</div>
       <Button
-        type={buttonTypeKeys.LARGE}
-        bgColor="bg-[#FEF387]"
-        fontColor="text-[#1E1926]"
+        type={Button.Type.PRIMARY}
+        size={Button.Size.LG}
+        isFullWidth
         title={buttonContent}
         onClick={onClick}
       />

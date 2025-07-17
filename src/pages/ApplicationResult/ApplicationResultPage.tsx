@@ -2,7 +2,6 @@ import BaseHeader from '@/components/Common/Header/BaseHeader';
 import RadioButton from '@/components/Information/RadioButton';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { usePatchHiKoreaResult } from '@/hooks/api/useApplication';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
@@ -75,9 +74,9 @@ const ApplicationResultPage = () => {
       </main>
       <BottomButtonPanel>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={'bg-primary-normal'}
-          fontColor="text-surface-invert"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          isFullWidth
           title="Submit result"
           onClick={onClickRegistration}
         />

@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import {
   useGetWorkPreference,
   usePutWorkPreference,
@@ -160,9 +159,7 @@ const WorkPreferencePage = () => {
       />
 
       <div className="p-4 flex flex-col [&>*:last-child]:mb-24">
-        <InputLayout
-          title="Select one or multiple areas where you want to work"
-        >
+        <InputLayout title="Select one or multiple areas where you want to work">
           <div className="w-full flex flex-col gap-2">
             <div onClick={() => handleAreaSelectOpen()}>
               <Dropdown
@@ -197,9 +194,7 @@ const WorkPreferencePage = () => {
           </div>
         </InputLayout>
         <Divider />
-        <InputLayout
-          title="What kind of job are you looking for?"
-        >
+        <InputLayout title="What kind of job are you looking for?">
           <WorkPreferenceJobTypeSelect
             selectedJobTypes={selectedJobTypes}
             onJobTypesChange={handleJobTypesChange}
@@ -216,9 +211,9 @@ const WorkPreferencePage = () => {
 
       <BottomButtonPanel>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={isFormValid ? 'bg-surface-primary' : 'bg-surface-disabled'}
-          fontColor={isFormValid ? 'text-text-strong' : 'text-text-disabled'}
+          type={isFormValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth
           title="Save"
           onClick={handleSubmit}
         />

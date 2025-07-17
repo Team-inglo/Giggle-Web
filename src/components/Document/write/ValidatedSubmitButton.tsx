@@ -61,6 +61,7 @@ const ValidatedSubmitButton = <T extends FieldValues>({
     disabled: !isValid,
     isFullWidth: true,
     size: Button.Size.LG,
+    layout: Button.Layout.FLEX_BUTTON,
     type: isValid ? Button.Type.PRIMARY : Button.Type.DISABLED,
     style: {
       ...(children.props?.style || {}),

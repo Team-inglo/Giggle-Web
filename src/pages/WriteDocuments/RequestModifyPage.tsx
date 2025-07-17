@@ -59,9 +59,9 @@ const RequestModifyPage = () => {
           </InputLayout>
           <BottomButtonPanel>
             <Button
-              type="large"
-              bgColor="bg-[#FEF387]"
-              fontColor="text-[#1E1926]"
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title="Request"
               onClick={() => {
                 sendRequest({ id: Number(id), reason: reasonInput });

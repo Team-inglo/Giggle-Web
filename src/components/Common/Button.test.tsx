@@ -21,7 +21,7 @@ describe('Button', () => {
     test.each(testCases)(
       '$type 타입 버튼이 올바른 스타일로 렌더링되어야 한다.',
       ({ type, expectedClass }) => {
-        render(<Button type={type} title={type} />);
+        render(<Button type={type} title={type} size={Button.Size.LG} />);
         const button = screen.getByRole('button', { name: type });
         expect(button).toHaveClass(expectedClass);
       },
@@ -29,7 +29,7 @@ describe('Button', () => {
 
     it('children으로 복잡한 JSX 요소를 전달해도 올바르게 렌더링해야 한다.', () => {
       render(
-        <Button type={buttonTypeKeys.PRIMARY}>
+        <Button type={buttonTypeKeys.PRIMARY} size={Button.Size.LG}>
           <div data-testid="child-container">
             <CallIcon />
             <span>전화걸기</span>
@@ -52,6 +52,7 @@ describe('Button', () => {
       render(
         <Button
           type={buttonTypeKeys.PRIMARY}
+          size={Button.Size.LG}
           title="Click me"
           onClick={handleClick}
         />,
@@ -72,7 +73,7 @@ describe('Button', () => {
     test.each(interactiveTypes)(
       'disabled 또는 inactive 타입이 아닌 버튼은 클릭/터치 시 style.transform scale이 변화해야 한다.',
       async (type) => {
-        render(<Button type={type} title={type} />);
+        render(<Button type={type} title={type} size={Button.Size.LG} />);
         const button = screen.getByRole('button', { name: type });
 
         // 초기 상태에는 transform이 적용되지 않음 (framer-motion 최적화)
@@ -100,7 +101,7 @@ describe('Button', () => {
     test.each(nonInteractiveTypes)(
       'disabled 또는 inactive 타입 버튼은 클릭/터치해도 style.transform scale이 변화하지 않아야 한다.',
       (type) => {
-        render(<Button type={type} title={type} />);
+        render(<Button type={type} title={type} size={Button.Size.LG} />);
         const button = screen.getByRole('button', { name: type });
 
         // 비활성 버튼은 항상 transform: none 상태를 유지
@@ -116,7 +117,9 @@ describe('Button', () => {
 
       const { rerender } = render(
         <Button
+          size={Button.Size.LG}
           type={buttonTypeKeys.DISABLED}
+          isFullWidth
           title="Disabled"
           onClick={handleClick}
         />,
@@ -126,7 +129,9 @@ describe('Button', () => {
 
       rerender(
         <Button
+          size={Button.Size.LG}
           type={buttonTypeKeys.INACTIVE}
+          isFullWidth
           title="Inactive"
           onClick={handleClick}
         />,

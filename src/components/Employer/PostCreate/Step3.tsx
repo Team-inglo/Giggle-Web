@@ -1,7 +1,6 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { buttonTypeKeys } from '@/constants/components';
 import {
   POST_REQUIRED_FIELDS,
   PostFormField,

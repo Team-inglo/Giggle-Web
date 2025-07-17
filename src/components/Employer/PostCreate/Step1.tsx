@@ -53,7 +53,12 @@ const Step1 = ({ onNext }: { onNext: () => void }) => {
           validationFn={validatePostInfo}
           onClick={() => onNext()}
         >
-          <Button title="다음" isFullWidth type={Button.Type.PRIMARY} />
+          <Button
+            title="다음"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            layout={Button.Layout.FLEX_BUTTON}
+          />
         </ValidatedSubmitButton>
       </BottomButtonPanel>
     </div>

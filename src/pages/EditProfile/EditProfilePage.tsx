@@ -4,7 +4,6 @@ import BaseHeader from '@/components/Common/Header/BaseHeader';
 import Input from '@/components/Common/Input';
 import RadioButton from '@/components/Information/RadioButton';
 import EditProfilePicture from '@/components/Profile/EditProfilePicture';
-import { buttonTypeKeys } from '@/constants/components';
 import { GenderType } from '@/constants/profile';
 import {
   InitialUserProfileDetail,
@@ -299,10 +298,10 @@ const EditProfilePage = () => {
 
           <BottomButtonPanel>
             <Button
-              type={buttonTypeKeys.LARGE}
+              type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+              size={Button.Size.LG}
+              isFullWidth
               title="Save"
-              bgColor={isValid ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'}
-              fontColor={isValid ? 'text-[#1E1926]' : 'text-[#BDBDBD]'}
               onClick={isValid ? handleSubmit : undefined}
             />
           </BottomButtonPanel>
