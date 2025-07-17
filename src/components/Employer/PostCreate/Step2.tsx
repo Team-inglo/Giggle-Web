@@ -2,7 +2,6 @@ import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
-import { buttonTypeKeys } from '@/constants/components';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { Path } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
@@ -59,9 +58,9 @@ const Step2 = ({
           {/* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */}
           <div className="w-full flex gap-2">
             <Button
-              type={buttonTypeKeys.BACK}
-              bgColor="bg-surface-secondary"
-              fontColor="text-text-normal"
+              type={Button.Type.NEUTRAL}
+              layout={Button.Layout.SMALL_BUTTON}
+              size={Button.Size.LG}
               title="이전"
               onClick={() => onPrev()}
             />
@@ -72,7 +71,7 @@ const Step2 = ({
               validationFn={validatePostInfo}
               onClick={() => onNext()}
             >
-              <Button title="다음" type={Button.Type.DISABLED} />
+              <Button title="다음" type={Button.Type.DISABLED} size={Button.Size.LG} />
             </ValidatedSubmitButton>
           </div>
         </BottomButtonPanel>

@@ -1,4 +1,3 @@
-import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { PostSearchFilterItemType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import { initialFilterList } from '@/constants/postSearch';
@@ -24,16 +23,17 @@ const PostSearchFilterButtons = ({
   return (
     <section className="w-full flex justify-center items-center gap-2 pt-3 pb-10 px-6">
       <Button
-        type={buttonTypeKeys.BACK}
-        bgColor="bg-surface-secondary"
-        fontColor="text-text-normal button-16-semibold"
+        type={Button.Type.NEUTRAL}
+        layout={Button.Layout.SMALL_BUTTON}
+        size={Button.Size.LG}
         title={buttonTranslation.reset[isEmployerByAccountType(account_type)]}
         onClick={onClickReset}
       />
       <Button
-        type={buttonTypeKeys.CONTINUE}
-        bgColor="bg-surface-primary"
-        fontColor="text-text-strong button-16-semibold"
+        type={Button.Type.PRIMARY}
+        layout={Button.Layout.FLEX_BUTTON}
+        size={Button.Size.LG}
+        isFullWidth
         title={buttonTranslation.apply[isEmployerByAccountType(account_type)]}
         onClick={onClickApply}
       />

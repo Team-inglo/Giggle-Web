@@ -155,9 +155,9 @@ const IntegratedApplicationWriteForm = ({
             onClick={handleSubmit(handleNext)}
           >
             <Button
-              type="large"
-              bgColor="bg-surface-primary"
-              fontColor="text-text-strong"
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={isEdit ? 'Modify' : 'Create'}
             />
           </ValidatedSubmitButton>

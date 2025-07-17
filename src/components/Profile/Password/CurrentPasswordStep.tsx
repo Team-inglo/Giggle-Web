@@ -67,7 +67,7 @@ const CurrentPasswordStep = ({
             onChange={onPasswordChange}
             canDelete={false}
           />
-          {error && <p className="text-[#FF6F61] text-xs p-2">{error}</p>}
+          {error && <p className="text-text-error text-xs p-2">{error}</p>}
         </InputLayout>
         <div className="flex flex-col gap-4 px-4 pb-4 bg-white rounded-md">
           <div className="flex flex-col divide-y divide-gray-200"></div>
@@ -75,21 +75,19 @@ const CurrentPasswordStep = ({
         <BottomButtonPanel>
           <div className="w-full">
             <Button
-              type="large"
-              bgColor={
+              type={
                 password?.length > 0
-                  ? 'bg-surface-primary'
-                  : 'bg-surface-secondary'
+                  ? Button.Type.PRIMARY
+                  : Button.Type.DISABLED
               }
-              fontColor={
-                password?.length > 0 ? 'text-text-normal' : 'text-text-disabled'
-              }
+              size={Button.Size.LG}
+              isFullWidth
               title={
                 signInputTranslation.continue[
                   isEmployerByAccountType(account_type)
                 ]
               }
-              onClick={password?.length > 0 ? onSubmit : undefined}
+              onClick={onSubmit}
             />
           </div>
         </BottomButtonPanel>

@@ -47,16 +47,16 @@ const PostApplyButton = () => {
       <BottomButtonPanel>
         <section className="w-full flex gap-2">
           <Button
-            type={Button.Type.BACK}
-            bgColor="bg-surface-secondary"
-            fontColor="text-text-normal"
+            type={Button.Type.NEUTRAL}
+            size={Button.Size.LG}
+            layout={Button.Layout.SMALL_BUTTON}
             title="Edit"
             onClick={() => navigate('/profile/manage-resume')}
           />
           <Button
             type={Button.Type.PRIMARY}
             size={Button.Size.LG}
-            isFullWidth
+            layout={Button.Layout.FLEX_BUTTON}
             title="Apply Now"
             onClick={onClickApply}
           />

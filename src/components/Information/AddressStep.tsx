@@ -35,6 +35,9 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
     setIsAddressSearch(false);
   };
 
+  const isAddressValid =
+    newAddress.address_detail && newAddress.address_detail?.trim().length <= 50;
+
   return (
     <div className="w-full mx-auto">
       <div className="w-full flex flex-row items-center justify-between">
@@ -104,29 +107,15 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
       {/* 다음 step 이동 버튼 포함한 Bottom Panel */}
       <BottomButtonPanel>
         <Button
-          type="large"
-          bgColor={
-            newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 50
-              ? 'bg-[#F4F4F9]'
-              : 'bg-[#fef387]'
-          }
-          fontColor={
-            newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 50
-              ? ''
-              : 'text-[#222]'
-          }
+          type={isAddressValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth
           title="Next"
-          onClick={
-            newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 50
-              ? undefined
-              : () =>
-                  onNext({
-                    ...userInfo,
-                    address: newAddress,
-                  })
+          onClick={() =>
+            onNext({
+              ...userInfo,
+              address: newAddress,
+            })
           }
         />
       </BottomButtonPanel>

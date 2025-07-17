@@ -1,4 +1,3 @@
-import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePatchResumeAccepted } from '@/hooks/api/useApplication';
@@ -26,16 +25,17 @@ const EmployerApplicantResumeButton = () => {
     <BottomButtonPanel>
       <div className="w-full flex gap-2">
         <Button
-          type={buttonTypeKeys.BACK}
-          bgColor="bg-surface-secondary"
-          fontColor="text-text-normal"
+          type={Button.Type.NEUTRAL}
+          layout={Button.Layout.SMALL_BUTTON}
+          size={Button.Size.LG}
           title="거절"
           onClick={() => onClickAcceptButton(false)}
         />
         <Button
-          type={buttonTypeKeys.CONTINUE}
-          bgColor="bg-surface-primary"
-          fontColor="text-text-normal"
+          type={Button.Type.PRIMARY}
+          layout={Button.Layout.FLEX_BUTTON}
+          size={Button.Size.LG}
+          isFullWidth
           title="수락"
           onClick={() => onClickAcceptButton(true)}
         />

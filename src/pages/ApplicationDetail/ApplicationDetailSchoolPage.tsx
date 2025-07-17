@@ -8,7 +8,6 @@ import useNavigateBack from '@/hooks/useNavigateBack';
 import RecruiterIcon from '@/assets/icons/ApplicationDetail/RecruiterIcon.svg?react';
 import { useParams } from 'react-router-dom';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { handleGoExternalWeb } from '@/utils/application';
@@ -128,16 +127,16 @@ const ApplicationDetailSchoolPage = () => {
           </main>
           <footer className="w-full pt-3 pb-9 px-4 flex flex-col gap-2">
             <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor={'bg-primary-normal'}
-              fontColor="text-surface-invert"
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={'Go to next step'}
               onClick={handleClickNextStep}
             />
             <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor={'bg-primary-neutral'}
-              fontColor="text-surface-invert"
+              type={Button.Type.NEUTRAL}
+              size={Button.Size.LG}
+              isFullWidth
               title={'Maybe later'}
               onClick={handleBackButtonClick}
             />

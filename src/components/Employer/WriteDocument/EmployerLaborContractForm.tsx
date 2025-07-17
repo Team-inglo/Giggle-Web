@@ -108,9 +108,9 @@ const EmployerLaborContractForm = ({
             onClick={handleSubmit(handleNext)}
           >
             <Button
-              type="large"
-              bgColor="bg-surface-primary"
-              fontColor="text-text-strong"
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={'작성완료'}
             />
           </ValidatedSubmitButton>

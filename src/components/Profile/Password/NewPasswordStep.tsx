@@ -79,7 +79,7 @@ const NewPasswordStep = ({
               canDelete={false}
             />
             {newPasswordError && (
-              <p className="text-[#FF6F61] text-xs p-2">{newPasswordError}</p>
+              <p className="text-text-error text-xs p-2">{newPasswordError}</p>
             )}
           </InputLayout>
           <InputLayout
@@ -101,7 +101,7 @@ const NewPasswordStep = ({
               canDelete={false}
             />
             {confirmPasswordError && (
-              <p className="text-[#FF6F61] text-xs p-2">
+              <p className="text-text-error text-xs p-2">
                 {confirmPasswordError}
               </p>
             )}
@@ -114,15 +114,15 @@ const NewPasswordStep = ({
         <BottomButtonPanel>
           <div className="w-full">
             <Button
-              type="large"
-              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
+              type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+              size={Button.Size.LG}
+              isFullWidth
               title={
                 signInputTranslation.continue[
                   isEmployerByAccountType(account_type)
                 ]
               }
-              onClick={isValid ? onSubmit : undefined}
+              onClick={onSubmit}
             />
           </div>
         </BottomButtonPanel>
