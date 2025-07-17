@@ -1,5 +1,4 @@
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import { VisaInfo } from '@/constants/post';
@@ -76,16 +75,17 @@ const VisaSelectBottomSheet = ({
         variant={BottomSheet.ButtonGroupVariant.TWO_HORIZONTAL}
       >
         <Button
-          type={buttonTypeKeys.BACK}
-          bgColor="bg-surface-secondary"
-          fontColor="text-text-strong"
+          type={Button.Type.NEUTRAL}
+          layout={Button.Layout.SMALL_BUTTON}
+          size={Button.Size.LG}
           title={buttonTranslation.reset[isEmployerByAccountType(account_type)]}
           onClick={handleReset}
         />
         <Button
-          type={buttonTypeKeys.CONTINUE}
-          bgColor="bg-surface-primary"
-          fontColor="text-text-strong"
+          type={Button.Type.PRIMARY}
+          layout={Button.Layout.FLEX_BUTTON}
+          isFullWidth
+          size={Button.Size.LG}
           title={
             buttonTranslation.selectComplete[
               isEmployerByAccountType(account_type)

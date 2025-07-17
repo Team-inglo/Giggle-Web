@@ -1,7 +1,6 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { buttonTypeKeys } from '@/constants/components';
 import {
   POST_REQUIRED_FIELDS,
   PostFormField,
@@ -63,9 +62,9 @@ const Step4 = ({
       <BottomButtonPanel>
         <div className="w-full flex gap-2">
           <Button
-            type={buttonTypeKeys.BACK}
-            bgColor="bg-[#F4F4F9]"
-            fontColor="text-text-normal"
+            type={Button.Type.NEUTRAL}
+            layout={Button.Layout.SMALL_BUTTON}
+            size={Button.Size.LG}
             title="이전"
             onClick={() => onPrev()}
           />
@@ -74,7 +73,7 @@ const Step4 = ({
             validationFn={validatePostInfo}
             onClick={() => onNext()}
           >
-            <Button type={Button.Type.LARGE} title="다음" />
+            <Button type={Button.Type.DISABLED} title="다음" size={Button.Size.LG} />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>
