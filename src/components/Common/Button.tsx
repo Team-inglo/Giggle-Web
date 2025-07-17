@@ -17,6 +17,7 @@ type ButtonProps = {
   size: ButtonSize; // 버튼의 크기 (md, lg), 지정하지 않으면 type에 따른 기본 스타일 적용
   layout?: ButtonLayoutVariant; // 레이아웃 variant (두 버튼 배치 시 크기 조정용)
   isFullWidth?: boolean; // 버튼의 너비를 100%로 설정할지 여부
+  canShrink?: boolean; // 버튼의 크기를 줄일지 여부
   title?: string; // 버튼에 포함되는 글자 (optional)
   onClick?: () => void; // 클릭 이벤트 핸들러 (optional)
   children?: ReactNode; // 버튼 내부에 렌더링될 요소. title보다 우선순위가 높음(optional)
@@ -27,6 +28,7 @@ const Button = ({
   size,
   layout = ButtonLayoutVariant.DEFAULT,
   isFullWidth,
+  canShrink = true,
   title,
   onClick,
   children,
@@ -61,9 +63,9 @@ const Button = ({
   const getLayoutStyle = () => {
     switch (layout) {
       case ButtonLayoutVariant.SMALL_BUTTON:
-        return 'w-[31vw] py-4 rounded-xl button-16-semibold flex-shrink-0';
+        return `w-[31vw] py-4 rounded-xl button-16-semibold flex-shrink-0`;
       case ButtonLayoutVariant.FLEX_BUTTON:
-        return 'w-full py-4 rounded-xl button-16-semibold';
+        return `w-full py-4 rounded-xl button-16-semibold`;
       case ButtonLayoutVariant.DEFAULT:
       default:
         return '';
@@ -72,7 +74,6 @@ const Button = ({
 
   const getButtonStyle = () => {
     switch (type) {
-      // 기존 BACK, CONTINUE 타입은 deprecated로 남겨두되 layout으로 처리
       case buttonTypeKeys.PRIMARY:
         return 'bg-brand-500 text-text-strong';
       case buttonTypeKeys.NEUTRAL:
@@ -83,17 +84,18 @@ const Button = ({
         return 'bg-neutral-300 text-text-disabled';
       case buttonTypeKeys.INACTIVE:
         return 'text-text-disabled';
-      default: // 기본값으로 large type 적용
-        return 'w-full px-5 py-4 rounded-xl button-16-semibold';
+      default: // 기본값으로 NEUTRAL type 적용
+        return 'bg-neutral-100 text-text-strong';
     }
   };
 
   const getButtonStyleBySize = () => {
+    const shrinkStyle = canShrink ? '' : 'flex-shrink-0';
     switch (size) {
       case 'md':
-        return 'px-4 py-3 rounded-xl button-14-semibold flex-shrink-0';
+        return `px-4 py-3 rounded-xl button-14-semibold ${shrinkStyle}`;
       case 'lg':
-        return 'px-5 py-4 rounded-xl button-16-semibold flex-shrink-0';
+        return `px-5 py-4 rounded-xl button-16-semibold ${shrinkStyle}`;
     }
   };
 
