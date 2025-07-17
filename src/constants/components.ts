@@ -21,3 +21,10 @@ export enum ButtonSize {
   MD = 'md',
   LG = 'lg',
 }
+
+// 레이아웃 variant 추가
+export enum ButtonLayoutVariant {
+  DEFAULT = 'default',
+  SMALL_BUTTON = 'small-button', // 기존 BACK 타입 대체
+  FLEX_BUTTON = 'flex-button', // 기존 CONTINUE 타입 대체
+}
