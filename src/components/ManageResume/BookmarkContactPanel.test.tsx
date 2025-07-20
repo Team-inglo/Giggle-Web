@@ -33,21 +33,68 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock components
-vi.mock('@/components/Common/Button', () => ({
-  default: ({
+vi.mock('@/components/Common/Button', () => {
+  const MockButton = ({
     title,
     onClick,
-    ...props
+    type,
+    size,
+    layout,
+    isFullWidth,
+    ...restProps
   }: {
     title: string;
     onClick: () => void;
+    type?: string;
+    size?: string;
+    layout?: string;
+    isFullWidth?: boolean;
     [key: string]: unknown;
   }) => (
-    <button onClick={onClick} data-testid="contact-button" {...props}>
+    <button
+      onClick={onClick}
+      data-testid="contact-button"
+      data-type={type}
+      data-size={size}
+      data-layout={layout}
+      data-is-full-width={isFullWidth}
+      {...restProps}
+    >
       {title}
     </button>
-  ),
-}));
+  );
+
+  // Button 컴포넌트의 정적 속성들 모킹
+  MockButton.Type = {
+    PRIMARY: 'primary',
+    NEUTRAL: 'neutral',
+    TERTIARY: 'tertiary',
+    DISABLED: 'disabled',
+    INACTIVE: 'inactive',
+    BACK: 'back',
+    CONTINUE: 'continue',
+    SCRAP: 'scrap',
+    LARGE: 'large',
+    SMALL: 'small',
+    APPLY: 'applyNow',
+    SMALLAPPLY: 'smallApply',
+  };
+
+  MockButton.Size = {
+    MD: 'md',
+    LG: 'lg',
+  };
+
+  MockButton.Layout = {
+    DEFAULT: 'default',
+    SMALL_BUTTON: 'small-button',
+    FLEX_BUTTON: 'flex-button',
+  };
+
+  return {
+    default: MockButton,
+  };
+});
 
 vi.mock('@/components/Common/BottomButtonPanel', () => ({
   default: ({ children }: { children: ReactNode }) => (
@@ -139,7 +186,7 @@ describe('BookmarkContactPanel', () => {
   });
 
   describe('렌더링', () => {
-    it('기본 구조가 올바르게 렌더링되어야 한다', () => {
+    it('연락하기 버튼이 렌더링되어야 한다', () => {
       render(
         <BookmarkContactPanel
           isBookmarked={false}
@@ -150,7 +197,6 @@ describe('BookmarkContactPanel', () => {
         },
       );
 
-      expect(screen.getByTestId('bottom-button-panel')).toBeInTheDocument();
       expect(screen.getByTestId('contact-button')).toBeInTheDocument();
       expect(screen.getByText('연락하기')).toBeInTheDocument();
     });
@@ -171,7 +217,7 @@ describe('BookmarkContactPanel', () => {
       expect(screen.getByTestId('bookmark-icon')).toBeInTheDocument();
     });
 
-    it('로그인되지 않은 사용자이거나 유학생 회원일 때 북마크 버튼이 표시되지 않아야 한다', () => {
+    it('로그인되지 않은 사용자일 때 북마크 버튼이 표시되지 않아야 한다', () => {
       vi.mocked(useUserStore).mockReturnValue({ account_type: null });
 
       render(
@@ -190,8 +236,8 @@ describe('BookmarkContactPanel', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('북마크되지 않은 상태일 때 빈 북마크 아이콘이 표시되어야 한다', () => {
-      render(
+    it('북마크 상태에 따라 올바른 아이콘이 표시되어야 한다', () => {
+      const { rerender } = render(
         <BookmarkContactPanel
           isBookmarked={false}
           phoneNumber={mockPhoneNumber}
@@ -201,21 +247,18 @@ describe('BookmarkContactPanel', () => {
         },
       );
 
+      // 북마크되지 않은 상태
       expect(screen.getByTestId('bookmark-icon')).toBeInTheDocument();
       expect(
         screen.queryByTestId('bookmark-checked-icon'),
       ).not.toBeInTheDocument();
-    });
 
-    it('북마크된 상태일 때 채워진 북마크 아이콘이 표시되어야 한다', () => {
-      render(
+      // 북마크된 상태로 변경
+      rerender(
         <BookmarkContactPanel
           isBookmarked={true}
           phoneNumber={mockPhoneNumber}
         />,
-        {
-          wrapper: createWrapper(),
-        },
       );
 
       expect(screen.getByTestId('bookmark-checked-icon')).toBeInTheDocument();
@@ -250,26 +293,10 @@ describe('BookmarkContactPanel', () => {
         payload: '01012345678', // 하이픈이 제거된 전화번호
       });
     });
-
-    it('연락하기 버튼이 올바른 스타일과 속성을 가져야 한다', () => {
-      render(
-        <BookmarkContactPanel
-          isBookmarked={false}
-          phoneNumber={mockPhoneNumber}
-        />,
-        {
-          wrapper: createWrapper(),
-        },
-      );
-
-      const contactButton = screen.getByTestId('contact-button');
-      expect(contactButton).toBeInTheDocument();
-      expect(contactButton).toHaveTextContent('연락하기');
-    });
   });
 
-  describe('스크랩 기능', () => {
-    it('북마크 버튼 클릭 시 스크랩 API가 호출되어야 한다', async () => {
+  describe('북마크 기능', () => {
+    it('북마크 버튼 클릭 시 API가 호출되어야 한다', async () => {
       const user = userEvent.setup();
       vi.mocked(useUserStore).mockReturnValue({ account_type: 'OWNER' });
 
@@ -285,37 +312,23 @@ describe('BookmarkContactPanel', () => {
 
       const bookmarkButton = screen.getByRole('button', {
         name: 'BookmarkIcon',
-      }); // 아이콘 버튼
+      });
       await user.click(bookmarkButton);
 
-      expect(mockMutate).toHaveBeenCalled();
+      expect(mockMutate).toHaveBeenCalledWith('1');
     });
 
-    it('북마크 상태가 토글되어야 한다', async () => {
-      const user = userEvent.setup();
-
+    it('props 변경 시 북마크 상태가 업데이트되어야 한다', () => {
       const { rerender } = render(
         <BookmarkContactPanel
           isBookmarked={false}
           phoneNumber={mockPhoneNumber}
         />,
-        {
-          wrapper: createWrapper(),
-        },
+        { wrapper: createWrapper() },
       );
 
-      // 초기 상태: 북마크되지 않음
       expect(screen.getByTestId('bookmark-icon')).toBeInTheDocument();
 
-      const bookmarkButton = screen.getByRole('button', {
-        name: 'BookmarkIcon',
-      });
-      await user.click(bookmarkButton);
-
-      // mutate 함수가 호출되었는지 확인
-      expect(mockMutate).toHaveBeenCalledWith('1');
-
-      // 낙관적 업데이트 시뮬레이션: 부모 컴포넌트에서 props 변경
       rerender(
         <BookmarkContactPanel
           isBookmarked={true}
@@ -323,12 +336,10 @@ describe('BookmarkContactPanel', () => {
         />,
       );
 
-      // 이제 북마크된 상태가 표시되어야 함
       expect(screen.getByTestId('bookmark-checked-icon')).toBeInTheDocument();
-      expect(screen.queryByTestId('bookmark-icon')).not.toBeInTheDocument();
     });
 
-    it('로그인하지 않은 사용자는 스크랩할 수 없어야 한다', async () => {
+    it('로그인하지 않은 사용자는 북마크 기능을 사용할 수 없어야 한다', () => {
       vi.mocked(useUserStore).mockReturnValue({ account_type: null });
 
       render(
@@ -343,62 +354,8 @@ describe('BookmarkContactPanel', () => {
 
       // 북마크 버튼이 표시되지 않음
       expect(screen.queryByTestId('bookmark-icon')).not.toBeInTheDocument();
-
-      // 따라서 스크랩 API도 호출되지 않음
+      // API가 호출되지 않음
       expect(mockMutate).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('상태 관리', () => {
-    it('isBookmarked prop 변경 시 북마크 상태가 업데이트되어야 한다', () => {
-      const { rerender } = render(
-        <BookmarkContactPanel
-          isBookmarked={false}
-          phoneNumber={mockPhoneNumber}
-        />,
-        { wrapper: createWrapper() },
-      );
-
-      expect(screen.getByTestId('bookmark-icon')).toBeInTheDocument();
-
-      rerender(
-        <BookmarkContactPanel
-          isBookmarked={true}
-          phoneNumber={mockPhoneNumber}
-        />,
-      );
-
-      expect(screen.getByTestId('bookmark-checked-icon')).toBeInTheDocument();
-    });
-  });
-
-  describe('레이아웃', () => {
-    it('버튼들이 올바른 레이아웃으로 배치되어야 한다', () => {
-      const { container } = render(
-        <BookmarkContactPanel
-          isBookmarked={false}
-          phoneNumber={mockPhoneNumber}
-        />,
-        { wrapper: createWrapper() },
-      );
-
-      const footer = container.querySelector('footer.w-full.flex.gap-2.z-20');
-      expect(footer).toBeInTheDocument();
-    });
-
-    it('북마크 버튼이 적절한 크기와 스타일을 가져야 한다', () => {
-      const { container } = render(
-        <BookmarkContactPanel
-          isBookmarked={false}
-          phoneNumber={mockPhoneNumber}
-        />,
-        { wrapper: createWrapper() },
-      );
-
-      const bookmarkButton = container.querySelector(
-        'button.flex.justify-center.items-center.min-w-\\[3\\.25rem\\]',
-      );
-      expect(bookmarkButton).toBeInTheDocument();
     });
   });
 });

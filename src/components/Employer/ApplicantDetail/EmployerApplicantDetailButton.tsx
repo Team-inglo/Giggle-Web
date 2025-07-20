@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 import { useState } from 'react';
 import EmployerApplicantContactBottomSheet from '@/components/Employer/ApplicantDetail/EmployerApplicantContactBottomSheet';
@@ -24,9 +23,9 @@ const EmployerApplicantDetailButton = ({
       case 1:
         return (
           <Button
-            type={buttonTypeKeys.LARGE}
-            bgColor={'bg-primary-normal'}
-            fontColor="text-surface-invert"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="이력서 확인하기"
             onClick={() =>
               navigate(`/employer/applicant/${applicant_id}/resume/accept`)
@@ -37,9 +36,9 @@ const EmployerApplicantDetailButton = ({
         return (
           <>
             <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor={'bg-primary-normal'}
-              fontColor="text-surface-invert"
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title="면접 일정 조율하기"
               onClick={() => setIsShowBottomSheet(true)}
             />
@@ -52,9 +51,9 @@ const EmployerApplicantDetailButton = ({
       case 3:
         return (
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-primary-normal'}
-            fontColor="text-surface-invert"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="신청 서류 확인하기"
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
@@ -64,9 +63,9 @@ const EmployerApplicantDetailButton = ({
       case 4:
         return (
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-primary-normal'}
-            fontColor="text-surface-invert"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="신청 서류 확인하기"
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
@@ -76,9 +75,9 @@ const EmployerApplicantDetailButton = ({
       case 5:
         return (
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-primary-normal'}
-            fontColor="text-surface-invert"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="신청 서류 확인하기"
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
@@ -88,9 +87,9 @@ const EmployerApplicantDetailButton = ({
       case 6:
         return (
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-primary-normal'}
-            fontColor="text-surface-invert"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="신청 서류 확인하기"
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
@@ -100,9 +99,9 @@ const EmployerApplicantDetailButton = ({
       case 7:
         return (
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-primary-normal'}
-            fontColor="text-surface-invert"
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="신청 서류 확인하기"
             onClick={() =>
               navigate(`/employer/applicant/document-detail/${applicant_id}`)
@@ -112,9 +111,9 @@ const EmployerApplicantDetailButton = ({
       default:
         return (
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-primary-neutral'}
-            fontColor="text-text-disabled"
+            type={Button.Type.NEUTRAL}
+            size={Button.Size.LG}
+            isFullWidth
             title={
               step === APPLICATION_STEP.PENDING
                 ? '2주 이상 대기 중입니다.'

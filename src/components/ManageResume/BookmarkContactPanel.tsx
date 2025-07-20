@@ -1,5 +1,4 @@
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon.svg?react';
 import BookmarkCheckedIcon from '@/assets/icons/BookmarkCheckedIcon.svg?react';
 import { useUserStore } from '@/store/user';
@@ -54,9 +53,9 @@ const BookmarkContactPanel = ({
             </button>
           )}
           <Button
-            type={buttonTypeKeys.APPLY}
-            bgColor={'bg-surface-primary'}
-            fontColor={'text-text-strong'}
+            type={Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="연락하기"
             onClick={onClickApply}
           />

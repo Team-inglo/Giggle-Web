@@ -3,7 +3,6 @@ import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import PageTitle from '@/components/Common/PageTitle';
 import IntroductionInput from '@/components/Introduction/IntroductionInput';
-import { buttonTypeKeys } from '@/constants/components';
 import { usePatchIntroduction } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { IntroductionRequest } from '@/types/api/resumes';
@@ -79,9 +78,9 @@ const IntroductionPage = () => {
       />
       <BottomButtonPanel>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-disabled'}
-          fontColor={isValid ? 'text-text-strong' : 'text-text-disabled'}
+          type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth
           title="Save"
           onClick={isValid ? handleSubmit : undefined}
         />

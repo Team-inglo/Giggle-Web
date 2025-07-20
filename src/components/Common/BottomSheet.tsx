@@ -74,12 +74,22 @@ export const BottomSheet = ({
   return (
     <BottomSheetContext.Provider value={{ position }}>
       {isOpen && isFixedBackground && (
-        <div
-          className="fixed w-screen h-screen top-0 bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.3)] z-40"
-          onClick={() => {
-            if (isExitable) setIsShowBottomSheet?.(false);
-          }}
-        />
+        <>
+          <div
+            className="fixed top-0 left-0 w-screen"
+            style={{
+              height: 'env(safe-area-inset-top)',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              zIndex: 40,
+            }}
+          />
+          <div
+            className="fixed w-screen h-screen top-0 bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.3)] z-40"
+            onClick={() => {
+              if (isExitable) setIsShowBottomSheet?.(false);
+            }}
+          />
+        </>
       )}
       <motion.div
         drag="y"

@@ -72,18 +72,18 @@ const PostSearchFilterBottomSheet = ({
         variant={BottomSheet.ButtonGroupVariant.TWO_VERTICAL}
       >
         <Button
-          type={Button.Type.BACK}
-          bgColor="bg-surface-secondary"
-          fontColor="text-text-normal button-16-semibold"
+          type={Button.Type.NEUTRAL}
+          size={Button.Size.LG}
+          layout={Button.Layout.SMALL_BUTTON}
           title={
             postSearchTranslation.reset[isEmployerByAccountType(account_type)]
           }
           onClick={onClickReset}
         />
         <Button
-          type={Button.Type.CONTINUE}
-          bgColor="bg-surface-primary"
-          fontColor="text-text-normal button-16-semibold"
+          type={Button.Type.PRIMARY}
+          size={Button.Size.LG}
+          layout={Button.Layout.FLEX_BUTTON}
           title={
             postSearchTranslation.apply[isEmployerByAccountType(account_type)]
           }

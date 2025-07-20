@@ -1,20 +1,23 @@
 import ScrapIcon from '@/assets/icons/Scrap.svg?react';
 import {
+  ButtonLayoutVariant,
   ButtonSize,
   buttonTypeKeys,
   buttonTypeUnion,
 } from '@/constants/components';
-  import { ReactNode } from 'react';
-  import PressOverlay, { PressStrength } from '@/components/Common/PressedOverlay';
+import { ReactNode } from 'react';
+import PressOverlay, {
+  PressStrength,
+} from '@/components/Common/PressedOverlay';
 import { motion } from 'framer-motion';
 import { usePress } from '@/hooks/usePress';
 
 type ButtonProps = {
   type: buttonTypeUnion; // 버튼의 시맨틱 타입 (e.g., PRIMARY, NEUTRAL, DISABLED)
-  size?: ButtonSize; // 버튼의 크기 (md, lg), 지정하지 않으면 type에 따른 기본 스타일 적용
+  size: ButtonSize; // 버튼의 크기 (md, lg), 지정하지 않으면 type에 따른 기본 스타일 적용
+  layout?: ButtonLayoutVariant; // 레이아웃 variant (두 버튼 배치 시 크기 조정용)
   isFullWidth?: boolean; // 버튼의 너비를 100%로 설정할지 여부
-  bgColor?: string; // 버튼의 배경색 (optional)
-  fontColor?: string; // 버튼 글자색 (optional)
+  canShrink?: boolean; // 버튼의 크기를 줄일지 여부
   title?: string; // 버튼에 포함되는 글자 (optional)
   onClick?: () => void; // 클릭 이벤트 핸들러 (optional)
   children?: ReactNode; // 버튼 내부에 렌더링될 요소. title보다 우선순위가 높음(optional)
@@ -23,9 +26,9 @@ type ButtonProps = {
 const Button = ({
   type,
   size,
+  layout = ButtonLayoutVariant.DEFAULT,
   isFullWidth,
-  bgColor,
-  fontColor,
+  canShrink = true,
   title,
   onClick,
   children,
@@ -54,24 +57,23 @@ const Button = ({
   };
 
   const baseButtonStyle =
-    'flex justify-center items-center relative overflow-hidden flex-shrink-0';
+    'flex justify-center items-center relative overflow-hidden';
+
+  // 레이아웃 variant에 따른 스타일 반환
+  const getLayoutStyle = () => {
+    switch (layout) {
+      case ButtonLayoutVariant.SMALL_BUTTON:
+        return `w-[31vw] flex-shrink-0`;
+      case ButtonLayoutVariant.FLEX_BUTTON:
+        return `w-full`;
+      case ButtonLayoutVariant.DEFAULT:
+      default:
+        return '';
+    }
+  };
 
   const getButtonStyle = () => {
     switch (type) {
-      case buttonTypeKeys.LARGE:
-        return 'w-full py-4 rounded-xl button-16-semibold';
-      case buttonTypeKeys.SMALL:
-        return 'w-[24vw] py-3 rounded-lg button-14-semibold';
-      case buttonTypeKeys.APPLY:
-        return `w-full py-4 rounded-xl bg-neutral-100 bg-cover bg-center button-16-semibold text-neutral-100`;
-      case buttonTypeKeys.SMALLAPPLY: // 스크랩 버튼과 함께 쓰이는 Apply 버튼
-        return `w-[71vw] py-4 rounded-lg bg-neutral-100 bg-cover bg-center button-16-semibold text-neutral-100`;
-      case buttonTypeKeys.BACK: // CONTINUE 버튼과 같은 열에 사용
-        return 'w-[31vw] py-4 rounded-xl button-16-semibold flex-shrink-0';
-      case buttonTypeKeys.CONTINUE: // BACK 버튼과 같은 열에 사용
-        return 'w-full py-4 rounded-xl button-16-semibold';
-      case buttonTypeKeys.SCRAP:
-        return 'p-4 rounded-lg bg-[rgba(244,244,249,0.5)]';
       case buttonTypeKeys.PRIMARY:
         return 'bg-brand-500 text-text-strong';
       case buttonTypeKeys.NEUTRAL:
@@ -82,17 +84,18 @@ const Button = ({
         return 'bg-neutral-300 text-text-disabled';
       case buttonTypeKeys.INACTIVE:
         return 'text-text-disabled';
-      default: // 기본값으로 large type 적용
-        return 'w-full px-5 py-4 rounded-xl button-16-semibold';
+      default: // 기본값으로 NEUTRAL type 적용
+        return 'bg-neutral-100 text-text-strong';
     }
   };
 
   const getButtonStyleBySize = () => {
+    const shrinkStyle = canShrink ? '' : 'flex-shrink-0';
     switch (size) {
       case 'md':
-        return 'px-4 py-3 rounded-xl button-14-semibold';
+        return `px-4 py-3 rounded-lg button-14-semibold ${shrinkStyle}`;
       case 'lg':
-        return 'px-5 py-4 rounded-xl button-16-semibold';
+        return `px-5 py-4 rounded-xl button-16-semibold ${shrinkStyle}`;
     }
   };
 
@@ -101,7 +104,7 @@ const Button = ({
       <motion.button
         className={`${
           size && getButtonStyleBySize()
-        } ${baseButtonStyle} ${getButtonStyle()} ${bgColor} ${fontColor} ${
+        } ${baseButtonStyle} ${getLayoutStyle()} ${getButtonStyle()} ${
           isFullWidth ? 'w-full' : ''
         }`}
         initial={{
@@ -132,5 +135,6 @@ const Button = ({
 
 Button.Type = buttonTypeKeys;
 Button.Size = ButtonSize;
+Button.Layout = ButtonLayoutVariant;
 
 export default Button;

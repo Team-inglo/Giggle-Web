@@ -1,4 +1,3 @@
-import { buttonTypeKeys } from '@/constants/components';
 import Button from '@/components/Common/Button';
 
 const ApplicationDetailStep2 = () => {
@@ -6,9 +5,9 @@ const ApplicationDetailStep2 = () => {
     <>
       <section className="w-full px-4 pb-[3.125rem]">
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={'bg-primary-neutral'}
-          fontColor="text-text-disabled"
+          type={Button.Type.NEUTRAL}
+          size={Button.Size.LG}
+          isFullWidth
           title="Check the application documents"
         />
       </section>

@@ -65,6 +65,7 @@ const EmailVerifier = ({
               : Button.Type.DISABLED
           }
           size={Button.Size.LG}
+          canShrink={false}
           title={
             emailVerification.emailVerifyStatus === EMAIL_VERIFY_STATUS.IDLE
               ? signInputTranslation.sendEmail[language]

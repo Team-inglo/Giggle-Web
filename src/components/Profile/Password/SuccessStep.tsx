@@ -24,9 +24,9 @@ const SuccessStep = () => {
         <BottomButtonPanel>
           <div className="w-full">
             <Button
-              type="large"
-              bgColor={'bg-surface-primary'}
-              fontColor={'text-text-normal'}
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={signInputTranslation.continue[userLanguage]}
               onClick={signout}
             />
