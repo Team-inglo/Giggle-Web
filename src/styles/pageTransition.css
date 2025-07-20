@@ -1,0 +1,116 @@
+/* 페이지 전환 애니메이션 스타일 */
+
+/* 기본 페이지 컨테이너 - 최고 우선순위 */
+div.page-transition-container {
+  position: relative !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* 전환 중인 페이지들의 공통 스타일 */
+div.page-slide-enter-from-right,
+div.page-slide-enter-from-left,
+div.page-slide-exit-to-right,
+div.page-slide-exit-to-left {
+  position: fixed !important;
+  top: 0px !important;
+  left: 0px !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: white !important;
+  z-index: 9999 !important;
+  /* GPU 가속을 위한 3D transform 사용 */
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+  /* 하드웨어 가속 강제 */
+  backface-visibility: hidden !important;
+  /* 추가 최적화 */
+  -webkit-transform: translateZ(0) !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+/* 오른쪽에서 들어오는 애니메이션 (앞으로 가기) */
+div.page-slide-enter-from-right {
+  transform: translate3d(100%, 0px, 0px) !important;
+  -webkit-transform: translate3d(100%, 0px, 0px) !important;
+}
+
+div.page-slide-enter-from-right.page-slide-enter-active {
+  transform: translate3d(0px, 0px, 0px) !important;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  -webkit-transition: -webkit-transform 300ms
+    cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 왼쪽에서 들어오는 애니메이션 (뒤로 가기) */
+div.page-slide-enter-from-left {
+  transform: translate3d(-100%, 0px, 0px) !important;
+  -webkit-transform: translate3d(-100%, 0px, 0px) !important;
+}
+
+div.page-slide-enter-from-left.page-slide-enter-active {
+  transform: translate3d(0px, 0px, 0px) !important;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  -webkit-transition: -webkit-transform 300ms
+    cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 오른쪽으로 나가는 애니메이션 (뒤로 가기 시 현재 페이지) */
+div.page-slide-exit-to-right {
+  transform: translate3d(0px, 0px, 0px) !important;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+}
+
+div.page-slide-exit-to-right.page-slide-exit-active {
+  transform: translate3d(100%, 0px, 0px) !important;
+  -webkit-transform: translate3d(100%, 0px, 0px) !important;
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  -webkit-transition: -webkit-transform 300ms
+    cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 왼쪽으로 나가는 애니메이션 (앞으로 가기 시 현재 페이지) */
+div.page-slide-exit-to-left {
+  transform: translate3d(0px, 0px, 0px) !important;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+}
+
+div.page-slide-exit-to-left.page-slide-exit-active {
+  transform: translate3d(-100%, 0px, 0px) !important;
+  -webkit-transform: translate3d(-100%, 0px, 0px) !important;
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  -webkit-transition: -webkit-transform 300ms
+    cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 페이지 전환 중 스크롤 방지 */
+div.page-transition-container.transitioning {
+  overflow: hidden !important;
+}
+
+/* 애니메이션 비활성화를 위한 클래스 */
+.page-transition-disabled {
+  transform: none !important;
+  -webkit-transform: none !important;
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+/* 로딩 상태를 위한 스타일 */
+.page-transition-loading {
+  pointer-events: none !important;
+}
+
+/* 접근성을 위한 모션 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+  div.page-slide-enter-from-right.page-slide-enter-active,
+  div.page-slide-enter-from-left.page-slide-enter-active,
+  div.page-slide-exit-to-right.page-slide-exit-active,
+  div.page-slide-exit-to-left.page-slide-exit-active {
+    transition-duration: 0.01ms !important;
+    -webkit-transition-duration: 0.01ms !important;
+  }
+}

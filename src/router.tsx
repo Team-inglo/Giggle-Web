@@ -9,6 +9,7 @@ import ScrollToTop from '@/components/Common/ScrollToTop';
 import Navbar from '@/components/Common/Navbar';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import Splash from '@/components/Splash/Splash';
+import PageTransitionWrapper from '@/components/Common/PageTransitionWrapper';
 
 // 모든 페이지 컴포넌트들을 동적 임포트로 변경
 const HomePage = lazy(() => import('@/pages/Home/HomePage'));
@@ -184,7 +185,9 @@ const Layout = () => {
   return (
     <>
       <ScrollToTop />
-      <Outlet />
+      <PageTransitionWrapper>
+        <Outlet />
+      </PageTransitionWrapper>
       {shouldShowNavbar && <Navbar />}
     </>
   );
