@@ -1,5 +1,4 @@
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import { useEffect, useState } from 'react';
 import {
   EMPLOYEE_SEARCH_CATEGORY_KO,
@@ -93,16 +92,17 @@ const EmployerEmployeeSearchFilterBottomSheet = ({
         variant={BottomSheet.ButtonGroupVariant.TWO_HORIZONTAL}
       >
         <Button
-          type={buttonTypeKeys.BACK}
-          bgColor="bg-surface-secondary"
-          fontColor="text-text-strong"
+          type={Button.Type.NEUTRAL}
+          layout={Button.Layout.SMALL_BUTTON}
+          size={Button.Size.LG}
           title={'초기화'}
           onClick={handleReset}
         />
         <Button
-          type={buttonTypeKeys.CONTINUE}
-          bgColor="bg-surface-primary"
-          fontColor="text-text-strong"
+          type={Button.Type.PRIMARY}
+          layout={Button.Layout.FLEX_BUTTON}
+          size={Button.Size.LG}
+          isFullWidth
           title={'적용하기'}
           onClick={handleSubmit}
         />

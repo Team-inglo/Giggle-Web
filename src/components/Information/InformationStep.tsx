@@ -40,7 +40,7 @@ const InformationStep = ({
   const [newUserInfo, setNewUserInfo] = useState<UserInfo>(initialUserInfo);
   // 버튼 활성화 여부를 위한 플래그
   const [isInvalid, setIsInvalid] = useState(true);
-  // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
+  // 두 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
     rest: '',
@@ -97,8 +97,6 @@ const InformationStep = ({
   };
 
   const handleNextClick = () => {
-    if (isInvalid) return;
-
     const formattedUserInfo = formatUserInfoForSubmission(
       newUserInfo,
       formatPhoneNumber(phoneNum),
@@ -215,9 +213,9 @@ const InformationStep = ({
         {/* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */}
         <BottomButtonPanel>
           <Button
-            type="large"
-            bgColor={isInvalid ? 'bg-[#F4F4F9]' : 'bg-[#fef387]'}
-            fontColor={isInvalid ? '' : 'text-[#222]'}
+            type={isInvalid ? Button.Type.DISABLED : Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="Next"
             onClick={handleNextClick}
           />
