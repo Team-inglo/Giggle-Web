@@ -63,9 +63,9 @@ const Button = ({
   const getLayoutStyle = () => {
     switch (layout) {
       case ButtonLayoutVariant.SMALL_BUTTON:
-        return `w-[31vw] py-4 rounded-xl button-16-semibold flex-shrink-0`;
+        return `w-[31vw] flex-shrink-0`;
       case ButtonLayoutVariant.FLEX_BUTTON:
-        return `w-full py-4 rounded-xl button-16-semibold`;
+        return `w-full`;
       case ButtonLayoutVariant.DEFAULT:
       default:
         return '';
@@ -93,7 +93,7 @@ const Button = ({
     const shrinkStyle = canShrink ? '' : 'flex-shrink-0';
     switch (size) {
       case 'md':
-        return `px-4 py-3 rounded-xl button-14-semibold ${shrinkStyle}`;
+        return `px-4 py-3 rounded-lg button-14-semibold ${shrinkStyle}`;
       case 'lg':
         return `px-5 py-4 rounded-xl button-16-semibold ${shrinkStyle}`;
     }
