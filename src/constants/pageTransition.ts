@@ -5,6 +5,34 @@ export interface PageTransitionConfig {
   duration?: number;
 }
 
+/**
+ * 메인 탭 페이지들 정의
+ */
+export const MAIN_TAB_PAGES = [
+  '/',
+  '/search',
+  '/application',
+  '/profile',
+  '/resume/scrapped',
+] as const;
+
+/**
+ * 경로가 메인 탭 페이지인지 확인
+ */
+export const isMainTabPage = (pathname: string): boolean => {
+  return MAIN_TAB_PAGES.includes(pathname as (typeof MAIN_TAB_PAGES)[number]);
+};
+
+/**
+ * 두 경로가 모두 메인 탭 페이지인지 확인 (dissolve 전환 조건)
+ */
+export const shouldUseDissolveTransition = (
+  fromPath: string,
+  toPath: string,
+): boolean => {
+  return isMainTabPage(fromPath) && isMainTabPage(toPath);
+};
+
 export const PAGE_TRANSITION_CONFIG: Record<string, PageTransitionConfig> = {
   // 홈 관련 페이지들
   '/': { enabled: true },
