@@ -1,0 +1,116 @@
+/* 페이지 전환 애니메이션 스타일 */
+
+/* React Transition Group 스타일 */
+.transition-page-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.page-slide-forward-exit {
+  transform: translateX(0);
+  z-index: calc(var(--transition-z-index, 1000) + 1);
+}
+
+.page-slide-forward-exit-active {
+  transform: translateX(-30%);
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: calc(var(--transition-z-index, 1000) + 1);
+}
+
+/* Forward 애니메이션 (새 페이지가 오른쪽에서 들어옴) */
+.page-slide-forward-enter {
+  transform: translateX(100%);
+  z-index: calc(var(--transition-z-index, 1000) + 2);
+}
+
+.page-slide-forward-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: calc(var(--transition-z-index, 1000) + 2);
+}
+
+/* Back 애니메이션 (새 페이지가 왼쪽에서 들어옴) */
+.page-slide-back-enter {
+  transform: translateX(-100%);
+  z-index: calc(var(--transition-z-index, 1000) + 2);
+}
+
+.page-slide-back-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: calc(var(--transition-z-index, 1000) + 2);
+}
+
+.page-slide-back-exit {
+  transform: translateX(0);
+  z-index: calc(var(--transition-z-index, 1000) + 1);
+}
+
+.page-slide-back-exit-active {
+  transform: translateX(30%);
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: calc(var(--transition-z-index, 1000) + 1);
+}
+
+/* Dissolve 애니메이션 (메인 탭 페이지들 간 전환) */
+.page-dissolve-enter {
+  opacity: 0;
+  z-index: calc(var(--transition-z-index, 1000) + 2);
+}
+
+.page-dissolve-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+  z-index: calc(var(--transition-z-index, 1000) + 2);
+}
+
+/* 전환 완료 후 초기 상태 복원 */
+.page-slide-forward-enter-done,
+.page-slide-back-enter-done,
+.page-dissolve-enter-done {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+/* 페이지 전환 중 스크롤 방지 */
+div.page-transition-container.transitioning {
+  overflow: hidden !important;
+}
+
+/* 애니메이션 비활성화를 위한 클래스 */
+.page-transition-disabled {
+  transform: none !important;
+  -webkit-transform: none !important;
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+/* 로딩 상태를 위한 스타일 */
+.page-transition-loading {
+  pointer-events: none !important;
+}
+
+/* 접근성을 위한 모션 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+  .page-slide-forward-enter-active,
+  .page-slide-forward-exit-active,
+  .page-slide-back-enter-active,
+  .page-slide-back-exit-active,
+  .page-dissolve-enter-active,
+  .page-dissolve-exit-active {
+    transition-duration: 0.01ms !important;
+    -webkit-transition-duration: 0.01ms !important;
+  }
+}

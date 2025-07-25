@@ -1,3 +1,6 @@
+/* 페이지 전환 애니메이션 스타일 import */
+@import './styles/pageTransition.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, useNavigate } from 'react-router-dom';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
@@ -9,6 +9,7 @@ import ScrollToTop from '@/components/Common/ScrollToTop';
 import Navbar from '@/components/Common/Navbar';
 import { LoadingOverLay } from '@/components/Common/LoadingItem';
 import Splash from '@/components/Splash/Splash';
+import TransitionRoutes from '@/components/Common/TransitionRoutes';
 
 // 모든 페이지 컴포넌트들을 동적 임포트로 변경
 const HomePage = lazy(() => import('@/pages/Home/HomePage'));
@@ -192,7 +193,7 @@ const Layout = () => {
 
 const Router = () => {
   return (
-    <Routes>
+    <TransitionRoutes>
       <Route element={<Layout />}>
         <Route
           path="/"
@@ -671,7 +672,7 @@ const Router = () => {
           }
         />
       </Route>
-    </Routes>
+    </TransitionRoutes>
   );
 };
 
