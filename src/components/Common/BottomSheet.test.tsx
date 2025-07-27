@@ -266,7 +266,7 @@ describe('BottomSheetContent', () => {
       expect(screen.getByText('내용')).toBeInTheDocument();
     });
 
-    it('isMaxHeight가 true일 때 max-height 클래스가 적용되어야 한다', () => {
+    it('isMaxHeight가 true일 때 h-full 클래스가 적용되어야 한다', () => {
       render(
         <BottomSheetContent isMaxHeight={true}>
           <div>내용</div>
@@ -274,10 +274,10 @@ describe('BottomSheetContent', () => {
       );
 
       const contentContainer = screen.getByText('내용').parentElement;
-      expect(contentContainer).toHaveClass('max-h-[49vh]');
+      expect(contentContainer).toHaveClass('h-full');
     });
 
-    it('isMaxHeight가 false일 때 h-full 클래스가 적용되어야 한다', () => {
+    it('isMaxHeight가 false일 때 max-height 클래스가 적용되어야 한다', () => {
       render(
         <BottomSheetContent isMaxHeight={false}>
           <div>내용</div>
@@ -285,8 +285,8 @@ describe('BottomSheetContent', () => {
       );
 
       const contentContainer = screen.getByText('내용').parentElement;
-      expect(contentContainer).toHaveClass('h-full');
-      expect(contentContainer).not.toHaveClass('max-h-[49vh]');
+      expect(contentContainer).toHaveClass('max-h-[49vh]');
+      expect(contentContainer).not.toHaveClass('h-full');
     });
   });
 });
