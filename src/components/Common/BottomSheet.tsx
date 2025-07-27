@@ -114,7 +114,6 @@ export const BottomSheet = ({
         style={{
           top: `${viewHeight - contentHeight - LAYOUT_MARGIN}px`,
         }}
-        onClick={(e) => e.stopPropagation()}
       >
         <div ref={contentRef} className="flex flex-col h-auto">
           {children}
@@ -184,7 +183,10 @@ export const BottomSheetContent = ({
 }) => {
   return (
     <div
-      className={`overflow-y-scroll overflow-x-hidden px-5 ${isMaxHeight ? 'max-h-[49vh]' : 'h-full'}`}
+      className={`overflow-y-scroll overflow-x-hidden px-5 ${isMaxHeight ? 'h-full' : 'max-h-[49vh]'}`}
+      onClick={(e) => e.stopPropagation()}
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerMove={(e) => e.stopPropagation()}
     >
       {children}
     </div>
