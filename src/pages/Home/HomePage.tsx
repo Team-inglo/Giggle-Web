@@ -48,7 +48,7 @@ const HomePage = () => {
     <>
       <HomeHeader />
       <HomeBanner />
-      <HomeMenu />
+
       <HomeJobPostingSection />
     </>
   );

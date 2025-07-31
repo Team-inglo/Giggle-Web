@@ -47,28 +47,17 @@ const EmployerEmployeeCard = ({
         )}
       </div>
 
-      <div className="flex flex-col gap-[0.125rem] px-2 pb-2">
-        <h3 className="min-h-10 button-16-semibold text-text-normal line-clamp-2">
+      <div className="flex flex-col">
+        <h3 className="button-16-semibold text-text-normal line-clamp-1 whitespace-normal pb-[0.125rem]">
           {cardData?.name}
         </h3>
 
-        <p className="caption-12-regular text-text-alternative line-clamp-1">
+        <p className="caption-12-regular text-text-alternative line-clamp-2 whitespace-normal pb-2">
           {cardData?.title || '친절한 서비스를 고객을 맞게 만들어보아요!'}
         </p>
 
         <div className="flex flex-wrap items-center justify-between gap-1">
           <div className="flex flex-wrap items-center gap-1">
-            {cardData?.industry && (
-              <Tag
-                value={cardData.industry}
-                padding="py-[0.188rem] px-[0.25rem]"
-                isRounded={false}
-                hasCheckIcon={false}
-                backgroundColor="bg-status-blue-300/10"
-                color="text-text-success"
-                fontStyle="caption-12-regular"
-              />
-            )}
             {cardData?.visa && (
               <Tag
                 value={cardData.visa.replace(/_/g, '-')}

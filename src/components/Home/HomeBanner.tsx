@@ -13,6 +13,7 @@ import { isEmployerByAccountType } from '@/utils/signup';
 import { bannerTranslation } from '@/constants/translation';
 import { useNavigate } from 'react-router-dom';
 import ResumeHelperBanner from '@/components/ManageResume/ResumeHelperBanner';
+import HomeMenu from './HomeMenu';
 
 const RenderBannerList = ({
   data,
@@ -128,8 +129,9 @@ const HomeBanner = () => {
             : 'Find your perfect job'}
         </h2>
         <ResumeHelperBanner />
+        <HomeMenu />
       </div>
-      <section className="w-full mt-4 overflow-hidden relative" ref={emblaRef}>
+      <section className="w-full overflow-hidden relative" ref={emblaRef}>
         <RenderBannerList
           data={bannerData?.data?.banner_list}
           isLoading={isLoading}
