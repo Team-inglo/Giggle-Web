@@ -29,11 +29,11 @@ const EmployerEmployeeCard = ({
 
   return (
     <article
-      className="w-[9.063rem] m-1 flex flex-col gap-2 rounded-lg"
+      className="w-[9.063rem] flex flex-col gap-2 rounded-lg"
       onClick={goToResumeDetailPage}
     >
       {/* 이미지에만 border 적용 */}
-      <div className="w-full h-[6.75rem] rounded-lg overflow-hidden border border-border-alternative">
+      <div className="w-[9.063rem] h-[6.75rem] rounded-lg overflow-hidden border border-border-alternative">
         {cardData?.profile_img_url ? (
           <img
             src={cardData.profile_img_url}
@@ -138,20 +138,20 @@ const EmployerEmployeeCardList = ({
   return (
     <div className="flex flex-col gap-2">
       {title && (
-        <div className="flex items-center justify-between py-1">
-          <h3 className="text-black heading-18-semibold">{title}</h3>
+        <div className="flex items-center justify-between py-1 px-4">
+          <h3 className="text-text-strong heading-18-semibold">{title}</h3>
           {onSeeMoreClick && (
             <button
-              className="caption-12-regular text-[#9397A1]"
+              className="caption-12-regular text-text-alternative"
               onClick={onSeeMoreClick}
             >
-              See More
+              더보기
             </button>
           )}
         </div>
       )}
 
-      <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
+      <div className="flex gap-2 px-4 overflow-x-scroll whitespace-nowrap no-scrollbar">
         {resumeData.map((value) => (
           <EmployerEmployeeCard key={value.id} cardData={value} />
         ))}

@@ -18,7 +18,7 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
 
   return (
     <article
-      className="flex flex-col gap-2 w-[9.063rem] m-1 rounded-lg"
+      className="flex flex-col gap-2 w-[9.063rem] rounded-lg"
       onClick={goToCareerDetailPage}
     >
       {/* 이미지 박스 - 기존 Job 공고와 동일하게 통일 */}

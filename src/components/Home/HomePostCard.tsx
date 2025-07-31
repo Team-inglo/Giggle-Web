@@ -25,7 +25,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
 
   return (
     <article
-      className="flex flex-col gap-2 w-[9.063rem] m-1 rounded-lg"
+      className="flex flex-col gap-2 w-[9.063rem] rounded-lg"
       onClick={goToPostDetailPage}
     >
       {jobPostingData?.representative_img_url ? (

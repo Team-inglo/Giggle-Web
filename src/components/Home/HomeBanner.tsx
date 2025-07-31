@@ -33,14 +33,14 @@ const RenderBannerList = ({
 
   if (isLoading)
     return (
-      <div className="w-full h-[10.5rem] rounded-lg flex justify-center items-center">
+      <div className="w-full h-[10.5rem] flex justify-center items-center">
         <LoadingPostItem />
       </div>
     );
 
   if (!data?.length)
     return (
-      <div className="w-full h-[10.5rem] rounded-lg flex flex-col justify-center items-center bg-primary-neutral text-center">
+      <div className="w-full h-[10.5rem] flex flex-col justify-center items-center bg-primary-neutral text-center">
         <p className="button-14-semibold text-text-alternative">
           {bannerTranslation.emptyTitle[language]}
         </p>
@@ -52,13 +52,13 @@ const RenderBannerList = ({
 
   return (
     <>
-      <div className="w-full flex gap-2">
+      <div className="w-full flex">
         {data.map((value: BannerListType) => (
           <img
             key={value.id}
             src={value.img_url}
             alt="banner image"
-            className="w-full min-w-full h-[10.5rem] rounded-lg object-cover object-center"
+            className="w-full min-w-full h-[10.5rem] object-cover object-center"
             onClick={() => handleClickBannerDetail(value.id)}
           />
         ))}
@@ -117,18 +117,18 @@ const HomeBanner = () => {
   }, [embla, onSelect]);
 
   return (
-    <div className="w-full px-4">
-      <div className="pt-6 pb-4">
-        <p className="pb-1 body-14-regular text-[#9397A1]">
+    <div className="w-full ">
+      <div className="pt-6 px-4">
+        <p className="pb-1 body-14-regular text-text-alternative">
           {getGreetingMessage(account_type)}
         </p>
-        <h2 className="heading-20-semibold text-[#0A0909]">
+        <h2 className="heading-20-semibold text-text-strong pb-2">
           {account_type === UserType.OWNER
             ? '필요한 인재를 필요한 순간에 🤝'
             : 'Find your perfect job'}
         </h2>
+        <ResumeHelperBanner />
       </div>
-      <ResumeHelperBanner />
       <section className="w-full mt-4 overflow-hidden relative" ref={emblaRef}>
         <RenderBannerList
           data={bannerData?.data?.banner_list}

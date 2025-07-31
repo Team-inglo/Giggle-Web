@@ -41,16 +41,16 @@ const HomeJobPostingList = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-center py-1">
-        <h3 className="heading-18-semibold text-black">{title}</h3>
+      <div className="flex justify-between items-center py-1 px-4">
+        <h3 className="heading-18-semibold text-text-strong">{title}</h3>
         <button
-          className="caption-12-regular text-[#9397A1]"
+          className="caption-12-regular text-text-alternative"
           onClick={onSeeMoreClick}
         >
           {postTranslation.seeMore[isEmployerByAccountType(account_type)]}
         </button>
       </div>
-      <div className="flex overflow-x-scroll whitespace-nowrap no-scrollbar">
+      <div className="flex gap-2 px-4 overflow-x-scroll whitespace-nowrap no-scrollbar">
         <RenderJobPostingList data={data} isLoading={isLoading} />
       </div>
     </div>

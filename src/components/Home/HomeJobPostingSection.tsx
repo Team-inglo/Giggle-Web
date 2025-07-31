@@ -12,14 +12,13 @@ import { useGetPostList } from '@/hooks/api/usePost';
 import { useGetCareerList } from '@/hooks/api/useCareer';
 import HomeJobPostingList from '@/components/Home/HomeJobPostingList';
 import HomeCareerPostingList from '@/components/Home/HomeCareerPostingList';
-import EmployerEmployeeCardList from '../Employer/EmployeeSearch/EmployerEmployeeCardList';
+import EmployerEmployeeCardList from '@/components/Employer/EmployeeSearch/EmployerEmployeeCardList';
 
 const HomePostSection = () => {
   const navigate = useNavigate();
   const { account_type } = useUserStore();
   const isLogin = !!account_type;
   const isOwner = account_type === UserType.OWNER;
-
   // 공통: 공고 트렌딩
   const { data: trendingJobData, isLoading: trendingJobLoading } =
     useHomeJobPosting(POST_SEARCH_MENU.TRENDING, isLogin);
@@ -89,12 +88,12 @@ const HomePostSection = () => {
   };
 
   return (
-    <section className="flex flex-col gap-8 p-4 pb-28">
+    <section className="flex flex-col gap-8 py-4 pb-28">
       {isOwner ? (
         <>
           {/* 고용주: 인재 트렌딩 */}
           <EmployerEmployeeCardList
-            title="🔥 요즘 인기있는 인재"
+            title="요즘 인기있는 인재 🔥"
             resumeData={
               trendingResumeData?.pages?.flatMap((page) => page.data.resumes) ??
               []
@@ -106,7 +105,7 @@ const HomePostSection = () => {
 
           {/* 고용주: 공고 트렌딩 */}
           <HomeJobPostingList
-            title="🔥 요즘 인기있는 공고"
+            title="요즘 인기있는 공고 🔥"
             data={trendingJobData?.data?.job_posting_list}
             isLoading={trendingJobLoading}
             onSeeMoreClick={goToJobSearch}
@@ -116,7 +115,7 @@ const HomePostSection = () => {
         <>
           {/* 일반 유저: 공고 트렌딩 */}
           <HomeJobPostingList
-            title="🔥 Trending Job Lists for You"
+            title="Trending Job Lists for You 🔥"
             data={trendingJobData?.data?.job_posting_list}
             isLoading={trendingJobLoading}
             onSeeMoreClick={goToJobSearch}
@@ -124,31 +123,36 @@ const HomePostSection = () => {
 
           {/* 일반 유저: 커리어 트렌딩 */}
           <HomeCareerPostingList
-            title="🔥 Trending Career Lists for You"
+            title="Trending Career Lists for You 🔥"
             data={trendingCareerData?.data?.career_list}
             isLoading={trendingCareerLoading}
             onSeeMoreClick={goToCareerSearch}
           />
 
           {/* 일반 유저: 공고 북마크 */}
-          <HomeJobPostingList
-            title="🌟 Bookmarked Job"
-            data={bookmarkedJobData?.data?.job_posting_list}
-            isLoading={bookmarkedJobLoading}
-            onSeeMoreClick={() =>
-              navigate('/resume/scrapped', { state: { filter: 'Job Posting' } })
-            }
-          />
-
-          {/* 일반 유저: 커리어 북마크 */}
-          <HomeCareerPostingList
-            title="🌟 Bookmarked Career"
-            data={bookmarkedCareerData?.data?.career_list}
-            isLoading={bookmarkedCareerLoading}
-            onSeeMoreClick={() =>
-              navigate('/resume/scrapped', { state: { filter: 'Career' } })
-            }
-          />
+          {isLogin && (
+            <>
+              <HomeJobPostingList
+                title="Bookmarked Job 🌟"
+                data={bookmarkedJobData?.data?.job_posting_list}
+                isLoading={bookmarkedJobLoading}
+                onSeeMoreClick={() =>
+                  navigate('/resume/scrapped', {
+                    state: { filter: 'Job Posting' },
+                  })
+                }
+              />
+              {/* 일반 유저: 커리어 북마크 */}
+              <HomeCareerPostingList
+                title="Bookmarked Career 🌟"
+                data={bookmarkedCareerData?.data?.career_list}
+                isLoading={bookmarkedCareerLoading}
+                onSeeMoreClick={() =>
+                  navigate('/resume/scrapped', { state: { filter: 'Career' } })
+                }
+              />
+            </>
+          )}
         </>
       )}
     </section>
