@@ -1,7 +1,7 @@
 import TextFieldHeader from '@/components/Common/Header/TextFieldHeader';
 import CareerSearchSection from '@/components/PostSearch/CareerSearchSection';
 import PostSearchSection from '@/components/PostSearch/PostSearchSection';
-import { POST_SEARCH_PAGE_MENU } from '@/constants/postSearch';
+import { POST_SEARCH_PAGE_MENU, POST_SORTING } from '@/constants/postSearch';
 import { UserType } from '@/constants/user';
 import { usePostSearch } from '@/hooks/usePostSearch';
 import { useUserStore } from '@/store/user';
@@ -14,14 +14,24 @@ const PostSearchPage = () => {
 
   const { account_type } = useUserStore();
 
-  // searchOption 상태 초기화
-  const { searchOption, updateSearchOption } = usePostSearch(state);
+  // state로 넘어온 initialSearchOption 설정
+  const initialSearchOption = {
+    searchText: state?.searchText ?? '',
+    postSortType: state?.postSortType ?? POST_SORTING.RECENT,
+    careerSortType: state?.careerSortType ?? POST_SORTING.RECENT,
+    filterList: state?.filterList ?? {}, // 나머지 필터들도 있으면 포함
+    careerCategory: state?.careerCategory ?? [],
+  };
 
-  const [selectedMenu, setSelectedMenu] = useState<POST_SEARCH_PAGE_MENU>(
-    account_type === UserType.OWNER
-      ? POST_SEARCH_PAGE_MENU.POST
-      : POST_SEARCH_PAGE_MENU.CAREER,
-  );
+  // searchOption 상태 초기화
+  const { searchOption, updateSearchOption } =
+    usePostSearch(initialSearchOption);
+
+  // 탭 초기화 (state로 받은 initialMenu 활용)
+  const initialMenu =
+    (state?.initialMenu as POST_SEARCH_PAGE_MENU) ?? POST_SEARCH_PAGE_MENU.POST;
+  const [selectedMenu, setSelectedMenu] =
+    useState<POST_SEARCH_PAGE_MENU>(initialMenu);
 
   const onClickSearch = (text: string) => {
     updateSearchOption('searchText', text);
