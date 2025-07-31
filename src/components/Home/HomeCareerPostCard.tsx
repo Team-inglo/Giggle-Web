@@ -2,6 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { CareerListItemType } from '@/types/api/career';
 import { CAREER_CATEGORY } from '@/constants/postSearch';
 import { useCurrentPostIdStore } from '@/store/url';
+import { useMemo } from 'react';
+import { postTranslation } from '@/constants/translation';
+import { isEmployer } from '@/utils/signup';
+import { useUserStore } from '@/store/user';
+import { UserType } from '@/constants/user';
 
 type HomeCareerPostCardProps = {
   careerData: CareerListItemType;
@@ -10,11 +15,26 @@ type HomeCareerPostCardProps = {
 const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
   const { updateCurrentPostId } = useCurrentPostIdStore();
   const navigate = useNavigate();
-
+  const { account_type } = useUserStore();
+  const userType = account_type === UserType.OWNER ? '/employer' : '';
   const goToCareerDetailPage = () => {
     updateCurrentPostId(careerData.id);
     navigate(`/career/${careerData.id}`);
   };
+
+  const visaList = useMemo(
+    () => careerData.visa?.map((visa) => visa.replace(/_/g, '-')).sort(),
+    [careerData.visa],
+  );
+  const RepresentedVisa = useMemo(
+    () =>
+      visaList && visaList.length > 1
+        ? visaList[0] +
+          postTranslation.visaAdditional[isEmployer(userType)] +
+          (visaList.length - 1)
+        : (visaList?.[0] ?? ''),
+    [visaList, userType],
+  );
 
   return (
     <article
@@ -49,7 +69,7 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
         </p>
 
         {/* 태그 영역 */}
-        <div className="flex flex-wrap items-center gap-1 mt-1">
+        <div className="flex flex-wrap items-center gap-1 mt-2">
           {careerData.career_category && (
             <span className="caption-12-regular bg-[#0066FF1F] text-text-success py-[0.188rem] px-[0.25rem] rounded">
               {CAREER_CATEGORY[careerData.career_category]}
@@ -57,7 +77,7 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
           )}
           {careerData.visa && careerData.visa.length > 0 && (
             <span className="caption-12-regular bg-surface-secondary text-text-alternative py-[0.188rem] px-[0.25rem] rounded">
-              {careerData.visa.join(', ').replace(/_/g, '-')}
+              {RepresentedVisa}
             </span>
           )}
         </div>

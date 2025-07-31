@@ -5,6 +5,9 @@ import { useCurrentPostIdStore } from '@/store/url';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import { EN_FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
+import { postTranslation } from '@/constants/translation';
+import { isEmployer } from '@/utils/signup';
+import { useMemo } from 'react';
 
 type HomePostCardProps = {
   jobPostingData: JobPostingItemType;
@@ -12,6 +15,7 @@ type HomePostCardProps = {
 
 const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
   const { account_type } = useUserStore();
+  const userType = account_type === UserType.OWNER ? '/employer' : '';
   const { updateCurrentPostId } = useCurrentPostIdStore();
 
   const navigate = useNavigate();
@@ -22,6 +26,21 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
       navigate(`/employer/post/${jobPostingData.id}`);
     else navigate(`/post/${jobPostingData.id}`);
   };
+
+  const visaList = useMemo(
+    () =>
+      jobPostingData.tags.visa.map((visa) => visa.replace(/_/g, '-')).sort(),
+    [jobPostingData.tags.visa],
+  );
+  const RepresentedVisa = useMemo(
+    () =>
+      visaList.length > 1
+        ? visaList[0] +
+          postTranslation.visaAdditional[isEmployer(userType)] +
+          (visaList.length - 1)
+        : visaList[0],
+    [visaList, userType],
+  );
 
   return (
     <article
@@ -65,7 +84,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
           fontStyle="caption-12-regular"
         />
         <Tag
-          value={jobPostingData.tags.visa.sort().join(', ').replace(/_/g, '-')}
+          value={RepresentedVisa}
           padding="py-[0.188rem] px-[0.25rem]"
           isRounded={false}
           hasCheckIcon={false}
