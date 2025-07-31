@@ -70,20 +70,22 @@ const HomeMenu = () => {
 
   return (
     <>
-      <nav className="p-4 w-full flex items-start justify-center gap-2">
-        {menuItems.map((item, index) => (
-          <button
-            key={index}
-            className="w-[4.875rem] h-[4.875rem] flex-1 flex flex-col items-center justify-start gap-2 px-1 py-3 rounded-lg"
-            onClick={() => checkLogin(item.onClick)}
-          >
-            {item.icon}
-            <p className="h-[1.0625rem] button-14-semibold text-[#333333] break-keep">
-              {item.text}
-            </p>
-          </button>
-        ))}
-      </nav>
+      {menuItems.length > 0 && (
+        <nav className="p-4 w-full flex items-start justify-center gap-2">
+          {menuItems.map((item, index) => (
+            <button
+              key={index}
+              className="w-[4.875rem] h-[4.875rem] flex-1 flex flex-col items-center justify-start gap-2 px-1 py-1 rounded-lg"
+              onClick={() => checkLogin(item.onClick)}
+            >
+              {item.icon}
+              <p className="h-[1.0625rem] button-14-semibold text-text-strong break-keep">
+                {item.text}
+              </p>
+            </button>
+          ))}
+        </nav>
+      )}
       {isOpenCommingSoonBottomSheet && (
         <CommingSoonBottomSheet
           isShowBottomsheet={isOpenCommingSoonBottomSheet}
