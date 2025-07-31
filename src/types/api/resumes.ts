@@ -19,7 +19,7 @@ export type IntroductionRequest = {
 };
 
 // 경력사항 요청 타입
-export type WorkExperienctRequest = {
+export type WorkExperienceRequest = {
   title: string;
   workplace: string;
   start_date: string; // (yyyy-MM-dd),
@@ -55,8 +55,17 @@ export type LanguagesLevelType =
 
 export type AdditionalLanguageRequest = {
   language_name: string;
-  level: number;
+  level: LanguageProficiencyLevel;
 };
+
+export enum LanguageProficiencyLevel {
+  NOT_ABLE_TO_USE_AT_ALL = 'NOT_ABLE_TO_USE_AT_ALL',
+  CAN_UNDERSTAND_BASIC_WORDS = 'CAN_UNDERSTAND_BASIC_WORDS',
+  BASIC_CONVERSATION_POSSIBLE = 'BASIC_CONVERSATION_POSSIBLE',
+  COMFORTABLE_FOR_WORK = 'COMFORTABLE_FOR_WORK',
+  FLUENT = 'FLUENT',
+  NATIVE_OR_NEAR_NATIVE = 'NATIVE_OR_NEAR_NATIVE',
+}
 
 type visa = {
   visa: VisaType; //Enum(D_2_1, D_2_2, D_2_3, D_2_4, D_2_6, D_2_7, D_2_8, D_4_1, D_4_7, F_2),
@@ -111,6 +120,12 @@ export type GetEmployeeResumeListReq = {
   nationality?: string | null;
   industry?: string | null;
   is_book_marked?: boolean;
+};
+
+// 7.26 (유학생) 이력서 완성도 조회하기
+export type ResumeProgressResponse = {
+  completion_rate: number;
+  completion_text: string;
 };
 
 // (고용주) 이력서 리스트 조회 검색 필터

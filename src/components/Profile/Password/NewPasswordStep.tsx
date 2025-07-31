@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserType } from '@/constants/user';
 import {
   profileTranslation,
-  signInputTranclation,
+  signInputTranslation,
 } from '@/constants/translation';
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import Input from '@/components/Common/Input';
@@ -61,7 +61,6 @@ const NewPasswordStep = ({
         </div>
         <div className="flex flex-col gap-4">
           <InputLayout
-            isEssential
             title={
               profileTranslation.newPassword[
                 isEmployerByAccountType(account_type)
@@ -80,11 +79,10 @@ const NewPasswordStep = ({
               canDelete={false}
             />
             {newPasswordError && (
-              <p className="text-[#FF6F61] text-xs p-2">{newPasswordError}</p>
+              <p className="text-text-error text-xs p-2">{newPasswordError}</p>
             )}
           </InputLayout>
           <InputLayout
-            isEssential
             title={
               profileTranslation.confirmPassword[
                 isEmployerByAccountType(account_type)
@@ -103,7 +101,7 @@ const NewPasswordStep = ({
               canDelete={false}
             />
             {confirmPasswordError && (
-              <p className="text-[#FF6F61] text-xs p-2">
+              <p className="text-text-error text-xs p-2">
                 {confirmPasswordError}
               </p>
             )}
@@ -116,16 +114,15 @@ const NewPasswordStep = ({
         <BottomButtonPanel>
           <div className="w-full">
             <Button
-              type="large"
-              bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-              fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
-              isBorder={false}
+              type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+              size={Button.Size.LG}
+              isFullWidth
               title={
-                signInputTranclation.continue[
+                signInputTranslation.continue[
                   isEmployerByAccountType(account_type)
                 ]
               }
-              onClick={isValid ? onSubmit : undefined}
+              onClick={onSubmit}
             />
           </div>
         </BottomButtonPanel>

@@ -1,4 +1,4 @@
-export const signInputTranclation = {
+export const signInputTranslation = {
   signin: {
     ko: '로그인',
     en: 'Sign In',
@@ -95,6 +95,10 @@ export const signInputTranclation = {
     ko: '존재하지 않는 이메일입니다.',
     en: 'Wrong email address',
   },
+  emailAlreadyExists: {
+    ko: '이미 가입된 이메일입니다.',
+    en: 'This email already exists',
+  },
   verification: {
     ko: '인증번호',
     en: 'Verification code',
@@ -108,11 +112,12 @@ export const signInputTranclation = {
     en: 'Enter the code from the email we sent you',
   },
   spamEmailInfo: {
-    ko: '*이메일이 오지 않았나요? 스팸함 또는 프로모션함을 확인해주세요!',
-    en: "*Didn't receive the email? Please check your spam or promotions folder!",
+    ko: '메일이 안 왔다면 스팸함을 확인해주세요!',
+    en: 'Be sure to check your spam folder',
   },
   resetPasswordVerifySuccess: {
     ko: '인증',
+    en: 'Verify',
   },
   verifyFailed: {
     ko: '인증에 실패했습니다. 인증번호 재발급 후 다시 시도해주세요. ',
@@ -143,14 +148,18 @@ export const signInputTranclation = {
     en: 'Resend',
   },
   successVerify: {
+    ko: '이메일 인증 완료!',
+    en: 'We got it. Verification complete.',
+  },
+  completeSignup: {
     ko: '가입 완료!\n이제 채용을 시작해 볼까요?',
     en: "You're in!\nReady to find your next job?",
   },
-  successVerifyContent: {
+  completeSignupContent: {
     ko: '공고를 등록하고, 조건에 맞는 유학생을\n바로 만나보세요!',
     en: 'Complete your profile\nand start applying today!',
   },
-  successVerifyBtn: {
+  completeSignupBtn: {
     ko: '추가 정보 입력하기',
     en: 'Complete My Profile',
   },
@@ -189,6 +198,34 @@ export const signInputTranclation = {
   signupCompleteBtn: {
     ko: '시작하기',
     en: 'Browse Jobs',
+  },
+  agree: {
+    ko: '동의하기',
+    en: 'Agree',
+  },
+  essentialAgree: {
+    ko: '약관동의',
+    en: 'Agree to Terms',
+  },
+  essentialAgreeContent: {
+    ko: '전체동의',
+    en: 'All Agree',
+  },
+  essentialAgreeAssistive: {
+    ko: '선택항목 포함 모든 약관에 동의합니다.',
+    en: 'Agree to all terms, including selected items.',
+  },
+  serviceTerms: {
+    ko: '(필수) 서비스 이용약관동의',
+    en: '(Essential) Service Terms Agreement',
+  },
+  privacyPolicy: {
+    ko: '(필수) 개인정보 수집 및 이용 동의',
+    en: '(Essential) Personal Information Collection and Use Agreement',
+  },
+  locationBasedTerms: {
+    ko: '(필수) 위치정보 이용동의',
+    en: '(Essential) Location Information Use Agreement',
   },
 };
 
@@ -523,6 +560,10 @@ export const postTranslation = {
     ko: '회사주소',
     en: 'Company Address',
   },
+  detailedAddressPlaceholder: {
+    ko: '상세 주소를 입력해주세요',
+    en: 'Enter detailed address',
+  },
   representativeName: {
     ko: '대표명',
     en: ' Representative Name',
@@ -693,5 +734,24 @@ export const documentTranslation = {
   detailAddressTooLong: {
     ko: '상세주소는 50자 이내로 입력해주세요',
     en: 'max 50 characters.',
+  },
+  optional: {
+    ko: '(옵션)',
+    en: '(optional)',
+  },
+  inputWithoutDash: {
+    ko: '- 없이 숫자만 입력',
+    en: 'Enter numbers only',
+  },
+};
+
+export const toastTranslation = {
+  verifyCodeSent: {
+    ko: '인증번호가 전송되었어요!',
+    en: 'Verification code sent',
+  },
+  newVerifyCodeSent: {
+    ko: '새로운 인증번호가 전송되었어요!',
+    en: 'New verification code sent!',
   },
 };

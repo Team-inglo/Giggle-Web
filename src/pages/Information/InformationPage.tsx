@@ -1,12 +1,12 @@
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
+import ProgressStepper from '@/components/Common/ProgressStepper';
+import AgreeBottomSheet from '@/components/Employer/Signup/AgreeBottomSheet';
 import AddressStep from '@/components/Information/AddressStep';
 import InformationStep from '@/components/Information/InformationStep';
 import LanguageStep from '@/components/Information/LanguageStep';
 import PolicyViewer from '@/components/Information/PolicyViewer';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import { useGetPolicy, useSignUp } from '@/hooks/api/useAuth';
 import {
   initialUserInfoRequestBody,
@@ -67,12 +67,12 @@ const InformationPage = () => {
     <div className="m-auto max-w-[500px] relative h-screen flex flex-col items-center justify-start overflow-y-scroll scrollbar-hide">
       {devIsModal ? (
         <VerificationSuccessful
-          title={signInputTranclation.signupComplete[isEmployer(pathname)]}
+          title={signInputTranslation.signupComplete[isEmployer(pathname)]}
           content={
-            signInputTranclation.signupCompleteContent[isEmployer(pathname)]
+            signInputTranslation.signupCompleteContent[isEmployer(pathname)]
           }
           buttonText={
-            signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
+            signInputTranslation.signupCompleteBtn[isEmployer(pathname)]
           }
           onNext={() => navigate('/splash')}
         />
@@ -88,24 +88,8 @@ const InformationPage = () => {
                 : setCurrentStep((prev) => prev - 1)
             }
           />
-          <div className="w-screen flex justify-center items-center sticky top-[3.75rem]">
-            <hr
-              className={`w-[33%] h-1 border-0 ${
-                currentStep >= 1 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-            <hr
-              className={`w-[33%] h-1 border-0 ${
-                currentStep >= 2 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-            <hr
-              className={`w-[34%] h-1 border-0 ${
-                currentStep >= 3 ? 'bg-[#FEF387]' : 'bg-[#F4F4F9]'
-              }`}
-            />
-          </div>
-          <div className="w-full flex justify-center pt-4">
+          <ProgressStepper totalCount={3} currentStep={currentStep} />
+          <div className="w-full flex justify-center">
             {currentStep === 1 && (
               <InformationStep userInfo={userInfo} onNext={handleNext} />
             )}
@@ -117,18 +101,13 @@ const InformationPage = () => {
         </>
       )}
       {isAgreeModal && (
-        <BottomSheetLayout
-          isAvailableHidden={false}
-          isShowBottomsheet={isAgreeModal}
-        >
-          <AgreeModalInner
+          <AgreeBottomSheet
+            isShowBottomsheet={isAgreeModal}
             onPolicyPreview={(policy: TermType) => {
               getPolicy(policy);
             }}
             onNext={setIsAgreeModal}
-            accountType="USER"
           />
-        </BottomSheetLayout>
       )}
       {isPolicyPreview === true && (
         <PolicyViewer

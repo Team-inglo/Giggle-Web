@@ -39,8 +39,7 @@ export type EmployDocumentsSummaryResponse = {
 // 전화번호 state 타입
 export type Phone = {
   start: string;
-  middle: string;
-  end: string;
+  rest: string;
 };
 
 // 문서 종류 property와 이름 mapping

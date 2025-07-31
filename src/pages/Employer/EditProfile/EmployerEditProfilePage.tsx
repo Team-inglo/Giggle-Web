@@ -82,10 +82,9 @@ const EmployerEditProfilePage = () => {
       />
       <BottomButtonPanel>
         <Button
-          type="large"
-          isBorder={false}
-          bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-secondary'}
-          fontColor={isValid ? 'text-text-normal' : 'text-text-disabled'}
+          type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth
           title="수정 완료"
           onClick={handleSubmit}
         />

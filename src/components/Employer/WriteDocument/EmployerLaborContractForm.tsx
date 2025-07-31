@@ -1,10 +1,9 @@
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import {
   EMPLOYER_LABOR_CONTRACT_REQUIRED_FIELDS,
-  initialLaborContractEmployerInfo,
   LaborContractEmployerFormField,
   LaborContractEmployerFormFields,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import {
   LaborContractDataResponse,
   LaborContractEmployerInfo,
@@ -19,6 +18,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '@/components/Common/Button';
+import { initialLaborContractEmployerInfo } from '@/constants/documents';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -95,7 +95,7 @@ const EmployerLaborContractForm = ({
         <div className="p-4 [&>*:last-child]:mb-40 flex flex-col gap-4">
           {/** 고용주 작성 정보 */}
           {LaborContractEmployerFormFields.map((field) => (
-            <InputLayout key={field.name} title={field.title} isEssential>
+            <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>
           ))}
@@ -108,10 +108,9 @@ const EmployerLaborContractForm = ({
             onClick={handleSubmit(handleNext)}
           >
             <Button
-              type="large"
-              bgColor="bg-surface-primary"
-              fontColor="text-text-strong"
-              isBorder={false}
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={'작성완료'}
             />
           </ValidatedSubmitButton>

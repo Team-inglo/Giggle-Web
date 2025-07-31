@@ -1,16 +1,17 @@
 // 이름 유효성 검사 및 포맷팅 관련 유틸리티 함수들
-// 이름은 영문 대소문자, 한글만 허용하며, 공백도 허용
-// 연속된 공백은 하나의 공백으로 간주
-const nameRegexWithSpaces = /^[A-Za-z가-힣]+(?: [A-Za-z가-힣]+)*$/;
+
+import { KoEnEnumType } from '@/constants/manageResume';
+
+// 이름은 공백을 허용하며, 모든 언어 사용가능, 특수문자, 숫자 불가
+const nameRegexWithSpaces = /^[\p{L}]+(?: [\p{L}]+)*$/u;
 
 // 이름의 최대 길이
 const MAX_NAME_LENGTH = 50;
 
-
 /**
  * 이름 유효성 검사 함수
- * 1. 공백이 허용됨 (연속된 공백은 하나로 간주)
- * 2. 이름은 글자(영문, 한글)와 공백만 포함 가능
+ * 1. 공백이 허용됨
+ * 2. 이름은 모든 언어 사용가능, 특수문자, 숫자 불가
  * 3. 정규화된 총 길이는 MAX_NAME_LENGTH(50자) 이하
  * @param name 사용자가 입력한 이름
  * @returns 유효성 검사 결과
@@ -27,14 +28,9 @@ export const isValidName = (name: string): boolean => {
 };
 
 // 전화번호 유효성 검사 함수
-export const isValidPhoneNumber = (phone: {
-  start: string;
-  middle: string;
-  end: string;
-}) =>
-  phone.start !== '' &&
-  /^[0-9]{4}$/.test(phone.middle) &&
-  /^[0-9]{4}$/.test(phone.end);
+export const isValidPhoneNumber = (phone: { start: string; rest: string }) => {
+  return phone.start !== '' && /^[0-9]{4}-[0-9]{4}$/.test(phone.rest);
+};
 
 // input에서 maxLength만큼 값을 제한하는 함수
 export const limitInputValueLength = (value: string, maxLength: number) => {
@@ -43,19 +39,24 @@ export const limitInputValueLength = (value: string, maxLength: number) => {
   return value.slice(0, maxLength);
 };
 
-// 3개의 dropdown, input으로 나눠 받고 있는 state 통합하는 함수
-export const formatPhoneNumber = (phone: {
-  start: string;
-  middle: string;
-  end: string;
-}) => `${phone.start}-${phone.middle}-${phone.end}`;
+// 2개의 dropdown, input으로 나눠 받고 있는 state 통합하는 함수
+export const formatPhoneNumber = (phone: { start: string; rest: string }) => {
+  return `${phone.start}-${phone.rest}`;
+};
 
 export const parsePhoneNumber = (phoneNumber: string) => {
-  const [start, middle, end] = phoneNumber.split('-');
+  const parts = phoneNumber.split('-');
+  if (parts.length === 3) {
+    const [start, middle, end] = parts;
+    return {
+      start,
+      rest: `${middle}-${end}`,
+    };
+  }
+  // 기본값 또는 다른 형식 처리
   return {
-    start,
-    middle,
-    end,
+    start: '010',
+    rest: '',
   };
 };
 
@@ -129,4 +130,11 @@ export const formatDateInput = (value: string) => {
       .join('-') || '';
 
   return formatValue;
+};
+
+// 국적 정렬 함수
+export const getSortedNationalities = (
+  nationalities: KoEnEnumType[],
+): KoEnEnumType[] => {
+  return [...nationalities].sort((a, b) => a.en.localeCompare(b.en));
 };

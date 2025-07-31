@@ -199,6 +199,7 @@ export const enum POST_SEARCH_PAGE_MENU {
 
 // 커리어 검색 카테고리
 export const CAREER_CATEGORY = {
+  INTERNSHIP: 'Internship',
   ACTIVITY: 'Activity',
   PROGRAM: 'Program',
   CONTEST: 'Contest',

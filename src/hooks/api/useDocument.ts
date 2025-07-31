@@ -36,7 +36,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { RESTYPE } from '../../types/api/common';
+import { RESTYPE } from '@/types/api/common';
 import { smartNavigate } from '@/utils/application';
 
 // 8.1 (유학생) 서류 조회하기 훅

@@ -1,5 +1,7 @@
 import { EtcLanguageData } from '@/types/manageResume/manageResume';
 import { Dispatch, SetStateAction } from 'react';
+import Icon from '@/components/Common/Icon';
+import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
 
 type EtcLanguageCardProps = {
   language: EtcLanguageData;
@@ -7,7 +9,7 @@ type EtcLanguageCardProps = {
   setSelectedLanguage?: Dispatch<SetStateAction<EtcLanguageData>>;
 };
 
-const EtcLanguageCard = ({
+const LanguageSelectCard = ({
   language,
   isSelected,
   setSelectedLanguage,
@@ -15,19 +17,13 @@ const EtcLanguageCard = ({
   return (
     // 언어 카드
     <div
-      className={`border-[0.5px] ${isSelected && 'bg-[#F4F4F9]'} border-[#DCDCDC] rounded-[1.125rem] flex items-center gap-4 p-4 cursor-pointer`}
+      className={`flex items-center gap-4 p-3 cursor-pointer justify-between text-text-strong ${isSelected ? 'body-16-medium' : 'body-16-regular]'}`}
       onClick={() => setSelectedLanguage && setSelectedLanguage(language)}
     >
-      <div className={'w-9 h-9 rounded-full overflow-hidden'}>
-        <img
-          src={language.img_url}
-          alt="flag"
-          className="w-full h-full object-cover"
-        />
-      </div>
       <div>{language.language}</div>
+      {isSelected && <Icon name="arrow-right" icon={CheckIcon} />}
     </div>
   );
 };
 
-export default EtcLanguageCard;
+export default LanguageSelectCard;

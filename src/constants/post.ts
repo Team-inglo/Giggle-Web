@@ -1,5 +1,3 @@
-import { Gender } from '@/types/api/users';
-import { InputType } from '@/types/common/input';
 import {
   EducationLevel,
   EmploymentType,
@@ -7,9 +5,9 @@ import {
   JobCategoryExtended,
   VisaGroup,
 } from '@/types/postCreate/postCreate';
-import { ValueTransformer } from '@/types/api/document';
-import { transformers } from '@/utils/transformers';
-import { WorkPeriodInfo } from './documents';
+import PeopleIcon from '@/assets/icons/PeopleIcon.svg?react';
+import BuildingIcon from '@/assets/icons/BuildingIcon.svg?react';
+import { Gender } from '@/types/api/users';
 
 export const JobCategoryInfo = {
   [JobCategory.FOOD_SERVICE]: {
@@ -215,11 +213,11 @@ export const VisaInfo = {
 
 export const genderInfo = {
   [Gender.MALE]: {
-    name: '남',
+    name: '남자',
     key: 'MALE',
   },
   [Gender.FEMALE]: {
-    name: '여',
+    name: '여자',
     key: 'FEMALE',
   },
   [Gender.NONE]: {
@@ -228,259 +226,19 @@ export const genderInfo = {
   },
 };
 
-const GenderList = ['남', '여', '무관'];
+export const GenderList = Object.values(genderInfo).map(
+  (gender) => gender.name,
+);
 
 export const WorkTypeInfo = {
-  [EmploymentType.INTERNSHIP]: {
-    name: '인턴십',
-    key: 'INTERNSHIP',
-  },
   [EmploymentType.PARTTIME]: {
-    name: '아르바이트',
+    name: '알바',
     key: 'PARTTIME',
+    icon: PeopleIcon,
   },
-};
-
-// 공고 폼 필드 타입 정의
-export type PostFormField = {
-  type:
-    | 'text'
-    | 'dropdown'
-    | 'radio'
-    | 'work_day_time'
-    | 'number'
-    | 'phone'
-    | 'address'
-    | 'value_with_checkbox'
-    | 'visa_dropdown'
-    | 'image_upload'
-    | 'textarea';
-  name: string; // body.title, body.job_category 등의 경로
-  title: string;
-  placeholder: string;
-  description?: string;
-  options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
-  inputType?: InputType;
-  isRequired?: boolean;
-  isUnit?: boolean;
-  unit?: string;
-  isPrefix?: boolean;
-  prefix?: string;
-  dropdownValuesList?: string[];
-  variant?: 'checkbox' | 'button';
-  label?: string;
-  format?: string;
-  transformer?: ValueTransformer;
-  isDate?: boolean;
-  checkboxLabel?: string;
-  isEdit?: boolean;
-  isImage?: boolean;
-  textareaHeight?: string;
-  useKeyValue?: boolean;
-  keyValueOptions?: { key: string; name: string }[];
-};
-
-// Step1에 해당하는 폼 필드 정의
-export const PostFormFields: Record<string, PostFormField[]> = {
-  step1: [
-    {
-      type: 'text',
-      name: 'body.title',
-      title: '공고 제목',
-      placeholder: '제목을 입력해주세요',
-      inputType: InputType.TEXT,
-      isRequired: true,
-    },
-    {
-      type: 'dropdown',
-      name: 'body.job_category',
-      title: '업직종',
-      placeholder: '업직종을 선택해주세요',
-      useKeyValue: true,
-      options: JobCategoryInfo,
-      isRequired: true,
-    },
-    {
-      type: 'work_day_time',
-      name: 'body.work_day_times',
-      title: '근무 시간',
-      placeholder: '원하는 근무 시간을 추가해주세요.',
-      isRequired: true,
-    },
-    {
-      type: 'text',
-      name: 'body.hourly_rate',
-      title: '시급',
-      placeholder: '시급을 입력해주세요',
-      inputType: InputType.TEXT,
-      isRequired: true,
-      isUnit: true,
-      unit: '원',
-      description: '2025년 기준 최저시급은 10,030원입니다.',
-    },
-    {
-      type: 'radio',
-      name: 'body.employment_type',
-      title: '타입',
-      placeholder: '',
-      options: ['아르바이트', '인턴십'],
-      isRequired: true,
-      transformer: transformers.employmentType,
-    },
-    {
-      type: 'dropdown',
-      name: 'body.work_period',
-      title: '근무기간',
-      placeholder: '근무 기간을 선택해주세요',
-      useKeyValue: true,
-      options: WorkPeriodInfo,
-      isRequired: true,
-    },
-  ],
-  step2: [
-    {
-      type: 'address',
-      name: 'body.address',
-      title: '근무 장소',
-      placeholder: '근무 장소를 입력해주세요',
-      isRequired: true,
-      label: '상세 주소',
-    },
-    {
-      type: 'value_with_checkbox',
-      name: 'body.recruitment_dead_line',
-      title: '공고 종료일',
-      placeholder: '공고 종료일을 입력해주세요',
-      inputType: InputType.TEXT,
-      isRequired: true,
-      format: 'date',
-      isDate: true,
-      checkboxLabel: '상시모집',
-    },
-  ],
-  step3: [
-    {
-      type: 'text',
-      name: 'body.recruitment_number',
-      title: '모집인원',
-      placeholder: '모집 인원을 입력해주세요',
-      inputType: InputType.TEXT,
-      isRequired: true,
-      isUnit: true,
-      unit: '명',
-      format: 'number',
-    },
-    {
-      type: 'radio',
-      name: 'body.gender',
-      title: '성별',
-      placeholder: '',
-      options: GenderList,
-      isRequired: true,
-      transformer: transformers.gender,
-    },
-    {
-      type: 'value_with_checkbox',
-      name: 'body.age_restriction',
-      title: '연령제한',
-      placeholder: '연령제한을 입력해주세요',
-      inputType: InputType.TEXT,
-      isRequired: true,
-      isUnit: true,
-      unit: '살 이상',
-      checkboxLabel: '무관',
-    },
-    {
-      type: 'dropdown',
-      name: 'body.education_level',
-      title: '학력',
-      placeholder: '학력을 선택해주세요',
-      useKeyValue: true,
-      options: EducationLevelInfo,
-      isRequired: true,
-    },
-    {
-      type: 'visa_dropdown',
-      name: 'body.visa',
-      title: '비자',
-      placeholder: '비자를 선택해 주세요',
-      isRequired: true,
-    },
-  ],
-  step4: [
-    {
-      name: 'body.recruiter_name',
-      type: 'text',
-      title: '담당자 이름',
-      placeholder: '채용 담당자 이름을 입력해주세요',
-    },
-    {
-      name: 'body.recruiter_email',
-      type: 'text',
-      title: '담당자 이메일',
-      placeholder: '채용 담당자 이메일을 입력해주세요',
-    },
-    {
-      name: 'body.recruiter_phone',
-      type: 'phone',
-      title: '담당자 전화번호',
-      placeholder: '채용 담당자 전화번호를 입력해주세요',
-    },
-    {
-      name: 'images',
-      type: 'image_upload',
-      title: '근무 회사 사진',
-      placeholder: '사진이 있으면 관심 확률이 올라가요 !',
-      isEdit: false,
-      isImage: true,
-    },
-  ],
-  step5: [
-    {
-      name: 'body.description',
-      type: 'textarea',
-      title: '상세요강',
-      placeholder: '상세요강을 작성해주세요',
-      textareaHeight: 'h-[20vh]',
-    },
-    {
-      name: 'body.preferred_conditions',
-      type: 'text',
-      title: '우대조건',
-      placeholder: '우대조건을 입력해주세요',
-    },
-  ],
-};
-
-// Step별 필수 필드 정의
-export const POST_REQUIRED_FIELDS = {
-  step1: [
-    'body.title',
-    'body.job_category',
-    'body.work_day_times',
-    'body.hourly_rate',
-    'body.work_period',
-    'body.employment_type',
-  ],
-  step2: [
-    'body.recruitment_dead_line',
-    'body.address.address_name',
-    'body.address.address_detail',
-    'body.address.latitude',
-    'body.address.longitude',
-  ],
-  step3: [
-    'body.recruitment_number',
-    'body.gender',
-    'body.age_restriction',
-    'body.education_level',
-    'body.visa',
-  ],
-  step4: [
-    'body.recruiter_name',
-    'body.recruiter_email',
-    'body.recruiter_phone',
-    'images',
-  ],
-  step5: ['body.description'],
+  [EmploymentType.INTERNSHIP]: {
+    name: '인턴',
+    key: 'INTERNSHIP',
+    icon: BuildingIcon,
+  },
 };

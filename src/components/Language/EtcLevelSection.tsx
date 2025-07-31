@@ -1,9 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import LevelBottomSheet from '@/components/Language/LevelBottomSheet';
+import Icon from '@/components/Common/Icon';
+import ArrowIcon from '@/assets/icons/ArrowUp.svg?react';
 
 type EtcLevelSectionProps = {
-  level: number;
-  setLevel: Dispatch<SetStateAction<number>>;
+  level: string | null;
+  setLevel: Dispatch<SetStateAction<string>>;
 };
 
 const EtcLevelSection = ({ level, setLevel }: EtcLevelSectionProps) => {
@@ -11,21 +13,39 @@ const EtcLevelSection = ({ level, setLevel }: EtcLevelSectionProps) => {
 
   return (
     <>
-      <div
-        className="flex flex-col gap-3 px-4 py-3 mt-6 rounded-xl border border-[#E2E5EB] shadow-inputFieldShadow"
-        onClick={() => setBottomSheetOpen(true)}
-      >
-        <div className="heading-18-semibold text-[#222]">Level</div>
-        <div className="body-14-regular text-[#656565]">level {level}</div>
+      <div className="flex mt-3" onClick={() => setBottomSheetOpen(true)}>
+        <div className="w-full h-[3.25rem] relative rounded-[0.625rem] bg-surface-base border-[0.05rem] border-border-assistive box-border flex flex-row items-center justify-center px-4 py-[0.875rem] pl-4 text-left body-16-medium">
+          <div className="flex-1 h-5 flex flex-row items-center justify-between">
+            <input
+              className="w-full relative leading-5 outline-none bg-surface-base"
+              value={level ?? ''}
+              placeholder="Select Level"
+              readOnly
+            />
+            {/* 드롭다운 토글 버튼 */}
+            <button className="p-0 rounded-full transition-colors">
+              <div
+                className={`flex items-center justify-center w-5 h-6 transition-transform duration-300 rotate-180`}
+              >
+                <Icon
+                  icon={ArrowIcon}
+                  strokeColor={
+                    level !== ''
+                      ? 'stroke-text-strong'
+                      : 'stroke-text-assistive'
+                  }
+                />
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
-      <p className="caption-12-regular text-[#656565] px-1.5 py-[0.375rem]">
-        Proficiency level : 0 - Poor, 10 - Very good
-      </p>
+
       {/* 레벨 선택 바텀시트 */}
       {bottomSheetOpen && (
         <LevelBottomSheet
-          level={level}
-          setLevel={setLevel}
+          level={level || ''}
+          setLevel={(value) => setLevel(value || '')}
           setBottomSheetOpen={setBottomSheetOpen}
         />
       )}

@@ -1,7 +1,7 @@
 import TextFieldHeader from '@/components/Common/Header/TextFieldHeader';
 import CareerSearchSection from '@/components/PostSearch/CareerSearchSection';
 import PostSearchSection from '@/components/PostSearch/PostSearchSection';
-import { POST_SEARCH_PAGE_MENU, POST_SORTING } from '@/constants/postSearch';
+import { POST_SEARCH_PAGE_MENU } from '@/constants/postSearch';
 import { UserType } from '@/constants/user';
 import { usePostSearch } from '@/hooks/usePostSearch';
 import { useUserStore } from '@/store/user';
@@ -10,29 +10,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const PostSearchPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const state = location.state ?? {};
+  const { state } = useLocation();
 
   const { account_type } = useUserStore();
 
-  // state로 넘어온 initialSearchOption 설정
-  const initialSearchOption = {
-    searchText: state?.searchText ?? '',
-    postSortType: state?.postSortType ?? POST_SORTING.RECENT,
-    careerSortType: state?.careerSortType ?? POST_SORTING.RECENT,
-    filterList: state?.filterList ?? {}, // 나머지 필터들도 있으면 포함
-    careerCategory: state?.careerCategory ?? [],
-  };
-
   // searchOption 상태 초기화
-  const { searchOption, updateSearchOption } =
-    usePostSearch(initialSearchOption);
+  const { searchOption, updateSearchOption } = usePostSearch(state);
 
-  // 탭 초기화 (state로 받은 initialMenu 활용)
-  const initialMenu =
-    (state?.initialMenu as POST_SEARCH_PAGE_MENU) ?? POST_SEARCH_PAGE_MENU.POST;
-  const [selectedMenu, setSelectedMenu] =
-    useState<POST_SEARCH_PAGE_MENU>(initialMenu);
+  const [selectedMenu, setSelectedMenu] = useState<POST_SEARCH_PAGE_MENU>(
+    account_type === UserType.OWNER
+      ? POST_SEARCH_PAGE_MENU.POST
+      : POST_SEARCH_PAGE_MENU.CAREER,
+  );
 
   const onClickSearch = (text: string) => {
     updateSearchOption('searchText', text);
@@ -76,16 +65,6 @@ const PostSearchPage = () => {
       {account_type !== UserType.OWNER && (
         <nav className="flex w-full bg-surface-base">
           <button
-            onClick={() => setSelectedMenu(POST_SEARCH_PAGE_MENU.POST)}
-            className={`flex-1 py-[0.625rem] button-16-semibold ${
-              selectedMenu === POST_SEARCH_PAGE_MENU.POST
-                ? 'text-text-strong border-b-2 border-b-text-strong'
-                : 'text-text-disabled'
-            }`}
-          >
-            Job
-          </button>
-          <button
             onClick={() => setSelectedMenu(POST_SEARCH_PAGE_MENU.CAREER)}
             className={`flex-1 py-[0.625rem] button-16-semibold ${
               selectedMenu === POST_SEARCH_PAGE_MENU.CAREER
@@ -95,16 +74,22 @@ const PostSearchPage = () => {
           >
             Career
           </button>
+          <button
+            onClick={() => setSelectedMenu(POST_SEARCH_PAGE_MENU.POST)}
+            className={`flex-1 py-[0.625rem] button-16-semibold ${selectedMenu === POST_SEARCH_PAGE_MENU.POST ? 'text-text-strong border-b-2 border-b-text-strong' : 'text-text-disabled'}`}
+          >
+            Job
+          </button>
         </nav>
       )}
-      {selectedMenu === POST_SEARCH_PAGE_MENU.POST && (
-        <PostSearchSection
+      {selectedMenu === POST_SEARCH_PAGE_MENU.CAREER && (
+        <CareerSearchSection
           searchOption={searchOption}
           updateSearchOption={updateSearchOption}
         />
       )}
-      {selectedMenu === POST_SEARCH_PAGE_MENU.CAREER && (
-        <CareerSearchSection
+      {selectedMenu === POST_SEARCH_PAGE_MENU.POST && (
+        <PostSearchSection
           searchOption={searchOption}
           updateSearchOption={updateSearchOption}
         />

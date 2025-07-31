@@ -16,7 +16,6 @@ import { PostSortingType } from '@/types/PostSearchFilter/PostSearchFilterItem';
 import EmployerEmployeeSearchSortBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchSortBottomSheet';
 import DownArrowIcon from '@/assets/icons/PostSearch/DownArrowIconSm.svg?react';
 import EmployerEmployeeSearchFilterBottomSheet from '@/components/Employer/EmployeeSearch/EmployerEmployeeSearchFilterBottomSheet';
-import DisclosureIcon from '@/assets/icons/DisclosureIcon.svg?react';
 import { useInfiniteGetEmployeeResumeList } from '@/hooks/api/useResume';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
@@ -25,6 +24,8 @@ import { formatResumeSearchFilter } from '@/utils/formatSearchFilter';
 import EmployerEmployeeCardList from '@/components/Employer/EmployeeSearch/EmployerEmployeeCardList';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import Icon from '@/components/Common/Icon';
+import Chip from '@/components/Common/Chip';
+import { ChipState } from '@/types/common/chip';
 
 export type EmployeeSearchOptionType = {
   filterList: EmployeeSearchFilterItemType;
@@ -101,29 +102,22 @@ const EmployerEmployeeSearchPage = () => {
               searchOption.filterList[category as EmployeeSearchCategoryEnType]
                 .length > 0;
             return (
-              <button
+              <Chip
                 key={category}
-                className={`flex items-center py-2 pl-[0.875rem] pr-[0.625rem] border border-border-disabled rounded-[3.125rem] body-14-regular ${isSelected ? 'bg-surface-invert text-text-invert' : 'text-text-alternative'}`}
+                state={isSelected ? ChipState.ACTIVE : ChipState.DEFAULT}
+                text={
+                  EMPLOYEE_SEARCH_CATEGORY_KO[
+                    category as EmployeeSearchCategoryEnType
+                  ] +
+                  (isSelected
+                    ? ` ${searchOption.filterList[category as EmployeeSearchCategoryEnType].length}`
+                    : '')
+                }
+                isDropdown={true}
                 onClick={() =>
                   handleOpenFilter(category as EmployeeSearchCategoryEnType)
                 }
-              >
-                <p>
-                  {
-                    EMPLOYEE_SEARCH_CATEGORY_KO[
-                      category as EmployeeSearchCategoryEnType
-                    ]
-                  }
-                  {isSelected &&
-                    `${' '}${searchOption.filterList[category as EmployeeSearchCategoryEnType].length}`}
-                </p>
-                <Icon
-                  icon={DisclosureIcon}
-                  fillColor={
-                    isSelected ? 'text-text-invert' : 'text-text-alternative'
-                  }
-                />
-              </button>
+              />
             );
           })}
         </div>

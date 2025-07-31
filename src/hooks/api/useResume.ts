@@ -3,10 +3,13 @@ import {
   deleteEtcLanguageLevel,
   deleteIntroduction,
   deleteWorkExperience,
+  getApplicantResumeByContract,
   getEducation,
   getEmployeeResumeList,
+  getLanguageSummary,
   getResume,
   getResumeDetail,
+  getResumeProgress,
   getSearchSchools,
   getWorkExperience,
   getWorkPreference,
@@ -55,6 +58,7 @@ export const useGetWorkExperience = (id: string) => {
   return useQuery({
     queryKey: ['workExperience', id],
     queryFn: () => getWorkExperience(id),
+    enabled: !!id,
   });
 };
 
@@ -64,6 +68,14 @@ export const useGetEducation = (id: string) => {
     queryKey: ['education', id],
     queryFn: () => getEducation(id),
     enabled: !!id,
+  });
+};
+
+// 7.4 (유학생) 언어 요약 조회하기
+export const useGetLanguageSummary = () => {
+  return useQuery({
+    queryKey: ['resume', 'languageSummary'],
+    queryFn: getLanguageSummary,
   });
 };
 
@@ -125,7 +137,7 @@ export const usePostEtcLanguageLevel = () => {
   return useMutation({
     mutationFn: postEtcLanguageLevel,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/manage-resume');
+      smartNavigate(navigate, '/profile/language/edit', { forceSkip: true });
     },
     onError: (error) => {
       alert('이미 존재하는 언어입니다');
@@ -140,7 +152,7 @@ export const usePatchIntroduction = () => {
   return useMutation({
     mutationFn: patchIntroduction,
     onSuccess: () => {
-      smartNavigate(navigate, '/profile/manage-resume');
+      smartNavigate(navigate, '/profile/manage-resume', { forceSkip: true });
     },
     onError: (error) => {
       console.error('자기소개 작성 실패', error);
@@ -262,6 +274,15 @@ export const useDeleteEtcLanguageLevel = () => {
   });
 };
 
+// 7.19 (고용주) 이력서 조회하기
+export const useGetOwnerResume = (id: string, isEnabled: boolean = true) => {
+  return useQuery({
+    queryKey: ['ownerResume', id],
+    queryFn: () => getApplicantResumeByContract(id),
+    enabled: isEnabled && !!id,
+  });
+};
+
 // 7.21 (유학생) 희망 근로 조건 상세 조회하기
 export const useGetWorkPreference = (isEnabled: boolean = true) => {
   return useQuery({
@@ -327,6 +348,15 @@ export const useGetResumeDetail = (id: string, isEnabled: boolean) => {
     queryKey: ['resume', 'detail', id],
     queryFn: () => getResumeDetail(id),
     enabled: isEnabled,
+  });
+};
+
+// 7.26 (유학생) 이력서 완성도 조회하기
+export const useGetResumeProgress = (isUser: boolean) => {
+  return useQuery({
+    queryKey: ['resume', 'progress'],
+    queryFn: getResumeProgress,
+    enabled: isUser,
   });
 };
 

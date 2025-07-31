@@ -19,14 +19,11 @@ const IntroductionInput = ({
   handleChange,
 }: IntroductionInputProps) => {
   return (
-    <div className="px-4 py-6 flex flex-col gap-6 pb-28">
-      <InputLayout
-        title="Introduce yourself in one sentence!"
-        isEssential={false}
-      >
+    <div className="px-4 flex flex-col gap-6 pb-28">
+      <InputLayout title="Introduce yourself in one sentence!">
         <Input
           inputType={InputType.TEXT}
-          placeholder="ex. Friendly barista with a passion for coffee ☕"
+          placeholder="ex. Friendly barista with a passion"
           value={data.title ?? ''}
           onChange={(value) =>
             handleChange((prev) => ({
@@ -37,16 +34,18 @@ const IntroductionInput = ({
           canDelete={false}
         />
         <div className="w-full flex justify-end p-2">
-          <span className="w-full caption-12-regular text-text-assistive text-end">
-            {data.title?.length}/50
+          <span className="w-full caption-12-regular text-text-assistive text-start">
+            {data.title && data.title?.length > 0
+              ? `${data.title?.length}/50`
+              : '(Max 50 characters)'}
           </span>
         </div>
       </InputLayout>
 
-      <InputLayout title="Tell us about yourself" isEssential={false}>
+      <InputLayout title="Tell us about yourself">
         <div
           onClick={handleFocusTextArea}
-          className="w-full min-h-32 px-4 py-3 flex flex-col justify-between gap-2.5 rounded-xl border border-border-alternative shadow-inputFieldShadow p-2"
+          className="w-full min-h-32 px-4 py-[0.875rem] flex flex-col justify-between gap-2.5 rounded-[0.625rem] border-[0.05rem] border-border-assistive"
         >
           <textarea
             ref={textareaRef}
@@ -58,8 +57,11 @@ const IntroductionInput = ({
                 introduction: limitInputValueLength(e.target.value, 200),
               }))
             }
-            className="h-auto body-14-regular placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
+            className="h-auto body-16-medium placeholder:text-text-assistive text-text-strong w-full resize-none outline-none"
           />
+          <span className="caption-12-regular text-text-assistive text-end">
+            {data.introduction?.length}/200
+          </span>
         </div>
       </InputLayout>
     </div>

@@ -1,13 +1,11 @@
 import {
-  initialIntegratedApplication,
   IntegratedApplicationFormField,
-  IntegratedApplicationformFields,
+  IntegratedApplicationFormFields,
   REQUIRED_FIELDS,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import { IntegratedApplicationData, Phone } from '@/types/api/document';
 import { useState } from 'react';
 import { validateIntegratedApplication } from '@/utils/document';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import SearchSchoolBottomSheet from '@/components/Document/write/SearchSchoolBottomSheet';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import {
@@ -20,7 +18,8 @@ import { useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
-import Button from '../Common/Button';
+import Button from '@/components/Common/Button';
+import { initialIntegratedApplication } from '@/constants/documents';
 
 // 상수 정의
 type IntegratedApplicationFormProps = {
@@ -127,8 +126,8 @@ const IntegratedApplicationWriteForm = ({
       >
         <div className="[&>*:last-child]:mb-20 flex flex-col gap-4">
           {/* 작성 폼 렌더링 */}
-          {IntegratedApplicationformFields.map((field) => (
-            <InputLayout key={field.name} title={field.title} isEssential>
+          {IntegratedApplicationFormFields.map((field) => (
+            <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>
           ))}
@@ -136,21 +135,16 @@ const IntegratedApplicationWriteForm = ({
 
         {/* 학교 선택 모달 */}
         {isModalOpen && (
-          <BottomSheetLayout
-            isAvailableHidden={true}
+          <SearchSchoolBottomSheet
+            newDocumentData={
+              document || (getValues() as IntegratedApplicationData)
+            }
+            setNewDocumentData={(data: IntegratedApplicationData) => {
+              setValue('school_name', data.school_name);
+            }}
             isShowBottomsheet={isModalOpen}
-            setIsShowBottomSheet={setIsModalOpen}
-          >
-            <SearchSchoolBottomSheet
-              newDocumentData={
-                document || (getValues() as IntegratedApplicationData)
-              }
-              setNewDocumentData={(data: IntegratedApplicationData) => {
-                setValue('school_name', data.school_name);
-              }}
-              onClose={() => setIsModalOpen(false)}
-            />
-          </BottomSheetLayout>
+            onClose={() => setIsModalOpen(false)}
+          />
         )}
         {/* 버튼 패널 */}
         <BottomButtonPanel>
@@ -161,10 +155,9 @@ const IntegratedApplicationWriteForm = ({
             onClick={handleSubmit(handleNext)}
           >
             <Button
-              type="large"
-              bgColor="bg-surface-primary"
-              fontColor="text-text-strong"
-              isBorder={false}
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={isEdit ? 'Modify' : 'Create'}
             />
           </ValidatedSubmitButton>

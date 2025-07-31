@@ -1,10 +1,9 @@
 import InputLayout from '@/components/WorkExperience/InputLayout';
 import {
   EMPLOYER_PART_TIME_PERMIT_REQUIRED_FIELDS,
-  initialPartTimePermitEmployerForm,
   PartTimePermitEmployerFormField,
   PartTimePermitEmployerFormFields,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import {
   EmployerInformation,
   PartTimePermitData,
@@ -20,6 +19,7 @@ import { useForm } from 'react-hook-form';
 import { renderField } from '@/components/Document/write/renderField';
 import Button from '@/components/Common/Button';
 import { FormProvider } from 'react-hook-form';
+import { initialPartTimePermitEmployerForm } from '@/constants/documents';
 
 type PartTimePermitFormProps = {
   document?: PartTimePermitData;
@@ -92,7 +92,7 @@ const EmployerPartTimePermitForm = ({
         <div className="p-4 [&>*:last-child]:mb-40 flex flex-col gap-4">
           {/** 고용주 작성 정보 */}
           {PartTimePermitEmployerFormFields.map((field) => (
-            <InputLayout key={field.name} title={field.title} isEssential>
+            <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>
           ))}
@@ -105,10 +105,9 @@ const EmployerPartTimePermitForm = ({
             onClick={handleSubmit(handleNext)}
           >
             <Button
-              type="large"
-              bgColor="bg-surface-primary"
-              fontColor="text-text-strong"
-              isBorder={false}
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={'작성완료'}
             />
           </ValidatedSubmitButton>

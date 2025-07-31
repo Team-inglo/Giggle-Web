@@ -1,12 +1,11 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { buttonTypeKeys } from '@/constants/components';
 import {
   POST_REQUIRED_FIELDS,
   PostFormField,
   PostFormFields,
-} from '@/constants/post';
+} from '@/constants/formFields';
 import { JobPostingForm } from '@/types/postCreate/postCreate';
 import { Path } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
@@ -21,10 +20,14 @@ const Step5 = ({
 }) => {
   // 유효성 검사 함수
   const validatePostInfo = (data: JobPostingForm) => {
-    const { body } = data;
+    const { body, images } = data;
     const { description } = body;
 
-    return description.trim() !== '';
+    return (
+      description.trim() !== '' &&
+      description.length <= 1000 &&
+      images.length > 0
+    );
   };
 
   // 폼 필드 렌더링 함수
@@ -42,13 +45,13 @@ const Step5 = ({
   };
 
   return (
-    <div className="w-full py-6 flex flex-col">
-      <div className="[&>*:last-child]:mb-40 flex flex-col gap-4">
+    <div className="w-full pb-6 flex flex-col">
+      <div className="[&>*:last-child]:mb-40 flex flex-col gap-6">
         {PostFormFields.step5.map((field) => (
           <InputLayout
             key={field.name}
             title={field.title}
-            isEssential={field.name === 'body.description'}
+            isOptional={field.isOptional}
           >
             {renderFormField(field)}
           </InputLayout>
@@ -57,10 +60,9 @@ const Step5 = ({
       <BottomButtonPanel>
         <div className="w-full flex gap-2">
           <Button
-            type={buttonTypeKeys.BACK}
-            bgColor="bg-surface-secondary"
-            fontColor="text-text-normal"
-            isBorder={false}
+            type={Button.Type.NEUTRAL}
+            layout={Button.Layout.SMALL_BUTTON}
+            size={Button.Size.LG}
             title="이전"
             onClick={() => onPrev()}
           />
@@ -69,7 +71,7 @@ const Step5 = ({
             validationFn={validatePostInfo}
             onClick={handleSubmit}
           >
-            <Button type="large" isBorder={false} title="완료" />
+            <Button type={Button.Type.DISABLED} title="완료" size={Button.Size.LG} />
           </ValidatedSubmitButton>
         </div>
       </BottomButtonPanel>

@@ -11,11 +11,11 @@ export const enum ManageResumeType {
 }
 
 export const EducationLevels = [
-  'BACHELOR',
-  'ASSOCIATE',
-  'HIGHSCHOOL',
-  'MASTER',
-  'DOCTOR',
+  'Bachelor',
+  'Associate',
+  'Highschool',
+  'Master',
+  'Doctor',
 ];
 
 export type KoEnEnumType = {
@@ -487,7 +487,6 @@ export const Nationalities: KoEnEnumType[] = [
   },
   { ko: '헝가리', en: 'Hungary', enum: 'HUNGARY' },
   { ko: '홍콩', en: 'Hong Kong', enum: 'HONG_KONG' },
-  { ko: '없음', en: '', enum: 'BLANK' },
 ];
 
 export const MajorsKo: string[] = Majors.map((major) => major.ko);
@@ -551,3 +550,41 @@ export const initialEmployerSearchFilterList: EmployeeSearchFilterItemType = {
   [EMPLOYEE_SEARCH_CATEGORY.MAJOR]: [],
   [EMPLOYEE_SEARCH_CATEGORY.NATIONALITY]: [],
 };
+
+export const languageProficiencyLevels: KoEnEnumType[] = [
+  {
+    en: 'Not able to use at all',
+    ko: '전혀 사용할 수 없음',
+    enum: 'NOT_ABLE_TO_USE_AT_ALL',
+  },
+  {
+    en: 'Can understand basic words',
+    ko: '기본 단어 이해 가능',
+    enum: 'CAN_UNDERSTAND_BASIC_WORDS',
+  },
+  {
+    en: 'Basic conversation possible',
+    ko: '기본 대화 가능',
+    enum: 'BASIC_CONVERSATION_POSSIBLE',
+  },
+  {
+    en: 'Comfortable for work',
+    ko: '업무에 편안함',
+    enum: 'COMFORTABLE_FOR_WORK',
+  },
+  {
+    en: 'Fluent (Advanced level)',
+    ko: '유창함 (고급 수준)',
+    enum: 'FLUENT',
+  },
+  {
+    en: 'Native or near-native',
+    ko: '원어민 또는 원어민 수준',
+    enum: 'NATIVE_OR_NEAR_NATIVE',
+  },
+];
+
+export const languageProficiencyLevelsEn: string[] =
+  languageProficiencyLevels.map((level) => level.en);
+export const languageProficiencyLevelsKo: string[] =
+  languageProficiencyLevels.map((level) => level.ko);

@@ -1,12 +1,11 @@
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
-import BottomSheetLayout from '@/components/Common/BottomSheetLayout';
 import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
-import AgreeModalInner from '@/components/Employer/Signup/AgreeModalInner';
+import AgreeBottomSheet from '@/components/Employer/Signup/AgreeBottomSheet';
 import InformationInputSection from '@/components/Employer/Signup/InformationInputSection';
 import PolicyViewer from '@/components/Information/PolicyViewer';
 import VerificationSuccessful from '@/components/Signup/VerificationSuccessful';
-import { signInputTranclation } from '@/constants/translation';
+import { signInputTranslation } from '@/constants/translation';
 import {
   useGetPolicy,
   usePostRegistrationNumberValidation,
@@ -72,6 +71,8 @@ const EmployerSignupInfoPage = () => {
 
   // 최종 완료 시 호출, 서버 api 호출 및 완료 modal 표시
   const handleSubmit = () => {
+    if (!isValid) return;
+
     if (isValidEmployerRegistration(newEmployData)) {
       const formData = new FormData();
 
@@ -108,12 +109,12 @@ const EmployerSignupInfoPage = () => {
     <div className="w-full h-screen flex items-center justify-center">
       {devIsModal ? (
         <VerificationSuccessful
-          title={signInputTranclation.signupComplete[isEmployer(pathname)]}
+          title={signInputTranslation.signupComplete[isEmployer(pathname)]}
           content={
-            signInputTranclation.signupCompleteContent[isEmployer(pathname)]
+            signInputTranslation.signupCompleteContent[isEmployer(pathname)]
           }
           buttonText={
-            signInputTranclation.signupCompleteBtn[isEmployer(pathname)]
+            signInputTranslation.signupCompleteBtn[isEmployer(pathname)]
           }
           onNext={() => navigate('/splash')}
         />
@@ -125,9 +126,6 @@ const EmployerSignupInfoPage = () => {
             hasMenuButton={false}
             onClickBackButton={() => navigate('/signup')}
           />
-          <div className="flex justify-center items-center sticky top-[3.75rem]">
-            <div className={`h-1 w-full bg-[#fef387]`} />
-          </div>
           <InformationInputSection
             newEmployData={newEmployData}
             setNewEmployData={setNewEmployData}
@@ -141,43 +139,27 @@ const EmployerSignupInfoPage = () => {
             }
           />
           <BottomButtonPanel>
-            {isValid ? (
-              <Button
-                type="large"
-                isBorder={false}
-                bgColor="bg-surface-primary"
-                fontColor="text-text-normal"
-                title="완료"
-                onClick={() => {
-                  handleSubmit();
-                }}
-              />
-            ) : (
-              <Button
-                type="large"
-                isBorder={false}
-                bgColor="bg-surface-secondary"
-                fontColor="text-text-disabled"
-                title="완료"
-              />
-            )}
+            <Button
+              type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+              size={Button.Size.LG}
+              isFullWidth
+              title="완료"
+              onClick={() => {
+                handleSubmit();
+              }}
+            />
           </BottomButtonPanel>
         </div>
       )}
 
       {isAgreeModal && (
-        <BottomSheetLayout
-          isAvailableHidden={false}
+        <AgreeBottomSheet
           isShowBottomsheet={isAgreeModal}
-        >
-          <AgreeModalInner
-            onPolicyPreview={(policy: TermType) => {
-              getPolicy(policy);
-            }}
-            onNext={setIsAgreeModal}
-            accountType="EMPLOYER"
-          />
-        </BottomSheetLayout>
+          onPolicyPreview={(policy: TermType) => {
+            getPolicy(policy);
+          }}
+          onNext={setIsAgreeModal}
+        />
       )}
       {isPolicyPreview === true && (
         <PolicyViewer

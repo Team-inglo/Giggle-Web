@@ -2,7 +2,7 @@ import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import {
   profileTranslation,
-  signInputTranclation,
+  signInputTranslation,
 } from '@/constants/translation';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
@@ -24,11 +24,10 @@ const SuccessStep = () => {
         <BottomButtonPanel>
           <div className="w-full">
             <Button
-              type="large"
-              bgColor={'bg-surface-primary'}
-              fontColor={'text-text-normal'}
-              isBorder={false}
-              title={signInputTranclation.continue[userLanguage]}
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
+              title={signInputTranslation.continue[userLanguage]}
               onClick={signout}
             />
           </div>

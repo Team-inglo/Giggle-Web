@@ -5,19 +5,20 @@ import { useEffect, useState } from 'react';
 import {
   formatDateInput,
   formatPhoneNumber,
+  getSortedNationalities,
   isValidName,
   isValidPhoneNumber,
 } from '@/utils/information';
 import Dropdown from '@/components/Common/Dropdown';
-import { gender, phone, visa } from '@/constants/information';
+import { gender, visa } from '@/constants/information';
 import RadioButton from '@/components/Information/RadioButton';
 import { InputType } from '@/types/common/input';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import { formatDateToDash } from '@/utils/editResume';
-import InputLayout from '../WorkExperience/InputLayout';
-import PageTitle from '../Common/PageTitle';
-import { signInputTranclation } from '@/constants/translation';
+import InputLayout from '@/components/WorkExperience/InputLayout';
+import PageTitle from '@/components/Common/PageTitle';
+import { signInputTranslation } from '@/constants/translation';
 import { isEmployer } from '@/utils/signup';
 import { useLocation } from 'react-router-dom';
 import { Nationalities } from '@/constants/manageResume';
@@ -25,6 +26,8 @@ import {
   getNationalityEnFromEnum,
   getNationalityEnumFromEn,
 } from '@/utils/resume';
+import PhoneNumberInput from '@/components/Common/PhoneNumberInput';
+
 const InformationStep = ({
   userInfo,
   onNext,
@@ -37,11 +40,10 @@ const InformationStep = ({
   const [newUserInfo, setNewUserInfo] = useState<UserInfo>(initialUserInfo);
   // 버튼 활성화 여부를 위한 플래그
   const [isInvalid, setIsInvalid] = useState(true);
-  // 세 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
+  // 두 부분으로 나누어 입력받는 방식을 위해 전화번호만 별도의 state로 분리, 추후 유효성 검사 단에서 통합
   const [phoneNum, setPhoneNum] = useState({
     start: '010',
-    middle: '',
-    end: '',
+    rest: '',
   });
 
   /* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */
@@ -95,8 +97,6 @@ const InformationStep = ({
   };
 
   const handleNextClick = () => {
-    if (isInvalid) return;
-
     const formattedUserInfo = formatUserInfoForSubmission(
       newUserInfo,
       formatPhoneNumber(phoneNum),
@@ -109,17 +109,17 @@ const InformationStep = ({
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
-          title={signInputTranclation.infoStepTitle[isEmployer(pathname)]}
-          content={signInputTranclation.infoStepContent[isEmployer(pathname)]}
+          title={signInputTranslation.infoStepTitle[isEmployer(pathname)]}
+          content={signInputTranslation.infoStepContent[isEmployer(pathname)]}
         />
       </div>
       <div className="w-full mx-auto mb-[7rem] px-4">
-        <div className="w-full flex flex-col gap-[1rem]">
+        <div className="w-full flex flex-col gap-6">
           {/* 이름 작성 */}
-          <InputLayout title="First Name" isEssential={true}>
+          <InputLayout title="First Name">
             <Input
               inputType={InputType.TEXT}
               placeholder="First Name"
@@ -131,7 +131,7 @@ const InformationStep = ({
             />
           </InputLayout>
           {/* 성 작성 */}
-          <InputLayout title="Last Name" isEssential={true}>
+          <InputLayout title="Last Name">
             <Input
               inputType={InputType.TEXT}
               placeholder="Last Name"
@@ -143,38 +143,11 @@ const InformationStep = ({
             />
           </InputLayout>
           {/* 전화번호 선택, dropdown으로 앞 번호를, 중간 번호와 뒷 번호는 각각 input으로 입력 받음 */}
-          <InputLayout title="Cell phone No." isEssential={true}>
-            <div className="w-full flex flex-row gap-2 justify-between">
-              <div className="w-full h-[2.75rem]">
-                <Dropdown
-                  value={phoneNum.start}
-                  placeholder="010"
-                  options={phone}
-                  setValue={(value) =>
-                    setPhoneNum({ ...phoneNum, start: value })
-                  }
-                />
-              </div>
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.middle}
-                onChange={(value) =>
-                  setPhoneNum({ ...phoneNum, middle: value })
-                }
-                canDelete={false}
-              />
-              <Input
-                inputType={InputType.TEXT}
-                placeholder="0000"
-                value={phoneNum.end}
-                onChange={(value) => setPhoneNum({ ...phoneNum, end: value })}
-                canDelete={false}
-              />
-            </div>
+          <InputLayout title="Cell phone No.">
+            <PhoneNumberInput value={phoneNum} onChange={setPhoneNum} />
           </InputLayout>
           {/* 성별 선택 */}
-          <InputLayout title="Gender" isEssential={true}>
+          <InputLayout title="Gender">
             <div className="w-full flex flex-row gap-8">
               {gender.map((gender) => (
                 <RadioButton
@@ -191,7 +164,7 @@ const InformationStep = ({
             </div>
           </InputLayout>
           {/* 생년월일 선택 */}
-          <InputLayout title="Date of birth" isEssential={false} isOptional>
+          <InputLayout title="Date of birth" isOptional>
             <Input
               inputType={InputType.TEXT}
               placeholder="YYYY-MM-DD"
@@ -206,13 +179,16 @@ const InformationStep = ({
             />
           </InputLayout>
           {/* 국적 선택 */}
-          <InputLayout title="Nationality" isEssential={false} isOptional>
+          <InputLayout title="Nationality" isOptional>
             <Dropdown
+              title="Select Nationality"
               value={
                 getNationalityEnFromEnum(newUserInfo.nationality || '') || ''
               }
               placeholder="Select Nationality"
-              options={Nationalities.map((nationality) => nationality.en)} // TODO: 국가명 데이터 받으면 교체해야 함.
+              options={getSortedNationalities(Nationalities).map(
+                (nationality) => nationality.en,
+              )} // TODO: 국가명 데이터 받으면 교체해야 함.
               setValue={(value: string) =>
                 setNewUserInfo({
                   ...newUserInfo,
@@ -222,8 +198,9 @@ const InformationStep = ({
             />
           </InputLayout>
           {/* 비자 선택 */}
-          <InputLayout title="Visa Status" isEssential>
+          <InputLayout title="Visa Status">
             <Dropdown
+              title="Select Visa Status"
               value={newUserInfo.visa}
               placeholder="Select Visa Status"
               options={visa} // TODO: 비자 데이터 받으면 교체해야
@@ -236,10 +213,9 @@ const InformationStep = ({
         {/* 정보 입력 시마다 유효성을 검사해 모든 값이 유효하면 버튼이 활성화 */}
         <BottomButtonPanel>
           <Button
-            type="large"
-            bgColor={isInvalid ? 'bg-[#F4F4F9]' : 'bg-[#fef387]'}
-            fontColor={isInvalid ? '' : 'text-[#222]'}
-            isBorder={false}
+            type={isInvalid ? Button.Type.DISABLED : Button.Type.PRIMARY}
+            size={Button.Size.LG}
+            isFullWidth
             title="Next"
             onClick={handleNextClick}
           />

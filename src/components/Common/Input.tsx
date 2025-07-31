@@ -28,17 +28,18 @@ type InputProps = {
   prefix?: string; // 접두사 내용
   isUnit?: boolean; // 단위 여부
   unit?: string; // 단위 내용
+  maxLength?: number; // 최대 글자수
 };
 
 // inputStyler 함수: 입력 필드의 상태에 따른 스타일을 반환합니다.
 const inputStyler = (status: InputStatus) => {
   switch (status) {
     case INPUT_STATUS.DISABLED:
-      return 'border-border-assistive [--input-color:#bdbdbd]';
+      return 'border-border-assistive [--input-color:var(--text-assistive)]';
     case INPUT_STATUS.TYPING:
-      return 'border-black text-black';
+      return 'border-text-strong text-text-strong';
     case INPUT_STATUS.INVALID:
-      return 'border-[#FF6F61] text-[#FF6F61] [--input-color:#FF6F61]';
+      return 'border-text-error text-text-error [--input-color:var(--text-error)]';
   }
 };
 
@@ -58,6 +59,7 @@ const Input = ({
   prefix,
   isUnit,
   unit,
+  maxLength,
 }: InputProps) => {
   // 현재 입력 필드의 상태를 관리합니다.
   const [currentStatus, setCurrentStatus] = useState<InputStatus>(
@@ -97,17 +99,17 @@ const Input = ({
 
   return (
     <div
-      className={`w-full h-[3.125rem] flex gap-2 whitespace-nowrap items-center justify-between text-left body-14-regular border rounded-lg ${inputStyler(currentStatus)} bg-white py-3 pl-4 pr-[14px]`}
+      className={`w-full h-[3.25rem] flex gap-2 whitespace-nowrap items-center justify-between text-left body-16-medium border-[0.05rem] rounded-[0.625rem] ${inputStyler(currentStatus)} bg-white pl-4 py-[0.875rem] pr-[0.875rem]`}
     >
       {/* 접두사가 존재할 경우 표시합니다. */}
       {isPrefix && (
-        <div className="w-8 body-14-regular text-[#464646]">{prefix}</div>
+        <div className="w-8 body-16-medium text-text-assistive">{prefix}</div>
       )}
       {/* 검색 타입일 경우 검색 아이콘을 표시합니다. */}
       <input
         placeholder={placeholder}
         value={value ?? ''}
-        className={'w-full outline-none placeholder:text-[var(--input-color)]'}
+        className={'w-full outline-none placeholder:text-text-assistive'}
         onClick={() => handleFocus('click')}
         onBlur={handleBlur}
         onChange={handleInputChange}
@@ -119,6 +121,7 @@ const Input = ({
             : 'text'
         }
         onFocus={(e) => isPreventFocus && e.target.blur()}
+        maxLength={maxLength}
       />
       {/* 비밀번호 타입일 경우 표시/숨김 토글 아이콘을 표시합니다. */}
       {/* TODO : 추후 아이콘 추가 되면 비밀번호 가시 여부에 따라서 다른 아이콘 적용*/}
@@ -130,12 +133,15 @@ const Input = ({
       {canDelete && <CloseIcon onClick={onDelete} />}
       {/* 단위가 존재할 경우 표시합니다. */}
       {isUnit && (
-        <div className="text-right w-full body-14-regular text-[#464646]">
+        <div className="text-right w-full body-16-medium text-text-assistive">
           <div className="w-full">{unit}</div>
         </div>
       )}
     </div>
   );
 };
+
+Input.Type = InputType;
+Input.Status = INPUT_STATUS;
 
 export default Input;

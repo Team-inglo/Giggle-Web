@@ -6,10 +6,8 @@ import {
 } from '@/hooks/api/useApplication';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import RecruiterIcon from '@/assets/icons/ApplicationDetail/RecruiterIcon.svg?react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useParams } from 'react-router-dom';
 import Button from '@/components/Common/Button';
-import { buttonTypeKeys } from '@/constants/components';
 import LoadingPostItem from '@/components/Common/LoadingPostItem';
 import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { handleGoExternalWeb } from '@/utils/application';
@@ -83,24 +81,6 @@ const ApplicationDetailSchoolPage = () => {
                   <p className="pb-3 caption-12-regular text-text-strong">
                     {data?.data?.address?.address_detail}
                   </p>
-                  {data?.data?.address?.latitude &&
-                    data?.data?.address?.longitude && (
-                      <Map
-                        center={{
-                          lat: data?.data.address.latitude,
-                          lng: data?.data.address.longitude,
-                        }}
-                        style={{ width: '100%', height: '99px' }}
-                        className="rounded-lg"
-                      >
-                        <MapMarker
-                          position={{
-                            lat: data?.data.address.latitude,
-                            lng: data?.data.address.longitude,
-                          }}
-                        ></MapMarker>
-                      </Map>
-                    )}
                 </section>
                 <section>
                   <h5 className="pb-2 body-14-regular text-text-alternative">
@@ -147,19 +127,17 @@ const ApplicationDetailSchoolPage = () => {
           </main>
           <footer className="w-full pt-3 pb-9 px-4 flex flex-col gap-2">
             <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor={'bg-primary-normal'}
-              fontColor="text-surface-invert"
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={'Go to next step'}
-              isBorder={false}
               onClick={handleClickNextStep}
             />
             <Button
-              type={buttonTypeKeys.LARGE}
-              bgColor={'bg-primary-neutral'}
-              fontColor="text-surface-invert"
+              type={Button.Type.NEUTRAL}
+              size={Button.Size.LG}
+              isFullWidth
               title={'Maybe later'}
-              isBorder={false}
               onClick={handleBackButtonClick}
             />
           </footer>

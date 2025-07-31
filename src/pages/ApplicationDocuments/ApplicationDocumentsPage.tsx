@@ -78,19 +78,14 @@ const ApplicationDocumentsPage = () => {
                 {!isComplete && (
                   <BottomButtonPanel>
                     <Button
-                      type="large"
-                      bgColor={
+                      type={
                         isDocumentComplete(data?.data)
-                          ? 'bg-surface-primary'
-                          : 'bg-surface-secondary'
+                          ? Button.Type.PRIMARY
+                          : Button.Type.DISABLED
                       }
-                      fontColor={
-                        isDocumentComplete(data?.data)
-                          ? 'text-text-normal'
-                          : 'text-text-disabled'
-                      }
+                      size={Button.Size.LG}
+                      isFullWidth
                       title="Completed"
-                      isBorder={false}
                       {...(isDocumentComplete(data?.data) && {
                         onClick: () => submitDocuments(Number(currentPostId)),
                       })}

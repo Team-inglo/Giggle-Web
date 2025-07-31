@@ -1,6 +1,5 @@
 import { InputType } from '@/types/common/input';
 import Input from '@/components/Common/Input';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import {
   GiggleAddress,
   initialAddress,
@@ -10,10 +9,10 @@ import { useState } from 'react';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
 import Button from '@/components/Common/Button';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import PageTitle from '../Common/PageTitle';
+import PageTitle from '@/components/Common/PageTitle';
 import {
   documentTranslation,
-  signInputTranclation,
+  signInputTranslation,
 } from '@/constants/translation';
 import { useLocation } from 'react-router-dom';
 import { isEmployer } from '@/utils/signup';
@@ -36,13 +35,16 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
     setIsAddressSearch(false);
   };
 
+  const isAddressValid =
+    newAddress.address_detail && newAddress.address_detail?.trim().length <= 50;
+
   return (
     <div className="w-full mx-auto">
       <div className="w-full flex flex-row items-center justify-between">
         <PageTitle
-          title={signInputTranclation.addressStepTitle[isEmployer(pathname)]}
+          title={signInputTranslation.addressStepTitle[isEmployer(pathname)]}
           content={
-            signInputTranclation.addressStepContent[isEmployer(pathname)]
+            signInputTranslation.addressStepContent[isEmployer(pathname)]
           }
         />
       </div>
@@ -65,7 +67,7 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
         ) : (
           <div className="w-full flex flex-col px-4 gap-[1.125rem] [&>*:last-child]:mb-32">
             {/* 주소 검색 입력 input */}
-            <InputLayout title="Main Address" isEssential={false} isOptional>
+            <InputLayout title="Main Address" isOptional>
               <div onClick={() => setIsAddressSearch(true)}>
                 <Input
                   inputType={InputType.SEARCH}
@@ -76,51 +78,28 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
                 />
               </div>
             </InputLayout>
-            {/* 검색한 위치를 보여주는 지도 */}
+
             {newAddress.address_name !== '' && (
-              <>
-                <div className="w-full rounded-xl">
-                  <Map
-                    center={{
-                      lat: newAddress?.latitude ?? 0,
-                      lng: newAddress?.longitude ?? 0,
-                    }}
-                    style={{ width: '100%', height: '200px' }}
-                    className="rounded-xl"
-                  >
-                    <MapMarker
-                      position={{
-                        lat: newAddress?.latitude ?? 0,
-                        lng: newAddress?.longitude ?? 0,
-                      }}
-                    ></MapMarker>
-                  </Map>
-                </div>
-                <InputLayout
-                  title="Detailed Address"
-                  isEssential={false}
-                  isOptional
-                >
-                  <Input
-                    inputType={InputType.TEXT}
-                    placeholder="ex) 101-dong"
-                    value={newAddress.address_detail}
-                    onChange={(value) => {
-                      if (value.trim().length <= 100) {
-                        // 100자 이하일 때만 업데이트
-                        setNewAddress({ ...newAddress, address_detail: value });
-                      }
-                    }}
-                    canDelete={false}
-                  />
-                  {newAddress.address_detail &&
-                    newAddress.address_detail.length > 50 && (
-                      <p className="text-text-error text-xs p-2">
-                        {documentTranslation.detailAddressTooLong.en}
-                      </p>
-                    )}
-                </InputLayout>
-              </>
+              <InputLayout title="Detailed Address" isOptional>
+                <Input
+                  inputType={InputType.TEXT}
+                  placeholder="ex) 101-dong"
+                  value={newAddress.address_detail}
+                  onChange={(value) => {
+                    if (value.trim().length <= 100) {
+                      // 100자 이하일 때만 업데이트
+                      setNewAddress({ ...newAddress, address_detail: value });
+                    }
+                  }}
+                  canDelete={false}
+                />
+                {newAddress.address_detail &&
+                  newAddress.address_detail.length > 50 && (
+                    <p className="text-text-error text-xs p-2">
+                      {documentTranslation.detailAddressTooLong.en}
+                    </p>
+                  )}
+              </InputLayout>
             )}
           </div>
         )}
@@ -128,30 +107,15 @@ const AddressStep = ({ userInfo, onNext }: AddressStepProps) => {
       {/* 다음 step 이동 버튼 포함한 Bottom Panel */}
       <BottomButtonPanel>
         <Button
-          type="large"
-          bgColor={
-            newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 50
-              ? 'bg-[#F4F4F9]'
-              : 'bg-[#fef387]'
-          }
-          fontColor={
-            newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 50
-              ? ''
-              : 'text-[#222]'
-          }
-          isBorder={false}
+          type={isAddressValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth
           title="Next"
-          onClick={
-            newAddress.address_detail &&
-            newAddress.address_detail?.trim().length > 50
-              ? undefined
-              : () =>
-                  onNext({
-                    ...userInfo,
-                    address: newAddress,
-                  })
+          onClick={() =>
+            onNext({
+              ...userInfo,
+              address: newAddress,
+            })
           }
         />
       </BottomButtonPanel>

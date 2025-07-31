@@ -3,7 +3,6 @@ import Button from '@/components/Common/Button';
 import BaseHeader from '@/components/Common/Header/BaseHeader';
 import PageTitle from '@/components/Common/PageTitle';
 import IntroductionInput from '@/components/Introduction/IntroductionInput';
-import { buttonTypeKeys } from '@/constants/components';
 import { usePatchIntroduction } from '@/hooks/api/useResume';
 import useNavigateBack from '@/hooks/useNavigateBack';
 import { IntroductionRequest } from '@/types/api/resumes';
@@ -70,11 +69,7 @@ const IntroductionPage = () => {
         hasMenuButton={false}
         title="Introduction"
       />
-      <PageTitle
-        title="Tell employers a little about yourself!"
-        content="Highlight your skills, experience,
-and what makes you a great candidate"
-      />
+      <PageTitle title="Tell employers a little about yourself!" />
       <IntroductionInput
         data={data}
         textareaRef={textareaRef}
@@ -83,11 +78,10 @@ and what makes you a great candidate"
       />
       <BottomButtonPanel>
         <Button
-          type={buttonTypeKeys.LARGE}
-          bgColor={isValid ? 'bg-surface-primary' : 'bg-surface-disabled'}
-          fontColor={isValid ? 'text-text-strong' : 'text-text-disabled'}
+          type={isValid ? Button.Type.PRIMARY : Button.Type.DISABLED}
+          size={Button.Size.LG}
+          isFullWidth
           title="Save"
-          isBorder={false}
           onClick={isValid ? handleSubmit : undefined}
         />
       </BottomButtonPanel>

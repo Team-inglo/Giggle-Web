@@ -28,6 +28,8 @@ type DocumentFormInputProps<
   prefix?: string;
   isUnit?: boolean;
   unit?: string;
+  isValid?: (value: string) => boolean;
+  errorMessage?: string;
 };
 
 const DocumentFormInput = <
@@ -48,6 +50,8 @@ const DocumentFormInput = <
   isUnit,
   unit,
   description,
+  isValid,
+  errorMessage,
 }: DocumentFormInputProps<TFieldValues, TName>) => {
   const { control } = useFormContext();
   const { field, fieldState } = useController({
@@ -58,11 +62,6 @@ const DocumentFormInput = <
 
   return (
     <>
-      {description && (
-        <p className="caption-12-regular text-text-alternative px-1 pb-2">
-          {description}
-        </p>
-      )}
       <Input
         inputType={inputType}
         placeholder={placeholder}
@@ -82,6 +81,16 @@ const DocumentFormInput = <
         isUnit={isUnit}
         unit={unit}
       />
+      {!field.value && description && (
+        <p className="caption-12-regular text-text-alternative px-1 py-1.5">
+          {description}
+        </p>
+      )}
+      {!!field.value && !isValid?.(field.value) && errorMessage && (
+        <p className="caption-12-regular text-text-error px-1 py-1.5">
+          {errorMessage}
+        </p>
+      )}
     </>
   );
 };

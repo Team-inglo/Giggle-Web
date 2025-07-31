@@ -1,8 +1,7 @@
 import {
-  initialPartTimePermitForm,
   PartTimePermitFormField,
   PartTimePermitFormFields,
-} from '@/constants/documents';
+} from '@/constants/formFields';
 import {
   DocumentType,
   PartTimePermitData,
@@ -22,7 +21,8 @@ import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitBu
 import { renderField } from '@/components/Document/write/renderField';
 import EmployerInfoSection from '@/components/Document/write/EmployerInfoSection';
 import BottomButtonPanel from '@/components/Common/BottomButtonPanel';
-import Button from '../Common/Button';
+import Button from '@/components/Common/Button';
+import { initialPartTimePermitForm } from '@/constants/documents';
 
 // 필수 검증 필드 목록
 const REQUIRED_FIELDS: Array<keyof PartTimePermitFormRequest> = [
@@ -113,7 +113,7 @@ const PartTimePermitWriteForm = ({
       >
         <div className="[&>*:last-child]:mb-24 flex flex-col gap-4">
           {PartTimePermitFormFields.map((field) => (
-            <InputLayout key={field.name} title={field.title} isEssential>
+            <InputLayout key={field.name} title={field.title}>
               {renderFormField(field)}
             </InputLayout>
           ))}
@@ -135,10 +135,9 @@ const PartTimePermitWriteForm = ({
             onClick={handleSubmit(handleNext)}
           >
             <Button
-              type="large"
-              bgColor="bg-surface-primary"
-              fontColor="text-text-strong"
-              isBorder={false}
+              type={Button.Type.PRIMARY}
+              size={Button.Size.LG}
+              isFullWidth
               title={'Complete'}
             />
           </ValidatedSubmitButton>

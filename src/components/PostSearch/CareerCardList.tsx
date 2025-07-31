@@ -44,7 +44,7 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
 
   return (
     <article
-      className="w-full p-4 border-t border-border-disabled bg-surface-base"
+      className="w-full p-4 bg-surface-base"
       onClick={() => goToCareerDetailPage(careerData)}
     >
       <Tag
@@ -160,9 +160,8 @@ const CareerCardList = ({
           )}
         </div>
       )}
-
-      <div className="flex flex-row flex-wrap gap-4">
-        {careerData?.map((value: CareerListItemType) => (
+      <div className="flex flex-wrap divide-y divide-border-disabled">
+        {careerData.map((value: CareerListItemType) => (
           <CareerCard careerData={value} key={value.id} />
         ))}
       </div>
