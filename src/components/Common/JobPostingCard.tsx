@@ -56,12 +56,12 @@ const CardDeadLineTag = () => {
   return (
     <Tag
       value={formatRecruitmentDeadLine()}
-      padding="px-1 py-[0.188rem]"
+      padding="px-[5px] py-[3px]"
       isRounded={false}
       hasCheckIcon={false}
       backgroundColor="bg-[#FF5252]/10"
       color="text-text-error"
-      fontStyle="caption-12-regular"
+      fontStyle="caption-11-semibold"
     />
   );
 };
@@ -161,12 +161,12 @@ const CardTagList = () => {
             ? EN_FILTER_CATEGORY_OPTIONS[tags.employment_type?.toLowerCase()]
             : tags.employment_type?.toLowerCase()
         }
-        padding="py-[0.188rem] px-[0.375rem]"
+        padding="pt-[3px] pb-[4px] px-[6px]"
         isRounded={true}
         hasCheckIcon={false}
         backgroundColor="bg-surface-secondary"
         color="text-text-normal"
-        fontStyle="caption-12-regular"
+        fontStyle="caption-12-semibold"
       />
       <Tag
         value={
@@ -176,12 +176,12 @@ const CardTagList = () => {
               ]
             : tags.job_category.replace(/_/g, ' ').toLowerCase()
         }
-        padding="py-[0.188rem] px-[0.375rem]"
+        padding="pt-[3px] pb-[4px] px-[6px]"
         isRounded={true}
         hasCheckIcon={false}
         backgroundColor="bg-surface-secondary"
         color="text-text-normal"
-        fontStyle="caption-12-regular"
+        fontStyle="caption-12-semibold"
       />
     </div>
   );
