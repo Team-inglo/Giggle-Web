@@ -12,7 +12,7 @@ import { useGetPostList } from '@/hooks/api/usePost';
 import { useGetCareerList } from '@/hooks/api/useCareer';
 import HomeJobPostingList from '@/components/Home/HomeJobPostingList';
 import HomeCareerPostingList from '@/components/Home/HomeCareerPostingList';
-import EmployerEmployeeCardList from '@/components/Employer/EmployeeSearch/EmployerEmployeeCardList';
+import HomeEmployeeCardList from './HomeEmployeeCardList';
 
 const HomePostSection = () => {
   const navigate = useNavigate();
@@ -92,7 +92,7 @@ const HomePostSection = () => {
       {isOwner ? (
         <>
           {/* 고용주: 인재 트렌딩 */}
-          <EmployerEmployeeCardList
+          <HomeEmployeeCardList
             title="요즘 인기있는 인재 🔥"
             resumeData={
               trendingResumeData?.pages?.flatMap((page) => page.data.resumes) ??
