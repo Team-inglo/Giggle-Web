@@ -74,21 +74,21 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
                     ]
                   : jobPostingData.tags.employment_type.toLowerCase()
               }
-              padding="py-[0.188rem] px-[0.25rem]"
+              padding="py-[3px] px-[5px]"
               isRounded={false}
               hasCheckIcon={false}
               backgroundColor="bg-[#0066FF1F]"
               color="text-text-success"
-              fontStyle="caption-12-regular"
+              fontStyle="caption-11-semibold"
             />
             <Tag
               value={RepresentedVisa}
-              padding="py-[0.188rem] px-[0.25rem]"
+              padding="py-[3px] px-[5px]"
               isRounded={false}
               hasCheckIcon={false}
               backgroundColor="bg-surface-secondary"
               color="text-text-alternative"
-              fontStyle="caption-12-regular"
+              fontStyle="caption-11-semibold"
             />
           </div>
         </div>
