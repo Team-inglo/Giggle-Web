@@ -79,11 +79,11 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
   };
 
   return (
-    <div className="w-full flex justify-between items-center">
+    <div className="w-full flex justify-between items-start">
       <h3 className="heading-18-semibold text-text-strong line-clamp-2">
         {title}
       </h3>
-      <div className="w-6 h-6">
+      <div className="w-6 h-6 mt-0.5">
         {account_type === UserType.USER && isBookMarkButton && (
           <button onClick={(e) => onClickBookmark(e)}>
             {is_book_marked ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
@@ -98,9 +98,9 @@ const CardCompanyInfo = () => {
   const { company_name, summaries } = useCard();
 
   return (
-    <p className="caption-12-regular text-text-alternative whitespace-normal">
+    <p className="body-14-regular text-text-normal whitespace-normal flex items-center">
       {company_name}
-      <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
+      <span className="w-0.5 h-0.5 bg-border-normal rounded-full mx-1"></span>
       {summaries?.address?.split(' ')?.slice(0, 2)?.join(' ') ?? ''}
     </p>
   );
@@ -123,7 +123,7 @@ const CardVisa = () => {
   const { tags } = useCard();
 
   return (
-    <span className="caption-12-regular text-text-alternative whitespace-normal">
+    <span className="body-14-regular text-text-normal whitespace-normal items-center">
       {tags.visa.sort().join(', ').replace(/_/g, '-')}
     </span>
   );
@@ -139,7 +139,7 @@ const CardWorkDayInfo = () => {
       : summaries.work_period?.replace(/_/g, ' ').toLowerCase();
 
   return (
-    <span className="caption-12-regular text-text-alternative whitespace-normal">
+    <span className="body-14-regular text-text-normal whitespace-normal items-center">
       {workDaysPerWeekToText(
         summaries.work_days_per_week as string,
         account_type,
@@ -179,8 +179,8 @@ const CardTagList = () => {
         padding="pt-[3px] pb-[4px] px-[6px]"
         isRounded={true}
         hasCheckIcon={false}
-        backgroundColor="bg-surface-secondary"
-        color="text-text-normal"
+        backgroundColor="bg-[#0066FF1F]"
+        color="text-text-success"
         fontStyle="caption-12-semibold"
       />
     </div>
