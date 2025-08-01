@@ -79,7 +79,7 @@ const HomePostSection = () => {
 
   // 이력서 검색 이동 (고용주용)
   const goToResumeSearch = () => {
-    navigate('/search', {
+    navigate('/employer/search', {
       state: {
         initialMenu: POST_SEARCH_PAGE_MENU.CAREER,
         resumeSortType: POST_SORTING.POPULAR,
