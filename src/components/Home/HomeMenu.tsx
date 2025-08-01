@@ -1,7 +1,7 @@
-import RecommendPostIcon from '@/assets/icons/Home/RecommendPostIcon.svg?react';
-import SavedPostIcon from '@/assets/icons/Home/SavedPostIcon.svg?react';
+import RecommendPostIcon from '@/assets/icons/Home/MatchesIcon.svg?react';
+import SavedPostIcon from '@/assets/icons/Home/SavedIcon.svg?react';
 import ResumeIcon from '@/assets/icons/Home/ResumeIcon.svg?react';
-import ApplyIcon from '@/assets/icons/Home/ApplyIcon.svg?react';
+import ApplyIcon from '@/assets/icons/Home/AppliedIcon.svg?react';
 import { useNavigate } from 'react-router-dom';
 import CommingSoonBottomSheet from '@/components/Home/ComingSoonBottomSheet';
 import { useMemo, useState } from 'react';
@@ -41,22 +41,22 @@ const HomeMenu = () => {
       return [
         {
           icon: <RecommendPostIcon />,
-          text: 'Just for You',
+          text: 'Matches',
           onClick: () => setIsOpenCommingSoonBottomSheet(true),
         },
         {
           icon: <SavedPostIcon />,
-          text: 'Saved Jobs',
+          text: 'Saved',
           onClick: () => navigate('/resume/scrapped'),
         },
         {
           icon: <ResumeIcon />,
-          text: 'My Resume',
+          text: 'Resume',
           onClick: () => navigate('/profile/manage-resume'),
         },
         {
           icon: <ApplyIcon />,
-          text: 'Applications',
+          text: 'Applied',
           onClick: () => navigate('/application'),
         },
       ];
@@ -70,20 +70,22 @@ const HomeMenu = () => {
 
   return (
     <>
-      <nav className="p-4 w-full flex items-start justify-center gap-2">
-        {menuItems.map((item, index) => (
-          <button
-            key={index}
-            className="w-[4.875rem] h-[4.875rem] flex-1 flex flex-col items-center justify-start gap-2 px-1 py-3 rounded-lg"
-            onClick={() => checkLogin(item.onClick)}
-          >
-            {item.icon}
-            <p className="h-[1.0625rem] button-14-semibold text-[#333333] break-keep">
-              {item.text}
-            </p>
-          </button>
-        ))}
-      </nav>
+      {menuItems.length > 0 && (
+        <nav className="py-4 w-full flex items-center justify-center gap-2">
+          {menuItems.map((item, index) => (
+            <button
+              key={index}
+              className="w-16 h-16 flex-1 flex flex-col items-center justify-center gap-1 p-1 rounded-lg"
+              onClick={() => checkLogin(item.onClick)}
+            >
+              {item.icon}
+              <p className="h-[1.0625rem] caption-12-semibold text-text-normal break-keep">
+                {item.text}
+              </p>
+            </button>
+          ))}
+        </nav>
+      )}
       {isOpenCommingSoonBottomSheet && (
         <CommingSoonBottomSheet
           isShowBottomsheet={isOpenCommingSoonBottomSheet}

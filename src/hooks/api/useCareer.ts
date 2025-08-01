@@ -186,3 +186,29 @@ export const usePutCareerBookmark = () => {
     },
   });
 };
+
+// 14.3 커리어 리스트 일반 조회 훅 (페이징 없이 한번에 호출)
+export const useGetCareerList = (
+  req: GetCareerListReqType,
+  isEnabled: boolean,
+) => {
+  return useQuery({
+    queryKey: ['career', 'list', 'simple', req],
+    queryFn: () => getCareerList(req, 1), // 첫 페이지만 호출
+    enabled: isEnabled,
+    retry: 1,
+  });
+};
+
+// 14.1 (게스트) 커리어 리스트 일반 조회 훅 (페이징 없이 한번에 호출)
+export const useGetCareerGuestList = (
+  req: GetCareerListReqType,
+  isEnabled: boolean,
+) => {
+  return useQuery({
+    queryKey: ['career', 'list', 'guest-simple', req],
+    queryFn: () => getCareerListGuest(req, 1), // 첫 페이지만 호출
+    enabled: isEnabled,
+    retry: 1,
+  });
+};

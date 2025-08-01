@@ -98,15 +98,19 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
 };
 
 type CareerCardListProps = {
+  title?: string;
   careerData: CareerListItemType[];
   isLoading: boolean;
   isInitialLoading: boolean;
+  onSeeMoreClick?: () => void;
 };
 
 const CareerCardList = ({
+  title,
   careerData,
   isLoading,
   isInitialLoading,
+  onSeeMoreClick,
 }: CareerCardListProps) => {
   const { account_type } = useUserStore();
 
@@ -142,6 +146,20 @@ const CareerCardList = ({
 
   return (
     <div className="flex flex-col flex-1 gap-4">
+      {/* 여기 title 영역만 추가 */}
+      {title && (
+        <div className="flex items-center justify-between px-2 py-1">
+          <h3 className="text-black heading-18-semibold">{title}</h3>
+          {onSeeMoreClick && (
+            <button
+              className="caption-12-regular text-[#9397A1]"
+              onClick={onSeeMoreClick}
+            >
+              See More
+            </button>
+          )}
+        </div>
+      )}
       <div className="flex flex-wrap divide-y divide-border-disabled">
         {careerData.map((value: CareerListItemType) => (
           <CareerCard careerData={value} key={value.id} />
