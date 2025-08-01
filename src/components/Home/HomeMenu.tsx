@@ -1,7 +1,7 @@
-import RecommendPostIcon from '@/assets/icons/Home/RecommendPostIcon.svg?react';
-import SavedPostIcon from '@/assets/icons/Home/SavedPostIcon.svg?react';
+import RecommendPostIcon from '@/assets/icons/Home/MatchesIcon.svg?react';
+import SavedPostIcon from '@/assets/icons/Home/SavedIcon.svg?react';
 import ResumeIcon from '@/assets/icons/Home/ResumeIcon.svg?react';
-import ApplyIcon from '@/assets/icons/Home/ApplyIcon.svg?react';
+import ApplyIcon from '@/assets/icons/Home/AppliedIcon.svg?react';
 import { useNavigate } from 'react-router-dom';
 import CommingSoonBottomSheet from '@/components/Home/ComingSoonBottomSheet';
 import { useMemo, useState } from 'react';
@@ -75,7 +75,7 @@ const HomeMenu = () => {
           {menuItems.map((item, index) => (
             <button
               key={index}
-              className="w-16 h-16 flex-1 flex flex-col items-center justify-center gap-2 p-1 rounded-lg"
+              className="w-16 h-16 flex-1 flex flex-col items-center justify-center gap-1 p-1 rounded-lg"
               onClick={() => checkLogin(item.onClick)}
             >
               {item.icon}
