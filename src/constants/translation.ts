@@ -616,6 +616,10 @@ export const postTranslation = {
     ko: '모집 마감',
     en: 'closed',
   },
+  visaAdditional: {
+    ko: ' 외 ',
+    en: ' +',
+  },
 };
 
 export const careerDetailTranslation = {

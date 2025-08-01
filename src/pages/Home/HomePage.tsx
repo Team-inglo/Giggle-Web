@@ -1,10 +1,10 @@
-import HomeBanner from '@/components/Home/HomeBanner';
-import HomeMenu from '@/components/Home/HomeMenu';
 import HomeHeader from '@/components/Home/HomeHeader';
 import HomeJobPostingSection from '@/components/Home/HomeJobPostingSection';
 import { useEffect } from 'react';
 import { useUserStore } from '@/store/user';
 import { preloadCriticalPages } from '@/utils/preloader';
+import HomeTopSection from '@/components/Home/HomeTopSection';
+import HomeBannerCarousel from '@/components/Home/HomeBannerCarousel';
 
 const HomePage = () => {
   const { account_type } = useUserStore();
@@ -47,8 +47,8 @@ const HomePage = () => {
   return (
     <>
       <HomeHeader />
-      <HomeBanner />
-      <HomeMenu />
+      <HomeTopSection />
+      <HomeBannerCarousel />
       <HomeJobPostingSection />
     </>
   );

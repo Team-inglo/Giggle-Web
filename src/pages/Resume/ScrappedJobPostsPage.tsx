@@ -13,7 +13,7 @@ import EmptyJobIcon from '@/assets/icons/EmptyJobIcon.svg?react';
 import { JobPostingCard } from '@/components/Common/JobPostingCard';
 import CareerCardList from '@/components/PostSearch/CareerCardList';
 import { useCurrentPostIdStore } from '@/store/url';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Chip from '@/components/Common/Chip';
 import { ChipState } from '@/types/common/chip';
 
@@ -83,8 +83,11 @@ const ScrappedJobPostsPage = () => {
   const { account_type } = useUserStore();
   const isLogin = !!account_type;
 
+  // 네비게이션 state로 탭 초기값 받아오기
+  const location = useLocation();
+  const defaultFilter = (location.state?.filter as FilterType) ?? 'Job Posting';
   const [selectedFilter, setSelectedFilter] =
-    useState<FilterType>('Job Posting');
+    useState<FilterType>(defaultFilter);
 
   // JobPosting 데이터 요청
   const postRequestParams = {
@@ -108,7 +111,8 @@ const ScrappedJobPostsPage = () => {
   // Career 데이터 요청
   const careerRequestParams = {
     size: 5,
-    sorting: 'RECENT',
+    sorting: 'POPULAR',
+    category: 'ACTIVITY',
     isBookMarked: true,
   };
 
