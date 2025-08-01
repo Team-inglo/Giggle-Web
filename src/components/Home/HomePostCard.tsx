@@ -56,13 +56,13 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
         )}
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-0.5">
-            <h3 className="min-h-10 button-16-semibold text-text-normal line-clamp-2 whitespace-normal">
+            <h3 className="button-16-semibold text-text-strong line-clamp-2 whitespace-normal max-h-42 min-h-0">
               {jobPostingData.title}
             </h3>
-            <p className="caption-12-regular text-text-alternative whitespace-normal">
+            <p className="caption-12-regular text-text-alternative whitespace-normal flex items-center">
               {jobPostingData.company_name}
-              <span className="mx-1 inline-block align-middle border h-3 bg-border-alternative"></span>
-              {jobPostingData.summaries.address.split(' ').slice(0, 2).join(' ')}{' '}
+              <span className="w-px h-2.5 bg-border-alternative mx-1"></span>
+              {jobPostingData.summaries.address.split(' ').slice(0, 2).join(' ')}
             </p>
           </div>
           <div className="flex items-center flex-wrap gap-1">
@@ -98,4 +98,3 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
 };
 
 export default HomePostCard;
-
