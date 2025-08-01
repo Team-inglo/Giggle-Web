@@ -5,7 +5,7 @@ import { POST_SEARCH_PAGE_MENU, POST_SORTING } from '@/constants/postSearch';
 import { UserType } from '@/constants/user';
 import { usePostSearch } from '@/hooks/usePostSearch';
 import { useUserStore } from '@/store/user';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const PostSearchPage = () => {
@@ -15,13 +15,16 @@ const PostSearchPage = () => {
   const { account_type } = useUserStore();
 
   // state로 넘어온 initialSearchOption 설정
-  const initialSearchOption = {
-    searchText: state?.searchText ?? '',
-    postSortType: state?.postSortType ?? POST_SORTING.RECENT,
-    careerSortType: state?.careerSortType ?? POST_SORTING.RECENT,
-    filterList: state?.filterList ?? {}, // 나머지 필터들도 있으면 포함
-    careerCategory: state?.careerCategory ?? [],
-  };
+  const initialSearchOption = useMemo(
+    () => ({
+      searchText: state?.searchText ?? '',
+      postSortType: state?.postSortType ?? POST_SORTING.RECENT,
+      careerSortType: state?.careerSortType ?? POST_SORTING.RECENT,
+      filterList: state?.filterList ?? {},
+      careerCategory: state?.careerCategory ?? [],
+    }),
+    [state],
+  );
 
   // searchOption 상태 초기화
   const { searchOption, updateSearchOption } =

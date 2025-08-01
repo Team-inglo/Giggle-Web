@@ -75,7 +75,7 @@ const HomeMenu = () => {
           {menuItems.map((item, index) => (
             <button
               key={index}
-              className="w-16 h-16 flex-1 flex flex-col items-center justify-center gap-2 px-1 py-1 rounded-lg"
+              className="w-16 h-16 flex-1 flex flex-col items-center justify-center gap-2 p-1 rounded-lg"
               onClick={() => checkLogin(item.onClick)}
             >
               {item.icon}
