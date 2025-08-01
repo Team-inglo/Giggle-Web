@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { CareerListItemType } from '@/types/api/career';
 import { CAREER_CATEGORY } from '@/constants/postSearch';
-import { useCurrentPostIdStore } from '@/store/url';
 import { useMemo } from 'react';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
@@ -12,12 +11,10 @@ type HomeCareerPostCardProps = {
 };
 
 const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
-  const { updateCurrentPostId } = useCurrentPostIdStore();
   const navigate = useNavigate();
   const { account_type } = useUserStore();
   const userType = account_type === UserType.OWNER ? '/employer' : '';
   const goToCareerDetailPage = () => {
-    updateCurrentPostId(careerData.id);
     navigate(`/career/${careerData.id}`);
   };
 

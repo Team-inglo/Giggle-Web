@@ -112,7 +112,7 @@ const ScrappedJobPostsPage = () => {
   const careerRequestParams = {
     size: 5,
     sorting: 'POPULAR',
-    category: 'SOME_DEFAULT_CATEGORY', // 🔥 서버 필수값 채워주세요!
+    category: 'ACTIVITY',
     isBookMarked: true,
   };
 
