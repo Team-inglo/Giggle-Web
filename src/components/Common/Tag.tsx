@@ -27,7 +27,7 @@ const Tag = ({
 }: TagProps) => {
   return (
     <div
-      className={`w-fit h-fit flex items-center gap-[0.5rem] ${padding} ${backgroundColor} ${color} ${borderColor} ${borderColor ? 'border' : ''} ${fontStyle} ${isRounded ? 'rounded' : 'rounded-sm'}`}
+      className={`w-fit h-fit flex items-center gap-[0.5rem] ${padding} ${backgroundColor} ${color} ${borderColor} ${borderColor ? 'border' : ''} ${fontStyle} ${isRounded ? 'rounded-lg' : 'rounded-md'}`}
     >
       {hasCheckIcon && <Icon icon={TagCheckIcon} fillColor={color} />}
       {value}
