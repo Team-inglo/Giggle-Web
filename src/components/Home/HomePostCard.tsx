@@ -5,9 +5,8 @@ import { useCurrentPostIdStore } from '@/store/url';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import { EN_FILTER_CATEGORY_OPTIONS } from '@/constants/postSearch';
-import { postTranslation } from '@/constants/translation';
-import { isEmployer } from '@/utils/signup';
 import { useMemo } from 'react';
+import { useFormattedVisa } from '@/hooks/useFormattedVisa';
 
 type HomePostCardProps = {
   jobPostingData: JobPostingItemType;
@@ -32,15 +31,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
       jobPostingData.tags.visa.map((visa) => visa.replace(/_/g, '-')).sort(),
     [jobPostingData.tags.visa],
   );
-  const RepresentedVisa = useMemo(
-    () =>
-      visaList.length > 1
-        ? visaList[0] +
-          postTranslation.visaAdditional[isEmployer(userType)] +
-          (visaList.length - 1)
-        : visaList[0],
-    [visaList, userType],
-  );
+  const RepresentedVisa = useFormattedVisa(visaList, userType);
 
   return (
     <article

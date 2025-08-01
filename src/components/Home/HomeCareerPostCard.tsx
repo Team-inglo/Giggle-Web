@@ -3,10 +3,9 @@ import { CareerListItemType } from '@/types/api/career';
 import { CAREER_CATEGORY } from '@/constants/postSearch';
 import { useCurrentPostIdStore } from '@/store/url';
 import { useMemo } from 'react';
-import { postTranslation } from '@/constants/translation';
-import { isEmployer } from '@/utils/signup';
 import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
+import { useFormattedVisa } from '@/hooks/useFormattedVisa';
 
 type HomeCareerPostCardProps = {
   careerData: CareerListItemType;
@@ -26,15 +25,7 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
     () => careerData.visa?.map((visa) => visa.replace(/_/g, '-')).sort(),
     [careerData.visa],
   );
-  const RepresentedVisa = useMemo(
-    () =>
-      visaList && visaList.length > 1
-        ? visaList[0] +
-          postTranslation.visaAdditional[isEmployer(userType)] +
-          (visaList.length - 1)
-        : (visaList?.[0] ?? ''),
-    [visaList, userType],
-  );
+  const RepresentedVisa = useFormattedVisa(visaList, userType);
 
   return (
     <article
