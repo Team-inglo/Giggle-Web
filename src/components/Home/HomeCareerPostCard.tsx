@@ -60,12 +60,12 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
 
           <div className="flex flex-wrap items-center gap-1">
             {careerData.career_category && (
-              <span className="caption-12-regular bg-[#0066FF1F] text-text-success py-[0.188rem] px-[0.25rem] rounded">
+              <span className="caption-11-semibold bg-[#0066FF1F] text-text-success py-[3px] px-[5px] rounded-md">
                 {CAREER_CATEGORY[careerData.career_category]}
               </span>
             )}
             {careerData.visa && careerData.visa.length > 0 && (
-              <span className="caption-12-regular bg-surface-secondary text-text-alternative py-[0.188rem] px-[0.25rem] rounded">
+              <span className="caption-11-semibold bg-surface-secondary text-text-alternative py-[3px] px-[5px] rounded-md">
                 {RepresentedVisa}
               </span>
             )}
