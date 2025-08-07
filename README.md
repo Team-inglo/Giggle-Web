@@ -25,6 +25,10 @@
 
 > https://youtu.be/PfW00paozHM?si=0qIEgXpjnI9DGKZO
 
+## DeepWiki
+
+> https://deepwiki.com/Team-inglo/Giggle-Web
+
 ## Tech Stack
 
 <p>
