@@ -123,5 +123,5 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
       </div>
     </article>
   );
-
+};
 export default EmployeeCard;
