@@ -14,48 +14,48 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="Application Success 🎉"
-          padding="px-1 py-[0.188rem]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#0066FF]/10"
+          backgroundColor="bg-status-success/10"
           color="text-text-success"
-          fontStyle="caption-12-regular"
+          fontStyle="caption-11-semibold"
         />
       );
     case APPLICATION_STEP.RESUME_REJECTED:
       return (
         <Tag
           value="Resume Rejected ⚠"
-          padding="px-1 py-[0.188rem]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/10"
+          backgroundColor="bg-status-error/10"
           color="text-text-error"
-          fontStyle="caption-12-regular"
+          fontStyle="caption-11-semibold"
         />
       );
     case APPLICATION_STEP.APPLICATION_REJECTED:
       return (
         <Tag
           value="Application Rejected ⚠"
-          padding="px-1 py-[0.188rem]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/10"
+          backgroundColor="bg-status-error/10"
           color="text-text-error"
-          fontStyle="caption-12-regular"
+          fontStyle="caption-11-semibold"
         />
       );
     default:
       return (
         <Tag
           value="Application in Progress 🔍"
-          padding="px-1 py-[0.188rem]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
           backgroundColor="bg-surface-secondary"
           color="text-text-normal"
-          fontStyle="caption-12-regular"
+          fontStyle="caption-11-semibold"
         />
       );
   }

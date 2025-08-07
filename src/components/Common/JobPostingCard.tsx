@@ -56,12 +56,12 @@ const CardDeadLineTag = () => {
   return (
     <Tag
       value={formatRecruitmentDeadLine()}
-      padding="px-1 py-[0.188rem]"
+      padding="px-[0.313rem] py-[0.188rem]"
       isRounded={false}
       hasCheckIcon={false}
-      backgroundColor="bg-[#FF5252]/10"
+      backgroundColor="bg-status-error/10"
       color="text-text-error"
-      fontStyle="caption-12-regular"
+      fontStyle="caption-11-semibold"
     />
   );
 };
@@ -79,11 +79,11 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
   };
 
   return (
-    <div className="w-full flex justify-between items-center">
+    <div className="w-full flex justify-between items-start">
       <h3 className="heading-18-semibold text-text-strong line-clamp-2">
         {title}
       </h3>
-      <div className="w-6 h-6">
+      <div className="w-6 h-6 mt-0.5">
         {account_type === UserType.USER && isBookMarkButton && (
           <button onClick={(e) => onClickBookmark(e)}>
             {is_book_marked ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
@@ -98,9 +98,9 @@ const CardCompanyInfo = () => {
   const { company_name, summaries } = useCard();
 
   return (
-    <p className="caption-12-regular text-text-alternative whitespace-normal">
+    <p className="body-14-regular text-text-normal whitespace-normal flex items-center">
       {company_name}
-      <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
+      <span className="w-0.5 h-0.5 bg-border-normal rounded-full mx-1"></span>
       {summaries?.address?.split(' ')?.slice(0, 2)?.join(' ') ?? ''}
     </p>
   );
@@ -123,7 +123,7 @@ const CardVisa = () => {
   const { tags } = useCard();
 
   return (
-    <span className="caption-12-regular text-text-alternative whitespace-normal">
+    <span className="body-14-regular text-text-normal whitespace-normal items-center">
       {tags.visa.sort().join(', ').replace(/_/g, '-')}
     </span>
   );
@@ -139,7 +139,7 @@ const CardWorkDayInfo = () => {
       : summaries.work_period?.replace(/_/g, ' ').toLowerCase();
 
   return (
-    <span className="caption-12-regular text-text-alternative whitespace-normal">
+    <span className="body-14-regular text-text-normal whitespace-normal items-center">
       {workDaysPerWeekToText(
         summaries.work_days_per_week as string,
         account_type,
@@ -161,12 +161,12 @@ const CardTagList = () => {
             ? EN_FILTER_CATEGORY_OPTIONS[tags.employment_type?.toLowerCase()]
             : tags.employment_type?.toLowerCase()
         }
-        padding="py-[0.188rem] px-[0.375rem]"
+        padding="pt-[0.188rem] pb-[0.25rem] px-[0.375rem]"
         isRounded={true}
         hasCheckIcon={false}
         backgroundColor="bg-surface-secondary"
         color="text-text-normal"
-        fontStyle="caption-12-regular"
+        fontStyle="caption-12-semibold"
       />
       <Tag
         value={
@@ -176,12 +176,12 @@ const CardTagList = () => {
               ]
             : tags.job_category.replace(/_/g, ' ').toLowerCase()
         }
-        padding="py-[0.188rem] px-[0.375rem]"
+        padding="pt-[0.188rem] pb-[0.25rem] px-[0.375rem]"
         isRounded={true}
         hasCheckIcon={false}
-        backgroundColor="bg-surface-secondary"
-        color="text-text-normal"
-        fontStyle="caption-12-regular"
+        backgroundColor="bg-status-success/10"
+        color="text-text-success"
+        fontStyle="caption-12-semibold"
       />
     </div>
   );
