@@ -35,12 +35,12 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
 
   return (
     <article
-      className="flex flex-col gap-2 w-[152px] rounded-lg"
+      className="flex flex-col gap-2 w-[9.5rem] rounded-lg"
       onClick={goToPostDetailPage}
     >
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-3">
         {jobPostingData?.representative_img_url ? (
-          <div className="relative w-[152px] h-[114px] overflow-hidden rounded-lg shrink-0">
+          <div className="relative w-[9.5rem] h-[7.125rem] overflow-hidden rounded-lg shrink-0">
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
@@ -50,7 +50,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
             <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
           </div>
         ) : (
-          <div className="relative w-[152px] h-[114px] bg-surface-secondary flex items-center justify-center rounded-lg shrink-0">
+          <div className="relative w-[9.5rem] h-[7.125rem] bg-surface-secondary flex items-center justify-center rounded-lg shrink-0">
             <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
           </div>
         )}
@@ -74,7 +74,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
                     ]
                   : jobPostingData.tags.employment_type.toLowerCase()
               }
-              padding="py-[3px] px-[5px]"
+              padding="py-[0.188rem] px-[0.313rem]"
               isRounded={false}
               hasCheckIcon={false}
               backgroundColor="bg-[#0066FF1F]"
@@ -83,7 +83,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
             />
             <Tag
               value={RepresentedVisa}
-              padding="py-[3px] px-[5px]"
+              padding="py-[0.188rem] px-[0.313rem]"
               isRounded={false}
               hasCheckIcon={false}
               backgroundColor="bg-surface-secondary"

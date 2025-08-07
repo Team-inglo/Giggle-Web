@@ -14,10 +14,10 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="Application Success 🎉"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#0066FF]/10"
+          backgroundColor="bg-status-success/10"
           color="text-text-success"
           fontStyle="caption-11-semibold"
         />
@@ -26,10 +26,10 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="Resume Rejected ⚠"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/10"
+          backgroundColor="bg-status-error/10"
           color="text-text-error"
           fontStyle="caption-11-semibold"
         />
@@ -38,10 +38,10 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="Application Rejected ⚠"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/10"
+          backgroundColor="bg-status-error/10"
           color="text-text-error"
           fontStyle="caption-11-semibold"
         />
@@ -50,7 +50,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="Application in Progress 🔍"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
           backgroundColor="bg-surface-secondary"

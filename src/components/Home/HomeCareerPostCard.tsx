@@ -26,12 +26,12 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
 
   return (
     <article
-      className="flex flex-col gap-2 w-[152px] rounded-lg"
+      className="flex flex-col gap-2 w-[9.5rem] rounded-lg"
       onClick={goToCareerDetailPage}
     >
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-3">
         {careerData.img_urls && careerData.img_urls.length > 0 ? (
-          <div className="relative w-[152px] h-[114px] overflow-hidden rounded-lg shrink-0">
+          <div className="relative w-[9.5rem] h-[7.125rem] overflow-hidden rounded-lg shrink-0">
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
@@ -41,7 +41,7 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
             <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
           </div>
         ) : (
-          <div className="relative w-[152px] h-[114px] bg-surface-secondary flex items-center justify-center rounded-lg shrink-0">
+          <div className="relative w-[9.5rem] h-[7.125rem] bg-surface-secondary flex items-center justify-center rounded-lg shrink-0">
             <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
           </div>
         )}
@@ -60,12 +60,12 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
 
           <div className="flex flex-wrap items-center gap-1">
             {careerData.career_category && (
-              <span className="caption-11-semibold bg-[#0066FF1F] text-text-success py-[3px] px-[5px] rounded-md">
+              <span className="caption-11-semibold bg-[#0066FF1F] text-text-success py-[0.188rem] px-[0.313rem] rounded-md">
                 {CAREER_CATEGORY[careerData.career_category]}
               </span>
             )}
             {careerData.visa && careerData.visa.length > 0 && (
-              <span className="caption-11-semibold bg-surface-secondary text-text-alternative py-[3px] px-[5px] rounded-md">
+              <span className="caption-11-semibold bg-surface-secondary text-text-alternative py-[0.188rem] px-[0.313rem] rounded-md">
                 {RepresentedVisa}
               </span>
             )}

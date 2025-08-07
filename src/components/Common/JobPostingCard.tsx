@@ -56,10 +56,10 @@ const CardDeadLineTag = () => {
   return (
     <Tag
       value={formatRecruitmentDeadLine()}
-      padding="px-[5px] py-[3px]"
+      padding="px-[0.313rem] py-[0.188rem]"
       isRounded={false}
       hasCheckIcon={false}
-      backgroundColor="bg-[#FF5252]/10"
+      backgroundColor="bg-status-error/10"
       color="text-text-error"
       fontStyle="caption-11-semibold"
     />
@@ -161,7 +161,7 @@ const CardTagList = () => {
             ? EN_FILTER_CATEGORY_OPTIONS[tags.employment_type?.toLowerCase()]
             : tags.employment_type?.toLowerCase()
         }
-        padding="pt-[3px] pb-[4px] px-[6px]"
+        padding="pt-[0.188rem] pb-[0.25rem] px-[0.375rem]"
         isRounded={true}
         hasCheckIcon={false}
         backgroundColor="bg-surface-secondary"
@@ -176,10 +176,10 @@ const CardTagList = () => {
               ]
             : tags.job_category.replace(/_/g, ' ').toLowerCase()
         }
-        padding="pt-[3px] pb-[4px] px-[6px]"
+        padding="pt-[0.188rem] pb-[0.25rem] px-[0.375rem]"
         isRounded={true}
         hasCheckIcon={false}
-        backgroundColor="bg-[#0066FF1F]"
+        backgroundColor="bg-status-success/10"
         color="text-text-success"
         fontStyle="caption-12-semibold"
       />

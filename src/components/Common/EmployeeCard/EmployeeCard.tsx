@@ -46,7 +46,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
         <div className="pt-2 flex items-center gap-1 flex-wrap">
           <Tag
             value={cardData?.industry}
-            padding="py-[0.188rem] px-[0.25rem]"
+            padding="py-[0.188rem] px-[0.313rem]"
             isRounded={true}
             hasCheckIcon={false}
             backgroundColor="bg-status-blue-300/10"
@@ -55,7 +55,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
           />
           <Tag
             value={cardData?.visa?.replace(/_/g, '-')}
-            padding="py-[0.188rem] px-[0.25rem]"
+            padding="py-[0.188rem] px-[0.313rem]"
             isRounded={true}
             hasCheckIcon={false}
             backgroundColor="bg-surface-secondary"
@@ -70,12 +70,12 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
   // Column 형 카드
   return (
     <article
-      className="flex flex-col gap-2 w-[152px] rounded-lg"
+      className="flex flex-col gap-2 w-[9.5rem] rounded-lg"
       onClick={goToResumeDetailPage}
     >
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-3">
         {cardData?.profile_img_url ? (
-          <div className="relative w-[152px] h-[114px] overflow-hidden rounded-lg shrink-0">
+          <div className="relative w-[9.5rem] h-[7.125rem] overflow-hidden rounded-lg shrink-0">
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
@@ -85,7 +85,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
             <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
           </div>
         ) : (
-          <div className="relative w-[152px] h-[114px] bg-surface-secondary flex items-center justify-center rounded-lg shrink-0">
+          <div className="relative w-[9.5rem] h-[7.125rem] bg-surface-secondary flex items-center justify-center rounded-lg shrink-0">
             <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
           </div>
         )}
@@ -103,7 +103,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
               {cardData?.visa && (
                 <Tag
                   value={cardData.visa?.replace(/_/g, '-')}
-                  padding="py-[3px] px-[5px]"
+                  padding="py-[0.188rem] px-[0.313rem]"
                   isRounded={false}
                   hasCheckIcon={false}
                   backgroundColor="bg-surface-secondary"

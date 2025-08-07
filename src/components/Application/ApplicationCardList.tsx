@@ -34,8 +34,8 @@ const ApplicationCardList = ({
     return (
       <div className="mt-10 flex flex-col justify-center items-center gap-1">
         <EmptyJobIcon />
-        <h3 className="heading-20-semibold text-[#252525]">No results found</h3>
-        <p className="body-14-regular text-[#9397A1] text-center">
+        <h3 className="heading-20-semibold text-text-strong">No results found</h3>
+        <p className="body-14-regular text-text-alternative text-center">
           We couldn’t find any jobs matching your search. <br />
           Try adjusting your filters!
         </p>

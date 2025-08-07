@@ -16,10 +16,10 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="채용을 완료했어요 🎉"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#0066FF]/10"
+          backgroundColor="bg-status-success/10"
           color="text-text-success"
           fontStyle="caption-11-semibold"
         />
@@ -28,10 +28,10 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="거절한 지원자에요 ⚠"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/10"
+          backgroundColor="bg-status-error/10"
           color="text-text-error"
           fontStyle="caption-11-semibold"
         />
@@ -40,10 +40,10 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="서류 재검토가 필요해요 ⚠"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
-          backgroundColor="bg-[#FF5252]/10"
+          backgroundColor="bg-status-error/10"
           color="text-text-error"
           fontStyle="caption-11-semibold"
         />
@@ -52,7 +52,7 @@ const renderStatusBar = (status: ApplicationStepType) => {
       return (
         <Tag
           value="진행 상황을 확인해보세요 ! 📋"
-          padding="px-[5px] py-[3px]"
+          padding="px-[0.313rem] py-[0.188rem]"
           isRounded={false}
           hasCheckIcon={false}
           backgroundColor="bg-primary-normal"
@@ -84,7 +84,7 @@ const EmployerApplicantCard = ({
             {applicantData.nationality.replace(/_/g, ' ').toLowerCase()}
           </p>
         </div>
-        <p className=" caption-12-regular text-text-alternative">
+        <p className="caption-12-regular text-text-alternative">
           {applicantData?.duration_of_days}일 전
         </p>
       </div>
