@@ -46,7 +46,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
         <div className="pt-2 flex items-center gap-1 flex-wrap">
           <Tag
             value={cardData?.industry}
-            padding="py-[0.188rem] px-[0.25rem]"
+            padding="py-[0.188rem] px-[0.313rem]"
             isRounded={true}
             hasCheckIcon={false}
             backgroundColor="bg-status-blue-300/10"
@@ -55,7 +55,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
           />
           <Tag
             value={cardData?.visa?.replace(/_/g, '-')}
-            padding="py-[0.188rem] px-[0.25rem]"
+            padding="py-[0.188rem] px-[0.313rem]"
             isRounded={true}
             hasCheckIcon={false}
             backgroundColor="bg-surface-secondary"
@@ -70,57 +70,58 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
   // Column 형 카드
   return (
     <article
-      className="w-[9.063rem] flex flex-col gap-2 rounded-lg"
+      className="flex flex-col gap-2 w-[9.5rem] rounded-lg"
       onClick={goToResumeDetailPage}
     >
-      <div className="w-[9.063rem] h-[6.75rem] rounded-lg overflow-hidden border border-border-alternative">
+      <div className="flex flex-col gap-3">
         {cardData?.profile_img_url ? (
-          <img
-            src={cardData.profile_img_url}
-            alt="profile"
-            className="object-cover w-full h-full"
-          />
+          <div className="relative w-[9.5rem] h-[7.125rem] overflow-hidden rounded-lg shrink-0">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${cardData.profile_img_url})`,
+              }}
+            />
+            <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
+          </div>
         ) : (
-          <div className="flex items-center justify-center w-full h-full text-white bg-gradient-to-r from-purple-500 to-pink-500">
-            No Image
+          <div className="relative w-[9.5rem] h-[7.125rem] bg-surface-secondary flex items-center justify-center rounded-lg shrink-0">
+            <div className="absolute inset-0 border border-[#8F919D1A] rounded-lg pointer-events-none" />
           </div>
         )}
-      </div>
-
-      <div className="flex flex-col">
-        <h3 className="button-16-semibold text-text-normal line-clamp-1 whitespace-normal pb-[0.125rem]">
-          {cardData?.name}
-        </h3>
-
-        <p className="caption-12-regular text-text-alternative line-clamp-2 whitespace-normal mb-2">
-          {cardData?.title || '친절한 서비스를 고객을 맞게 만들어보아요!'}
-        </p>
-
-        <div className="flex flex-wrap items-center justify-between gap-1">
-          <div className="flex flex-wrap items-center gap-1">
-            {cardData?.visa && (
-              <Tag
-                value={cardData.visa.replace(/_/g, '-')}
-                padding="py-[0.188rem] px-[0.25rem]"
-                isRounded={false}
-                hasCheckIcon={false}
-                backgroundColor="bg-surface-secondary"
-                color="text-text-alternative"
-                fontStyle="caption-12-regular"
-              />
-            )}
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-0.5">
+            <h3 className="button-16-semibold text-text-strong line-clamp-1 whitespace-normal max-h-42 min-h-0">
+              {cardData.name}
+            </h3>
+            <p className="caption-12-regular text-text-alternative line-clamp-2 whitespace-normal">
+              {cardData?.title}
+            </p>
           </div>
-
-          <EmployeeCardBookmark
-            isBookmarked={cardData?.is_bookmarked}
-            bookmarkCount={cardData?.bookmark_count}
-            onBookmarkClick={handleClickBookmark}
-            variant="with-count"
-          />
+          <div className="flex flex-wrap items-center justify-between gap-1">
+            <div className="flex flex-wrap items-center gap-1">
+              {cardData?.visa && (
+                <Tag
+                  value={cardData.visa?.replace(/_/g, '-')}
+                  padding="py-[0.188rem] px-[0.313rem]"
+                  isRounded={false}
+                  hasCheckIcon={false}
+                  backgroundColor="bg-surface-secondary"
+                  color="text-text-alternative"
+                  fontStyle="caption-11-semibold"
+                />
+              )}
+            </div>
+            <EmployeeCardBookmark
+              isBookmarked={cardData?.is_bookmarked}
+              bookmarkCount={cardData?.bookmark_count}
+              onBookmarkClick={handleClickBookmark}
+              variant="with-count"
+            />
+          </div>
         </div>
       </div>
     </article>
   );
 };
-
 export default EmployeeCard;
