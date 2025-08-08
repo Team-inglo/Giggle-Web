@@ -53,7 +53,7 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
             </h3>
             <p className="caption-12-regular text-text-alternative whitespace-normal flex items-center">
               {careerData.organizer_name ?? '-'}
-              <span className="w-px h-2.5 bg-border-alternative mx-1"></span>
+              <span className="w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1"></span>
               {careerData.host_name ?? '-'}
             </p>
           </div>

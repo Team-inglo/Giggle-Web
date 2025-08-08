@@ -72,15 +72,15 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
           )}
         </div>
       </div>
-      <p className="pb-4 whitespace-normal caption-12-regular text-text-alternative">
+      <p className="pb-4 whitespace-normal caption-12-regular text-text-alternative flex items-center">
         {careerData.career_category &&
           CAREER_CATEGORY[careerData.career_category]}
-        <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
+        <span className="w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1"></span>
         {careerData.visa?.join(', ')?.replace(/_/g, '-')}
       </p>
-      <p className="pb-1 whitespace-normal button-14-semibold text-text-normal">
+      <p className="pb-1 whitespace-normal button-14-semibold text-text-strong flex items-center">
         {careerData.organizer_name}
-        <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
+        <span className="w-0.5 h-0.5 bg-neutral-600 rounded-full mx-1"></span>
         {careerData.host_name}
       </p>
       <div className="flex items-center justify-between w-full">

@@ -100,7 +100,7 @@ const CardCompanyInfo = () => {
   return (
     <p className="body-14-regular text-text-normal whitespace-normal flex items-center">
       {company_name}
-      <span className="w-0.5 h-0.5 bg-border-normal rounded-full mx-1"></span>
+      <span className="w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1"></span>
       {summaries?.address?.split(' ')?.slice(0, 2)?.join(' ') ?? ''}
     </p>
   );
@@ -123,7 +123,7 @@ const CardVisa = () => {
   const { tags } = useCard();
 
   return (
-    <span className="body-14-regular text-text-normal whitespace-normal items-center">
+    <span className="body-14-regular text-text-normal whitespace-normal items-center align-middle">
       {tags.visa.sort().join(', ').replace(/_/g, '-')}
     </span>
   );
@@ -139,7 +139,7 @@ const CardWorkDayInfo = () => {
       : summaries.work_period?.replace(/_/g, ' ').toLowerCase();
 
   return (
-    <span className="body-14-regular text-text-normal whitespace-normal items-center">
+    <span className="body-14-regular text-text-normal whitespace-normal items-center align-middle">
       {workDaysPerWeekToText(
         summaries.work_days_per_week as string,
         account_type,

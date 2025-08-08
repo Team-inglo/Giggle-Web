@@ -61,7 +61,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
             </h3>
             <p className="caption-12-regular text-text-alternative whitespace-normal flex items-center">
               {jobPostingData.company_name}
-              <span className="w-px h-2.5 bg-border-alternative mx-1"></span>
+              <span className="w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1"></span>
               {jobPostingData.summaries.address.split(' ').slice(0, 2).join(' ')}
             </p>
           </div>
