@@ -60,7 +60,7 @@ const HomeCareerPostCard = ({ careerData }: HomeCareerPostCardProps) => {
 
           <div className="flex flex-wrap items-center gap-1">
             {careerData.career_category && (
-              <span className="caption-11-semibold bg-[#0066FF1F] text-text-success py-[0.188rem] px-[0.313rem] rounded-md">
+              <span className="caption-11-semibold bg-status-blue-100 text-text-success py-[0.188rem] px-[0.313rem] rounded-md">
                 {CAREER_CATEGORY[careerData.career_category]}
               </span>
             )}

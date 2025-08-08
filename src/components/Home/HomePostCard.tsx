@@ -77,7 +77,7 @@ const HomePostCard = ({ jobPostingData }: HomePostCardProps) => {
               padding="py-[0.188rem] px-[0.313rem]"
               isRounded={false}
               hasCheckIcon={false}
-              backgroundColor="bg-[#0066FF1F]"
+              backgroundColor="bg-status-blue-100"
               color="text-text-success"
               fontStyle="caption-11-semibold"
             />

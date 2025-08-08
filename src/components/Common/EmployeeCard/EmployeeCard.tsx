@@ -49,7 +49,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
             padding="py-[0.188rem] px-[0.313rem]"
             isRounded={true}
             hasCheckIcon={false}
-            backgroundColor="bg-status-blue-300/10"
+            backgroundColor="bg-status-blue-100"
             color="text-text-success"
             fontStyle="caption-12-semibold"
           />

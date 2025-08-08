@@ -59,7 +59,7 @@ const CardDeadLineTag = () => {
       padding="px-[0.313rem] py-[0.188rem]"
       isRounded={false}
       hasCheckIcon={false}
-      backgroundColor="bg-status-error/10"
+      backgroundColor="bg-status-red-100"
       color="text-text-error"
       fontStyle="caption-11-semibold"
     />
@@ -179,7 +179,7 @@ const CardTagList = () => {
         padding="pt-[0.188rem] pb-[0.25rem] px-[0.375rem]"
         isRounded={true}
         hasCheckIcon={false}
-        backgroundColor="bg-status-success/10"
+        backgroundColor="bg-status-blue-100"
         color="text-text-success"
         fontStyle="caption-12-semibold"
       />

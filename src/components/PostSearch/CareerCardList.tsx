@@ -52,7 +52,7 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
         padding="px-1 py-[0.188rem]"
         isRounded={false}
         hasCheckIcon={false}
-        backgroundColor="bg-[#FF5252]/10"
+        backgroundColor="bg-status-red-100"
         color="text-text-error"
         fontStyle="caption-12-regular"
       />
