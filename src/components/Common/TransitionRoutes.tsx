@@ -1,4 +1,4 @@
-import { FC, ReactNode, cloneElement } from 'react';
+import { FC, ReactNode, cloneElement, createRef, useRef } from 'react';
 import { Routes, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { getPageTransitionConfig } from '@/constants/pageTransition';
@@ -25,6 +25,18 @@ const TransitionRoutes: FC<TransitionRoutesProps> = ({ children }) => {
   // 페이지 경로만 키로 사용
   const transitionKey = location.pathname;
 
+  // findDOMNode 경고 방지를 위해 경로별 nodeRef 관리
+  const nodeRefMap = useRef(new Map<string, React.RefObject<HTMLDivElement>>());
+  const getNodeRef = (key: string) => {
+    let ref = nodeRefMap.current.get(key);
+    if (!ref) {
+      ref = createRef<HTMLDivElement>();
+      nodeRefMap.current.set(key, ref);
+    }
+    return ref;
+  };
+  const nodeRef = getNodeRef(transitionKey);
+
   // exit하는 child에게도 현재의 classNames 적용
   const childFactory = (child: React.ReactElement) => {
     return cloneElement(child, {
@@ -42,11 +54,12 @@ const TransitionRoutes: FC<TransitionRoutesProps> = ({ children }) => {
       <CSSTransition
         key={transitionKey}
         classNames={classNames}
+        nodeRef={nodeRef}
         timeout={timeout}
         mountOnEnter
         unmountOnExit
       >
-        <div className="transition-page-wrapper">
+        <div ref={nodeRef} className="transition-page-wrapper">
           <Routes location={location}>{children}</Routes>
         </div>
       </CSSTransition>
