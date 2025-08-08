@@ -45,6 +45,10 @@ const TransitionRoutes: FC<TransitionRoutesProps> = ({ children }) => {
   };
   const nodeRef = getNodeRef(transitionKey);
 
+  const removeNodeRef = (key: string) => {
+    nodeRefMap.current.delete(key);
+  };
+
   // exit하는 child에게도 현재의 classNames 적용
   const childFactory = (child: ReactElement) => {
     return cloneElement(child, {
@@ -66,6 +70,7 @@ const TransitionRoutes: FC<TransitionRoutesProps> = ({ children }) => {
         timeout={timeout}
         mountOnEnter
         unmountOnExit
+        onExited={() => removeNodeRef(transitionKey)}
       >
         <div ref={nodeRef} className="transition-page-wrapper">
           <Routes location={location}>{children}</Routes>
