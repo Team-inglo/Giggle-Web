@@ -49,12 +49,12 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
     >
       <Tag
         value={formatLeftDays()}
-        padding="px-1 py-[0.188rem]"
+        padding="px-[0.313rem] py-[0.188rem]"
         isRounded={false}
         hasCheckIcon={false}
         backgroundColor="bg-status-red-100"
         color="text-text-error"
-        fontStyle="caption-12-regular"
+        fontStyle="caption-11-semibold"
       />
       <div className="flex items-center justify-between w-full py-1">
         <h3 className="heading-18-semibold text-text-strong line-clamp-2">

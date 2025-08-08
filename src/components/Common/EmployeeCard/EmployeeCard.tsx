@@ -46,7 +46,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
         <div className="pt-2 flex items-center gap-1 flex-wrap">
           <Tag
             value={cardData?.industry}
-            padding="py-[0.188rem] px-[0.313rem]"
+            padding="pt-[0.188rem] pb-[0.25rem] px-[0.375rem]"
             isRounded={true}
             hasCheckIcon={false}
             backgroundColor="bg-status-blue-100"
@@ -55,7 +55,7 @@ const EmployeeCard = ({ cardData, variant }: EmployeeCardProps) => {
           />
           <Tag
             value={cardData?.visa?.replace(/_/g, '-')}
-            padding="py-[0.188rem] px-[0.313rem]"
+            padding="pt-[0.188rem] pb-[0.25rem] px-[0.375rem]"
             isRounded={true}
             hasCheckIcon={false}
             backgroundColor="bg-surface-secondary"
