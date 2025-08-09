@@ -77,9 +77,9 @@ const PostCardList = ({
                 <JobPostingCard.CompanyInfo />
               </div>
               <JobPostingCard.HourlyRate />
-              <p className="pt-[0.125rem] pb-2 caption-12-regular text-text-alternative whitespace-normal">
+              <p className="pt-[0.125rem] pb-2 caption-12-regular text-text-alternative whitespace-normal items-center">
                 <JobPostingCard.Visa />
-                <span className="mx-2 inline-block px-[0.063rem] h-3 bg-border-alternative align-middle"></span>
+                <span className="inline-block w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1 align-middle"></span>
                 <JobPostingCard.WorkDayInfo />
               </p>
               <JobPostingCard.TagList />
