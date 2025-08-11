@@ -71,18 +71,23 @@ const PostCardList = ({
         >
           <JobPostingCard {...value}>
             <JobPostingCard.Box>
-              <div className="flex flex-col gap-1 pb-4">
+              <div className="flex flex-col gap-1">
                 <JobPostingCard.DeadLineTag />
                 <JobPostingCard.Header isBookMarkButton={true} />
-                <JobPostingCard.CompanyInfo />
               </div>
-              <JobPostingCard.HourlyRate />
-              <p className="pt-[0.125rem] pb-2 caption-12-regular text-text-alternative whitespace-normal items-center">
-                <JobPostingCard.Visa />
-                <span className="inline-block w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1 align-middle"></span>
-                <JobPostingCard.WorkDayInfo />
-              </p>
-              <JobPostingCard.TagList />
+              <JobPostingCard.Body>
+                <div className="flex flex-col gap-1.5 pb-1.5">
+                  <JobPostingCard.CompanyInfo />
+                  <div className="flex flex-col">
+                    <JobPostingCard.HourlyRate />
+                    <div className="meta-inline caption-12-regular text-text-alternative">
+                      <span><JobPostingCard.Visa /></span>
+                      <span><JobPostingCard.WorkDayInfo /></span>
+                    </div>
+                  </div>
+                </div>
+                <JobPostingCard.TagList />
+              </JobPostingCard.Body>
             </JobPostingCard.Box>
           </JobPostingCard>
         </article>

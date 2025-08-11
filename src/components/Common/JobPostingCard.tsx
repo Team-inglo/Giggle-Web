@@ -79,11 +79,11 @@ const CardHeader = ({ isBookMarkButton }: { isBookMarkButton?: boolean }) => {
   };
 
   return (
-    <div className="w-full flex justify-between items-start">
-      <h3 className="heading-18-semibold text-text-strong line-clamp-2">
+    <div className="w-full flex justify-between gap-1 items-start">
+      <h3 className="heading-16-semibold text-text-strong line-clamp-2">
         {title}
       </h3>
-      <div className="w-6 h-6 mt-0.5">
+      <div className="w-6 h-6">
         {account_type === UserType.USER && isBookMarkButton && (
           <button onClick={(e) => onClickBookmark(e)}>
             {is_book_marked ? <BookmarkCheckedIcon /> : <BookmarkIcon />}
@@ -98,10 +98,9 @@ const CardCompanyInfo = () => {
   const { company_name, summaries } = useCard();
 
   return (
-    <p className="body-14-regular text-text-normal whitespace-normal flex items-center">
-      {company_name}
-      <span className="w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1"></span>
-      {summaries?.address?.split(' ')?.slice(0, 2)?.join(' ') ?? ''}
+    <p className="meta-inline caption-12-regular text-text-alternative">
+      <span>{company_name}</span>
+      <span>{summaries?.address?.split(' ')?.slice(0, 2)?.join(' ') ?? ''}</span>
     </p>
   );
 };
@@ -111,7 +110,7 @@ const CardHourlyRate = () => {
   const { account_type } = useUserStore();
 
   return (
-    <p className="button-14-semibold text-text-normal">
+    <p className="button-14-semibold text-text-strong">
       {account_type === UserType.OWNER
         ? `시간당 ${formatMoney(hourly_rate)}원`
         : `Hr ${formatMoney(hourly_rate)}KRW`}
@@ -123,7 +122,7 @@ const CardVisa = () => {
   const { tags } = useCard();
 
   return (
-    <span className="body-14-regular text-text-normal whitespace-normal items-center align-middle">
+    <span className="caption-12-regular text-text-alternative whitespace-normal items-center align-middle">
       {tags.visa.sort().join(', ').replace(/_/g, '-')}
     </span>
   );
@@ -139,7 +138,7 @@ const CardWorkDayInfo = () => {
       : summaries.work_period?.replace(/_/g, ' ').toLowerCase();
 
   return (
-    <span className="body-14-regular text-text-normal whitespace-normal items-center align-middle">
+    <span className="caption-12-regular text-text-alternative whitespace-normal items-center align-middle">
       {workDaysPerWeekToText(
         summaries.work_days_per_week as string,
         account_type,
@@ -187,6 +186,34 @@ const CardTagList = () => {
   );
 };
 
+const CardBody = ({ children }: { children: ReactNode }) => {
+  const { representative_img_url } = useCard();
+
+  return (
+    <div className="flex gap-8">
+      <div className="flex-1 flex flex-col gap-1">
+        {children}
+      </div>
+      {representative_img_url && (
+        <div className="flex items-end">
+          <div className="w-24 h-24 rounded-lg overflow-hidden bg-surface-secondary">
+            <img
+              src={representative_img_url}
+              alt="회사 대표 이미지"
+              className="w-full h-full object-cover"
+              loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const JobPostingCard = Object.assign(JobPostingCardProvider, {
   Box: CardBox,
   Header: CardHeader,
@@ -196,4 +223,5 @@ export const JobPostingCard = Object.assign(JobPostingCardProvider, {
   DeadLineTag: CardDeadLineTag,
   WorkDayInfo: CardWorkDayInfo,
   HourlyRate: CardHourlyRate,
+  Body: CardBody,
 });

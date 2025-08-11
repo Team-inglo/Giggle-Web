@@ -47,51 +47,75 @@ const CareerCard = ({ careerData }: { careerData: CareerListItemType }) => {
       className="w-full p-4 bg-surface-base"
       onClick={() => goToCareerDetailPage(careerData)}
     >
-      <Tag
-        value={formatLeftDays()}
-        padding="px-[0.313rem] py-[0.188rem]"
-        isRounded={false}
-        hasCheckIcon={false}
-        backgroundColor="bg-status-red-100"
-        color="text-text-error"
-        fontStyle="caption-11-semibold"
-      />
-      <div className="flex items-center justify-between w-full py-1">
-        <h3 className="heading-18-semibold text-text-strong line-clamp-2">
-          {careerData.title}
-        </h3>
-        <div className="w-6 h-6">
-          {account_type === UserType.USER && (
-            <button onClick={(e) => onClickBookmark(careerData.id, e)}>
-              {careerData.is_book_marked ? (
-                <BookmarkCheckedIcon />
-              ) : (
-                <BookmarkIcon />
+      <div className="flex gap-3">
+        {/* 왼쪽: 이미지 */}
+        {careerData.img_urls && careerData.img_urls.length > 0 && (
+          <div className="w-[8em] h-[6rem] rounded-lg overflow-hidden bg-surface-secondary flex-shrink-0">
+            <img
+              src={careerData.img_urls[0]}
+              alt="커리어 대표 이미지"
+              className="w-full h-full object-cover"
+              loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+        
+        {/* 오른쪽: 텍스트 영역 */}
+        <div className="flex-1 flex flex-col gap-0.5">
+          {/* CareerCardHeader */}
+          <div className="flex justify-between w-full items-start">
+            <h3 className="heading-16-semibold text-text-strong line-clamp-2">
+              {careerData.title}
+            </h3>
+            <div className="w-6 h-6">
+              {account_type === UserType.USER && (
+                <button onClick={(e) => onClickBookmark(careerData.id, e)}>
+                  {careerData.is_book_marked ? (
+                    <BookmarkCheckedIcon />
+                  ) : (
+                    <BookmarkIcon />
+                  )}
+                </button>
               )}
-            </button>
-          )}
+            </div>
+          </div>
+          
+          {/* CareerCardBody + CareerCardFooter */}
+          <div className="flex flex-col gap-0.5">
+            {/* CareerCardBody */}
+            <div className="flex flex-col gap-0">
+              {/* 묶음 1: organizer_name + host_name */}
+              <div className="meta-inline caption-12-regular text-text-normal">
+                {careerData.organizer_name && <span>{careerData.organizer_name}</span>}
+                {careerData.host_name && <span>{careerData.host_name}</span>}
+              </div>
+              
+              {/* 묶음 2: recruitment dates + visa */}
+              <div className="meta-inline caption-12-regular text-text-alternative">
+                {careerData.recruitment_start_date && careerData.recruitment_end_date && (
+                  <span>{careerData.recruitment_start_date} ~ {careerData.recruitment_end_date}</span>
+                )}
+                {careerData.visa && careerData.visa.length > 0 && (
+                  <span>{careerData.visa.join(', ').replace(/_/g, '-')}</span>
+                )}
+              </div>
+            </div>
+            
+            {/* CareerCardFooter */}
+            <div className="meta-inline caption-11-regular text-text-alternative">
+              {careerData.career_category && (
+                <span>{CAREER_CATEGORY[careerData.career_category]}</span>
+              )}
+              {careerData.created_at && (
+                <span>{calculateTimeAgo(careerData.created_at, account_type)}</span>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-      <p className="pb-4 whitespace-normal caption-12-regular text-text-alternative flex items-center">
-        {careerData.career_category &&
-          CAREER_CATEGORY[careerData.career_category]}
-        <span className="w-0.5 h-0.5 bg-neutral-500 rounded-full mx-1"></span>
-        {careerData.visa?.join(', ')?.replace(/_/g, '-')}
-      </p>
-      <p className="pb-1 whitespace-normal button-14-semibold text-text-strong flex items-center">
-        {careerData.organizer_name}
-        <span className="w-0.5 h-0.5 bg-neutral-600 rounded-full mx-1"></span>
-        {careerData.host_name}
-      </p>
-      <div className="flex items-center justify-between w-full">
-        <p className="caption-12-regular text-text-alternative">
-          {careerData.recruitment_start_date} ~{' '}
-          {careerData.recruitment_end_date}
-        </p>
-        <p className="caption-12-regular text-text-alternative">
-          {careerData.created_at &&
-            calculateTimeAgo(careerData.created_at, account_type)}
-        </p>
       </div>
     </article>
   );
