@@ -1,0 +1,70 @@
+/* ==========================================================================
+   meta-inline: A · B · C … (길어지면 자연스럽게 줄바꿈되는 인라인 메타 라인)
+   - 사용 규칙:
+     1) 부모 컨테이너에 .meta-inline
+     2) 자식은 <span> 항목들 (2개 이상도 자동 지원)
+     3) 두 번째 이후 <span> 앞에 dot divider 자동 삽입
+     4) 인라인 흐름 → 래핑 시 dot이 다음 항목과 함께 이동(고아 dot 방지)
+     5) 한글 줄바꿈 품질: word-break: keep-all + break-words
+     6) 빈 값(span:empty)은 자동 숨김 → dot도 함께 사라짐
+   - 옵션(짧은 네이밍):
+     * 색 톤:   .meta-inline--weak / (기본) / .meta-inline--strong
+     * 구분자:  .meta-inline--mid(·) / .meta-inline--pipe(|)
+     * 간 격:   .meta-inline--gap-1 / .meta-inline--gap-2
+     * 점 크기: .meta-inline--size-xs / .meta-inline--size-s
+   ========================================================================== */
+
+   @layer components {
+    /* 기본 라인 */
+    .meta-inline {
+      @apply whitespace-normal break-words;
+      /* Tailwind 유틸에 없는 속성은 직접 지정 */
+      word-break: keep-all;
+    }
+  
+    /* 자식 항목: 인라인 흐름 유지 */
+    .meta-inline > span {
+      @apply inline align-baseline;
+    }
+  
+    /* 두 번째 이후 항목 앞에 원형 dot 삽입 (기본 톤: neutral-500) */
+    .meta-inline > span + span::before {
+      content: '';
+      @apply inline-block w-0.5 h-0.5 rounded-full mx-1 align-middle bg-neutral-500;
+    }
+  
+    /* 빈 값(span 내용 없음) → 자동 숨김 (dot도 함께 사라짐)
+       - React에선 가능하면 {value || null}로 렌더 권장 */
+    .meta-inline > span:empty {
+      display: none;
+    }
+  
+    /* ── 옵션 ───────────────────────────────────────────────────────────── */
+  
+    /* 톤 변형 */
+    .meta-inline--weak   > span + span::before { @apply bg-neutral-400; }
+    .meta-inline--strong > span + span::before { @apply bg-neutral-600; }
+  
+    /* 구분자 타입 전환: dot(원형) → middot(·) / pipe(|) */
+    .meta-inline--mid > span + span::before {
+      content: '·';
+      @apply mx-1 align-middle;
+      width: auto; height: auto; border-radius: 0; background: transparent;
+    }
+    .meta-inline--pipe > span + span::before {
+      content: '|';
+      @apply mx-1 align-middle;
+      width: auto; height: auto; border-radius: 0; background: transparent;
+    }
+  
+    /* 간격 변형 */
+    .meta-inline--gap-md > span + span::before { @apply mx-1.5; }
+    .meta-inline--gap-lg > span + span::before { @apply mx-2; }
+  
+    /* 점 크기 변형 (dot 모드일 때) */
+    .meta-inline--size-xs > span + span::before { @apply w-0.5 h-0.5; } /* 2px */
+    .meta-inline--size-s  > span + span::before { @apply w-1 h-1; }     /* 4px */
+  
+    /* (선택) 한 줄 고정 + 말줄임 (필요한 곳에서만 사용) */
+    .meta-inline--nowrap { @apply whitespace-nowrap overflow-hidden text-ellipsis; }
+  }
