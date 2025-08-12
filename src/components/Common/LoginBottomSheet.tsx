@@ -2,6 +2,7 @@ import SmallCheckIcon from '@/assets/icons/SmallCheckIcon.svg?react';
 import Button from '@/components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import { BottomSheet } from '@/components/Common/BottomSheet';
+import Icon from '@/components/Common/Icon';
 
 type LoginBottomSheetPropsType = {
   isShowBottomsheet: boolean;
@@ -23,19 +24,19 @@ const LoginBottomSheet = ({
       <BottomSheet.Header title="You’re not logged in. Sign in for a better experience!" />
       <BottomSheet.Content>
         <div className="flex items-center gap-[0.25rem] pb-[0.25rem]">
-          <SmallCheckIcon />
+          <Icon icon={SmallCheckIcon} fillColor="text-text-strong" />
           <p className="caption-12-regular text-text-normal">
             continue exploring all our services
           </p>
         </div>
         <div className="flex items-center gap-[0.25rem] pb-[0.25rem]">
-          <SmallCheckIcon />
+          <Icon icon={SmallCheckIcon} fillColor="text-text-strong" />
           <p className="caption-12-regular text-text-normal">
             save your favorite jobs and track your applications!
           </p>
         </div>
         <div className="flex items-center gap-[0.25rem] pb-[0.75rem]">
-          <SmallCheckIcon />
+          <Icon icon={SmallCheckIcon} fillColor="text-text-strong" />
           <p className="caption-12-regular text-text-normal">
             access personalized recommendations
           </p>

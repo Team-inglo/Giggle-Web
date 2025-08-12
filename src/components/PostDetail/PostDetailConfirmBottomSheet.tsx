@@ -2,6 +2,7 @@ import SmallCheckIcon from '@/assets/icons/SmallCheckIcon.svg?react';
 import Button from '@/components/Common/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BottomSheet } from '@/components/Common/BottomSheet';
+import Icon from '@/components/Common/Icon';
 
 type PostDetailConfirmBottomSheetType = {
   isShowBottomsheet: boolean;
@@ -29,13 +30,13 @@ const PostDetailConfirmBottomSheet = ({
           like to proceed?
         </p>
         <div className="flex items-center gap-[0.25rem] pb-[0.25rem]">
-          <SmallCheckIcon />
+          <Icon icon={SmallCheckIcon} fillColor="text-text-strong" />
           <p className="caption-12-regular text-text-normal">
             You can update or create a new resume.
           </p>
         </div>
         <div className="flex items-center gap-[0.25rem] pb-[0.75rem]">
-          <SmallCheckIcon />
+          <Icon icon={SmallCheckIcon} fillColor="text-text-strong" />
           <p className="caption-12-regular text-text-normal">
             Check out recommended job postings on the main page
           </p>

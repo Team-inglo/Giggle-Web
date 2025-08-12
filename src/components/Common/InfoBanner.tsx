@@ -1,7 +1,7 @@
 import Icon from '@/components/Common/Icon';
 import InfoIcon from '@/assets/icons/InfoCircle.svg?react';
 import WarningIcon from '@/assets/icons/Warning.svg?react';
-import CheckIcon from '@/assets/icons/BottomSheetCheckIcon.svg?react';
+import CheckIcon from '@/assets/icons/SmallCheckIcon.svg?react';
 import { InfoBannerSize, InfoBannerState } from '@/types/common/infoBanner';
 
 const STATE_PROPERTIES: Record<
