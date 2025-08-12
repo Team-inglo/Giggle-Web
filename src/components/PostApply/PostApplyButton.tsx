@@ -64,10 +64,10 @@ const PostApplyButton = () => {
       </BottomButtonPanel>
       {isComplete && (
         <CompleteButtonModal
+          pageTitle="Application Completed"
           title="Application Completed"
           content="You can check the status of your documents"
           buttonContent="Check Now"
-          // TODO: 추후에 지원상태 - 상세 페이지로 이동시키기
           onClick={() => navigate(`/application/${currentPostId}`)}
         />
       )}
