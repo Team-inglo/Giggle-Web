@@ -381,47 +381,55 @@ export const POST_REQUIRED_FIELDS = {
 };
 
 // 시간제 근로 허가서 폼 필드 정의
-export const PartTimePermitFormFields: PartTimePermitFormField[] = [
-  {
-    type: 'text',
-    name: PartTimePermitFormProperty.FIRST_NAME,
-    title: PartTimePermitFormInfo[PartTimePermitFormProperty.FIRST_NAME].name,
-    placeholder: 'First Name',
-  },
-  {
-    type: 'text',
-    name: PartTimePermitFormProperty.LAST_NAME,
-    title: PartTimePermitFormInfo[PartTimePermitFormProperty.LAST_NAME].name,
-    placeholder: 'Last Name',
-  },
-  {
-    type: 'phone',
-    name: 'phone',
-    title: PartTimePermitFormInfo[PartTimePermitFormProperty.PHONE_NUMBER].name,
-    placeholder: '', // PhoneNumberInput에서 자체적으로 처리
-  },
-  {
-    type: 'text',
-    name: PartTimePermitFormProperty.MAJOR,
-    title: PartTimePermitFormInfo[PartTimePermitFormProperty.MAJOR].name,
-    placeholder: 'Department (major)',
-  },
-  {
-    type: 'dropdown',
-    name: PartTimePermitFormProperty.TERM_OF_COMPLETION,
-    title:
-      PartTimePermitFormInfo[PartTimePermitFormProperty.TERM_OF_COMPLETION]
-        .name,
-    placeholder: 'Term of completion',
-    options: Array.from({ length: 12 }, (_, i) => String(i + 1)),
-  },
-  {
-    type: 'text',
-    name: PartTimePermitFormProperty.EMAIL,
-    title: PartTimePermitFormInfo[PartTimePermitFormProperty.EMAIL].name,
-    placeholder: 'email@email.com',
-  },
-];
+export const PartTimePermitFormFields: Record<
+  string,
+  PartTimePermitFormField[]
+> = {
+  step1: [
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.FIRST_NAME,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.FIRST_NAME].name,
+      placeholder: 'First Name',
+    },
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.LAST_NAME,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.LAST_NAME].name,
+      placeholder: 'Last Name',
+    },
+    {
+      type: 'phone',
+      name: 'phone',
+      title:
+        PartTimePermitFormInfo[PartTimePermitFormProperty.PHONE_NUMBER].name,
+      placeholder: '', // PhoneNumberInput에서 자체적으로 처리
+    },
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.EMAIL,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.EMAIL].name,
+      placeholder: 'email@email.com',
+    },
+  ],
+  step2: [
+    {
+      type: 'text',
+      name: PartTimePermitFormProperty.MAJOR,
+      title: PartTimePermitFormInfo[PartTimePermitFormProperty.MAJOR].name,
+      placeholder: 'Department (major)',
+    },
+    {
+      type: 'dropdown',
+      name: PartTimePermitFormProperty.TERM_OF_COMPLETION,
+      title:
+        PartTimePermitFormInfo[PartTimePermitFormProperty.TERM_OF_COMPLETION]
+          .name,
+      placeholder: 'Term of completion',
+      options: Array.from({ length: 12 }, (_, i) => String(i + 1)),
+    },
+  ],
+};
 
 // 표준근로계약서 폼 필드 타입 정의
 export type LaborContractFormField = {

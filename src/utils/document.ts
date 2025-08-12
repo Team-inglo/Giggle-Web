@@ -35,19 +35,34 @@ const isValidTermOfCompletion = (term: number): boolean => {
 // (유학생) 시간제 근로 허가서 유효성 검사 함수
 export const validatePartTimePermit = (
   data: PartTimePermitFormRequest,
+  step: string,
 ): boolean => {
   // 필수 입력 항목 체크(이름, 성, 전화번호, 이메일, 이수학기, 전화번호)
-  if (
-    hasStringValue(data.first_name) &&
-    hasStringValue(data.last_name) &&
-    data.phone &&
-    isEmailValid(data.email) &&
-    isValidPhoneNumber(data.phone) &&
-    isValidTermOfCompletion(data.term_of_completion)
-  ) {
-    return true;
+  switch (step) {
+    case 'step1':
+      return (
+        hasStringValue(data.first_name) &&
+        hasStringValue(data.last_name) &&
+        isValidPhoneNumber(data.phone as Phone) &&
+        isEmailValid(data.email)
+      );
+    case 'step2':
+      return (
+        hasStringValue(data.major) &&
+        isValidTermOfCompletion(data.term_of_completion)
+      );
+    case 'step3':
+      return (
+        hasStringValue(data.first_name) &&
+        hasStringValue(data.last_name) &&
+        isValidPhoneNumber(data.phone as Phone) &&
+        isEmailValid(data.email) &&
+        hasStringValue(data.major) &&
+        isValidTermOfCompletion(data.term_of_completion)
+      );
+    default:
+      return false;
   }
-  return false;
 };
 
 // 근로계약서 유효성 검사 함수

@@ -57,7 +57,6 @@ export const useGetDocumentsEmployer = (id: number) => {
 
 // 시간제취업허가서 작성 api 통신 커스텀 훅
 export const usePostPartTimeEmployPermit = (
-  id: number,
   options?: UseMutationOptions<
     RESTYPE<{ id: number }>,
     Error,
@@ -67,11 +66,6 @@ export const usePostPartTimeEmployPermit = (
   const navigate = useNavigate();
   return useMutation({
     mutationFn: postPartTimeEmployPermit,
-    onSuccess: () => {
-      smartNavigate(navigate, `/application-documents/${id}`, {
-        forceSkip: true,
-      });
-    },
     onError: () =>
       smartNavigate(navigate, '/write-documents', {
         forceSkip: true,
@@ -86,7 +80,6 @@ export const usePostPartTimeEmployPermit = (
 // 8.10 (유학생)시간제취업허가서 수정 api 통신 커스텀 훅
 export const usePutPartTimeEmployPermit = (
   id: number,
-  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
@@ -96,13 +89,8 @@ export const usePutPartTimeEmployPermit = (
   const navigate = useNavigate();
   return useMutation({
     mutationFn: putPartTimeEmployPermit,
-    onSuccess: () => {
-      smartNavigate(navigate, `/application-documents/${userOwnerPostingId}`, {
-        forceSkip: true,
-      });
-    },
     onError: () =>
-      smartNavigate(navigate, `/write-documents${id}`, {
+      smartNavigate(navigate, `/write-documents/${id}`, {
         forceSkip: true,
         state: { type: DocumentType.PART_TIME_PERMIT, isEdit: true },
       }),
@@ -121,7 +109,6 @@ export const usePutPartTimeEmployPermitEmployer = (
   >,
 ) => {
   const navigate = useNavigate();
-  console.log('userOwnerPostingId', userOwnerPostingId);
   return useMutation({
     mutationFn: putPartTimeEmployPermitEmployer,
     onSuccess: () => {
@@ -186,7 +173,7 @@ export const usePutStandardLaborContracts = (
       });
     },
     onError: () =>
-      smartNavigate(navigate, `/write-documents${id}`, {
+      smartNavigate(navigate, `/write-documents/${id}`, {
         forceSkip: true,
         state: {
           type: DocumentType.LABOR_CONTRACT,
@@ -279,7 +266,7 @@ export const usePutIntegratedApplicants = (
       });
     },
     onError: () =>
-      smartNavigate(navigate, `/write-documents${id}`, {
+      smartNavigate(navigate, `/write-documents/${id}`, {
         forceSkip: true,
         state: {
           type: DocumentType.INTEGRATED_APPLICATION,
