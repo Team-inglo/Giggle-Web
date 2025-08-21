@@ -22,6 +22,8 @@ import { useUserStore } from '@/store/user';
 import { UserType } from '@/constants/user';
 import { Fragment } from 'react/jsx-runtime';
 import { useMemo, useCallback } from 'react';
+import InfoBanner from '@/components/Common/InfoBanner';
+import { InfoBannerSize, InfoBannerState } from '@/types/common/infoBanner';
 
 const EmployerInfoSection = ({
   employ,
@@ -37,7 +39,7 @@ const EmployerInfoSection = ({
   const renderTitle = useCallback(
     (key: string) => (
       <div className="w-full flex flex-col gap-1">
-        <p className="button-14-semibold text-text-alternative">
+        <p className="caption-12-semibold text-text-assistive">
           {type === DocumentType.PART_TIME_PERMIT &&
             PartTimeEmployPermitEmployerInfo[key as EmployerInfoProperty][
               language
@@ -54,7 +56,7 @@ const EmployerInfoSection = ({
 
   const DefaultValueRenderer = useCallback(
     ({ value }: { value: unknown }) => (
-      <div className="w-full self-stretch flex items-start justify-start body-14-regular text-primary-dark">
+      <div className="w-full self-stretch flex items-start justify-start body-14-medium text-text-strong">
         {propertyToString(String(value)) === 'Null'
           ? 'none'
           : propertyToString(String(value))}
@@ -84,13 +86,13 @@ const EmployerInfoSection = ({
           );
         case LaborContractEmployerInfoProperty.WEEKLY_LAST_DAYS:
           return (
-            <div className="w-full self-stretch flex items-start justify-start body-14-regular text-primary-dark">
+            <div className="w-full self-stretch flex items-start justify-start body-14-medium text-text-strong">
               {arrayToString(value as string[])}
             </div>
           );
         case LaborContractEmployerInfoProperty.WORK_DAY_TIME_LIST:
           return (
-            <div className="w-full self-stretch flex items-start justify-start body-14-regular text-primary-dark">
+            <div className="w-full self-stretch flex items-start justify-start body-14-medium text-text-strong">
               <Tag
                 value={workDayTimeToString(value as WorkDayTime[])}
                 padding="py-[4px] px-[12px]"
@@ -125,11 +127,12 @@ const EmployerInfoSection = ({
   return (
     <div className="w-full relative rounded-lg flex flex-col items center justify-center p-4 text-left caption-12-regular bg-white">
       <div className="w-full self-stretch flex flex-col items-start justify-center">
-        <section className="w-full flex flex-col gap-1 pb-4 border-b border-border-alternative">
-          <p className="w-full heading-18-semibold text-text-strong">
-            {isEmployer ? '고용주 정보 📋' : 'Employer Information 📋'}
-          </p>
-        </section>
+        <InfoBanner
+          size={InfoBannerSize.MD}
+          hasIcon
+          state={InfoBannerState.INFO}
+          text="Please double-check your work conditions."
+        />
         <div className="w-full flex flex-col gap-3 mt-4">{employEntries}</div>
       </div>
     </div>
