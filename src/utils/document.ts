@@ -68,20 +68,23 @@ export const validatePartTimePermit = (
 // 근로계약서 유효성 검사 함수
 export const validateLaborContract = (
   data: LaborContractEmployeeInfo,
+  step: string,
 ): boolean => {
   // 필수 입력 항목 체크(이름, 성, 전화번호, 주소, 서명)
-  if (
-    hasStringValue(data.first_name) &&
-    hasStringValue(data.last_name) &&
-    data.phone &&
-    isValidPhoneNumber(data.phone) &&
-    data.address.address_detail &&
-    data.address.address_detail.length <= 50 &&
-    data.signature_base64
-  ) {
-    return true;
+  switch (step) {
+    case 'step1':
+      return (
+        hasStringValue(data.first_name) &&
+        hasStringValue(data.last_name) &&
+        isValidPhoneNumber(data.phone as Phone) &&
+        hasStringValue(data.address.address_detail ?? '') &&
+        (data.address.address_detail?.length ?? 0) <= 50
+      );
+    case 'step2':
+      return hasStringValue(data.signature_base64);
+    default:
+      return false;
   }
-  return false;
 };
 
 export const workDayTimeToString = (workDayTimes: WorkDayTime[]): string => {

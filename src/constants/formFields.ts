@@ -454,51 +454,60 @@ export type LaborContractFormField = {
 };
 
 // 표준근로계약서 폼 필드 정의
-export const LaborContractFormFields: LaborContractFormField[] = [
+export const LaborContractFormFields: Record<string, LaborContractFormField[]> =
   {
-    type: 'text',
-    name: LaborContractEmployeeInfoProperty.FIRST_NAME,
-    title:
-      LaborContractEmployeeFormInfo[
-        LaborContractEmployeeInfoProperty.FIRST_NAME
-      ].name,
-    placeholder: 'First Name',
-  },
-  {
-    type: 'text',
-    name: LaborContractEmployeeInfoProperty.LAST_NAME,
-    title:
-      LaborContractEmployeeFormInfo[LaborContractEmployeeInfoProperty.LAST_NAME]
-        .name,
-    placeholder: 'Last Name',
-  },
-  {
-    type: 'phone',
-    name: 'phone',
-    title:
-      LaborContractEmployeeFormInfo[
-        LaborContractEmployeeInfoProperty.PHONE_NUMBER
-      ].name,
-    placeholder: '', // PhoneNumberInput에서 자체적으로 처리
-  },
-  {
-    type: 'address',
-    name: LaborContractEmployeeInfoProperty.ADDRESS,
-    title:
-      LaborContractEmployeeFormInfo[LaborContractEmployeeInfoProperty.ADDRESS]
-        .name,
-    placeholder: 'Search Your Address',
-  },
-  {
-    type: 'signature',
-    name: LaborContractEmployeeInfoProperty.SIGNATURE_BASE64,
-    title:
-      LaborContractEmployeeFormInfo[
-        LaborContractEmployeeInfoProperty.SIGNATURE_BASE64
-      ].name,
-    placeholder: 'Signature',
-  },
-];
+    step1: [
+      {
+        type: 'text',
+        name: LaborContractEmployeeInfoProperty.FIRST_NAME,
+        title:
+          LaborContractEmployeeFormInfo[
+            LaborContractEmployeeInfoProperty.FIRST_NAME
+          ].name,
+        placeholder: 'First Name',
+      },
+      {
+        type: 'text',
+        name: LaborContractEmployeeInfoProperty.LAST_NAME,
+        title:
+          LaborContractEmployeeFormInfo[
+            LaborContractEmployeeInfoProperty.LAST_NAME
+          ].name,
+        placeholder: 'Last Name',
+      },
+
+      {
+        type: 'address',
+        name: LaborContractEmployeeInfoProperty.ADDRESS,
+        title:
+          LaborContractEmployeeFormInfo[
+            LaborContractEmployeeInfoProperty.ADDRESS
+          ].name,
+        placeholder: 'Search Your Address',
+      },
+      {
+        type: 'phone',
+        name: 'phone',
+        title:
+          LaborContractEmployeeFormInfo[
+            LaborContractEmployeeInfoProperty.PHONE_NUMBER
+          ].name,
+        placeholder: '', // PhoneNumberInput에서 자체적으로 처리
+      },
+    ],
+    step2: [],
+    step3: [
+      {
+        type: 'signature',
+        name: LaborContractEmployeeInfoProperty.SIGNATURE_BASE64,
+        title:
+          LaborContractEmployeeFormInfo[
+            LaborContractEmployeeInfoProperty.SIGNATURE_BASE64
+          ].name,
+        placeholder: 'Signature',
+      },
+    ],
+  };
 
 // 통합신청서 필수 검증 필드 목록
 export const REQUIRED_FIELDS: Array<keyof IntegratedApplicationData> = [
