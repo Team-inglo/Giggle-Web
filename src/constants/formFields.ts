@@ -433,12 +433,14 @@ export const PartTimePermitFormFields: Record<
 
 // 표준근로계약서 폼 필드 타입 정의
 export type LaborContractFormField = {
-  type: 'text' | 'phone' | 'address' | 'signature';
+  type: 'text' | 'phone' | 'address' | 'signature' | 'checkbox';
   name: keyof LaborContractEmployeeInfo | 'phone';
   title: string;
   placeholder: string;
   options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   optionsWithIcon?: SelectOption[];
+  checkboxOptions?: CheckboxOption[];
+  variant?: 'checkbox' | 'button';
   format?: string;
   description?: string;
   isUnit?: boolean;
@@ -510,22 +512,16 @@ export const LaborContractFormFields: Record<string, LaborContractFormField[]> =
   };
 
 // 통합신청서 필수 검증 필드 목록
-export const REQUIRED_FIELDS: Array<keyof IntegratedApplicationData> = [
-  'first_name',
-  'last_name',
-  'tele_phone',
-  'cell_phone',
-  'school_phone',
-  'nationality',
-  'new_work_place_phone',
-  'school_name',
-  'new_work_place_registration_number',
-  'annual_income_amount',
-  'occupation',
-  'email',
-  'address',
-  'signature_base64',
-];
+export const REQUIRED_FIELDS: Record<
+  string,
+  Array<keyof IntegratedApplicationData>
+> = {
+  step1: ['first_name', 'last_name', 'nationality', 'birth', 'gender'],
+  step2: ['address', 'tele_phone', 'cell_phone', 'email'],
+  step3: ['school_name', 'school_phone'],
+  step4: ['new_work_place_phone', 'new_work_place_registration_number'],
+  step5: ['annual_income_amount', 'occupation', 'signature_base64'],
+};
 
 // 통합신청서 폼 필드 타입 정의
 export type IntegratedApplicationFormField = {
@@ -536,13 +532,17 @@ export type IntegratedApplicationFormField = {
     | 'dropdown'
     | 'radio'
     | 'signature'
-    | 'school_name';
+    | 'school_name'
+    | 'checkbox'
+    | 'radio';
   name: keyof IntegratedApplicationData;
   title: string;
   placeholder: string;
   description?: string;
   options?: string[] | Record<string, { name: string; [key: string]: unknown }>;
   optionsWithIcon?: SelectOption[];
+  checkboxOptions?: CheckboxOption[];
+  variant?: 'checkbox' | 'button';
   format?: string;
   transformer?: ValueTransformer;
   isRequired?: boolean;
@@ -559,8 +559,11 @@ export type IntegratedApplicationFormField = {
 };
 
 // 통합신청서 폼 필드 정의
-export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
-  [
+export const IntegratedApplicationFormFields: Record<
+  string,
+  IntegratedApplicationFormField[]
+> = {
+  step1: [
     {
       type: 'text',
       name: IntegratedApplicationField.FIRST_NAME,
@@ -595,7 +598,7 @@ export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
           .name,
 
       placeholder: 'Gender',
-      options: ['Male', 'Female'],
+      options: ['MALE', 'FEMALE'],
       transformer: transformers.gender,
     },
     {
@@ -607,6 +610,16 @@ export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
         ].name,
       placeholder: 'Nationality',
       options: Nationalities.map((nationality) => nationality.en),
+    },
+  ],
+  step2: [
+    {
+      type: 'address',
+      name: IntegratedApplicationField.ADDRESS,
+      title:
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.ADDRESS]
+          .name,
+      placeholder: 'Address in Korea',
     },
     {
       type: 'phone',
@@ -629,12 +642,33 @@ export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
       format: 'numbers-only',
     },
     {
-      type: 'address',
-      name: IntegratedApplicationField.ADDRESS,
+      type: 'text',
+      name: IntegratedApplicationField.EMAIL,
       title:
-        IntegratedApplicationPropertyInfo[IntegratedApplicationField.ADDRESS]
+        IntegratedApplicationPropertyInfo[IntegratedApplicationField.EMAIL]
           .name,
-      placeholder: 'Address in Korea',
+      placeholder: 'Email',
+    },
+  ],
+  step3: [
+    {
+      type: 'school_name',
+      name: IntegratedApplicationField.SCHOOL_NAME,
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.SCHOOL_NAME
+        ].name,
+      placeholder: 'Name Of School',
+    },
+    {
+      type: 'phone',
+      name: 'school_phone',
+      title:
+        IntegratedApplicationPropertyInfo[
+          IntegratedApplicationField.SCHOOL_PHONE_NUMBER
+        ].name,
+      placeholder: 'Phone Number of School',
+      format: 'numbers-only',
     },
     {
       type: 'radio',
@@ -660,25 +694,8 @@ export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
       description: 'University is an education office accredited school.',
       transformer: transformers.boolean('Accredited by Education Office'),
     },
-    {
-      type: 'school_name',
-      name: IntegratedApplicationField.SCHOOL_NAME,
-      title:
-        IntegratedApplicationPropertyInfo[
-          IntegratedApplicationField.SCHOOL_NAME
-        ].name,
-      placeholder: 'Name Of School',
-    },
-    {
-      type: 'phone',
-      name: 'school_phone',
-      title:
-        IntegratedApplicationPropertyInfo[
-          IntegratedApplicationField.SCHOOL_PHONE_NUMBER
-        ].name,
-      placeholder: 'Phone Number of School',
-      format: 'numbers-only',
-    },
+  ],
+  step4: [
     {
       type: 'text',
       name: IntegratedApplicationField.NEW_WORK_PLACE_NAME,
@@ -708,6 +725,8 @@ export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
       placeholder: 'Phone Number Of New Workplace',
       format: 'numbers-only',
     },
+  ],
+  step5: [
     {
       type: 'text',
       name: IntegratedApplicationField.ANNUAL_INCOME_AMOUNT,
@@ -728,14 +747,6 @@ export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
       description: `If you are a college student, please write 'student'`,
     },
     {
-      type: 'text',
-      name: IntegratedApplicationField.EMAIL,
-      title:
-        IntegratedApplicationPropertyInfo[IntegratedApplicationField.EMAIL]
-          .name,
-      placeholder: 'Email',
-    },
-    {
       type: 'signature',
       name: IntegratedApplicationField.SIGNATURE_BASE64,
       title:
@@ -744,7 +755,8 @@ export const IntegratedApplicationFormFields: IntegratedApplicationFormField[] =
         ].name,
       placeholder: 'Signature',
     },
-  ];
+  ],
+};
 
 // 시간제 근로 허가서 폼 필드 타입 정의
 export type PartTimePermitFormField = {

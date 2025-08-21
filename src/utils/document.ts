@@ -10,10 +10,11 @@ import {
 import { extractNumbersAsNumber } from '@/utils/post';
 import { DropdownOption } from '@/components/Document/write/input/DropdownInput';
 import { MINIMUM_WAGE } from '@/constants/wage';
+import { validateDateInput } from './information';
 
 // string data의 공백 여부를 확인하는 함수
 const hasStringValue = (value: string): boolean => {
-  return value.trim().length > 0;
+  return !!value && value.trim().length > 0;
 };
 
 // 이메일 유효성 검사 함수
@@ -244,10 +245,11 @@ export const parseStringToSafeNumber = (value: string): number => {
 // 통합신청서 유효성 검사
 export const validateIntegratedApplication = (
   data: IntegratedApplicationData,
+  step: string,
 ): boolean => {
   // 주소 검사
   const isAddressValid =
-    !!data.address.region_1depth_name &&
+    !!data.address?.region_1depth_name &&
     data.address.region_1depth_name !== '' &&
     !!data.address.address_detail &&
     data.address.address_detail.length <= 50;
@@ -257,41 +259,45 @@ export const validateIntegratedApplication = (
 
   // 이메일 검사
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  if (!emailRegex.test(data.email)) {
-    return false;
-  }
-
   // 사업자등록번호 유효성 검사 (000/00/00000) 양식
   const companyRegistrationNumPattern = /^\d{3}\/\d{2}\/\d{5}$/;
-  if (
-    !data.new_work_place_registration_number ||
-    !companyRegistrationNumPattern.test(data.new_work_place_registration_number)
-  ) {
-    return false;
+
+  switch (step) {
+    case 'step1':
+      return (
+        hasStringValue(data.first_name) &&
+        hasStringValue(data.last_name) &&
+        hasStringValue(data.nationality) &&
+        validateDateInput(data.birth) &&
+        hasStringValue(data.gender)
+      );
+    case 'step2':
+      return (
+        isAddressValid &&
+        isValidPhoneNumber(data.tele_phone as Phone) &&
+        isValidPhoneNumber(data.cell_phone as Phone) &&
+        emailRegex.test(data.email)
+      );
+    case 'step3':
+      return (
+        !!data.school_name && isValidPhoneNumber(data.school_phone as Phone)
+      );
+    case 'step4':
+      return (
+        isValidPhoneNumber(data.new_work_place_phone as Phone) &&
+        companyRegistrationNumPattern.test(
+          data.new_work_place_registration_number,
+        )
+      );
+    case 'step5':
+      return (
+        isIncomeValid &&
+        hasStringValue(data.occupation) &&
+        hasStringValue(data.signature_base64)
+      );
+    default:
+      return false;
   }
-
-  // 전화번호 필드들 검사
-  const isPhoneValid =
-    isValidPhoneNumber(data.tele_phone as Phone) &&
-    isValidPhoneNumber(data.cell_phone as Phone) &&
-    isValidPhoneNumber(data.school_phone as Phone) &&
-    isValidPhoneNumber(data.new_work_place_phone as Phone);
-  // 나머지 필드 검사
-  const otherFieldsValid = Object.entries(data).every(([key, value]) => {
-    // 앞서 검사한 필드들은 스킵
-    if (
-      key === 'address' ||
-      key === 'annual_income_amount' ||
-      key === 'new_work_place_registration_number' ||
-      key === 'email'
-    ) {
-      return true;
-    }
-    // 나머지 필드는 빈 문자열이 아닌지 확인
-    return value !== '';
-  });
-
-  return isAddressValid && isIncomeValid && isPhoneValid && otherFieldsValid;
 };
 
 // 입력 형식 처리를 위한 유틸리티 함수
