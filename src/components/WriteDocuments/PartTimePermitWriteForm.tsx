@@ -219,18 +219,12 @@ const PartTimePermitWriteForm = ({
   const { mutate: postDocument, isPending: postPending } =
     usePostPartTimeEmployPermit({
       onSuccess: () => {
-        smartNavigate(navigate, `/application-documents/${userOwnerPostId}`, {
-          forceSkip: true,
-        });
         setIsComplete(true);
       },
     }); // 작성된 문서 제출 훅
   const { mutate: updateDocument, isPending: updatePending } =
     usePutPartTimeEmployPermit(Number(currentDocumentId), {
       onSuccess: () => {
-        smartNavigate(navigate, `/application-documents/${userOwnerPostId}`, {
-          forceSkip: true,
-        });
         setIsComplete(true);
       },
     }); // 수정된 문서 제출 훅

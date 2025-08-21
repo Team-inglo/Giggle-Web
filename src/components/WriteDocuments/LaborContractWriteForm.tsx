@@ -17,7 +17,7 @@ import {
   usePutStandardLaborContracts,
 } from '@/hooks/api/useDocument';
 import InputLayout from '@/components/WorkExperience/InputLayout';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import ValidatedSubmitButton from '@/components/Document/write/ValidatedSubmitButton';
 import { renderField } from '@/components/Document/write/renderField';
@@ -27,9 +27,11 @@ import Icon from '@/components/Common/Icon';
 import DocumentIcon from '@/assets/icons/Image Container.svg?react';
 import InfoBanner from '@/components/Common/InfoBanner';
 import { InfoBannerSize, InfoBannerState } from '@/types/common/infoBanner';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ProgressStepper from '@/components/Common/ProgressStepper';
 import PageTitle from '@/components/Common/PageTitle';
+import CompleteButtonModal from '@/components/Common/CompleteButtonModal';
+import { smartNavigate } from '@/utils/application';
 
 type LaborContractFormProps = {
   document?: LaborContractDataResponse;
@@ -183,7 +185,9 @@ const LaborContractWriteForm = ({
   isEdit,
   userOwnerPostId,
 }: LaborContractFormProps) => {
+  const navigate = useNavigate();
   const currentDocumentId = useParams().id;
+  const [isComplete, setIsComplete] = useState(false);
   const [step, setStep] = useState(1);
 
   // useForm 훅 사용
@@ -206,25 +210,36 @@ const LaborContractWriteForm = ({
   }
 
   const { mutate: postDocument, isPending: postPending } =
-    usePostStandardLaborContracts(Number(userOwnerPostId)); // 작성된 근로계약서 제출 훅
+    usePostStandardLaborContracts({
+      onSuccess: () => {
+        setIsComplete(true);
+      },
+    }); // 작성된 근로계약서 제출 훅
   const { mutate: updateDocument, isPending: updatePending } =
-    usePutStandardLaborContracts(Number(currentDocumentId), userOwnerPostId); // 수정된 근로계약서 제출 훅
+    usePutStandardLaborContracts(Number(currentDocumentId), {
+      onSuccess: () => {
+        setIsComplete(true);
+      },
+    }); // 수정된 근로계약서 제출 훅
 
   // 문서 작성 완료 핸들러 함수
-  const handleNext = (data: LaborContractEmployeeInfo) => {
-    const finalDocument = prepareDocumentForSubmission(data);
+  const handleNext = useCallback(
+    (data: LaborContractEmployeeInfo) => {
+      const finalDocument = prepareDocumentForSubmission(data);
 
-    const payload = {
-      id: Number(isEdit ? currentDocumentId : userOwnerPostId),
-      document: finalDocument,
-    };
+      const payload = {
+        id: Number(isEdit ? currentDocumentId : userOwnerPostId),
+        document: finalDocument,
+      };
 
-    if (isEdit) {
-      updateDocument(payload);
-      return;
-    }
-    postDocument(payload);
-  };
+      if (isEdit) {
+        updateDocument(payload);
+        return;
+      }
+      postDocument(payload);
+    },
+    [isEdit, currentDocumentId, userOwnerPostId, updateDocument, postDocument],
+  );
 
   // 데이터 제출 전 가공 함수
   const prepareDocumentForSubmission = (data: LaborContractEmployeeInfo) => {
@@ -257,6 +272,21 @@ const LaborContractWriteForm = ({
 
   return (
     <FormProvider {...methods}>
+      {isComplete && (
+        <CompleteButtonModal
+          pageTitle="Form Completed"
+          title="Part-time work permit form completed!"
+          content="Your information has been securely saved."
+          buttonContent="View progress"
+          onClick={() =>
+            smartNavigate(
+              navigate,
+              `/application-documents/${userOwnerPostId}`,
+              { forceSkip: true },
+            )
+          }
+        />
+      )}
       <div className="fixed top-14 left-0 w-full h-[0.625rem] flex items-center justify-center bg-surface-base z-10">
         <ProgressStepper totalCount={3} currentStep={step} />
       </div>

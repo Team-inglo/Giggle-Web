@@ -128,7 +128,6 @@ export const usePutPartTimeEmployPermitEmployer = (
 
 //표준 근로계약서 작성 api 통신 커스텀 훅
 export const usePostStandardLaborContracts = (
-  id: number,
   options?: UseMutationOptions<
     RESTYPE<{ id: number }>,
     Error,
@@ -138,11 +137,6 @@ export const usePostStandardLaborContracts = (
   const navigate = useNavigate();
   return useMutation({
     mutationFn: postStandardLaborContracts,
-    onSuccess: () => {
-      smartNavigate(navigate, `/application-documents/${id}`, {
-        forceSkip: true,
-      });
-    },
     onError: () =>
       smartNavigate(navigate, '/write-documents', {
         forceSkip: true,
@@ -157,7 +151,6 @@ export const usePostStandardLaborContracts = (
 // 8.12 (유학생) 표준 근로계약서 수정 api 통신 커스텀 훅
 export const usePutStandardLaborContracts = (
   id: number,
-  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
@@ -167,11 +160,6 @@ export const usePutStandardLaborContracts = (
   const navigate = useNavigate();
   return useMutation({
     mutationFn: putStandardLaborContracts,
-    onSuccess: () => {
-      smartNavigate(navigate, `/application-documents/${userOwnerPostingId}`, {
-        forceSkip: true,
-      });
-    },
     onError: () =>
       smartNavigate(navigate, `/write-documents/${id}`, {
         forceSkip: true,
@@ -231,11 +219,6 @@ export const usePostIntegratedApplicants = (
 
   return useMutation({
     mutationFn: postIntegratedApplications,
-    onSuccess: () => {
-      smartNavigate(navigate, `/application-documents/${postId}`, {
-        forceSkip: true,
-      });
-    },
     onError: () =>
       smartNavigate(navigate, '/write-documents', {
         forceSkip: true,
@@ -250,7 +233,6 @@ export const usePostIntegratedApplicants = (
 // 8.14 (유학생) 통합신청서 수정 api 통신 커스텀 훅
 export const usePutIntegratedApplicants = (
   id: number,
-  userOwnerPostingId: number,
   options?: UseMutationOptions<
     RESTYPE<null>,
     Error,
@@ -260,11 +242,6 @@ export const usePutIntegratedApplicants = (
   const navigate = useNavigate();
   return useMutation({
     mutationFn: putIntegratedApplications,
-    onSuccess: () => {
-      smartNavigate(navigate, `/application-documents/${userOwnerPostingId}`, {
-        forceSkip: true,
-      });
-    },
     onError: () =>
       smartNavigate(navigate, `/write-documents/${id}`, {
         forceSkip: true,
